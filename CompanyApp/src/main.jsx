@@ -9,6 +9,7 @@ import Home from './components/Home/Home.jsx'
 import LoginBusiness from './components/RegLogLogOut/LoginBusiness.jsx'
 import SignupPageBusiness from './components/RegLogLogOut/SignupPageBusiness.jsx'
 import LoginVehicle from './components/RegLogLogOut/LoginVehicle.jsx'
+import SignupVehicle from './components/RegLogLogOut/SignupVehicle.jsx'
 
 
 const router = createBrowserRouter(
@@ -18,6 +19,7 @@ const router = createBrowserRouter(
       <Route path='/businesslogin' element={<LoginBusiness />} />
       <Route path='/businesssignup' element={<SignupPageBusiness/>} />
       <Route path='/vehiclelogin' element={<LoginVehicle />} />
+      <Route path='/vehiclesignup' element={<SignupVehicle />} />
     </Route>
   )
 )

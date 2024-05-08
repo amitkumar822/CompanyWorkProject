@@ -98,11 +98,18 @@ export const Registration = ({ data1, data2, left }) => {
         <div>
           <ul className="leading-8">
             <li className=" cursor-pointer hover:text-[#686969]">
+              <Link
+              to="/businesssignup"
+              >
               {data1}
-              
+              </Link>
             </li>
             <li className=" cursor-pointer hover:text-[#686969]">
+              <Link
+              to="/vehiclesignup"
+              >
               {data2}
+              </Link>
             </li>
           </ul>
         </div>
