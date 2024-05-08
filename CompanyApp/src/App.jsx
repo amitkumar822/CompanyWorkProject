@@ -9,7 +9,7 @@ import AboutQuickLocation from "./components/AboutQuickLocation";
 function App() {
   return (
     <>
-      <div className="w-full h-full bg-[#F1F2F4] mb-20">
+      <div className="w-full h-full bg-[#F1F2F4]">
         <Navbar />
         <Banner />
         <Filtersection />
