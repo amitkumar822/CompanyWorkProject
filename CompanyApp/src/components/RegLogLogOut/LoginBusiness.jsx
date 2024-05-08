@@ -16,7 +16,7 @@ function LoginBusiness() {
             <h1 className=" text-2xl font-semibold text-[#ab2c89]">Load Provider Login</h1>
           </div>
           <div className="md:min-w-[400px] lg:w-[40%] sm:w-[320px] w-[300px] mx-auto border p-4 bg-gradient-to-r from-cyan-500 to-blue-500 to-[#bbe0bb] rounded-lg shadow-lg shadow-[#c78c5c]">
-            <h1 className="text-3xl text-center">Login</h1>
+            <h1 className="text-3xl text-center font-semibold">Login</h1>
             <form className="w-full mx-auto">
               <div className="w-[90%] mx-auto mt-4 relative">
                 <input
@@ -29,13 +29,13 @@ function LoginBusiness() {
                 <MdContactPhone className=" relative top-3 left-2 text-2xl" />
               </div>
               <br />
+              
               <div className="w-[90%] mx-auto mt-4 relative">
                 <input
                   className=" w-full border border-[#888686] outline-none px-11 py-2 absolute rounded-lg"
                   type="password"
                   placeholder="password.."
                   required
-                  maxLength={10}
                 />
                 <RiLockPasswordFill className=" relative top-3 left-2 text-2xl" />
               </div>
@@ -45,8 +45,8 @@ function LoginBusiness() {
                 onClick={() => alert("Please contact the admin for password assistance.")}
                 className="font-semibold py-2 cursor-pointer">Forgot Password?</h1>
                 <button className="w-full mx-auto bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:bg-gradient-to-l to-pink-8  00 py-2 rounded-lg font-bold text-lg text-white">Login Now</button>
-                <div className="flex mt-2 gap-2">
-                  <h1>Don't have an account?</h1> <Link><span className="rounded-lg px-2 py-1 font-bold text-[#f44646]">Sign Up</span></Link>
+                <div className="flex mt-2 gap-2 justify-center">
+                  <h1>Don't have an account?</h1> <Link to="/businesssignup"><span className="rounded-lg px-2 py-1 font-bold text-[#f44646]">Sign Up</span></Link>
                 </div>
               </div>
             </form>

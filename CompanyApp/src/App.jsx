@@ -11,7 +11,7 @@ function App() {
   return (
     <>
       <div className="w-full h-full bg-[#F1F2F4]">
-        <Home />
+        {/* <Home /> */}
         {/* <Navbar />
         <Banner />
         <Filtersection />

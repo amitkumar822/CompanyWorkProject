@@ -128,7 +128,11 @@ export const LoginClickBox = ({ data1, data2 }) => {
               </Link>
             </li>
             <li className=" cursor-pointer hover:text-[#686969]">
+              <Link
+              to="/vehiclelogin"
+              >
               {data2}
+              </Link>
             </li>
           </ul>
         </div>

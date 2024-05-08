@@ -7,12 +7,17 @@ import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } 
 import Layout from './Layout.jsx'
 import Home from './components/Home/Home.jsx'
 import LoginBusiness from './components/RegLogLogOut/LoginBusiness.jsx'
+import SignupPageBusiness from './components/RegLogLogOut/SignupPageBusiness.jsx'
+import LoginVehicle from './components/RegLogLogOut/LoginVehicle.jsx'
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element = {<Layout />}>
       <Route path='' element = {<Home />}/>
       <Route path='/businesslogin' element={<LoginBusiness />} />
+      <Route path='/businesssignup' element={<SignupPageBusiness/>} />
+      <Route path='/vehiclelogin' element={<LoginVehicle />} />
     </Route>
   )
 )
