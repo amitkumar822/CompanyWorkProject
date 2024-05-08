@@ -45,9 +45,9 @@ function AboutQuickLocation() {
           </div>
         </div>
         {/* Location Part */}
-        <div className=" mx-auto">
+        <div>
           <h1 className=" text-2xl font-semibold text-pink-500 flex items-center"><FaLocationDot/>Location</h1>
-          <div>
+          <div className=" overflow-hidden">
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1957.9190123759818!2d77.076428!3d11.050768!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba85799063b9bd3%3A0x2e3aa9b482b0d7f2!2sAnkusam%20Engineering%20pvt%20ltd!5e0!3m2!1sen!2sin!4v1715161803057!5m2!1sen!2sin"
               width="350"
@@ -61,7 +61,7 @@ function AboutQuickLocation() {
         </div>
       </div>
 
-      <div className="w-[70%] mx-auto mt-6 pb-10">
+      <div className="w-[70%] mx-auto mt-6 pb-10 mb-10">
         <hr />
         <h1 className="font-semibold pt-4">© Designed and maintained by Ankusam Engineering Services</h1>
       </div>
