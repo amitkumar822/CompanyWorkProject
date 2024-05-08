@@ -1,26 +1,18 @@
-import React from "react";
-// import Navbar from "./components/Navbar";
-// import Banner from "./components/Banner";
-// import Filtersection from "./components/Filtersection";
-// import Loadlist from "./components/Loadlist";
-// import SaveWorldbyrecycling from "./components/SaveWorldbyrecycling";
-// import AboutQuickLocation from "./components/AboutQuickLocation";
-import Home from "./components/Home/Home";
+import React from 'react'
+import Navbar from './components/Navbar'
+import { Outlet } from 'react-router'
+import AboutQuickLocation from './components/AboutQuickLocation'
 
-function App() {
+function Layout() {
   return (
     <>
-      <div className="w-full h-full bg-[#F1F2F4]">
-        {/* <Home /> */}
-        {/* <Navbar />
-        <Banner />
-        <Filtersection />
-        <Loadlist />
-        <SaveWorldbyrecycling />
-        <AboutQuickLocation /> */}
-      </div>
+        <div>
+            <Navbar />
+            <Outlet />
+            <AboutQuickLocation />
+        </div>
     </>
-  );
+  )
 }
 
-export default App;
+export default Layout
