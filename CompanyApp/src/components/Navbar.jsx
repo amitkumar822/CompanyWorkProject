@@ -75,7 +75,11 @@ function Navbar() {
                   />
                 </div>
                 <li className=" cursor-pointer hover:text-[red]  duration-500">
+                  <Link
+                  to=""
+                  >
                   AVAILABLE LOAD
+                  </Link>
                 </li>
                 <li className=" cursor-pointer hover:text-[red]  duration-500">
                   CONTACT US
