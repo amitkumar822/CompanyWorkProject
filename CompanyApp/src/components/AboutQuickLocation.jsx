@@ -53,7 +53,7 @@ function AboutQuickLocation() {
               width="350"
               height="270"
             //   style="border:0;"
-              allowFullscreen=""
+              // allowFullScreen=""
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             ></iframe>
@@ -63,7 +63,7 @@ function AboutQuickLocation() {
 
       <div className="w-[70%] mx-auto mt-6 pb-10">
         <hr />
-        <h1 className=" font-semibold">© Designed and maintained by Ankusam Engineering Services</h1>
+        <h1 className="font-semibold pt-4">© Designed and maintained by Ankusam Engineering Services</h1>
       </div>
     </div>
   );

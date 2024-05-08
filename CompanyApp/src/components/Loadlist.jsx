@@ -58,9 +58,6 @@ function Loadlist() {
   const [loadRecord, setLoadRecord] = useState(data);
 
   const handleFilter = (event) => {
-    console.log('====================================');
-    console.log(event.target.value);
-    console.log('====================================');
     const newData = data.filter((row) => {
       return row.name.toLowerCase().includes(event.target.value.toLowerCase());
     });

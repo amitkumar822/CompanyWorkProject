@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
+import { Link, NavLink } from "react-router-dom";
+
 
 function Navbar() {
   const [regClicks, setRegClicks] = useState(false);
@@ -54,6 +56,7 @@ function Navbar() {
                 </li>
                 <div className={`absolute ${regClicks ? "" : "hidden"}`}>
                   <Registration
+                  
                     data1={"BUSINESS PEOPLE"}
                     data2={"DRIVER REGISTRATION"}
                     left={-40}
@@ -86,7 +89,7 @@ function Navbar() {
   );
 }
 
-const Registration = ({ data1, data2, left }) => {
+export const Registration = ({ data1, data2, left }) => {
   return (
     <>
       <div
@@ -96,6 +99,7 @@ const Registration = ({ data1, data2, left }) => {
           <ul className="leading-8">
             <li className=" cursor-pointer hover:text-[#686969]">
               {data1}
+              
             </li>
             <li className=" cursor-pointer hover:text-[#686969]">
               {data2}
@@ -108,7 +112,7 @@ const Registration = ({ data1, data2, left }) => {
 };
 
 
-const LoginClickBox = ({ data1, data2 }) => {
+export const LoginClickBox = ({ data1, data2 }) => {
   return (
     <>
       <div
@@ -117,7 +121,11 @@ const LoginClickBox = ({ data1, data2 }) => {
         <div>
           <ul className="leading-8">
             <li className=" cursor-pointer hover:text-[#686969]">
-              {data1}
+            <Link
+               to='/businesslogin'
+               >
+                {data1}
+              </Link>
             </li>
             <li className=" cursor-pointer hover:text-[#686969]">
               {data2}
