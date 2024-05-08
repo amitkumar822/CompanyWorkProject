@@ -89,7 +89,6 @@ function Loadlist() {
             columns={columns}
             data={loadRecord}
             // data={data}
-            
             fixedHeader
             pagination
           ></DataTable>
@@ -98,7 +97,7 @@ function Loadlist() {
       </div>
 
       <div>
-        
+
       </div>
     </>
   );

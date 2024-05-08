@@ -3,6 +3,8 @@ import Navbar from "./components/Navbar";
 import Banner from "./components/Banner";
 import Filtersection from "./components/Filtersection";
 import Loadlist from "./components/Loadlist";
+import SaveWorldbyrecycling from "./components/SaveWorldbyrecycling";
+import AboutQuickLocation from "./components/AboutQuickLocation";
 
 function App() {
   return (
@@ -12,6 +14,8 @@ function App() {
         <Banner />
         <Filtersection />
         <Loadlist />
+        <SaveWorldbyrecycling />
+        <AboutQuickLocation />
       </div>
     </>
   );
