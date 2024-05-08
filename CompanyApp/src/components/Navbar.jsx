@@ -27,7 +27,7 @@ function Navbar() {
       {/* <div className=" w-full h-screen z-1"
        onClick={disableFullPageClick}
       > */}
-        <div className=" w-full bg-[#002E5F]"
+        <div className=" w-full bg-[#002E5F] fixed top-0 z-[2]"
         onClick={disableFullPageClick}
          >
           <div
