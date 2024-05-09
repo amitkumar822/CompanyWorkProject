@@ -8,7 +8,10 @@ function AboutQuickLocation() {
     <div className=" w-full mt-20">
       <div className="w-[80%] mx-auto grid md:grid-cols-2 grid-cols-1 mb-10">
         <div className=" grid xl:grid-cols-2 grid-cols-1">
-          <div className="w-[255px]">
+
+          <div className="w-[255px]"
+          data-aos="zoom-in"
+          >
             <div className="flex gap-2">
               <FaFacebook className="text-3xl text-red-500 hover:text-green-500" />
               <IoLogoInstagram className="text-3xl text-red-500 hover:text-green-500" />
@@ -27,7 +30,10 @@ function AboutQuickLocation() {
               </h3>
             </div>
           </div>
-          <div className="w-[240px">
+
+          <div className="w-[240px"
+          data-aos="zoom-in"
+          >
             <h1 className=" text-3xl font-bold text-orange-500 cursor-pointer hover:text-orange-600">
               Quick Links
             </h1>
@@ -45,7 +51,9 @@ function AboutQuickLocation() {
           </div>
         </div>
         {/* Location Part */}
-        <div>
+        <div
+        data-aos="zoom-in"
+        >
           <h1 className=" text-2xl font-semibold text-pink-500 flex items-center"><FaLocationDot/>Location</h1>
           <div className=" overflow-hidden">
             <iframe
@@ -63,7 +71,10 @@ function AboutQuickLocation() {
 
       <div className="w-[70%] mx-auto mt-6 pb-10 mb-10">
         <hr />
-        <h1 className="font-semibold pt-4">© Designed and maintained by Ankusam Engineering Services</h1>
+        <h1 className="font-semibold text-xl"
+        data-aos="fade-up"
+        data-aos-anchor-placement="bottom-bottom"
+        >© Designed and maintained by Ankusam Engineering Services</h1>
       </div>
     </div>
   );
