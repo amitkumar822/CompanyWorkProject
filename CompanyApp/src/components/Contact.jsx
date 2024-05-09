@@ -76,11 +76,11 @@ function Contact() {
 
           {/* map section */}
           <div>
-            <div className=" mt-36 overflow-hidden mx-4">
+            <div className=" mt-36 overflow-hidden mx-4 mr-8">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d978.9595061879909!2d77.076428!3d11.050768!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba85799063b9bd3%3A0x2e3aa9b482b0d7f2!2sAnkusam%20Engineering%20pvt%20ltd!5e0!3m2!1sen!2sin!4v1715198191393!5m2!1sen!2sin"
                 width="500"
-                height="600"
+                height="700"
                 Style="border:0;"
                 allowFullScreen=""
                 loading="lazy"
