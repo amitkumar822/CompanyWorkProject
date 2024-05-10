@@ -6,8 +6,6 @@ import { FcGlobe } from "react-icons/fc";
 import { IoMdCloseCircle } from "react-icons/io";
 
 
-
-
 function Navbar() {
   const [regClicks, setRegClicks] = useState(false);
   const [logClicks, setLogClicks] = useState(false);
