@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import DataTable, { Alignment } from "react-data-table-component";
 import { IoSearch } from "react-icons/io5";
 import { data } from "../data/LoadListData";
-import styled from 'styled-components';
 
 function Loadlist() {
-  
   const columns = [
     {
       name: "SI No",
@@ -67,9 +65,9 @@ function Loadlist() {
       style: {
         borderRight: "0.1px solid #ccc",
         fontSize: "14px",
-      }
-    }
-  }
+      },
+    },
+  };
 
   const [loadRecord, setLoadRecord] = useState(data);
 

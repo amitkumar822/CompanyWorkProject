@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { countries } from "../data/StateCityData";
 import { weightdata } from "../data/WeightData";
 import Typed from "typed.js";
-import { useId } from 'react';
 
 
 function Filtersection() {
