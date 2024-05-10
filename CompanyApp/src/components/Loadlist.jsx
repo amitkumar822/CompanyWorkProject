@@ -59,7 +59,7 @@ function Loadlist() {
 
   const handleFilter = (event) => {
     const newData = data.filter((row) => {
-      return row.name.toLowerCase().includes(event.target.value.toLowerCase());
+      return row.fromstate.toLowerCase().includes(event.target.value.toLowerCase());
     });
     setLoadRecord(newData);
   };
@@ -71,16 +71,18 @@ function Loadlist() {
           <h1 className=" text-red-500 underline font-bold text-2xl text-center">
             Load List
           </h1>
-          {/* <div className="flex text-end items-center justify-end gap-1 relative">
+
+          <div className="flex text-end items-center justify-end gap-1 relative">
             <span>Search</span>{" "}
             <input
               className="py-1 px-2 border border-[black] rounded-lg"
               type="text"
               placeholder="Search products..."
-              onChange={(event) => handleFilter(event.target.value)}
+              onChange={handleFilter}
             />
             <IoSearch className=" absolute" />
-          </div> */}
+          </div>
+
          <div className=" border border-[yellow] mt-2 cursor-pointer">
          <DataTable
             columns={columns}

@@ -45,11 +45,15 @@ function Navbar() {
         <div className=" md:w-[85%] w-full h-[66px] mx-auto bg-[#002E5F] flex items-center justify-around">
           {/* Logo Section */}
           <div className="md:w-[70px] w-full ml-6">
+            <Link
+             to=''
+            >
             <img
               className="md:w-[60px] w-[55px] py-2"
               src="https://www.ankusamlogistics.com/include/assest/images/header_logo_one.svg"
               alt=""
             />
+            </Link>
           </div>
 
           {/* Navbar Section */}
