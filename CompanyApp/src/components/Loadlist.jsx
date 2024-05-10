@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import DataTable from "react-data-table-component";
+import DataTable, { Alignment } from "react-data-table-component";
 import { IoSearch } from "react-icons/io5";
 import { data } from "../data/LoadListData";
-
-
+import styled from 'styled-components';
 
 function Loadlist() {
+  
   const columns = [
     {
       name: "SI No",
@@ -51,24 +51,53 @@ function Loadlist() {
       name: "Contact Number",
       selector: (row) => row.contactnumber,
       sortable: true,
-    }
-    
+    },
   ];
+
+  const customStyles = {
+    headCells: {
+      style: {
+        backgroundColor: "yellow",
+        color: "black",
+        fontSize: "15px",
+        fontWeight: "bold",
+      },
+    },
+    cells: {
+      style: {
+        borderRight: "0.1px solid #ccc",
+        fontSize: "14px",
+      }
+    }
+  }
 
   const [loadRecord, setLoadRecord] = useState(data);
 
   const handleFilter = (event) => {
     const newData = data.filter((row) => {
-      return row.fromstate.toLowerCase().includes(event.target.value.toLowerCase())
-       || row.fromstate.toLowerCase().includes(event.target.value.toLowerCase()) 
-       || row.fromcity.toLowerCase().includes(event.target.value.toLowerCase())
-       || row.tostate.toLowerCase().includes(event.target.value.toLowerCase())
-       || row.tocity.toLowerCase().includes(event.target.value.toLowerCase())
-       || row.pickuptime.toLowerCase().includes(event.target.value.toLowerCase())
-       || row.typeofvehicleneeded.toLowerCase().includes(event.target.value.toLowerCase())
-       || row.packageweight.toLowerCase().includes(event.target.value.toLowerCase())
-       || row.contactnumber.toLowerCase().includes(event.target.value.toLowerCase())
-        ;
+      return (
+        row.fromstate
+          .toLowerCase()
+          .includes(event.target.value.toLowerCase()) ||
+        row.fromstate
+          .toLowerCase()
+          .includes(event.target.value.toLowerCase()) ||
+        row.fromcity.toLowerCase().includes(event.target.value.toLowerCase()) ||
+        row.tostate.toLowerCase().includes(event.target.value.toLowerCase()) ||
+        row.tocity.toLowerCase().includes(event.target.value.toLowerCase()) ||
+        row.pickuptime
+          .toLowerCase()
+          .includes(event.target.value.toLowerCase()) ||
+        row.typeofvehicleneeded
+          .toLowerCase()
+          .includes(event.target.value.toLowerCase()) ||
+        row.packageweight
+          .toLowerCase()
+          .includes(event.target.value.toLowerCase()) ||
+        row.contactnumber
+          .toLowerCase()
+          .includes(event.target.value.toLowerCase())
+      );
     });
     setLoadRecord(newData);
   };
@@ -92,21 +121,20 @@ function Loadlist() {
             <IoSearch className=" absolute" />
           </div>
 
-         <div className=" border border-[yellow] mt-2 cursor-pointer">
-         <DataTable
-            columns={columns}
-            data={loadRecord}
-            // data={data}
-            fixedHeader
-            pagination
-          ></DataTable>
-         </div>
+          <div className=" border border-[yellow] mt-2 cursor-pointer">
+            <DataTable
+              columns={columns}
+              data={loadRecord}
+              // data={data}
+              fixedHeader
+              pagination
+              customStyles={customStyles}
+            ></DataTable>
+          </div>
         </div>
       </div>
 
-      <div>
-
-      </div>
+      <div></div>
     </>
   );
 }

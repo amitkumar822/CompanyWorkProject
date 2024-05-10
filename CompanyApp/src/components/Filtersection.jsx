@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { countries } from "../data/StateCityData";
 import { weightdata } from "../data/WeightData";
 import Typed from "typed.js";
+import { useId } from 'react';
+
 
 function Filtersection() {
   const typedRef = useRef(null);
@@ -9,7 +11,7 @@ function Filtersection() {
   useEffect(() => {
     const options = {
       strings: [
-        "Welcome to The Ankus Engineering pvt ltd",
+        "Welcome to The Ankusam Engineering pvt ltd",
         "Ower services are the world's best services",
         "Over 5,000+ Clients all over the world",
       ],
@@ -25,10 +27,13 @@ function Filtersection() {
   }, []);
 
   const [country, setCountry] = useState("--Country--");
-  const [state, setState] = useState("--State--");
+  const [state, setState] = useState("");
   const [city, setCity] = useState("--City--");
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
+
+
+  console.log("State: ", state);
 
   const changeCountry = (event) => {
     setCountry(event.target.value);
@@ -59,8 +64,8 @@ function Filtersection() {
                 onChange={changeCountry}
               >
                 <option>--Country--</option>
-                {countries.map((country) => (
-                  <option key={country.name} value={country.name}>
+                {countries.map((country,index) => (
+                  <option key={index} value={country.name}>
                     {country.name}
                   </option>
                 ))}
@@ -73,8 +78,8 @@ function Filtersection() {
                 onChange={changeState}
               >
                 <option value="">--State--</option>
-                {states.map((state) => (
-                  <option key={state.name} value={state.name}>
+                {states.map((state,index) => (
+                  <option key={index} value={state.name}>
                     {state.name}
                   </option>
                 ))}
@@ -87,8 +92,8 @@ function Filtersection() {
                 onChange={changeCity}
               >
                 <option value="city">--City--</option>
-                {cities.map((city) => (
-                  <option key={city.name} value={city}>
+                {cities.map((city,index) => (
+                  <option key={index} value={city}>
                     {city}
                   </option>
                 ))}
@@ -97,8 +102,8 @@ function Filtersection() {
               <h1>Weight:</h1>
               <select className="form-control w-full text-sm bg-[#F1F2F4] cursor-pointer">
                 <option value="">Select one..</option>
-                {weightdata.map((weight) => (
-                  <option key={weight} value={weight}>
+                {weightdata.map((weight,index) => (
+                  <option key={index} value={weight}>
                     {weight}
                   </option>
                 ))}

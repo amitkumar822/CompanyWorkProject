@@ -5,7 +5,7 @@ import AboutQuickLocation from './components/AboutQuickLocation'
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
-function Layout() {
+function App() {
   useEffect(() => {
     AOS.init();
   }, [])
@@ -20,4 +20,4 @@ function Layout() {
   )
 }
 
-export default Layout
+export default App
