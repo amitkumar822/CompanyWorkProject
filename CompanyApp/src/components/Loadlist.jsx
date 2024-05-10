@@ -59,7 +59,16 @@ function Loadlist() {
 
   const handleFilter = (event) => {
     const newData = data.filter((row) => {
-      return row.fromstate.toLowerCase().includes(event.target.value.toLowerCase());
+      return row.fromstate.toLowerCase().includes(event.target.value.toLowerCase())
+       || row.fromstate.toLowerCase().includes(event.target.value.toLowerCase()) 
+       || row.fromcity.toLowerCase().includes(event.target.value.toLowerCase())
+       || row.tostate.toLowerCase().includes(event.target.value.toLowerCase())
+       || row.tocity.toLowerCase().includes(event.target.value.toLowerCase())
+       || row.pickuptime.toLowerCase().includes(event.target.value.toLowerCase())
+       || row.typeofvehicleneeded.toLowerCase().includes(event.target.value.toLowerCase())
+       || row.packageweight.toLowerCase().includes(event.target.value.toLowerCase())
+       || row.contactnumber.toLowerCase().includes(event.target.value.toLowerCase())
+        ;
     });
     setLoadRecord(newData);
   };

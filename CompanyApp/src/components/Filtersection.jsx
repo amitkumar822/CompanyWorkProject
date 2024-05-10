@@ -9,7 +9,7 @@ function Filtersection() {
   useEffect(() => {
     const options = {
       strings: [
-        "Welcome to The Ankusam Engineering pvt ltd",
+        "Welcome to The Ankus Engineering pvt ltd",
         "Ower services are the world's best services",
         "Over 5,000+ Clients all over the world",
       ],
