@@ -20,38 +20,38 @@ function ContactUs() {
           data-aos-duration="1000"
           data-aos="fade-right"
             >
-              <div className="w-full md:min-w-[550px] pt-5 px-4 py-4 bg-[#eeeeee] rounded-xl shadow-md shadow-gray-800">
-                <div className="flex gap-2 cursor-pointer">
+              <div className="w-full md:min-w-[550px] pt-5 px-4 py-6 bg-[#eeeeee] rounded-xl shadow-md shadow-gray-800">
+                <div className="flex gap-2 cursor-pointer items-center">
                   <IoLocation className="text-6xl text-[#3466f9]" />
                   <div className="font-semibold">
-                    <h1>Our Offices Address</h1>
-                    <h2 className="text-[16px]">
+                    <h1 className="text-lg ">Our Offices Address</h1>
+                    <h2>
                       3/204 E2, Venkittapuram, Near L&T Bye Pass Road,
                       Coimbatore Tamilnadu, India - 641062.
                     </h2>
                   </div>
                 </div>
 
-                <div className="flex gap-2 cursor-pointer mt-5">
+                <div className="flex gap-2 cursor-pointer mt-5 items-center">
                   <FaTelegramPlane className="text-3xl text-[#3466f9]" />
-                  <div className="text-lg font-semibold">
-                    <h1>General Enquiries</h1>
+                  <div className="font-semibold">
+                    <h1 className="text-lg ">General Enquiries</h1>
                     <h2>designby@ankusamenggservices</h2>
                   </div>
                 </div>
 
-                <div className="flex gap-2 cursor-pointer mt-5">
+                <div className="flex gap-2 cursor-pointer mt-5 items-center">
                   <GiRotaryPhone className="text-3xl text-[#3466f9]" />
-                  <div className="text-lg font-semibold">
-                    <h1>Quick Contact</h1>
+                  <div className="font-semibold">
+                    <h1 className="text-lg ">Quick Contact</h1>
                     <h2>+91 94873889706</h2>
                   </div>
                 </div>
 
-                <div className="flex gap-2 cursor-pointer mt-5">
+                <div className="flex gap-2 cursor-pointer mt-5 items-center">
                   <GiClockwork className="text-3xl text-[#3466f9]" />
-                  <div className="text-lg font-semibold">
-                    <h1>Our Working Timing</h1>
+                  <div className=" font-semibold">
+                    <h1 className="text-lg ">Our Working Timing</h1>
                     <h2>Mon - Sun: 9:00 AM - 06:00PM</h2>
                   </div>
                 </div>
