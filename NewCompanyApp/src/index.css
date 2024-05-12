@@ -1,3 +1,19 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+#headerBanner {
+    background-image: url("../src/data/photos/banner.jpg");
+    /* background-image: url("https://media.istockphoto.com/id/1308623396/photo/industrial-steel-mechanical-elements-background.jpg?s=612x612&w=0&k=20&c=l2gE5vwSeElkbTCe64lxluf0OAQrNc2M6V34WFsHAA0="); */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 80vh;
+    width: 100vw;
+}
+
+.background-overlay{
+    background: rgba(0, 0, 0, 0.5);
+}
