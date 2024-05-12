@@ -16,7 +16,12 @@ function MainSection() {
                 are the world's best services
               </h1>
               <div className="w-full flex justify-center">
-              <button className="text-xl font-semibold bg-blue-600 mt-6 text-white py-2 px-4 rounded-xl">Enquire Now</button>
+                <button className="text-xl font-semibold bg-blue-600 mt-6 text-white py-2 px-4 rounded-xl"
+                data-aos-duration="1000"
+                 data-aos="zoom-in"
+                >
+                  Enquire Now
+                </button>
               </div>
             </div>
           </div>

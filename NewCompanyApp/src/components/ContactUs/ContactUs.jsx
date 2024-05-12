@@ -7,7 +7,7 @@ import { GrContact } from "react-icons/gr";
 function ContactUs() {
   return (
     <>
-      <div className="w-full bg-[#dde4e4] pb-12">
+      <div className="md:w-full min-w-[580px] mx-auto bg-[#dde4e4] pb-12">
         <div className="w-[80%] mx-auto pt-11 pb-11">
           <div className="flex items-center gap-4 justify-center mb-10">
             <h1 className="text-4xl font-bold">Contact Us</h1>
@@ -15,13 +15,17 @@ function ContactUs() {
           </div>
 
           <div className="w-full grid md:grid-cols-2 grid-cols-1 gap-6">
-            <div className="w-[50%]">
+            <div className="w-[50%] min-w-[490px]"
+            
+          data-aos-duration="1000"
+          data-aos="fade-right"
+            >
               <div className="w-full md:min-w-[550px] pt-5 px-4 py-4 bg-[#eeeeee] rounded-xl shadow-md shadow-gray-800">
                 <div className="flex gap-2 cursor-pointer">
                   <IoLocation className="text-6xl text-[#3466f9]" />
-                  <div className="text-lg font-semibold">
+                  <div className="font-semibold">
                     <h1>Our Offices Address</h1>
-                    <h2>
+                    <h2 className="text-[16px]">
                       3/204 E2, Venkittapuram, Near L&T Bye Pass Road,
                       Coimbatore Tamilnadu, India - 641062.
                     </h2>
@@ -54,7 +58,10 @@ function ContactUs() {
               </div>
             </div>
 
-            <div className="w-full bg-[#eeeeee] border shadow-md shadow-gray-800 rounded-lg py-4">
+            <div className="w-full bg-[#eeeeee] border shadow-md shadow-gray-800 rounded-lg py-4"
+            data-aos-duration="1000"
+            data-aos="fade-left"
+            >
               <form className="w-[80%] mx-auto mt-5">
                 <input
                   className="w-full my-2 px-4 py-2 rounded-lg shadow-md shadow-gray-600 outline-none"
@@ -91,7 +98,10 @@ function ContactUs() {
 
         {/* Location or Map Section */}
 
-        <div className="w-[80%] mx-auto m-2 shadow-md shadow-yellow-400 p-4 bg-white rounded-xl">
+        <div className="w-[80%] mx-auto m-2 shadow-md shadow-yellow-400 p-4 bg-white rounded-xl"
+         data-aos="fade-up"
+         data-aos-duration="1000"
+        >
           <div>
             <h1 className="text-3xl font-bold text-gray-700 mb-2">Location</h1>
           </div>

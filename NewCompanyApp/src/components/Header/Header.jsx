@@ -85,10 +85,6 @@ function Header() {
                     </ul>
                 {/* </div> */}
             </nav>
-            
-            <div>
-
-            </div>
         </header>
     </div>
     </>
