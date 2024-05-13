@@ -10,8 +10,8 @@ function ContactUs() {
       <div className="md:w-full min-w-[580px] mx-auto bg-[#dde4e4] pb-12">
         <div className="w-[80%] mx-auto pt-11 pb-11">
           <div className="flex items-center gap-4 justify-center mb-10">
-            <h1 className="text-4xl font-bold">Contact Us</h1>
-            <GrContact className="text-3xl" />
+            <h1 className="text-4xl font-bold underline">Contact Us</h1>
+            <GrContact className="text-3xl text-[#3466f9]" />
           </div>
 
           <div className="w-full grid md:grid-cols-2 grid-cols-1 gap-6">

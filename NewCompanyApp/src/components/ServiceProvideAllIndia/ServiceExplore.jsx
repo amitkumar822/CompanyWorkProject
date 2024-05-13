@@ -32,7 +32,7 @@ function ServiceExplore() {
           >
             <div>
               <img
-                className=" cursor-pointer hover:scale-105 ease-in-out duration-500"
+                className=" cursor-pointer hover:scale-110 ease-in-out duration-500"
                 src={IndiaImage}
                 alt="India"
               />
@@ -46,7 +46,7 @@ function ServiceExplore() {
             </div>
             <div>
               <img
-                className=" cursor-pointer hover:scale-105 ease-in-out duration-500"
+                className=" cursor-pointer hover:scale-110 ease-in-out duration-500"
                 src={SouthEastAsia}
                 alt="South East Asia"
               />
@@ -60,7 +60,7 @@ function ServiceExplore() {
             </div>
             <div>
               <img
-                className=" cursor-pointer hover:scale-105 ease-in-out duration-500"
+                className=" cursor-pointer hover:scale-110 ease-in-out duration-500"
                 src={Eroup}
                 alt="Eroup"
               />
