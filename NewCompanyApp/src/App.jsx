@@ -15,7 +15,7 @@ function App() {
     AOS.init();
   }, []);
   return (
-    <div className=" overflow-hidden">
+    <div className="overflow-hidden bg-white text-black">
       <Header />
       <MainSection />
       <IronProduct />

@@ -4,7 +4,7 @@ import { IronProductData } from "../../data/IronProductData";
 function IronProduct() {
   return (
     <>
-      <div className="w-[90%] mx-auto px-2 my-6">
+      <div className="w-[90%] mx-auto px-2 my-6 bg-white">
         <h1
           className="text-2xl font-bold py-4 mb-6 text-center underline uppercase text-red-600 shadow-md"
           data-aos-duration="1000"

@@ -16,7 +16,7 @@ function MainSection() {
                 are the world's best services
               </h1>
               <div className="w-full flex justify-center">
-                <button className="text-xl font-semibold bg-blue-600 mt-6 text-white py-2 px-4 rounded-xl"
+                <button className="text-xl font-semibold bg-blue-600 mt-6 text-white py-2 px-4 rounded-xl hover:bg-blue-700 shadow-md shadow-[#d4d3d3]"
                 data-aos-duration="1000"
                  data-aos="zoom-in"
                 >

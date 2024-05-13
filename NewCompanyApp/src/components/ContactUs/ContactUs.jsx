@@ -64,25 +64,25 @@ function ContactUs() {
             >
               <form className="w-[80%] mx-auto mt-5">
                 <input
-                  className="w-full my-2 px-4 py-2 rounded-lg shadow-md shadow-gray-600 outline-none"
+                  className="w-full my-2 bg-white px-4 py-2 rounded-lg shadow-md shadow-gray-600 outline-none"
                   type="text"
                   placeholder="YOUR NAME"
                   required
                 />
                 <input
-                  className="w-full my-2 px-4 py-2 rounded-lg shadow-md shadow-gray-600 outline-none"
+                  className="w-full my-2 bg-white px-4 py-2 rounded-lg shadow-md shadow-gray-600 outline-none"
                   type="text"
                   placeholder="YOUR EMAIL"
                   required
                 />
                 <input
-                  className="w-full my-2 px-4 py-2 rounded-lg shadow-md shadow-gray-600 outline-none"
+                  className="w-full my-2 bg-white px-4 py-2 rounded-lg shadow-md shadow-gray-600 outline-none"
                   type="text"
                   placeholder="YOUR CONTACT NO."
                   required
                 />
                 <input
-                  className="w-full my-2 px-4 py-2 rounded-lg shadow-md shadow-gray-600 outline-none"
+                  className="w-full my-2 bg-white px-4 py-2 rounded-lg shadow-md shadow-gray-600 outline-none"
                   type="text"
                   placeholder="YOUR MESSAGE"
                   required
