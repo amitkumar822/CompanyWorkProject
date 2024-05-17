@@ -28,13 +28,14 @@ function LoadDataList() {
     };
   }, []);
 
+  // 👉 This section filter state and city
   const [country, setCountry] = useState("");
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
-
-  console.log("State: ", state);
+  // 👉Pload State store all data in state
+  const [ploadData, setPloadData] = useState([]);
 
   const changeCountry = (event) => {
     setCountry(event.target.value);
@@ -49,22 +50,46 @@ function LoadDataList() {
   const changeCity = (event) => {
     setCity(event.target.value);
   };
-
+  // 👉End This section filter state and city
 
   //👉 Table Pagenation or Style Section starting at this point
   const [currentPage, setCurrentPage] = useState(1);
 
   const handleNextPage = () => {
-    setCurrentPage((prevPage) => Math.min(prevPage + 1, Math.ceil(data.length / ITEMS_PER_PAGE)));
+    setCurrentPage((prevPage) =>
+      Math.min(prevPage + 1, Math.ceil(data.length / ITEMS_PER_PAGE))
+    );
   };
 
   const handlePrevPage = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
   };
 
-  const currentData = data.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+  const currentData = ploadData.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
 
   //👉End Table Pagenation or Style this section
+
+  // 👉Pload Section starting
+  // useState upper diffine
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/driver/pload.php");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const result = await response.json();
+        setPloadData(result);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    fetchData();
+  }, []);
+  // 👉End Pload Section starting
 
   return (
     <>
@@ -135,62 +160,69 @@ function LoadDataList() {
           </div>
         </div>
 
-
         {/*👉 Load List */}
         <div className="container mx-auto px-4 py-6 border bg-[#f2f2f2] rounded-lg shadow-md">
-      <div className="overflow-x-auto">
-        <div className="overflow-y-auto max-h-[600px]">
-          <table className="min-w-full bg-white border border-gray-300">
-            <thead className="bg-white border-b border-gray-300 sticky top-0 z-10">
-              <tr className="whitespace-nowrap text-[14px] md:text-[16px]">
-                <th className="px-4 py-2 border-b">SI Nb</th>
-                <th className="px-4 py-2 border-b">From State</th>
-                <th className="px-4 py-2 border-b">From City</th>
-                <th className="px-4 py-2 border-b">To State</th>
-                <th className="px-4 py-2 border-b">To City</th>
-                <th className="px-4 py-2 border-b">Pickup Time</th>
-                <th className="px-4 py-2 border-b">Vehicle Type</th>
-                <th className="px-4 py-2 border-b">Weight</th>
-                <th className="px-4 py-2 border-b">Contact Number</th>
-              </tr>
-            </thead>
-            <tbody className="text-center">
-              {currentData.map((item, index) => (
-                <tr key={item.id} className={`${index % 2 === 0 ? 'bg-gray-200' : ''}`}>
-                  <td className="px-4 py-2 border-b">{item.id}</td>
-                  <td className="px-4 py-2 border-b">{item.fromstate}</td>
-                  <td className="px-4 py-2 border-b">{item.fromcity}</td>
-                  <td className="px-4 py-2 border-b">{item.tostate}</td>
-                  <td className="px-4 py-2 border-b">{item.tocity}</td>
-                  <td className="px-4 py-2 border-b">{item.pickuptime}</td>
-                  <td className="px-4 py-2 border-b">{item.typeofvehicleneeded}</td>
-                  <td className="px-4 py-2 border-b">{item.packageweight}</td>
-                  <td className="px-4 py-2 border-b">
-                    <a href={`tel:${item.contactnumber}`} className="text-blue-500 underline">{item.contactnumber}</a>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="overflow-x-auto">
+            <div className="overflow-y-auto max-h-[600px]">
+              <table className="min-w-full bg-white border border-gray-300">
+                <thead className="bg-white border-b border-gray-300 sticky top-0 z-10">
+                  <tr className="whitespace-nowrap text-[14px] md:text-[16px]">
+                    <th className="px-4 py-2 border-b">SI Nb</th>
+                    <th className="px-4 py-2 border-b">From State</th>
+                    <th className="px-4 py-2 border-b">From City</th>
+                    <th className="px-4 py-2 border-b">To State</th>
+                    <th className="px-4 py-2 border-b">To City</th>
+                    <th className="px-4 py-2 border-b">Pickup Time</th>
+                    <th className="px-4 py-2 border-b">Vehicle Type</th>
+                    <th className="px-4 py-2 border-b">Weight</th>
+                    <th className="px-4 py-2 border-b">Contact Number</th>
+                  </tr>
+                </thead>
+                <tbody className="text-center">
+                  {currentData.map((item, index) => (
+                    <tr
+                      key={item.id}
+                      className={`${index % 2 === 0 ? "bg-gray-200" : ""}`}
+                    >
+                      <td className="px-4 py-2 border-b">{item.id}</td>
+                      <td className="px-4 py-2 border-b">{item.fromstate}</td>
+                      <td className="px-4 py-2 border-b">{item.fromcity}</td>
+                      <td className="px-4 py-2 border-b">{item.tostate}</td>
+                      <td className="px-4 py-2 border-b">{item.tocity}</td>
+                      <td className="px-4 py-2 border-b">{item.pickupTime}</td>
+                      <td className="px-4 py-2 border-b">{item.vship}</td>
+                      <td className="px-4 py-2 border-b">{item.pkgweight}</td>
+                      <td className="px-4 py-2 border-b">
+                        <a
+                          href={`tel:${item.phone}`}
+                          className="text-blue-500 underline"
+                        >
+                          {item.contactnumber}
+                        </a>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div className="flex justify-between mt-4">
+            <button
+              onClick={handlePrevPage}
+              disabled={currentPage === 1}
+              className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:bg-gray-200"
+            >
+              Previous
+            </button>
+            <button
+              onClick={handleNextPage}
+              disabled={currentPage === Math.ceil(data.length / ITEMS_PER_PAGE)}
+              className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:bg-gray-200"
+            >
+              Next
+            </button>
+          </div>
         </div>
-      </div>
-      <div className="flex justify-between mt-4">
-        <button
-          onClick={handlePrevPage}
-          disabled={currentPage === 1}
-          className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:bg-gray-200"
-        >
-          Previous
-        </button>
-        <button
-          onClick={handleNextPage}
-          disabled={currentPage === Math.ceil(data.length / ITEMS_PER_PAGE)}
-          className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:bg-gray-200"
-        >
-          Next
-        </button>
-      </div>
-    </div>
       </div>
     </>
   );
