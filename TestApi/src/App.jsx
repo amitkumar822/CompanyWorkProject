@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 function App() {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async () => {3
       try {
-        const response = await fetch('/api/driver/response.php'); // Proxied to https://ankusamlogistics.com/driver/response.php
+        const response = await fetch("/api/driver/response.php"); // Proxied to https://ankusamlogistics.com/driver/response.php
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
         const result = await response.json();
         setData(result);
