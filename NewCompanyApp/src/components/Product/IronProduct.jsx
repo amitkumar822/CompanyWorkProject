@@ -15,10 +15,9 @@ function IronProduct() {
         <div className="grid grid-cols-4 pb-4">
           {IronProductData.map((data) => {
             return (
-              <>
+              <div key={data.id}>
                 <div
                   className="bg-[#dde3e3] w-[304px] h-[290px] rounded-xl shadow-md shadow-gray-600"
-                  key={data.id}
                   data-aos="flip-left"
                   data-aos-duration="1000"
                 >
@@ -33,7 +32,7 @@ function IronProduct() {
                     {data.title}
                   </h1>
                 </div>
-              </>
+              </div>
             );
           })}
         </div>
