@@ -91,6 +91,15 @@ function LoadDataList() {
   }, []);
   // 👉End Pload Section starting
 
+  
+  // Toggle Button Section
+  const [isOn, setIsOn] = useState(false);
+
+  const handleToggle = () => {
+    setIsOn(!isOn);
+  };
+  //End Toggle Button Section
+
   return (
     <>
       <div className=" w-full mt-20">
@@ -151,6 +160,30 @@ function LoadDataList() {
                   </option>
                 ))}
               </select>
+
+              {/*👉 Toggle Button Section */}
+              <div className="relative flex items-center gap-4 mt-4">
+                <input
+                  type="checkbox"
+                  className="sr-only"
+                  checked={isOn}
+                  onChange={handleToggle}
+                />
+                <div
+                  className={`w-12 h-6 flex items-center bg-gray-300 rounded-full p-1 cursor-pointer transition-colors duration-300 ${
+                    isOn ? "bg-green-500" : "bg-gray-300"
+                  }`}
+                  onClick={handleToggle}
+                >
+                  <div
+                    className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform duration-300 ${
+                      isOn ? "translate-x-6" : ""
+                    }`}
+                  ></div>
+                </div>
+                <h1>Hide Load List.</h1>
+              </div>
+               {/*👉End Toggle Button Section */}
             </div>
 
             {/* Animation Text */}
@@ -161,7 +194,13 @@ function LoadDataList() {
         </div>
 
         {/*👉 Load List */}
-        <div className={`container mx-auto px-4 py-6 border bg-[#f2f2f2] rounded-lg shadow-md ${ploadData.length==0 ? 'hidden' : '' }`}>
+        <div className={`text-4xl text-center font-bold text-orange-600 border-b-2 ${isOn ? '' : 'hidden'}`}>Load List is hidden.</div>
+        <div
+          className={`container mx-auto px-4 py-6 border bg-[#f2f2f2] rounded-lg shadow-md ${isOn ? 'hidden' : ''}`}
+        >
+          <h1 className=" text-3xl text-center text-red-600 font-bold underline mb-4">
+            Load List
+          </h1>
           <div className="overflow-x-auto">
             <div className="overflow-y-auto max-h-[600px]">
               <table className="min-w-full bg-white border border-gray-300">
@@ -179,17 +218,22 @@ function LoadDataList() {
                   </tr>
                 </thead>
                 <tbody className="text-center">
+                  {ploadData.length == 0 ? "Loding data...." : ""}
                   {currentData.map((item, index) => (
                     <tr
                       key={item.id}
-                      className={`${index % 2 === 0 ? "bg-gray-200" : ""} whitespace-nowrap`}
+                      className={`${
+                        index % 2 === 0 ? "bg-gray-200" : ""
+                      } whitespace-nowrap`}
                     >
                       <td className="px-4 py-2 border-b">{item.id}</td>
                       <td className="px-4 py-2 border-b">{item.fromstate}</td>
                       <td className="px-4 py-2 border-b">{item.fromcity}</td>
                       <td className="px-4 py-2 border-b">{item.tostate}</td>
                       <td className="px-4 py-2 border-b">{item.tocity}</td>
-                      <td className="px-4 py-2 border-b">{formatDate(item.pickupTime)}</td>
+                      <td className="px-4 py-2 border-b">
+                        {formatDate(item.pickupTime)}
+                      </td>
                       <td className="px-4 py-2 border-b">{item.vship}</td>
                       <td className="px-4 py-2 border-b">{item.pkgweight}</td>
                       <td className="px-4 py-2 border-b">
@@ -206,6 +250,8 @@ function LoadDataList() {
               </table>
             </div>
           </div>
+
+          {/*👉 Pagination Section Next Prev button */}
           <div className="flex justify-between mt-4">
             <button
               onClick={handlePrevPage}
@@ -230,19 +276,19 @@ function LoadDataList() {
 
 export default LoadDataList;
 
-
+// 👉 Date Formate functions
 function formatDate(dateString) {
-  if (!dateString) return '';
+  if (!dateString) return "";
 
   const date = new Date(dateString);
   if (isNaN(date.getTime())) {
-    console.error('Invalid date:', dateString);
+    console.error("Invalid date:", dateString);
     return dateString; // Return the original string if the date is invalid
   }
 
-  const options = { month: 'long', day: 'numeric' };
-  const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
-  const [month, day] = formattedDate.split(' ');
+  const options = { month: "long", day: "numeric" };
+  const formattedDate = new Intl.DateTimeFormat("en-US", options).format(date);
+  const [month, day] = formattedDate.split(" ");
 
   return `${month}, ${day}`;
 }
