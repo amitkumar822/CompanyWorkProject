@@ -2,6 +2,7 @@ import React from "react";
 import { FaFacebook } from "react-icons/fa";
 import { IoLogoInstagram } from "react-icons/io5";
 import { FaLocationDot } from "react-icons/fa6";
+import GoToUpBtn from "../GoToUpButton/GoToUpBtn";
 // import GoToUpBtn from "./GoToUpBtn";
 
 function Footer() {
@@ -69,7 +70,7 @@ function Footer() {
               </div>
             </div>
           </div>
-          {/* <GoToUpBtn /> */}
+          <GoToUpBtn />
           <div className="w-[70%] mx-auto mt-6 pb-10 mb-10">
             <hr />
             <h1 className="font-semibold text-xl"
