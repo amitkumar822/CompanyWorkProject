@@ -1,15 +1,13 @@
 import React from 'react'
 import Header from './components/Header/Header'
 import Footer from './components/Footer/Footer'
-import Banner from './components/MainViews/Banner/Banner'
-import LoadDataList from './components/MainViews/FilterAndLoadData/LoadDataList'
+import { Outlet } from 'react-router'
 
 function App() {
   return (
     <>
      <Header />
-     <Banner />
-     <LoadDataList />
+     <Outlet />
      <Footer />
     </>
   )

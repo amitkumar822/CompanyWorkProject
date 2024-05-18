@@ -40,7 +40,7 @@ function Header() {
       <div>
         <div
           onClick={disableFullPageClick}
-          className={`w-full h-[68px] bg-blue-600 mx-auto flex justify-center items-center fixed z-[11]`}
+          className={`w-full h-[68px] bg-blue-600 mx-auto flex justify-center items-center fixed z-[11] top-0 left-0`}
         >
           <div className="w-[80%] mx-auto flex justify-between items-center">
             {/*👉 Logo Section */}
