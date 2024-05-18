@@ -90,7 +90,9 @@ function Header() {
                   AVAILABLE LOAD
                 </li>
                 <li className=" cursor-pointer hover:text-[#d8d4d4] duration-300">
+                  <Link to='/contactus'>
                   CONTACT US
+                  </Link>
                 </li>
               </ul>
               {/*👉 Menu button */}
