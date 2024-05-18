@@ -4,6 +4,7 @@ import { Logo } from "../../../public/Photo/PhotosExport";
 import { IoIosArrowDown, IoMdCloseCircle } from "react-icons/io";
 import { IoMenuSharp } from "react-icons/io5";
 import { FcGlobe } from "react-icons/fc";
+import { Link } from "react-router-dom";
 
 function Header() {
   const [registerClickBox, setRegisterClickBox] = useState(false);
@@ -31,9 +32,9 @@ function Header() {
     setToggleSlide(!toggleSlide);
   };
 
-    const handleSlideButtonClick = () => {
-      setToggleSlide(false);
-    };
+  const handleSlideButtonClick = () => {
+    setToggleSlide(false);
+  };
 
   return (
     <>
@@ -45,11 +46,13 @@ function Header() {
           <div className="w-[80%] mx-auto flex justify-between items-center">
             {/*👉 Logo Section */}
             <div className="w-[72px] overflow-hidden">
-              <img
-                className="scale-125 cursor-pointer text-[13px] text-white font-semibold"
-                src={Logo}
-                alt="ankusam logistics"
-              />
+              <Link to=''>
+                <img
+                  className="scale-125 cursor-pointer text-[13px] text-white font-semibold"
+                  src={Logo}
+                  alt="ankusam logistics"
+                />
+              </Link>
             </div>
 
             {/*👉 Menu Section  */}
@@ -101,7 +104,6 @@ function Header() {
         </div>
       </div>
 
-
       {/*👉 Slide menu section */}
       <div
         className={`back-overlay w-full h-screen top-0 fixed z-10 cursor-pointer ${
@@ -120,7 +122,7 @@ function Header() {
             />
           </div>
           <div className="flex items-center gap-2 text-xl font-bold">
-            <FcGlobe     />
+            <FcGlobe />
             <h1>EXPLORE Menu</h1>
           </div>
           <ul className="pl-6">
@@ -128,42 +130,42 @@ function Header() {
               className="text-[18px] border-b py-2 cursor-pointer hover:text-[#725377] duration-300 font-serif"
               onClick={handleSlideButtonClick}
             >
-                <h1>Item1</h1>
+              <h1>Item1</h1>
               {/* <Link to="">Available Load</Link> */}
             </li>
             <li
               className="text-[18px] border-b py-2 cursor-pointer hover:text-[#725377] duration-300 font-serif"
               onClick={handleSlideButtonClick}
             >
-                <h1>Item1</h1>
+              <h1>Item1</h1>
               {/* <Link to="/businesssignup">Business People</Link> */}
             </li>
             <li
               className="text-[18px] border-b py-2 cursor-pointer hover:text-[#725377] duration-300 font-serif"
               onClick={handleSlideButtonClick}
             >
-                <h1>Item3</h1>
+              <h1>Item3</h1>
               {/* <Link to="/vehiclesignup">Driver Registration</Link> */}
             </li>
             <li
               className="text-[18px] border-b py-2 cursor-pointer hover:text-[#725377] duration-300 font-serif"
               onClick={handleSlideButtonClick}
             >
-                <h1>Business Login</h1>
+              <h1>Business Login</h1>
               {/* <Link to="/businesslogin">Business Login</Link> */}
             </li>
             <li
               className="text-[18px] border-b py-2 cursor-pointer hover:text-[#725377] duration-300 font-serif"
               onClick={handleSlideButtonClick}
             >
-                <h1>Vehical Login</h1>
+              <h1>Vehical Login</h1>
               {/* <Link to="/vehiclelogin">vehicle Login</Link> */}
             </li>
             <li
               className="text-[18px] border-b py-2 cursor-pointer hover:text-[#725377] duration-300 font-serif"
               onClick={handleSlideButtonClick}
             >
-                <h1>Contact</h1>
+              <h1>Contact</h1>
               {/* <Link to="/contactus">Contact Us</Link> */}
             </li>
           </ul>
@@ -182,12 +184,10 @@ const RegistrationClickBox = ({ data1, data2, left }) => {
         <div>
           <ul className="leading-8">
             <li className=" cursor-pointer hover:text-[#686969]">
-              <h1>BUSINESS PEOPLE</h1>
-              {/* <Link to="/businesssignup">{data1}</Link> */}
+              <Link to="/businesssignup">BUSINESS PEOPLE</Link>
             </li>
             <li className=" cursor-pointer hover:text-[#686969]">
-              <h1>DRIVER REGISTRATION</h1>
-              {/* <Link to="/vehiclesignup">{data2}</Link> */}
+              <Link to="/vehiclesignup">DRIVER REGISTRATION</Link>
             </li>
           </ul>
         </div>
@@ -205,12 +205,10 @@ const LoginClickBox = ({ data1, data2 }) => {
         <div>
           <ul className="leading-8">
             <li className=" cursor-pointer hover:text-[#686969]">
-              <h1>BUSINESS LOGIN</h1>
-              {/* <Link to="/businesslogin">{data1}</Link> */}
+              <Link to="/businesslogin">BUSINESS LOGIN</Link>
             </li>
             <li className=" cursor-pointer hover:text-[#686969]">
-              <h1>VEHICLE LOGIN</h1>
-              {/* <Link to="/vehiclelogin">{data2}</Link> */}
+              <Link to="/vehiclelogin">VEHICLE LOGIN</Link>
             </li>
           </ul>
         </div>

@@ -5,11 +5,20 @@ import './index.css'
 
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
 import Home from './components/MainViews/Home/Home.jsx'
+import LoginBusinessPage from './components/MainViews/RegLoginSignupPage/LoginBusinessPage.jsx'
+import SignupBusinessPage from './components/MainViews/RegLoginSignupPage/SignupBusinessPage.jsx'
+import LoginVehiclePage from './components/MainViews/RegLoginSignupPage/LoginVehiclePage.jsx'
+import SignupVehiclePage from './components/MainViews/RegLoginSignupPage/SignupVehiclePage.jsx'
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />} >
       <Route path='' element={<Home />} />
+      <Route path='/businesslogin' element={<LoginBusinessPage />} />
+      <Route path='/businesssignup' element={<SignupBusinessPage />} />
+      <Route path='/vehiclelogin' element={<LoginVehiclePage />} />
+      <Route path='/vehiclesignup' element={<SignupVehiclePage />} />
     </Route>
   )
 )
