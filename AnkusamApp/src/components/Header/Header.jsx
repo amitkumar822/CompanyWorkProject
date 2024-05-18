@@ -106,7 +106,7 @@ function Header() {
         </div>
       </div>
 
-      {/*👉 Slide menu section */}
+      {/*👉 Slide or Sidebar menu section */}
       <div
         className={`back-overlay w-full h-screen top-0 fixed z-10 cursor-pointer ${
           toggleSlide ? "" : "hidden"
@@ -132,43 +132,43 @@ function Header() {
               className="text-[18px] border-b py-2 cursor-pointer hover:text-[#725377] duration-300 font-serif"
               onClick={handleSlideButtonClick}
             >
-              <h1>Item1</h1>
-              {/* <Link to="">Available Load</Link> */}
+              {/* <h1>Item1</h1> */}
+              <Link to="">Available Load</Link>
             </li>
             <li
               className="text-[18px] border-b py-2 cursor-pointer hover:text-[#725377] duration-300 font-serif"
               onClick={handleSlideButtonClick}
             >
-              <h1>Item1</h1>
-              {/* <Link to="/businesssignup">Business People</Link> */}
+              {/* <h1>Item1</h1> */}
+              <Link to="/businesssignup">Business People</Link>
             </li>
             <li
               className="text-[18px] border-b py-2 cursor-pointer hover:text-[#725377] duration-300 font-serif"
               onClick={handleSlideButtonClick}
             >
-              <h1>Item3</h1>
-              {/* <Link to="/vehiclesignup">Driver Registration</Link> */}
+              {/* <h1>Item3</h1> */}
+              <Link to="/vehiclesignup">Driver Registration</Link>
             </li>
             <li
               className="text-[18px] border-b py-2 cursor-pointer hover:text-[#725377] duration-300 font-serif"
               onClick={handleSlideButtonClick}
             >
-              <h1>Business Login</h1>
-              {/* <Link to="/businesslogin">Business Login</Link> */}
+              {/* <h1>Business Login</h1> */}
+              <Link to="/businesslogin">Business Login</Link>
             </li>
             <li
               className="text-[18px] border-b py-2 cursor-pointer hover:text-[#725377] duration-300 font-serif"
               onClick={handleSlideButtonClick}
             >
-              <h1>Vehical Login</h1>
-              {/* <Link to="/vehiclelogin">vehicle Login</Link> */}
+              {/* <h1>Vehical Login</h1> */}
+              <Link to="/vehiclelogin">vehicle Login</Link>
             </li>
             <li
               className="text-[18px] border-b py-2 cursor-pointer hover:text-[#725377] duration-300 font-serif"
               onClick={handleSlideButtonClick}
             >
               <h1>Contact</h1>
-              {/* <Link to="/contactus">Contact Us</Link> */}
+              <Link to="/contactus">Contact Us</Link>
             </li>
           </ul>
         </div>

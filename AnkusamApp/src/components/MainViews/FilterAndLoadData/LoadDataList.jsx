@@ -3,8 +3,9 @@ import { countries } from "../../../data/StateCityData";
 import { weightdata } from "../../../data/WeightData";
 import Typed from "typed.js";
 import { data } from "../../../data/LoadListData";
+import { IoSearch } from "react-icons/io5";
 
-//table how many page show items
+// Table how many items to show per page
 const ITEMS_PER_PAGE = 20;
 
 function LoadDataList() {
@@ -14,7 +15,7 @@ function LoadDataList() {
     const options = {
       strings: [
         "Welcome to The Ankusam Engineering pvt ltd",
-        "Ower services are the world's best services",
+        "Our services are the world's best services",
         "Over 5,000+ Clients all over the world",
       ],
       typeSpeed: 50,
@@ -28,14 +29,15 @@ function LoadDataList() {
     };
   }, []);
 
-  // 👉 This section filter state and city
   const [country, setCountry] = useState("");
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
-  // 👉Pload State store all data in state
   const [ploadData, setPloadData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchInput, setSearchInput] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
 
   const changeCountry = (event) => {
     setCountry(event.target.value);
@@ -50,30 +52,7 @@ function LoadDataList() {
   const changeCity = (event) => {
     setCity(event.target.value);
   };
-  // 👉End This section filter state and city
 
-  //👉 Table Pagenation or Style Section starting at this point
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const handleNextPage = () => {
-    setCurrentPage((prevPage) =>
-      Math.min(prevPage + 1, Math.ceil(data.length / ITEMS_PER_PAGE))
-    );
-  };
-
-  const handlePrevPage = () => {
-    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
-  };
-
-  const currentData = ploadData.slice(
-    (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
-  );
-
-  //👉End Table Pagenation or Style this section
-
-  // 👉Pload Section starting
-  // useState upper diffine
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -83,35 +62,66 @@ function LoadDataList() {
         }
         const result = await response.json();
         setPloadData(result);
+        setFilteredData(result); // Initialize filteredData with all data
       } catch (error) {
         console.log(error.message);
       }
     };
     fetchData();
   }, []);
-  // 👉End Pload Section starting
 
-  
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) =>
+      Math.min(prevPage + 1, Math.ceil(filteredData.length / ITEMS_PER_PAGE))
+    );
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  };
+
+  const currentData = filteredData.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
   // Toggle Button Section
   const [isOn, setIsOn] = useState(false);
 
   const handleToggle = () => {
     setIsOn(!isOn);
   };
-  //End Toggle Button Section
+
+  // Search bar Functionality
+  const handleFilter = (event) => {
+    const query = event.target.value.toLowerCase();
+    setSearchInput(query);
+
+    const filtered = ploadData.filter(
+      (item) =>
+        // item.fromstate.toLowerCase().includes(query) ||
+        item.fromcity.toLowerCase().includes(query) 
+        // ||
+        // item.tostate.toLowerCase().includes(query) ||
+        // item.tocity.toLowerCase().includes(query)
+    );
+
+    setFilteredData(filtered);
+    setCurrentPage(1); // Reset to the first page whenever filter changes
+  };
 
   return (
     <>
-      <div className=" w-full mt-20">
-        {/*👉 Filter Section */}
+      <div className="w-full mt-20">
+        {/* Filter Section */}
         <div className="w-[80%] mx-auto mb-10">
-          <h1 className=" text-3xl font-semibold text-center">Data Filter</h1>
+          <h1 className="text-3xl font-semibold text-center">Data Filter</h1>
 
           <div className="w-[100%] mx-auto gap-14 order-1 justify-content-center d-flex vh-100 bg-dark grid lg:grid-cols-2 grid-cols-1">
-            <div className="min-w-[310px] mt-5 ">
-              <h1 className=" text-blue-600">Filter by country</h1>
+            <div className="min-w-[310px] mt-5">
+              <h1 className="text-blue-600">Filter by country</h1>
               <select
-                className=" form-control w-full text-sm bg-[#F1F2F4] cursor-pointer"
+                className="form-control w-full text-sm bg-[#F1F2F4] cursor-pointer"
                 value={country}
                 onChange={changeCountry}
               >
@@ -123,7 +133,7 @@ function LoadDataList() {
                 ))}
               </select>
               <br />
-              <h1 className=" text-green-500">Filter by state</h1>
+              <h1 className="text-green-500">Filter by state</h1>
               <select
                 className="form-control w-full text-sm bg-[#F1F2F4] cursor-pointer"
                 value={state.name}
@@ -137,7 +147,7 @@ function LoadDataList() {
                 ))}
               </select>
               <br />
-              <h1 className=" text-[#49796a]">Filter by city</h1>
+              <h1 className="text-[#49796a]">Filter by city</h1>
               <select
                 className="form-control w-full text-sm bg-[#F1F2F4] cursor-pointer"
                 value={city}
@@ -161,7 +171,7 @@ function LoadDataList() {
                 ))}
               </select>
 
-              {/*👉 Toggle Button Section */}
+              {/* Toggle Button Section */}
               <div className="relative flex items-center gap-4 mt-4">
                 <input
                   type="checkbox"
@@ -183,7 +193,6 @@ function LoadDataList() {
                 </div>
                 <h1>Hide Load List.</h1>
               </div>
-               {/*👉End Toggle Button Section */}
             </div>
 
             {/* Animation Text */}
@@ -193,14 +202,29 @@ function LoadDataList() {
           </div>
         </div>
 
-        {/*👉 Load List */}
+        {/* Load List */}
         <div className={`text-4xl text-center font-bold text-orange-600 border-b-2 ${isOn ? '' : 'hidden'}`}>Load List is hidden.</div>
         <div
           className={`container mx-auto px-4 py-6 border bg-[#f2f2f2] rounded-lg shadow-md ${isOn ? 'hidden' : ''}`}
         >
-          <h1 className=" text-3xl text-center text-red-600 font-bold underline mb-4">
+          <h1 className="text-3xl text-center text-red-600 font-bold underline mb-4">
             Load List
           </h1>
+
+          {/* Search functionality bar */}
+          <div className="flex w-[50%] items-center justify-end gap-1 relative mb-4">
+            <span>Search</span>{" "}
+            <input
+              className="py-1 w-full px-2 border border-[black] rounded-lg outline-none"
+              type="text"
+              placeholder="Search by from city..."
+              value={searchInput}
+              onChange={handleFilter}
+            />
+            <IoSearch className="absolute right-4" />
+          </div>
+
+          {/* Load list Table */}
           <div className="overflow-x-auto">
             <div className="overflow-y-auto max-h-[600px]">
               <table className="min-w-full bg-white border border-gray-300">
@@ -218,7 +242,7 @@ function LoadDataList() {
                   </tr>
                 </thead>
                 <tbody className="text-center">
-                  {ploadData.length == 0 ? "Loding data...." : ""}
+                  {ploadData.length === 0 ? "Loading data...." : ""}
                   {currentData.map((item, index) => (
                     <tr
                       key={item.id}
@@ -251,7 +275,7 @@ function LoadDataList() {
             </div>
           </div>
 
-          {/*👉 Pagination Section Next Prev button */}
+          {/* Pagination Section */}
           <div className="flex justify-between mt-4">
             <button
               onClick={handlePrevPage}
@@ -262,7 +286,7 @@ function LoadDataList() {
             </button>
             <button
               onClick={handleNextPage}
-              disabled={currentPage === Math.ceil(data.length / ITEMS_PER_PAGE)}
+              disabled={currentPage === Math.ceil(filteredData.length / ITEMS_PER_PAGE)}
               className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:bg-gray-200"
             >
               Next
@@ -276,7 +300,7 @@ function LoadDataList() {
 
 export default LoadDataList;
 
-// 👉 Date Formate functions
+// Date Format function
 function formatDate(dateString) {
   if (!dateString) return "";
 

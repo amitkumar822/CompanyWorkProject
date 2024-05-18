@@ -3,8 +3,8 @@ import { BannerButtomUpPhoto } from '../../../../public/Photo/PhotosExport'
 
 function BannerButtomUp() {
   return (
-    <div className='w-[80%] mx-auto mb-6 mt-12'>
-        <img className='w-[70%] mx-auto' src={ BannerButtomUpPhoto } alt="" />
+    <div className='md:w-[80%] w-full overflow-hidden mx-auto mb-6 mt-12'>
+        <img className='md:w-[70%] w-[90%] mx-auto' src={ BannerButtomUpPhoto } alt="" />
     </div>
   )
 }
