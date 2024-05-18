@@ -1,12 +1,22 @@
-import React from 'react'
-import { BannerButtomUpPhoto } from '../../../../public/Photo/PhotosExport'
+import React from "react";
+import { BannerButtomUpPhoto } from "../../../../public/Photo/PhotosExport";
 
 function BannerButtomUp() {
   return (
-    <div className='md:w-[80%] w-full overflow-hidden mx-auto mb-6 mt-12'>
-        <img className='md:w-[70%] w-[90%] mx-auto' src={ BannerButtomUpPhoto } alt="" />
+    <div className="w-full md:mt-32 mt-14">
+      <div
+        className="md:w-[70%] px-2 mx-auto"
+        data-aos="fade-down"
+        data-aos-duration="1000"
+      >
+        <img
+          className="md:w-[70%] w-[90%] mx-auto"
+          src={BannerButtomUpPhoto}
+          alt=""
+        />
+      </div>
     </div>
-  )
+  );
 }
 
-export default BannerButtomUp
+export default BannerButtomUp;

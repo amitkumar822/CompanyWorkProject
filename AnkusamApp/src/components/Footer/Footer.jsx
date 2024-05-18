@@ -12,7 +12,7 @@ function Footer() {
             <div className=" grid xl:grid-cols-2 grid-cols-1">
     
               <div className="w-[255px]"
-              data-aos="zoom-in"
+                data-aos="zoom-in"
               >
                 <div className="flex gap-2">
                   <FaFacebook className="text-3xl text-red-500 hover:text-green-500" />
