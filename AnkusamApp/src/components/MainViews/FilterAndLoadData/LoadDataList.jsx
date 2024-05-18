@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { countries } from "../../../data/StateCityData";
 import { weightdata } from "../../../data/WeightData";
 import Typed from "typed.js";
-import { data } from "../../../data/LoadListData";
 import { IoSearch } from "react-icons/io5";
 
 // Table how many items to show per page
@@ -29,9 +28,9 @@ function LoadDataList() {
     };
   }, []);
 
-  const [country, setCountry] = useState("");
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
+  const [weight, setWeight] = useState("");
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
   const [ploadData, setPloadData] = useState([]);
@@ -39,18 +38,25 @@ function LoadDataList() {
   const [searchInput, setSearchInput] = useState("");
   const [filteredData, setFilteredData] = useState([]);
 
-  const changeCountry = (event) => {
-    setCountry(event.target.value);
-    setStates(countries.find((ctr) => ctr.name === event.target.value).states);
+  const normalizeString = (str) => {
+    return str.toLowerCase().replace(/[^a-z0-9]/gi, '');
   };
 
   const changeState = (event) => {
     setState(event.target.value);
-    setCities(states.find((state) => state.name === event.target.value).cities);
+    const selectedState = countries.flatMap(country => country.states).find(
+      (state) => state.name === event.target.value
+    );
+    setCities(selectedState ? selectedState.cities : []);
+    setCity("");
   };
 
   const changeCity = (event) => {
     setCity(event.target.value);
+  };
+
+  const changeWeight = (event) => {
+    setWeight(event.target.value);
   };
 
   useEffect(() => {
@@ -69,6 +75,33 @@ function LoadDataList() {
     };
     fetchData();
   }, []);
+
+  const filterData = () => {
+    let filtered = ploadData;
+
+    if (state) {
+      filtered = filtered.filter(
+        (item) => normalizeString(item.fromstate) === normalizeString(state) 
+        // ||normalizeString(item.tostate) === normalizeString(state)
+      );
+    }
+    if (city) {
+      filtered = filtered.filter(
+        (item) => normalizeString(item.fromcity) === normalizeString(city) 
+        // ||normalizeString(item.tocity) === normalizeString(city)
+      );
+    }
+    if (weight) {
+      filtered = filtered.filter((item) => item.pkgweight === weight);
+    }
+
+    setFilteredData(filtered);
+    setCurrentPage(1); // Reset to the first page whenever filter changes
+  };
+
+  useEffect(() => {
+    filterData();
+  }, [state, city, weight]);
 
   const handleNextPage = () => {
     setCurrentPage((prevPage) =>
@@ -94,16 +127,11 @@ function LoadDataList() {
 
   // Search bar Functionality
   const handleFilter = (event) => {
-    const query = event.target.value.toLowerCase();
+    const query = normalizeString(event.target.value);
     setSearchInput(query);
 
-    const filtered = ploadData.filter(
-      (item) =>
-        // item.fromstate.toLowerCase().includes(query) ||
-        item.fromcity.toLowerCase().includes(query) 
-        // ||
-        // item.tostate.toLowerCase().includes(query) ||
-        // item.tocity.toLowerCase().includes(query)
+    const filtered = ploadData.filter((item) =>
+      normalizeString(item.fromcity).includes(query)
     );
 
     setFilteredData(filtered);
@@ -119,28 +147,14 @@ function LoadDataList() {
 
           <div className="w-[100%] mx-auto gap-14 order-1 justify-content-center d-flex vh-100 bg-dark grid lg:grid-cols-2 grid-cols-1">
             <div className="min-w-[310px] mt-5">
-              <h1 className="text-blue-600">Filter by country</h1>
-              <select
-                className="form-control w-full text-sm bg-[#F1F2F4] cursor-pointer"
-                value={country}
-                onChange={changeCountry}
-              >
-                <option>--Country--</option>
-                {countries.map((country, index) => (
-                  <option key={index} value={country.name}>
-                    {country.name}
-                  </option>
-                ))}
-              </select>
-              <br />
               <h1 className="text-green-500">Filter by state</h1>
               <select
                 className="form-control w-full text-sm bg-[#F1F2F4] cursor-pointer"
-                value={state.name}
+                value={state}
                 onChange={changeState}
               >
                 <option value="">--State--</option>
-                {states.map((state, index) => (
+                {countries.flatMap(country => country.states).map((state, index) => (
                   <option key={index} value={state.name}>
                     {state.name}
                   </option>
@@ -153,7 +167,7 @@ function LoadDataList() {
                 value={city}
                 onChange={changeCity}
               >
-                <option value="city">--City--</option>
+                <option value="">--City--</option>
                 {cities.map((city, index) => (
                   <option key={index} value={city}>
                     {city}
@@ -162,7 +176,11 @@ function LoadDataList() {
               </select>
               <br />
               <h1>Weight:</h1>
-              <select className="form-control w-full text-sm bg-[#F1F2F4] cursor-pointer">
+              <select
+                className="form-control w-full text-sm bg-[#F1F2F4] cursor-pointer"
+                value={weight}
+                onChange={changeWeight}
+              >
                 <option value="">Select one..</option>
                 {weightdata.map((weight, index) => (
                   <option key={index} value={weight}>
@@ -242,7 +260,8 @@ function LoadDataList() {
                   </tr>
                 </thead>
                 <tbody className="text-center">
-                  {ploadData.length === 0 ? "Loading data...." : ""}
+                  {ploadData.length === 0 ? "Loading data..." : ""}
+                  {currentData.length === 0 ? "No data was found..." : ""}
                   {currentData.map((item, index) => (
                     <tr
                       key={item.id}
@@ -250,7 +269,7 @@ function LoadDataList() {
                         index % 2 === 0 ? "bg-gray-200" : ""
                       } whitespace-nowrap`}
                     >
-                      <td className="px-4 py-2 border-b">{item.id}</td>
+                      <td className="px-4 py-2 border-b">{index + 1}</td>
                       <td className="px-4 py-2 border-b">{item.fromstate}</td>
                       <td className="px-4 py-2 border-b">{item.fromcity}</td>
                       <td className="px-4 py-2 border-b">{item.tostate}</td>
@@ -286,7 +305,9 @@ function LoadDataList() {
             </button>
             <button
               onClick={handleNextPage}
-              disabled={currentPage === Math.ceil(filteredData.length / ITEMS_PER_PAGE)}
+              disabled={
+                currentPage === Math.ceil(filteredData.length / ITEMS_PER_PAGE)
+              }
               className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:bg-gray-200"
             >
               Next
