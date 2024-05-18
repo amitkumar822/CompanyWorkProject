@@ -15,7 +15,7 @@ function SignupBusinessPage() {
           <div className="w-[60%] mx-auto mt-5 mb-9">
             <h1 className=" text-2xl font-semibold text-[#ab2c89]">Business Registration</h1>
           </div>
-          <div className="md:min-w-[400px] lg:w-[40%] sm:w-[320px] w-[370px] mx-auto border p-4 bg-gradient-to-r from-cyan-500 to-blue-500 md:to-[#bbe0bb] rounded-lg shadow-lg shadow-[#c78c5c]">
+          <div className="md:min-w-[400px] lg:w-[40%] sm:w-[350px] w-[370px] mx-auto border p-4 bg-gradient-to-r from-cyan-500 to-blue-500 md:to-[#bbe0bb] rounded-lg shadow-lg shadow-[#c78c5c]">
             <h1 className="text-3xl text-center font-semibold">Sign Up</h1>
             <form className="w-full mx-auto">
               <div className="w-[90%] mx-auto mt-4 relative">
