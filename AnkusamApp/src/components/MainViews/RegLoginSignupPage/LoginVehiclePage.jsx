@@ -104,7 +104,7 @@ function LoginVehiclePage() {
               >
                 Forgot Password?
               </h1>
-              <button className="w-full mx-auto bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:bg-gradient-to-l to-pink-800 py-2 rounded-lg font-bold text-lg text-white">
+              <button className="w-full mx-auto bg-gradient-to-r from-violet-500 md:to-fuchsia-500 hover:bg-gradient-to-l to-pink-800 py-2 rounded-lg font-bold text-lg text-white">
                 Login Now
               </button>
               {error && <p className="text-red-500 mt-2">{error}</p>} {/* Display error message if present */}
