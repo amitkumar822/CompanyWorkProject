@@ -74,7 +74,7 @@ function Header() {
                     className={`${registerClickBox ? " rotate-180" : ""} duration-300`} // Rotate arrow if box is visible
                   />
                 </li>
-                <div className={`absolute ${registerClickBox ? "" : "hidden"}`}> // Registration box visibility
+                <div className={`absolute ${registerClickBox ? "" : "hidden"}`}> 
                   <RegistrationClickBox />
                 </div>
                 <li
@@ -86,7 +86,8 @@ function Header() {
                     className={`${loginClickBox ? " rotate-180" : ""} duration-300`} // Rotate arrow if box is visible
                   />
                 </li>
-                <div className={`absolute ${loginClickBox ? "" : "hidden"}`}> // Login box visibility
+                
+                <div className={`absolute ${loginClickBox ? "" : "hidden"}`}> 
                   <LoginClickBox />
                 </div>
                 <li className=" cursor-pointer hover:text-[#d8d4d4] duration-300">
@@ -101,7 +102,7 @@ function Header() {
               {/* 👉 Menu button */}
               <ul className=" text-white items-center md:hidden">
                 <li className=" cursor-pointer text-4xl mr-6">
-                  <IoMenuSharp onClick={handleSlideMenu} /> // Toggle slide menu
+                  <IoMenuSharp onClick={handleSlideMenu} />
                 </li>
               </ul>
             </div>

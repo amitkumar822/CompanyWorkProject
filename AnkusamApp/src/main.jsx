@@ -10,6 +10,7 @@ import SignupBusinessPage from './components/MainViews/RegLoginSignupPage/Signup
 import LoginVehiclePage from './components/MainViews/RegLoginSignupPage/LoginVehiclePage.jsx'
 import SignupVehiclePage from './components/MainViews/RegLoginSignupPage/SignupVehiclePage.jsx'
 import ContactUsPage from './components/MainViews/ContactPage/ContactUsPage.jsx'
+import DashboardPage from './components/Dashboard/DashboardPage.jsx'
 
 
 const router = createBrowserRouter(
@@ -21,6 +22,7 @@ const router = createBrowserRouter(
       <Route path='/vehiclelogin' element={<LoginVehiclePage />} />
       <Route path='/vehiclesignup' element={<SignupVehiclePage />} />
       <Route path='/contactus' element={<ContactUsPage />} />
+      <Route path='/dashboard' element={<DashboardPage/>} />
     </Route>
   )
 )
