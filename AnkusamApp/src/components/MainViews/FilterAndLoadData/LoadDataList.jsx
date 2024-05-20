@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
-import { countries } from "../../../data/StateCityData";
-import { weightdata } from "../../../data/WeightData";
-import Typed from "typed.js";
-import { IoSearch } from "react-icons/io5";
+import { countries } from "../../../data/StateCityData"; // Importing state and city data
+import { weightdata } from "../../../data/WeightData"; // Importing weight data
+import Typed from "typed.js"; // Importing Typed.js for typing animation
+import { IoSearch } from "react-icons/io5"; // Importing search icon
 
 // Table how many items to show per page
-const ITEMS_PER_PAGE = 40;
+const ITEMS_PER_PAGE = 40; // Constant to define items per page
 
 function LoadDataList() {
-  const typedRef = useRef(null);
+  const typedRef = useRef(null); // Reference for the typing animation
 
   useEffect(() => {
     const options = {
@@ -21,25 +21,25 @@ function LoadDataList() {
       backSpeed: 50,
       loop: true,
     };
-    const typed = new Typed(typedRef.current, options);
+    const typed = new Typed(typedRef.current, options); // Initializing typing animation
 
     return () => {
-      typed.destroy();
+      typed.destroy(); // Cleanup animation on component unmount
     };
   }, []);
 
-  const [state, setState] = useState("");
-  const [city, setCity] = useState("");
-  const [weight, setWeight] = useState("");
-  const [states, setStates] = useState([]);
-  const [cities, setCities] = useState([]);
-  const [ploadData, setPloadData] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [searchInput, setSearchInput] = useState("");
-  const [filteredData, setFilteredData] = useState([]);
+  const [state, setState] = useState(""); // State to hold selected state
+  const [city, setCity] = useState(""); // State to hold selected city
+  const [weight, setWeight] = useState(""); // State to hold selected weight
+  const [states, setStates] = useState([]); // State to hold list of states
+  const [cities, setCities] = useState([]); // State to hold list of cities
+  const [ploadData, setPloadData] = useState([]); // State to hold payload data from API
+  const [currentPage, setCurrentPage] = useState(1); // State to manage current page for pagination
+  const [searchInput, setSearchInput] = useState(""); // State to hold search input
+  const [filteredData, setFilteredData] = useState([]); // State to hold filtered data
 
   const normalizeString = (str) => {
-    return str.toLowerCase().replace(/[^a-z0-9]/gi, '');
+    return str.toLowerCase().replace(/[^a-z0-9]/gi, ''); // Function to normalize strings for comparison
   };
 
   const changeState = (event) => {
@@ -47,17 +47,18 @@ function LoadDataList() {
     const selectedState = countries.flatMap(country => country.states).find(
       (state) => state.name === event.target.value
     );
-    setCities(selectedState ? selectedState.cities : []);
+    setCities(selectedState ? selectedState.cities : []); // Set cities based on selected state
     setCity("");
   };
 
   const changeCity = (event) => {
-    setCity(event.target.value);
+    setCity(event.target.value); // Update city state
   };
 
   const changeWeight = (event) => {
-    setWeight(event.target.value);
+    setWeight(event.target.value); // Update weight state
   };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -66,13 +67,13 @@ function LoadDataList() {
           throw new Error("Network response was not ok");
         }
         const result = await response.json();
-        setPloadData(result);
+        setPloadData(result); // Set payload data from API response
         setFilteredData(result); // Initialize filteredData with all data
       } catch (error) {
         console.log(error.message);
       }
     };
-    fetchData();
+    fetchData(); // Fetch data on component mount
   }, []);
 
   const filterData = () => {
@@ -80,48 +81,46 @@ function LoadDataList() {
 
     if (state) {
       filtered = filtered.filter(
-        (item) => normalizeString(item.fromstate) === normalizeString(state) 
-        // ||normalizeString(item.tostate) === normalizeString(state)
+        (item) => normalizeString(item.fromstate) === normalizeString(state)
       );
     }
     if (city) {
       filtered = filtered.filter(
-        (item) => normalizeString(item.fromcity) === normalizeString(city) 
-        // ||normalizeString(item.tocity) === normalizeString(city)
+        (item) => normalizeString(item.fromcity) === normalizeString(city)
       );
     }
     if (weight) {
       filtered = filtered.filter((item) => item.pkgweight === weight);
     }
 
-    setFilteredData(filtered);
+    setFilteredData(filtered); // Set filtered data
     setCurrentPage(1); // Reset to the first page whenever filter changes
   };
 
   useEffect(() => {
-    filterData();
+    filterData(); // Apply filters whenever state, city, or weight changes
   }, [state, city, weight]);
 
   const handleNextPage = () => {
     setCurrentPage((prevPage) =>
       Math.min(prevPage + 1, Math.ceil(filteredData.length / ITEMS_PER_PAGE))
-    );
+    ); // Handle next page in pagination
   };
 
   const handlePrevPage = () => {
-    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1)); // Handle previous page in pagination
   };
 
   const currentData = filteredData.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
-  );
+  ); // Get current page data for pagination
 
   // Toggle Button Section
-  const [isOn, setIsOn] = useState(false);
+  const [isOn, setIsOn] = useState(false); // State to manage toggle button
 
   const handleToggle = () => {
-    setIsOn(!isOn);
+    setIsOn(!isOn); // Handle toggle button click
   };
 
   // Search bar Functionality
@@ -150,7 +149,7 @@ function LoadDataList() {
               <select
                 className="form-control w-full text-sm bg-[#F1F2F4] cursor-pointer"
                 value={state}
-                onChange={changeState}
+                onChange={changeState} // Handle state change
               >
                 <option value="">--State--</option>
                 {countries.flatMap(country => country.states).map((state, index) => (
@@ -164,7 +163,7 @@ function LoadDataList() {
               <select
                 className="form-control w-full text-sm bg-[#F1F2F4] cursor-pointer"
                 value={city}
-                onChange={changeCity}
+                onChange={changeCity} // Handle city change
               >
                 <option value="">--City--</option>
                 {cities.map((city, index) => (
@@ -178,7 +177,7 @@ function LoadDataList() {
               <select
                 className="form-control w-full text-sm bg-[#F1F2F4] cursor-pointer"
                 value={weight}
-                onChange={changeWeight}
+                onChange={changeWeight} // Handle weight change
               >
                 <option value="">Select one..</option>
                 {weightdata.map((weight, index) => (
@@ -194,13 +193,13 @@ function LoadDataList() {
                   type="checkbox"
                   className="sr-only"
                   checked={isOn}
-                  onChange={handleToggle}
+                  onChange={handleToggle} // Handle toggle button change
                 />
                 <div
                   className={`w-12 h-6 flex items-center bg-gray-300 rounded-full p-1 cursor-pointer transition-colors duration-300 ${
                     isOn ? "bg-green-500" : "bg-gray-300"
                   }`}
-                  onClick={handleToggle}
+                  onClick={handleToggle} // Handle toggle button click
                 >
                   <div
                     className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform duration-300 ${
@@ -214,7 +213,7 @@ function LoadDataList() {
 
             {/* Animation Text */}
             <div className="mt-5 w-[350px] mx-auto text-3xl font-bold text-white border md:block hidden rounded-lg p-5 bg-gradient-to-r from-purple-500 to-yellow-500 shadow-md shadow-yellow-400">
-              <span ref={typedRef}></span>
+              <span ref={typedRef}></span> {/* Typed.js animation text */}
             </div>
           </div>
         </div>
@@ -222,7 +221,7 @@ function LoadDataList() {
         {/* Load List */}
         <div className={`text-4xl text-center font-bold text-orange-600 border-b-2 ${isOn ? '' : 'hidden'}`}>Load List is hidden.</div>
         <div
-          className={`container mx-auto px-4 py-6 border bg-[#f2f2f2] rounded-lg shadow-md ${isOn ? 'hidden' : ''}`}
+          className={`container mx-auto px-4 py-6 border bg-[#f2f2f2] rounded-lg shadow-md ${isOn ? 'hidden' : ''}`} // Conditional rendering based on toggle
         >
           <h1 className="text-3xl text-center text-red-600 font-bold underline mb-4">
             Load List
@@ -236,7 +235,7 @@ function LoadDataList() {
               type="text"
               placeholder="Search by from city..."
               value={searchInput}
-              onChange={handleFilter}
+              onChange={handleFilter} // Handle search input change
             />
             <IoSearch className="absolute right-4" />
           </div>
@@ -274,7 +273,7 @@ function LoadDataList() {
                       <td className="px-4 py-2 border-b">{item.tostate}</td>
                       <td className="px-4 py-2 border-b">{item.tocity}</td>
                       <td className="px-4 py-2 border-b">
-                        {formatDate(item.pickupTime)}
+                        {formatDate(item.pickupTime)} {/* Format date for display */}
                       </td>
                       <td className="px-4 py-2 border-b">{item.vship}</td>
                       <td className="px-4 py-2 border-b">{item.pkgweight}</td>
@@ -297,7 +296,7 @@ function LoadDataList() {
           <div className="flex justify-between mt-4">
             <button
               onClick={handlePrevPage}
-              disabled={currentPage === 1}
+              disabled={currentPage === 1} // Disable button if on first page
               className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:bg-gray-200"
             >
               Previous
@@ -305,7 +304,7 @@ function LoadDataList() {
             <button
               onClick={handleNextPage}
               disabled={
-                currentPage === Math.ceil(filteredData.length / ITEMS_PER_PAGE)
+                currentPage === Math.ceil(filteredData.length / ITEMS_PER_PAGE) // Disable button if on last page
               }
               className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:bg-gray-200"
             >
@@ -334,5 +333,5 @@ function formatDate(dateString) {
   const formattedDate = new Intl.DateTimeFormat("en-US", options).format(date);
   const [month, day] = formattedDate.split(" ");
 
-  return `${month}, ${day}`;
+  return `${month}, ${day}`; // Format date to 'Month, Day'
 }
