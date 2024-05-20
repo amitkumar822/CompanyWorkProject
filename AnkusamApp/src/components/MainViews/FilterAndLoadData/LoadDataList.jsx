@@ -5,7 +5,7 @@ import Typed from "typed.js";
 import { IoSearch } from "react-icons/io5";
 
 // Table how many items to show per page
-const ITEMS_PER_PAGE = 20;
+const ITEMS_PER_PAGE = 40;
 
 function LoadDataList() {
   const typedRef = useRef(null);
@@ -58,7 +58,6 @@ function LoadDataList() {
   const changeWeight = (event) => {
     setWeight(event.target.value);
   };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
