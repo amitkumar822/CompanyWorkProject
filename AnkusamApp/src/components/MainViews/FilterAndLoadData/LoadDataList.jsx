@@ -61,7 +61,7 @@ function LoadDataList() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/api/driver/pload.php");
+        const response = await fetch("/api/driver/filtter_by_current_date.php");
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
