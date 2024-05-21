@@ -254,7 +254,7 @@ function LoadDataList() {
                     <th className="px-4 py-2 border-b">Pickup Time</th>
                     <th className="px-4 py-2 border-b">Vehicle Type</th>
                     <th className="px-4 py-2 border-b">Weight</th>
-                    <th className="px-4 py-2 border-b">Contact Number</th>
+                    {/* <th className="px-4 py-2 border-b">Contact Number</th> */}
                   </tr>
                 </thead>
                 <tbody className="text-center">
@@ -277,14 +277,14 @@ function LoadDataList() {
                       </td>
                       <td className="px-4 py-2 border-b">{item.vship}</td>
                       <td className="px-4 py-2 border-b">{item.pkgweight}</td>
-                      <td className="px-4 py-2 border-b">
+                      {/* <td className="px-4 py-2 border-b">
                         <a
                           href={`tel:${item.phone}`}
                           className="text-blue-500 underline"
                         >
                           {item.phone}
                         </a>
-                      </td>
+                      </td> */}
                     </tr>
                   ))}
                 </tbody>
