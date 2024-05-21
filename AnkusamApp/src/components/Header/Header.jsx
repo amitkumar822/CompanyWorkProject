@@ -1,9 +1,18 @@
 import React, { useState } from "react"; // Import React and useState hook
 import { Logo } from "../../../public/Photo/PhotosExport"; // Import Logo image
 import { IoIosArrowDown, IoMdCloseCircle } from "react-icons/io"; // Import arrow down and close circle icons
-import { IoMenuSharp } from "react-icons/io5"; // Import menu icon
+import { IoBusiness, IoMenuSharp } from "react-icons/io5"; // Import menu icon
 import { FcGlobe } from "react-icons/fc"; // Import globe icon
 import { Link } from "react-router-dom"; // Import Link component for navigation
+import { MdAppRegistration, MdOutlineEventAvailable } from "react-icons/md";
+import { AiOutlineCluster } from "react-icons/ai";
+import { FaTruckMoving } from "react-icons/fa";
+import { RiContactsBook3Line } from "react-icons/ri";
+
+
+
+
+
 
 function Header() {
   const [registerClickBox, setRegisterClickBox] = useState(false); // State to toggle registration box visibility
@@ -42,12 +51,12 @@ function Header() {
           onClick={disableFullPageClick} // Hide both boxes when clicking outside
           className={`w-full h-[68px] bg-blue-600 mx-auto flex justify-center items-center fixed z-[11] top-0 left-0`}
         >
-          <div className="w-[80%] mx-auto flex justify-between items-center">
+          <div className="w-[80%] mx-auto flex justify-between items-center whitespace-nowrap">
             {/* 👉 Logo Section */}
             <div className="w-[72px] overflow-hidden">
               <Link to=''>
                 <img
-                  className="scale-125 cursor-pointer text-[13px] text-white font-semibold"
+                  className="min-scale-125 cursor-pointer text-[13px] text-white font-semibold"
                   src={Logo} // Logo image source
                   alt="ankusam logistics"
                 />
@@ -56,7 +65,7 @@ function Header() {
 
             {/* 👉 Menu Section  */}
             <div>
-              <ul className="md:flex gap-3 text-white text-lg hidden">
+              <ul className="md:flex gap-3 text-white text-lg hidden text-[16px]">
                 <li
                   className=" cursor-pointer uppercase hover:text-[#d8d4d4] duration-300 relative flex items-center gap-1"
                 >
@@ -116,7 +125,7 @@ function Header() {
         onClick={handleSlideMenu} // Hide slide menu on outside click
       >
         <div
-          className="w-[320px] h-screen bg-white pt-12 pl-6 md:hidden"
+          className="w-[320px] h-screen bg-white pt-20 pl-6 md:hidden"
           onClick={(event) => event.stopPropagation()} // Prevent event bubbling
         >
           <div className="flex justify-end mr-10">
@@ -131,40 +140,45 @@ function Header() {
           </div>
           <ul className="pl-6">
             <li
-              className="text-[18px] border-b py-2 cursor-pointer hover:text-[#725377] duration-300 font-serif"
+              className="flex items-center gap-1 text-[18px] border-b py-2 cursor-pointer hover:text-[#725377] duration-300 font-serif"
               onClick={handleSlideButtonClick} // Hide slide menu on item click
             >
+              <MdOutlineEventAvailable />
               <Link to="">Available Load</Link>
             </li>
             <li
-              className="text-[18px] border-b py-2 cursor-pointer hover:text-[#725377] duration-300 font-serif"
+              className="flex items-center gap-1 text-[18px] border-b py-2 cursor-pointer hover:text-[#725377] duration-300 font-serif"
               onClick={handleSlideButtonClick} // Hide slide menu on item click
             >
+              <IoBusiness />
               <Link to="/businesssignup">Business People</Link>
             </li>
             <li
-              className="text-[18px] border-b py-2 cursor-pointer hover:text-[#725377] duration-300 font-serif"
+              className="flex items-center gap-1 text-[18px] border-b py-2 cursor-pointer hover:text-[#725377] duration-300 font-serif"
               onClick={handleSlideButtonClick} // Hide slide menu on item click
             >
+              <MdAppRegistration />
               <Link to="/vehiclesignup">Driver Registration</Link>
             </li>
             <li
-              className="text-[18px] border-b py-2 cursor-pointer hover:text-[#725377] duration-300 font-serif"
+              className="flex items-center gap-1 text-[18px] border-b py-2 cursor-pointer hover:text-[#725377] duration-300 font-serif"
               onClick={handleSlideButtonClick} // Hide slide menu on item click
             >
+              <AiOutlineCluster />
               <Link to="/businesslogin">Business Login</Link>
             </li>
             <li
-              className="text-[18px] border-b py-2 cursor-pointer hover:text-[#725377] duration-300 font-serif"
+              className="flex items-center gap-1 text-[18px] border-b py-2 cursor-pointer hover:text-[#725377] duration-300 font-serif"
               onClick={handleSlideButtonClick} // Hide slide menu on item click
             >
+              <FaTruckMoving />
               <Link to="/vehiclelogin">vehicle Login</Link>
             </li>
             <li
-              className="text-[18px] border-b py-2 cursor-pointer hover:text-[#725377] duration-300 font-serif"
+              className="flex items-center gap-1 text-[18px] border-b py-2 cursor-pointer hover:text-[#725377] duration-300 font-serif"
               onClick={handleSlideButtonClick} // Hide slide menu on item click
             >
-              <h1>Contact</h1>
+              <RiContactsBook3Line />
               <Link to="/contactus">Contact Us</Link>
             </li>
           </ul>
