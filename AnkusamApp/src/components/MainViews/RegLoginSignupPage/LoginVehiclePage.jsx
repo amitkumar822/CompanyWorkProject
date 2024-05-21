@@ -26,9 +26,18 @@ function LoginVehiclePage() {
   const [password, setPassword] = useState("");
   // Initializing password state to an empty string.
 
+  // Function to generate a token
+  const generateToken = (vehicalNumber, password) => {
+    const token = btoa(`${vehicalNumber}:${password}`); // Base64 encode the credentials
+    return token;
+  };
+
   // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevents page reload on form submit
+
+    // Generate the token
+    const token = generateToken(vehicalNumber, password);
 
     console.log("VehicalNumber:", vehicalNumber);
     console.log("Password:", password);
@@ -51,7 +60,7 @@ function LoginVehiclePage() {
       console.log("Response Status:", response.status);
       console.log("Response Headers:", response.headers);
       // Logging the response status and headers for debugging.
-      
+
       if (!response.ok) {
         throw new Error("Network response was not ok " + response.statusText);
       }
@@ -80,8 +89,9 @@ function LoginVehiclePage() {
           progress: undefined,
           theme: "colored",
         });
+        localStorage.setItem('token', token);
         // If login is successful, log the success and navigate to the contact us page.
-        // navigate("/contactus");
+        navigate('/dashboard')
       } else {
         // console.log("Login failed");
         toast.error("Vehicle number or Password is wrong!", {
