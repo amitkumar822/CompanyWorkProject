@@ -99,7 +99,7 @@ function LoginBusinessPage() {
           </div>
           <div className="md:min-w-[400px] lg:w-[40%] sm:w-[320px] w-[370px] mx-auto border p-4 bg-gradient-to-r from-cyan-500 to-blue-500 md:to-[#bbe0bb] rounded-lg shadow-lg shadow-[#c78c5c]">
             <h1 className="text-3xl text-center font-semibold">
-              Login business complete
+              Login
             </h1>
             <form onSubmit={handleSubmit} className="w-full mx-auto">
               <div className="w-[90%] mx-auto mt-4 relative">

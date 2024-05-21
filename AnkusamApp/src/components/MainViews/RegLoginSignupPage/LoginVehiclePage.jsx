@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // Importing the React library and useState hook for managing state in the component.
 
 import { Link, useNavigate } from "react-router-dom";
@@ -17,6 +17,12 @@ import "react-toastify/dist/ReactToastify.css";
 // React toastify component for notification showing
 
 function LoginVehiclePage() {
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      navigate("/dashboard");
+    }
+  }, []);
+
   const navigate = useNavigate();
   // useNavigate hook provides a function to navigate programmatically.
 
@@ -81,7 +87,7 @@ function LoginVehiclePage() {
         // console.log("Login successful");
         toast.success("Login successful!", {
           position: "top-center",
-          autoClose: 3000,
+          autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -92,8 +98,9 @@ function LoginVehiclePage() {
         localStorage.setItem('token', token);
         // If login is successful, log the success and navigate to the contact us page.
         setTimeout(() =>{
+          window.location.reload();
           navigate('/dashboard')  
-        }, 1000);
+        }, 1500);
         // window.location.reload();
       } else {
         // console.log("Login failed");

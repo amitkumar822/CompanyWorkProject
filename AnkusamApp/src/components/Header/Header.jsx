@@ -8,11 +8,7 @@ import { MdAppRegistration, MdOutlineEventAvailable } from "react-icons/md";
 import { AiOutlineCluster } from "react-icons/ai";
 import { FaTruckMoving } from "react-icons/fa";
 import { RiContactsBook3Line } from "react-icons/ri";
-
-
-
-
-
+import LogOut from "../MainViews/RegLoginSignupPage/LogOut";
 
 function Header() {
   const [registerClickBox, setRegisterClickBox] = useState(false); // State to toggle registration box visibility
@@ -54,7 +50,7 @@ function Header() {
           <div className="w-[80%] mx-auto flex justify-between items-center whitespace-nowrap">
             {/* 👉 Logo Section */}
             <div className="w-[72px] overflow-hidden">
-              <Link to=''>
+              <Link to="">
                 <img
                   className="min-scale-125 cursor-pointer text-[13px] text-white font-semibold"
                   src={Logo} // Logo image source
@@ -65,13 +61,16 @@ function Header() {
 
             {/* 👉 Menu Section  */}
             <div>
-              <ul className="md:flex gap-3 text-white text-lg hidden text-[16px]">
-                <li
-                  className=" cursor-pointer uppercase hover:text-[#d8d4d4] duration-300 relative flex items-center gap-1"
-                >
-                  <Link to='/dashboard'>
-                    Dashboard
-                  </Link>
+              <ul className="md:flex gap-3 text-white text-lg hidden text-[16px] items-center">
+                <li className=" cursor-pointer uppercase hover:text-[#d8d4d4] duration-300 relative flex items-center gap-1">
+                  <Link to="/dashboard">Dashboard</Link>
+                </li>
+
+                <li className=" cursor-pointer hover:text-[#d8d4d4] duration-300">
+                  AVAILABLE LOAD
+                </li>
+                <li className=" cursor-pointer hover:text-[#d8d4d4] duration-300">
+                  <Link to="/contactus">CONTACT US</Link>
                 </li>
 
                 <li
@@ -80,33 +79,30 @@ function Header() {
                 >
                   REGISTRATION{" "}
                   <IoIosArrowDown
-                    className={`${registerClickBox ? " rotate-180" : ""} duration-300`} // Rotate arrow if box is visible
+                    className={`${
+                      registerClickBox ? " rotate-180" : ""
+                    } duration-300`} // Rotate arrow if box is visible
                   />
                 </li>
-                <div className={`absolute ${registerClickBox ? "" : "hidden"}`}> 
+                <div className={`absolute ${registerClickBox ? "" : "hidden"}`}>
                   <RegistrationClickBox />
                 </div>
                 <li
                   className=" cursor-pointer hover:text-[#d8d4d4] duration-300 relative flex items-center gap-1"
                   onClick={(event) => handleLoginClick(event)} // Show login box
                 >
-                  LOGIN{" "}
+                  {localStorage.getItem("token") ? <LogOut /> : "LOGIN"}
+                  {/* LOGIN */}
                   <IoIosArrowDown
-                    className={`${loginClickBox ? " rotate-180" : ""} duration-300`} // Rotate arrow if box is visible
+                    className={`${loginClickBox ? " rotate-180" : ""}
+                    ${localStorage.getItem("token") ? 'hidden' : ''}
+                     duration-300`} // Rotate arrow if box is visible
                   />
                 </li>
-                
-                <div className={`absolute ${loginClickBox ? "" : "hidden"}`}> 
+
+                <div className={`absolute ${loginClickBox ? "" : "hidden"}`}>
                   <LoginClickBox />
                 </div>
-                <li className=" cursor-pointer hover:text-[#d8d4d4] duration-300">
-                  AVAILABLE LOAD
-                </li>
-                <li className=" cursor-pointer hover:text-[#d8d4d4] duration-300">
-                  <Link to='/contactus'>
-                    CONTACT US
-                  </Link>
-                </li>
               </ul>
               {/* 👉 Menu button */}
               <ul className=" text-white items-center md:hidden">
@@ -121,7 +117,9 @@ function Header() {
 
       {/* 👉 Slide or Sidebar menu section */}
       <div
-        className={`back-overlay w-full h-screen top-0 fixed z-10 cursor-pointer ${toggleSlide ? "" : "hidden"}`} // Slide menu visibility
+        className={`back-overlay w-full h-screen top-0 fixed z-10 cursor-pointer ${
+          toggleSlide ? "" : "hidden"
+        }`} // Slide menu visibility
         onClick={handleSlideMenu} // Hide slide menu on outside click
       >
         <div
@@ -192,7 +190,7 @@ const RegistrationClickBox = () => {
   return (
     <>
       <div
-        className={`flex w-[210px] h-[97px] bg-white px-2 text-black absolute top-9 left-[-40px] rounded-lg items-center shadow-md shadow-gray-800 justify-center`}
+        className={`flex w-[210px] h-[97px] bg-white px-2 text-black absolute top-9 left-[320px] rounded-lg items-center shadow-md shadow-gray-800 justify-center`}
       >
         <div>
           <ul className="leading-8">
@@ -213,7 +211,7 @@ const LoginClickBox = ({ data1, data2 }) => {
   return (
     <>
       <div
-        className={`flex w-[183px] h-[97px] bg-white text-black absolute top-9 left-[100px] rounded-lg items-center  shadow-md shadow-gray-800 justify-center`}
+        className={`flex w-[183px] h-[97px] bg-white text-black absolute top-9 left-[480px] rounded-lg items-center  shadow-md shadow-gray-800 justify-center`}
       >
         <div>
           <ul className="leading-8">
