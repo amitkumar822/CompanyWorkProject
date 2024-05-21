@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdContactPhone } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Banner from "../Banner/Banner";
 import BannerButtomUp from "../BannerButtomUp/BannerButtomUp";
 
@@ -10,11 +10,28 @@ import "react-toastify/dist/ReactToastify.css";
 // React toastify component for notification showing
 
 function LoginBusinessPage() {
+  
+  const navigate = useNavigate();
+  //after login page redirect dashboard
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      navigate("/dashboard");
+    }
+  }, []);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
 
+  // Function to generate a token
+  const generateToken = (phoneNumber, password) => {
+    const token = btoa(`${phoneNumber}:${password}`); // Base64 encode the credentials
+    return token;
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Generate the token
+    const token = generateToken(phoneNumber, password);
 
     console.log("phoneNumber: ", phoneNumber);
     console.log("password: ", password);
@@ -57,7 +74,7 @@ function LoginBusinessPage() {
         // console.log("Login successful");
         toast.success("Login successful!", {
           position: "top-center",
-          autoClose: 3000,
+          autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -65,7 +82,13 @@ function LoginBusinessPage() {
           progress: undefined,
           theme: "colored",
         });
+        
+        localStorage.setItem('token', token)
         // If login is successful, log the success and navigate to the contact us page.
+        setTimeout(() => {
+          window.location.reload();
+          navigate('/dashboard')
+        }, 1500)
         // navigate("/contactus");
       } else {
         // console.log("Login failed");
