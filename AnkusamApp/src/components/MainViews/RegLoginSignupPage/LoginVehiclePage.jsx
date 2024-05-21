@@ -51,7 +51,7 @@ function LoginVehiclePage() {
       console.log("Response Status:", response.status);
       console.log("Response Headers:", response.headers);
       // Logging the response status and headers for debugging.
-
+      
       if (!response.ok) {
         throw new Error("Network response was not ok " + response.statusText);
       }
@@ -86,7 +86,7 @@ function LoginVehiclePage() {
         // console.log("Login failed");
         toast.error("Vehicle number or Password is wrong!", {
           position: "top-center",
-          autoClose: 5000,
+          autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,

@@ -6,21 +6,82 @@ import Banner from "../Banner/Banner";
 import BannerButtomUp from "../BannerButtomUp/BannerButtomUp";
 
 function LoginBusinessPage() {
-  const [formData, setFormData] = useState({
-    phone: '',
-    password: '',
-  })
+  const [phone, setPhone] = useState("")
+  const [password, setPassword] = useState("")
 
-  const handleChange = (e) => {
-    setFormData({
-     ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Login: ",formData);
+
+    console.log("phone: ",phone);
+    console.log("password: ",password);
+    
+
+    // Create form data to match what the backend expects
+    const formData = new FormData();
+    formData.append('phone', phone);
+    formData.append('password', password);
+    // Constructing a FormData object to send in the POST request.
+
+    try {
+      // Send POST request to backend
+      const response = await fetch('url', {
+        method: "POST",
+        body: formData, // Send form data
+      })
+
+      // Log the response status and headers
+      console.log("Response Status:", response.status);
+      console.log("Response Headers:", response.headers);
+      // Logging the response status and headers for debugging.
+
+      if(!response.ok) {
+        throw new Error("Network response was not ok " + response.statusText);
+      }
+      // Handling errors if the response is not ok (status code not in 200-299).
+
+      // Parse JSON response
+      const data = await response.json();
+      // Parsing the JSON response body.
+
+      // Log the entire response for debugging
+      console.log("Full Response:", data);
+      console.log('====================================');
+      console.log("Result:", data);
+      console.log('====================================');
+      
+      // Handle the success or failure based on response
+      if (data.status === true || data.status === 'true') {
+        // console.log("Login successful");
+        toast.success("Login successful!", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        // If login is successful, log the success and navigate to the contact us page.
+        // navigate("/contactus");
+      } else {
+        // console.log("Login failed");
+        toast.error("Login failed!", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        // If login is unsuccessful, log the failure and display an error message.
+      }
+    } catch (error) {
+      console.error("There was an error!", error);
+      // Catching and logging any errors that occur during the fetch request.
+    }
   };
 
 
@@ -35,7 +96,7 @@ function LoginBusinessPage() {
             </h1>
           </div>
           <div className="md:min-w-[400px] lg:w-[40%] sm:w-[320px] w-[370px] mx-auto border p-4 bg-gradient-to-r from-cyan-500 to-blue-500 md:to-[#bbe0bb] rounded-lg shadow-lg shadow-[#c78c5c]">
-            <h1 className="text-3xl text-center font-semibold">Login</h1>
+            <h1 className="text-3xl text-center font-semibold">Login business working</h1>
             <form
             onSubmit={handleSubmit}
              className="w-full mx-auto">
@@ -47,8 +108,8 @@ function LoginBusinessPage() {
                   required
                   maxLength={10}
                   name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                 />
                 <MdContactPhone className=" relative top-3 left-2 text-2xl" />
               </div>
@@ -61,8 +122,8 @@ function LoginBusinessPage() {
                   placeholder="password.."
                   required
                   name="password"
-                  value={formData.password}
-                  onChange={handleChange}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
                 <RiLockPasswordFill className=" relative top-3 left-2 text-2xl" />
               </div>
