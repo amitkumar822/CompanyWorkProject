@@ -91,7 +91,10 @@ function LoginVehiclePage() {
         });
         localStorage.setItem('token', token);
         // If login is successful, log the success and navigate to the contact us page.
-        navigate('/dashboard')
+        setTimeout(() =>{
+          navigate('/dashboard')  
+        }, 1000);
+        // window.location.reload();
       } else {
         // console.log("Login failed");
         toast.error("Vehicle number or Password is wrong!", {
