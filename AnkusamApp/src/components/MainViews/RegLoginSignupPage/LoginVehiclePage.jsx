@@ -12,6 +12,10 @@ import Banner from "../Banner/Banner";
 import BannerButtomUp from "../BannerButtomUp/BannerButtomUp";
 // Importing custom components, Banner and BannerButtomUp, presumably for consistent layout or additional information.
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+// React toastify component for notification showing
+
 function LoginVehiclePage() {
   const navigate = useNavigate();
   // useNavigate hook provides a function to navigate programmatically.
@@ -59,17 +63,37 @@ function LoginVehiclePage() {
 
       // Log the entire response for debugging
       console.log("Full Response:", data);
-      console.log('====================================');
+      console.log("====================================");
       console.log("Result:", data);
-      console.log('====================================');
-      
+      console.log("====================================");
+
       // Handle the success or failure based on response
-      if (data.status === true || data.status === 'true') {
-        console.log("Login successful");
+      if (data.status === true || data.status === "true") {
+        // console.log("Login successful");
+        toast.success("Login successful!", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
         // If login is successful, log the success and navigate to the contact us page.
-        navigate("/contactus");
+        // navigate("/contactus");
       } else {
-        console.log("Login failed");
+        // console.log("Login failed");
+        toast.error("Vehicle number or Password is wrong!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       }
     } catch (error) {
       console.error("There was an error!", error);
@@ -89,7 +113,7 @@ function LoginVehiclePage() {
           {/* Heading for the login page. */}
         </div>
         <div className="md:min-w-[400px] lg:w-[40%] sm:w-[320px] w-[370px] mx-auto border p-4 bg-gradient-to-r from-cyan-500 to-blue-500 md:to-[#bbe0bb] rounded-lg shadow-lg shadow-[#c78c5c]">
-          <h1 className="text-3xl text-center font-semibold">Login</h1>
+          <h1 className="text-3xl text-center font-semibold">Login complete</h1>
           {/* Heading inside the form container. */}
           <form onSubmit={handleSubmit} className="w-full mx-auto">
             <div className="w-[90%] mx-auto mt-4 relative">
@@ -98,7 +122,7 @@ function LoginVehiclePage() {
                 type="text"
                 placeholder="Vehicle number"
                 required
-                name="vehicalNumber"
+                name="vehicleNumber"
                 autoComplete="username" // Suggests autocomplete for vehicle number
                 value={vehicalNumber}
                 onChange={(e) => setVehicleNumber(e.target.value)}
@@ -135,7 +159,10 @@ function LoginVehiclePage() {
                 Forgot Password?
               </h1>
               {/* Message for forgotten password with a click handler to show an alert. */}
-              <button type="submit" className="w-full mx-auto bg-gradient-to-r from-violet-500 md:to-fuchsia-500 hover:bg-gradient-to-l to-pink-800 py-2 rounded-lg font-bold text-lg text-white">
+              <button
+                type="submit"
+                className="w-full mx-auto bg-gradient-to-r from-violet-500 md:to-fuchsia-500 hover:bg-gradient-to-l to-pink-800 py-2 rounded-lg font-bold text-lg text-white"
+              >
                 Login Now
               </button>
               {/* Submit button for the login form. */}
@@ -155,6 +182,8 @@ function LoginVehiclePage() {
       </div>
       <BannerButtomUp />
       {/* Rendering the BannerButtomUp component at the bottom of the page. */}
+      <ToastContainer />
+      {/* React toastify component for notification showing */}
     </div>
   );
 }

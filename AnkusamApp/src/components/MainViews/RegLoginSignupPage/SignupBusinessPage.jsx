@@ -6,7 +6,10 @@ import { FaUser } from "react-icons/fa";
 import BannerButtomUp from "../BannerButtomUp/BannerButtomUp";
 import Banner from "../Banner/Banner";
 import TermsAndConditionsDialog from "./TermsAndConditionsDialog ";
-import axios from "axios";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+// React toastify component for notification showing
 
 function SignupBusinessPage() {
   const navigate = useNavigate();
@@ -16,55 +19,119 @@ function SignupBusinessPage() {
   const closeDialog = () => setIsDialogOpen(false);
 
   // check term and conditions is checked?
-  const [isCheckedTermsConditions, setIsCheckedTermsConditions] = useState(false);
+  const [isCheckedTermsConditions, setIsCheckedTermsConditions] =
+    useState(false);
 
-  const handleCheckboxChange = () => setIsCheckedTermsConditions(!isCheckedTermsConditions)
+  const handleCheckboxChange = () =>
+    setIsCheckedTermsConditions(!isCheckedTermsConditions);
 
-  // Form data
-  const [formData, setFormData] = useState({
-    username: "",
-    phone: "",
-    password: "",
-    confirmPassword: "",
-  });
+  const [username, setUsername] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleChange = (event) => {
-    setFormData({
-      ...formData,
-      [event.target.name]: event.target.value,
-    });
-  };
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+
     if (!isCheckedTermsConditions) {
-      alert('You must agree to the terms and conditions before signing up.');
+      // Check if terms and conditions are agreed
+      // alert("You must agree to the terms and conditions before signing up.");
+      toast.info(
+        "You must agree to the terms and conditions before signing up!",
+        {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        }
+      );
       return;
     }
 
-    if (formData.password !== formData.confirmPassword) {
-      alert("Password is not match");
+    if (password !== confirmPassword) {
+      // Check if passwords match
+      toast.warn("Passwords do not match!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       return;
     }
 
-    const newFormData = {
-      username: formData.username,
-      phone: formData.phone,
-      password: formData.password,
-      confirmPassword: formData.confirmPassword,
-    };
-    console.log("====================================");
-    console.log("FormData: ", newFormData);
-    console.log("====================================");
+    const formData = new FormData();
+    formData.append("username", username);
+    formData.append("phone", phone)
+    formData.append("password", password)
 
-    // axios.post("url", newFormData).then((result) => {
-    //   if (result.formData.Status === "Invalid") {
-    //     alert("Invalid User");
-    //   } else {
-    //     alert("User Created Successfully");
-    //     navigate("");
-    //   }
-    // });
+    console.log('====================================');
+    console.log("username: ", username);
+    console.log("phone: ", phone);
+    console.log("password: ", password);
+    console.log("confirmPassword: ", confirmPassword);
+    console.log('====================================');
+
+    try {
+      // Send POST request to backend
+      const response = await fetch('url', {
+        method: "POST",
+        body: formData, // Send form data
+      });
+
+      // Log the response status and headers
+      console.log("Response Status:", response.status);
+      console.log("Response Headers:", response.headers);
+
+      if(!response.ok) {
+        throw new Error("Network response was not ok " + response.statusText); // Throw error if response is not ok
+      }
+
+      //Parse JSON response
+      const data = await response.json();
+
+      // Log the entire response for debugging
+      console.log("Full Response:", data);
+      console.log("====================================");
+      console.log("Result:", data);
+      console.log("====================================");
+
+      // Handle the success or failure based on response
+      if(data.status === true || data.status === "true"){
+        toast.success('Signup successful!', {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
+        // Redirect to a different page on successful login (uncomment below line when navigation is setup)
+        // navigate('/dashboard')
+      }else{
+        toast.error('Signup failed!', {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
+      }
+    } catch (error) {
+      // Handle errors (currently empty, but can add error logging)
+    }
   };
 
   return (
@@ -78,7 +145,9 @@ function SignupBusinessPage() {
             </h1>
           </div>
           <div className="md:min-w-[400px] lg:w-[40%] sm:w-[350px] w-[370px] mx-auto border p-4 bg-gradient-to-r from-cyan-500 to-blue-500 md:to-[#bbe0bb] rounded-lg shadow-lg shadow-[#c78c5c]">
-            <h1 className="text-3xl text-center font-semibold">Sign Up</h1>
+            <h1 className="text-3xl text-center font-semibold">
+              Sign Up working right know
+            </h1>
             <form onSubmit={handleSubmit} className="w-full mx-auto">
               <div className="w-[90%] mx-auto mt-4 relative">
                 <input
@@ -86,10 +155,9 @@ function SignupBusinessPage() {
                   type="text"
                   placeholder="username"
                   required
-                  maxLength={10}
                   name="username"
-                  onChange={handleChange}
-                  value={formData.username}
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   // Add autocomplete attribute with value "username"
                   // autoComplete="username"
                 />
@@ -105,8 +173,8 @@ function SignupBusinessPage() {
                   required
                   maxLength={10}
                   name="phone"
-                  onChange={handleChange}
-                  value={formData.phone}
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                   // Add autocomplete attribute with value "tel"
                   // autoComplete="tel"
                 />
@@ -121,8 +189,8 @@ function SignupBusinessPage() {
                   placeholder="password.."
                   required
                   name="password"
-                  onChange={handleChange}
-                  value={formData.password}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   // Add autocomplete attribute with value "new-password"
                   // autoComplete="new-password"
                 />
@@ -137,8 +205,8 @@ function SignupBusinessPage() {
                   placeholder="confirm password.."
                   required
                   name="confirmPassword"
-                  onChange={handleChange}
-                  value={formData.confirmPassword}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   // Add autocomplete attribute with value "new-password"
                   // autoComplete="new-password"
                 />
@@ -188,6 +256,8 @@ function SignupBusinessPage() {
           </div>
         </div>
         <BannerButtomUp />
+        <ToastContainer />
+        {/* React toastify component for notification showing */}
       </div>
     </div>
   );

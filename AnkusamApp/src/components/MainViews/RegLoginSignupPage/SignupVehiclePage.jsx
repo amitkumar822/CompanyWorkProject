@@ -7,31 +7,58 @@ import Banner from "../Banner/Banner"; // Import Banner component
 import BannerButtomUp from "../BannerButtomUp/BannerButtomUp"; // Import BannerButtomUp component
 import TermsAndConditionsDialog from "./TermsAndConditionsDialog "; // Import Terms and Conditions dialog component
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+// React toastify component for notification showing
+
 function SignupVehiclePage() {
   const [phoneNumber, setPhoneNumber] = useState(""); // State for phone number input
   const [vehicalNumber, setVehicalNumber] = useState(""); // State for vehicle number input
   const [password, setPassword] = useState(""); // State for password input
   const [confirmPassword, setConfirmPassword] = useState(""); // State for confirm password input
-  
+
   // State for terms and conditions dialog box visibility
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const openDialog = () => setIsDialogOpen(true); // Function to open dialog
   const closeDialog = () => setIsDialogOpen(false); // Function to close dialog
 
   // State for terms and conditions checkbox
-  const [isCheckedTermsConditions, setIsCheckedTermsConditions] = useState(false);
-  const handleCheckboxChange = () => setIsCheckedTermsConditions(!isCheckedTermsConditions); // Toggle checkbox state
+  const [isCheckedTermsConditions, setIsCheckedTermsConditions] =
+    useState(false);
+  const handleCheckboxChange = () =>
+    setIsCheckedTermsConditions(!isCheckedTermsConditions); // Toggle checkbox state
 
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent default form submission
 
-    if (!isCheckedTermsConditions) { // Check if terms and conditions are agreed
-      alert('You must agree to the terms and conditions before signing up.');
+    if (!isCheckedTermsConditions) {
+      // Check if terms and conditions are agreed
+      // alert("You must agree to the terms and conditions before signing up.");
+      toast.info('You must agree to the terms and conditions before signing up!', {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       return;
     }
 
-    if (password !== confirmPassword) { // Check if passwords match
-      alert('Passwords do not match.');
+    if (password !== confirmPassword) {
+      // Check if passwords match
+      toast.warn("Passwords do not match!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       return;
     }
 
@@ -66,11 +93,29 @@ function SignupVehiclePage() {
 
       // Handle the success or failure based on response
       if (data.status === true || data.status === "true") {
-        console.log("Signup successful");
+        toast.success('Signup successful!', {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
         // Redirect to a different page on successful login (uncomment below line when navigation is setup)
         // navigate('/dashboard')
       } else {
-        console.log("Signup failed");
+        toast.error("This vehicle number already exists!", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       }
     } catch (error) {
       // Handle errors (currently empty, but can add error logging)
@@ -88,10 +133,13 @@ function SignupVehiclePage() {
             </h1>
           </div>
           <div className="md:min-w-[400px] lg:w-[40%] sm:w-[350px] w-[370px] mx-auto border p-4 bg-gradient-to-r from-cyan-500 to-blue-500 md:to-[#bbe0bb] rounded-lg shadow-lg shadow-[#c78c5c]">
-            <h1 className="text-3xl text-center font-semibold">Sign Up Don this page</h1>
-            <form 
+            <h1 className="text-3xl text-center font-semibold">
+              Sign Up Don this page
+            </h1>
+            <form
               onSubmit={handleSubmit} // Form submit handler
-              className="w-full mx-auto">
+              className="w-full mx-auto"
+            >
               <div className="w-[90%] mx-auto mt-4 relative">
                 <input
                   className=" w-full border border-[#888686] outline-none px-11 py-2 absolute rounded-lg"
@@ -102,7 +150,8 @@ function SignupVehiclePage() {
                   value={phoneNumber}
                   onChange={(event) => setPhoneNumber(event.target.value)} // Update phone number state on change
                 />
-                <MdContactPhone className=" relative top-3 left-2 text-2xl" /> {/* Phone icon */}
+                <MdContactPhone className=" relative top-3 left-2 text-2xl" />{" "}
+                {/* Phone icon */}
               </div>
               <br />
 
@@ -115,7 +164,8 @@ function SignupVehiclePage() {
                   value={vehicalNumber}
                   onChange={(event) => setVehicalNumber(event.target.value)} // Update vehicle number state on change
                 />
-                <IoCarSportSharp className=" relative top-3 left-2 text-2xl" /> {/* Car icon */}
+                <IoCarSportSharp className=" relative top-3 left-2 text-2xl" />{" "}
+                {/* Car icon */}
               </div>
               <br />
 
@@ -128,7 +178,8 @@ function SignupVehiclePage() {
                   value={password}
                   onChange={(event) => setPassword(event.target.value)} // Update password state on change
                 />
-                <RiLockPasswordFill className=" relative top-3 left-2 text-2xl" /> {/* Password icon */}
+                <RiLockPasswordFill className=" relative top-3 left-2 text-2xl" />{" "}
+                {/* Password icon */}
               </div>
               <br />
 
@@ -141,21 +192,26 @@ function SignupVehiclePage() {
                   value={confirmPassword}
                   onChange={(event) => setConfirmPassword(event.target.value)} // Update confirm password state on change
                 />
-                <RiLockPasswordFill className=" relative top-3 left-2 text-2xl" /> {/* Confirm password icon */}
+                <RiLockPasswordFill className=" relative top-3 left-2 text-2xl" />{" "}
+                {/* Confirm password icon */}
               </div>
               <br />
 
               <div className="w-[90%] mx-auto">
                 <div className="flex gap-2 items-center my-2">
-                  <input 
-                    checked={isCheckedTermsConditions} 
+                  <input
+                    checked={isCheckedTermsConditions}
                     onChange={handleCheckboxChange} // Toggle terms and conditions checkbox state
-                    type="checkbox" className="cursor-pointer" />
-                 <h1>
+                    type="checkbox"
+                    className="cursor-pointer"
+                  />
+                  <h1>
                     {" "}
                     I agree to the{" "}
                     <span className="text-[red] cursor-pointer">
-                      <button type="button" onClick={openDialog}> {/* Open terms and conditions dialog */}
+                      <button type="button" onClick={openDialog}>
+                        {" "}
+                        {/* Open terms and conditions dialog */}
                         Terms and Conditions
                       </button>
                       <TermsAndConditionsDialog
@@ -167,14 +223,17 @@ function SignupVehiclePage() {
                 </div>
                 <button
                   type="submit" // Submit button
-                  className="w-full mx-auto bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:bg-gradient-to-l to-pink-8  00 py-2 rounded-lg font-bold text-lg text-white">
+                  className="w-full mx-auto bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:bg-gradient-to-l to-pink-8  00 py-2 rounded-lg font-bold text-lg text-white"
+                >
                   Sign Up
                 </button>
                 <div className="flex mt-2 gap-2 justify-center items-center">
                   <h1 className="md:text-[16px] text-[14px]">
                     You already have an account?
                   </h1>{" "}
-                  <Link to="/vehiclelogin"> {/* Link to login page */}
+                  <Link to="/vehiclelogin">
+                    {" "}
+                    {/* Link to login page */}
                     <h1 className="rounded-lg px-2 py-1 font-bold md:text-[#f44646] md:text-[16px] text-[14px]">
                       Login Now
                     </h1>
@@ -185,6 +244,8 @@ function SignupVehiclePage() {
           </div>
         </div>
         <BannerButtomUp /> {/* Render BannerButtomUp component */}
+        <ToastContainer />
+        {/* React toastify component for notification showing */}
       </div>
     </div>
   );
