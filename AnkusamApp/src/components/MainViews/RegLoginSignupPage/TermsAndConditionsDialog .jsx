@@ -4,12 +4,20 @@ const TermsAndConditionsDialog = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="w-[80%] mx-auto fixed inset-0 flex items-center justify-center z-[15]">
+    <div className="w-[80%] h-[80%] mx-auto fixed inset-0 flex items-center justify-center z-[15] md:top-24 top-20">
       <div className="fixed inset-0 bg-black opacity-50" onClick={onClose}></div>
-      <div className="bg-white rounded-lg shadow-lg p-6 z-10 w-full">
-        <h2 className="text-3xl font-bold mb-4 text-red-600">Ankusam Logistics Terms and Conditions</h2>
+      
+      <div className="bg-white rounded-lg shadow-lg px-6 z-10 w-full h-full overflow-x-auto">
+      <button
+          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 fixed"
+          onClick={onClose}
+        >
+          X
+        </button>
+        <div className='mt-16 pb-8 pt-2'>
+        <h2 className="md:text-3xl text-xl font-bold mb-4 text-red-600">Ankusam Logistics Terms and Conditions</h2>
         <div className=' text-[#212121]'>
-          <h1 className="text-lg font-semibold mb-2 text-[#ae3939]">
+          <h1 className="md:text-lg font-semibold mb-2 text-[#ae3939]">
             The following Terms & Conditions shall apply to customers utilising the Services offered by the Company for the hiring of vehicles.
           </h1>
           <ol className="list-decimal pl-6 space-y-1">
@@ -34,12 +42,8 @@ const TermsAndConditionsDialog = ({ isOpen, onClose }) => {
             <li> The Company shall not be liable for any conduct of the drivers of the vehicles. However, the Company encourages you to notify it of any complaints that you may have against the driver that you may have hired using the Company's Services.</li>
           </ol>
         </div>
-        <button
-          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
-          onClick={onClose}
-        >
-          Close
-        </button>
+        </div>
+       
       </div>
     </div>
   );

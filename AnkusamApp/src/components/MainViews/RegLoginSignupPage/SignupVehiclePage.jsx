@@ -223,7 +223,7 @@ function SignupVehiclePage() {
                 </div>
                 <button
                   type="submit" // Submit button
-                  className="w-full mx-auto bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:bg-gradient-to-l to-pink-8  00 py-2 rounded-lg font-bold text-lg text-white"
+                  className="w-full mx-auto uppercase bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:bg-gradient-to-l to-pink-8  00 py-2 rounded-lg font-bold text-lg text-white"
                 >
                   Sign Up
                 </button>
@@ -234,7 +234,7 @@ function SignupVehiclePage() {
                   <Link to="/vehiclelogin">
                     {" "}
                     {/* Link to login page */}
-                    <h1 className="rounded-lg px-2 py-1 font-bold md:text-[#f44646] md:text-[16px] text-[14px]">
+                    <h1 className="rounded-lg px-2 uppercase py-1 font-bold md:text-[#f44646] md:text-[16px] text-[14px]">
                       Login Now
                     </h1>
                   </Link>

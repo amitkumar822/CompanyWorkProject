@@ -237,7 +237,7 @@ function SignupBusinessPage() {
                   </h1>
                 </div>
 
-                <button className="w-full mx-auto bg-gradient-to-r from-violet-500 md:to-fuchsia-500 hover:bg-gradient-to-l to-pink-800 py-2 rounded-lg font-bold text-lg text-white">
+                <button className="w-full mx-auto uppercase bg-gradient-to-r from-violet-500 md:to-fuchsia-500 hover:bg-gradient-to-l to-pink-800 py-2 rounded-lg font-bold text-lg text-white">
                   Sign Up
                 </button>
               </div>
@@ -248,7 +248,7 @@ function SignupBusinessPage() {
                 You already have an account?
               </h1>{" "}
               <Link to="/businesslogin">
-                <h2 className="rounded-lg px-2 py-1 font-bold md:text-[#f44646] md:text-[16px] text-[14px]">
+                <h2 className="rounded-lg uppercase px-2 py-1 font-bold md:text-[#f44646] md:text-[16px] text-[14px]">
                   Login Now
                 </h2>
               </Link>

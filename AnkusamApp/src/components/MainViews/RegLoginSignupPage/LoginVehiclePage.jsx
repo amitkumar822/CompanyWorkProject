@@ -161,7 +161,7 @@ function LoginVehiclePage() {
               {/* Message for forgotten password with a click handler to show an alert. */}
               <button
                 type="submit"
-                className="w-full mx-auto bg-gradient-to-r from-violet-500 md:to-fuchsia-500 hover:bg-gradient-to-l to-pink-800 py-2 rounded-lg font-bold text-lg text-white"
+                className="w-full mx-auto uppercase bg-gradient-to-r from-violet-500 md:to-fuchsia-500 hover:bg-gradient-to-l to-pink-800 py-2 rounded-lg font-bold text-lg text-white"
               >
                 Login Now
               </button>
@@ -172,7 +172,7 @@ function LoginVehiclePage() {
           <div className="flex mt-2 gap-2 justify-center items-center">
             <h1>Don't have an account?</h1>{" "}
             <Link to="/businesssignup">
-              <h2 className="rounded-lg px-2 py-1 font-bold text-[#f44646]">
+              <h2 className="rounded-lg px-2 py-1 font-bold text-[#f44646] uppercase">
                 Sign Up
               </h2>
             </Link>
