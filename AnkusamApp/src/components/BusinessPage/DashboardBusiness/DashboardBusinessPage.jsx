@@ -4,6 +4,7 @@ import { RiShieldUserFill } from "react-icons/ri";
 import { FaMobileRetro, FaTruckFast } from "react-icons/fa6";
 import { GiMineTruck } from "react-icons/gi";
 import { FaTruckLoading } from "react-icons/fa";
+import { Outlet } from "react-router";
 
 function DashboardBusinessPage() {
   return (
@@ -11,7 +12,7 @@ function DashboardBusinessPage() {
       <div className="w-full mx-auto mt-16 h-screen">
         <div className="w-full mx-auto grid grid-cols-[20%_auto]">
           {/* Left dashboard section */}
-          <div className=" h-screen pt-6 bg-blue-500">
+          <div className=" h-screen pt-6 bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% ">
             <div className="w-full h-11 mx-auto mt-2 relative">
               {/* Profile section */}
               <div className="w-[70px] mx-auto h-[70px] rounded-full flex items-center justify-center">
@@ -83,7 +84,9 @@ function DashboardBusinessPage() {
           </div>
 
           {/* Right section */}
-          <div className="h-screen bg-green-400"></div>
+          <div className="h-screen bg-green-400">
+            <Outlet />
+          </div>
         </div>
       </div>
     </>

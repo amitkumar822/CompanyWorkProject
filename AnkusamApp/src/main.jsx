@@ -18,6 +18,7 @@ import ContactUsPage from "./components/MainViews/ContactPage/ContactUsPage.jsx"
 import DashboardPage from "./components/Dashboard/DashboardPage.jsx";
 import BusinessLoginPage from "./components/BusinessPage/BusinessLoginPage.jsx";
 import DashboardBusinessPage from "./components/BusinessPage/DashboardBusiness/DashboardBusinessPage.jsx";
+import PostYourNewLoad from "./components/BusinessPage/PostYourNewLoad/PostYourNewLoad.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,7 +31,9 @@ const router = createBrowserRouter(
       <Route path="/contactus" element={<ContactUsPage />} />
       <Route path="/dashboard" element={<DashboardPage />} />
       <Route path="/businessloginpage" element={<BusinessLoginPage />} />
-      <Route path="/dashboardbusinesspage" element={<DashboardBusinessPage />} />
+      <Route path="/dashboardbusinesspage" element={<DashboardBusinessPage />} > 
+        <Route path="postnewload" element={<PostYourNewLoad />} />
+      </Route>
     </Route>
   )
 );
