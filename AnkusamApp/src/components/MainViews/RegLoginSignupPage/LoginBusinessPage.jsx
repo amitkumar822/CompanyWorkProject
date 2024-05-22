@@ -15,7 +15,7 @@ function LoginBusinessPage() {
   //after login page redirect dashboard
   useEffect(() => {
     if (localStorage.getItem("token")) {
-      navigate("/dashboard");
+      navigate("/businessloginpage");
     }
   }, []);
   const [phoneNumber, setPhoneNumber] = useState("");

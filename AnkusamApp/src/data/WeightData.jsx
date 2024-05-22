@@ -11,6 +11,16 @@ const weightdata = [
     "10 Ton",
     "11 Ton",
     "12 Ton",
+    "13 Ton",
+    "14 Ton",
+    "15 Ton",
+    "16 Ton",
+    "17 Ton",
+    "18 Ton",
+    "19 Ton",
+    "20 Ton",
+    "21 Ton",
+    "22 Ton",
 ]
 
 export { weightdata }

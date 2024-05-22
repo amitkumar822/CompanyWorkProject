@@ -16,16 +16,16 @@ function DashboardPage() {
 
   useEffect(() => {
     if (!localStorage.getItem("token")) {
-      navigate("/");
+        navigate("/");
+        return;
     }
   }, []);
 
   useEffect(() => {
     const options = {
       strings: [
-        "Welcome to The Ankusam Engineering pvt ltd",
+        "Welcome to The Ankusam Logistics",
         "Our services are the world's best services",
-        "Over 5,000+ Clients all over the world",
       ],
       typeSpeed: 50,
       backSpeed: 50,
@@ -267,9 +267,9 @@ function DashboardPage() {
                 <thead className="bg-white border-b border-gray-300 sticky top-0 z-[1]">
                   <tr className="whitespace-nowrap text-[14px] md:text-[16px]">
                     <th className="px-4 py-2 border-b">SI Nb</th>
-                    <th className="px-4 py-2 border-b">From State</th>
+                    {/* <th className="px-4 py-2 border-b">From State</th> */}
                     <th className="px-4 py-2 border-b">From City</th>
-                    <th className="px-4 py-2 border-b">To State</th>
+                    {/* <th className="px-4 py-2 border-b">To State</th> */}
                     <th className="px-4 py-2 border-b">To City</th>
                     <th className="px-4 py-2 border-b">Pickup Time</th>
                     <th className="px-4 py-2 border-b">Vehicle Type</th>
@@ -288,9 +288,9 @@ function DashboardPage() {
                       } whitespace-nowrap`}
                     >
                       <td className="px-4 py-2 border-b">{index + 1}</td>
-                      <td className="px-4 py-2 border-b">{item.fromstate}</td>
+                      {/* <td className="px-4 py-2 border-b">{item.fromstate}</td> */}
                       <td className="px-4 py-2 border-b">{item.fromcity}</td>
-                      <td className="px-4 py-2 border-b">{item.tostate}</td>
+                      {/* <td className="px-4 py-2 border-b">{item.tostate}</td> */}
                       <td className="px-4 py-2 border-b">{item.tocity}</td>
                       <td className="px-4 py-2 border-b">
                         {formatDate(item.pickupTime)}{" "}
