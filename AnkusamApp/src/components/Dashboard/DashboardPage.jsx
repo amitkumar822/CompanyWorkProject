@@ -19,10 +19,6 @@ function DashboardPage() {
       navigate("/");
     }
   }, []);
-  const handleLogOut = () => {
-    localStorage.removeItem("token");
-    navigate("/");
-  };
 
   useEffect(() => {
     const options = {
