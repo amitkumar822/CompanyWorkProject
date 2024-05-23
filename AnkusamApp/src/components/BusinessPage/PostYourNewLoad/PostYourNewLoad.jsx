@@ -1,19 +1,34 @@
-import React, { useState } from "react";
-import { countries } from "../../../data/StateCityData";
+import React, { useState, useEffect } from "react";
 import { packageweightdata } from "./data/PackageWeightData";
+import { Country, State, City } from 'country-state-city';
 
 function PostYourNewLoad() {
-  //👉 from state and city section
   const [state, setState] = useState("--state--");
   const [cities, setCities] = useState([]);
   const [city, setCity] = useState("--city--");
 
+  const [states, setStates] = useState([]);
+  const [toState, setToState] = useState("--state--");
+  const [toCities, setToCities] = useState([]);
+  const [toCity, setToCity] = useState("--city--");
+
+  useEffect(() => {
+    // Fetch states of India
+    const indianStates = State.getStatesOfCountry('IN');
+    setStates(indianStates);
+  }, []);
+
   const changeState = (e) => {
-    setState(e.target.value);
-    const selectedState = countries
-      .flatMap((country) => country.states)
-      .find((state) => state.name === e.target.value);
-    setCities(selectedState ? selectedState.cities : []);
+    const selectedStateCode = e.target.value;
+    setState(selectedStateCode);
+
+    if (selectedStateCode !== "--state--") {
+      const stateCities = City.getCitiesOfState('IN', selectedStateCode);
+      setCities(stateCities);
+    } else {
+      setCities([]);
+    }
+
     setCity("--city--");
   };
 
@@ -21,65 +36,60 @@ function PostYourNewLoad() {
     setCity(e.target.value);
   };
 
-  // end from state and city section
-
-  //👉 To state and city section
-  const [toState, setToState] = useState("--state--");
-  const [toCities, setToCities] = useState([]);
-  const [toCity, setToCity] = useState("--city--");
-
   const toChangeState = (e) => {
-    setToState(e.target.value);
-    const selectedState = countries
-      .flatMap((country) => country.states)
-      .find((state) => state.name === e.target.value);
-    setToCities(selectedState ? selectedState.cities : []);
+    const selectedStateCode = e.target.value;
+    setToState(selectedStateCode);
+
+    if (selectedStateCode !== "--state--") {
+      const stateCities = City.getCitiesOfState('IN', selectedStateCode);
+      setToCities(stateCities);
+    } else {
+      setToCities([]);
+    }
+
     setToCity("--city--");
   };
 
   const toChangeCity = (e) => {
     setToCity(e.target.value);
   };
-  // end to state and city section
 
   return (
     <div className="w-full h-screen mx-auto bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white">
-      <from className="w-full grid md:grid-cols-2 grid-cols-1 pt-12 pb-4 px-4">
+      <form className="w-full grid md:grid-cols-2 grid-cols-1 pt-12 pb-4 px-4">
         {/* Left from part */}
         <div>
           <h1 className="md:text-3xl text-center font-bold">
             Where are you shipping from?
           </h1>
-          <div className="flex justify-around mt-6">
+          <div className="flex justify-around mt-6 ml-[8%]">
             <div>
-              <h2 className=" font-semibold text-black">SELECT STATE</h2>
+              <h2 className="font-semibold text-black">SELECT STATE</h2>
               <select
                 value={state}
                 onChange={changeState}
-                className="text-black rounded-md shadow-md shadow-black cursor-pointer"
+                className="text-black rounded-md shadow-md shadow-black cursor-pointer overflow-x-auto w-[200px]"
               >
-                <option>--state--</option>
-                {countries
-                  .flatMap((country) => country.states)
-                  .map((state, index) => (
-                    <option key={index} value={state.name}>
-                      {state.name}
-                    </option>
-                  ))}
+                <option value="--state--">--state--</option>
+                {states.map((state) => (
+                  <option key={state.isoCode} value={state.isoCode}>
+                    {state.name}
+                  </option>
+                ))}
               </select>
             </div>
 
             <div>
-              <h2 className=" font-semibold text-black">CITY</h2>
+              <h2 className="font-semibold text-black">CITY</h2>
               <select
                 value={city}
                 onChange={changeCity}
-                className="text-black rounded-md shadow-md shadow-black cursor-pointer"
+                className="text-black rounded-md shadow-md shadow-black cursor-pointer overflow-x-auto w-[200px]"
               >
-                <option>--city--</option>
-                {cities.map((city, index) => (
-                  <option key={index} value={city}>
-                    {city}
+                <option value="--city--">--city--</option>
+                {cities.map((city) => (
+                  <option key={city.name} value={city.name}>
+                    {city.name}
                   </option>
                 ))}
               </select>
@@ -109,13 +119,11 @@ function PostYourNewLoad() {
                 </h1>
                 <select className="text-black mt-2 text-center rounded-md outline-none shadow-md shadow-black cursor-pointer">
                   <option>Select one..</option>
-                  {packageweightdata.map((weight, index) => {
-                    return (
-                      <option key={index} value={weight}>
-                        {weight}
-                      </option>
-                    );
-                  })}
+                  {packageweightdata.map((weight, index) => (
+                    <option key={index} value={weight}>
+                      {weight}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -142,9 +150,7 @@ function PostYourNewLoad() {
                 <option value="">Select one...</option>
                 <option value="Personal Goods">Personal Goods</option>
                 <option value="Machine">Machine</option>
-                <option value="Industrial Equpiment">
-                  Industrial Equpiment
-                </option>
+                <option value="Industrial Equipment">Industrial Equipment</option>
                 <option value="Others">Others</option>
               </select>
             </div>
@@ -156,36 +162,34 @@ function PostYourNewLoad() {
           <h1 className="md:text-3xl text-center font-bold">
             Where are you shipping to?
           </h1>
-          <div className="flex justify-around mt-6">
+          <div className="flex justify-around mt-6 ml-[9%]">
             <div>
-              <h2 className=" font-semibold text-black">SELECT STATE</h2>
+              <h2 className="font-semibold text-black">SELECT STATE</h2>
               <select
                 value={toState}
                 onChange={toChangeState}
-                className="text-black rounded-md shadow-md shadow-black cursor-pointer"
+                className="text-black rounded-md shadow-md shadow-black cursor-pointer overflow-x-auto w-[200px]"
               >
-                <option>--state--</option>
-                {countries
-                  .flatMap((country) => country.states)
-                  .map((state, index) => (
-                    <option key={index} value={state.name}>
-                      {state.name}
-                    </option>
-                  ))}
+                <option value="--state--">--state--</option>
+                {states.map((state) => (
+                  <option key={state.isoCode} value={state.isoCode}>
+                    {state.name}
+                  </option>
+                ))}
               </select>
             </div>
 
             <div>
-              <h2 className=" font-semibold text-black">CITY</h2>
+              <h2 className="font-semibold text-black">CITY</h2>
               <select
                 value={toCity}
                 onChange={toChangeCity}
-                className="text-black rounded-md shadow-md shadow-black cursor-pointer"
+                className="text-black rounded-md shadow-md shadow-black cursor-pointer overflow-x-auto w-[200px]"
               >
-                <option>--city--</option>
-                {toCities.map((city, index) => (
-                  <option key={index} value={city}>
-                    {city}
+                <option value="--city--">--city--</option>
+                {toCities.map((city) => (
+                  <option key={city.name} value={city.name}>
+                    {city.name}
                   </option>
                 ))}
               </select>
@@ -236,28 +240,28 @@ function PostYourNewLoad() {
             <h1 className="md:text-[17px] font-semibold text-center text-black uppercase">
               UPLOAD LOAD PHOTOS
             </h1>
-            
             <input
               type="file"
               className="text-black mt-2 ml-[14%] px-4 py-2 rounded-md outline-none shadow-md shadow-[yellow] cursor-pointer"
             />
-            
             <input
               type="file"
               className="text-black mt-2 ml-[14%] px-4 py-2 rounded-md outline-none shadow-md shadow-[yellow] cursor-pointer"
             />
           </div>
         </div>
-        <button type="submit"
-        className="w-[120px] py-4 ml-auto rounded-lg text-2xl shadow-md shadow-[yellow] font-bold bg-gradient-to-r from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500"
+        <button
+          type="submit"
+          className="w-[120px] py-4 ml-auto rounded-lg text-2xl shadow-md shadow-[yellow] font-bold bg-gradient-to-r from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500"
         >
           POST
         </button>
-      </from>
-      <hr className=" border-dashed" />
+      </form>
+      <hr className="border-dashed" />
       <div className="w-full flex justify-center mt-2">
-      <button type="submit"
-        className="w-[230px] py-4 rounded-lg text-2xl shadow-md shadow-[yellow] font-bold bg-gradient-to-r hover:from-green-400 to-blue-500 from-pink-500 hover:to-yellow-500"
+        <button
+          type="submit"
+          className="w-[230px] py-4 rounded-lg text-2xl shadow-md shadow-[yellow] font-bold bg-gradient-to-r hover:from-green-400 to-blue-500 from-pink-500 hover:to-yellow-500"
         >
           Check Your Loads
         </button>
