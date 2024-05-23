@@ -5,6 +5,7 @@ import { FaMobileRetro, FaTruckFast } from "react-icons/fa6";
 import { GiMineTruck } from "react-icons/gi";
 import { FaTruckLoading } from "react-icons/fa";
 import { Outlet } from "react-router";
+import { Link } from "react-router-dom";
 
 function DashboardBusinessPage() {
   return (
@@ -58,7 +59,7 @@ function DashboardBusinessPage() {
                   <div className="mt-4 flex items-center">
                     <GiMineTruck className="inline mr-2 text-[#8dfc42] text-[25px]" />
                     <h1 className="text-lg font-semibold capitalize cursor-pointer text-white hover:text-[yellow] hover:underline duration-300 hover:scale-105">
-                      Post your new load
+                     <Link to='postnewload'> Post your new load</Link>
                     </h1>
                   </div>
                   <hr className="w-full ml-auto border-dashed" />

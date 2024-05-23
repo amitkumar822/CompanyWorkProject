@@ -20,7 +20,8 @@ function PostYourNewLoad() {
 
   const changeState = (e) => {
     const selectedStateCode = e.target.value;
-    setState(selectedStateCode);
+    const selectedState = states.find(state => state.isoCode === selectedStateCode);
+    setState(selectedState ? selectedState.name : "--state--");
 
     if (selectedStateCode !== "--state--") {
       const stateCities = City.getCitiesOfState('IN', selectedStateCode);
@@ -38,7 +39,8 @@ function PostYourNewLoad() {
 
   const toChangeState = (e) => {
     const selectedStateCode = e.target.value;
-    setToState(selectedStateCode);
+    const selectedState = states.find(state => state.isoCode === selectedStateCode);
+    setToState(selectedState ? selectedState.name : "--state--");
 
     if (selectedStateCode !== "--state--") {
       const stateCities = City.getCitiesOfState('IN', selectedStateCode);
@@ -53,6 +55,13 @@ function PostYourNewLoad() {
   const toChangeCity = (e) => {
     setToCity(e.target.value);
   };
+
+  console.log('====================================');
+  console.log("from State: ", state);
+  console.log("from City: ", city);
+  console.log("To State: ", toState);
+  console.log("To City: ", toCity);
+  console.log('====================================');
 
   return (
     <div className="w-full h-screen mx-auto bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white">

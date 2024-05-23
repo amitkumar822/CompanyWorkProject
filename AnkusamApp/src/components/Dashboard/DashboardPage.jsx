@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-// import { countries } from '../../data/StateCityData'
-import { countries } from "../../data/StateCityData"; // Importing state and city data
+import { State, City } from 'country-state-city'; // Importing from country-state-city package
 import { weightdata } from "../../data/WeightData"; // Importing weight data
 import Typed from "typed.js"; // Importing Typed.js for typing animation
 import { IoSearch } from "react-icons/io5"; // Importing search icon
@@ -54,10 +53,8 @@ function DashboardPage() {
 
   const changeState = (event) => {
     setState(event.target.value);
-    const selectedState = countries
-      .flatMap((country) => country.states)
-      .find((state) => state.name === event.target.value);
-    setCities(selectedState ? selectedState.cities : []); // Set cities based on selected state
+    const selectedState = State.getStatesOfCountry('IN').find(s => s.name === event.target.value);
+    setCities(selectedState ? City.getCitiesOfState('IN', selectedState.isoCode) : []);
     setCity("");
   };
 
@@ -162,13 +159,11 @@ function DashboardPage() {
                 onChange={changeState} // Handle state change
               >
                 <option value="">--State--</option>
-                {countries
-                  .flatMap((country) => country.states)
-                  .map((state, index) => (
-                    <option key={index} value={state.name}>
-                      {state.name}
-                    </option>
-                  ))}
+                {State.getStatesOfCountry('IN').map((state, index) => (
+                  <option key={index} value={state.name}>
+                    {state.name}
+                  </option>
+                ))}
               </select>
               <br />
               <h1 className="text-[#49796a]">Filter by city</h1>
@@ -179,8 +174,8 @@ function DashboardPage() {
               >
                 <option value="">--City--</option>
                 {cities.map((city, index) => (
-                  <option key={index} value={city}>
-                    {city}
+                  <option key={index} value={city.name}>
+                    {city.name}
                   </option>
                 ))}
               </select>

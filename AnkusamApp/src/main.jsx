@@ -16,7 +16,6 @@ import LoginVehiclePage from "./components/MainViews/RegLoginSignupPage/LoginVeh
 import SignupVehiclePage from "./components/MainViews/RegLoginSignupPage/SignupVehiclePage.jsx";
 import ContactUsPage from "./components/MainViews/ContactPage/ContactUsPage.jsx";
 import DashboardPage from "./components/Dashboard/DashboardPage.jsx";
-import BusinessLoginPage from "./components/BusinessPage/BusinessLoginPage.jsx";
 import DashboardBusinessPage from "./components/BusinessPage/DashboardBusiness/DashboardBusinessPage.jsx";
 import PostYourNewLoad from "./components/BusinessPage/PostYourNewLoad/PostYourNewLoad.jsx";
 
@@ -30,7 +29,6 @@ const router = createBrowserRouter(
       <Route path="/vehiclesignup" element={<SignupVehiclePage />} />
       <Route path="/contactus" element={<ContactUsPage />} />
       <Route path="/dashboard" element={<DashboardPage />} />
-      <Route path="/businessloginpage" element={<BusinessLoginPage />} />
       <Route path="/dashboardbusinesspage" element={<DashboardBusinessPage />} > 
         <Route path="postnewload" element={<PostYourNewLoad />} />
       </Route>
