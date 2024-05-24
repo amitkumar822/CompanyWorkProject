@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 // Importing the React library and useState hook for managing state in the component.
 
 import { Link, useNavigate } from "react-router-dom";
@@ -16,7 +16,12 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // React toastify component for notification showing
 
+import VehiLogUserContext from "../../../context/vehicleLoginUser/VehiLogUserContext";
+// use context for global access file or data
+
 function LoginVehiclePage() {
+  const { setVehiLogUser } = useContext(VehiLogUserContext)
+
   useEffect(() => {
     if (localStorage.getItem("token")) {
       navigate("/dashboard");
@@ -27,14 +32,14 @@ function LoginVehiclePage() {
   // useNavigate hook provides a function to navigate programmatically.
 
   // State variables for vehicle number and password
-  const [vehicalNumber, setVehicleNumber] = useState("");
+  const [vehical_number, setVehicleNumber] = useState("");
   // Initializing vehicalNumber state to an empty string.
-  const [password, setPassword] = useState("");
+  const [driver_password, setPassword] = useState("");
   // Initializing password state to an empty string.
 
   // Function to generate a token
-  const generateToken = (vehicalNumber, password) => {
-    const token = btoa(`${vehicalNumber}:${password}`); // Base64 encode the credentials
+  const generateToken = (vehical_number, driver_password) => {
+    const token = btoa(`${vehical_number}:${driver_password}`); // Base64 encode the credentials
     return token;
   };
 
@@ -43,16 +48,16 @@ function LoginVehiclePage() {
     event.preventDefault(); // Prevents page reload on form submit
 
     // Generate the token
-    const token = generateToken(vehicalNumber, password);
+    const token = generateToken(vehical_number, driver_password);
 
-    console.log("VehicalNumber:", vehicalNumber);
-    console.log("Password:", password);
+    // console.log("vehical_number:", vehical_number);
+    // console.log("driver_password:", driver_password);
     // Logging the input values for debugging.
 
     // Create form data to match what the backend expects
     const formData = new FormData();
-    formData.append("vehicalNumber", vehicalNumber);
-    formData.append("password", password);
+    formData.append("vehical_number", vehical_number);
+    formData.append("driver_password", driver_password);
     // Constructing a FormData object to send in the POST request.
 
     try {
@@ -77,13 +82,14 @@ function LoginVehiclePage() {
       // Parsing the JSON response body.
 
       // Log the entire response for debugging
-      console.log("Full Response:", data);
+      
       console.log("====================================");
-      console.log("Result:", data);
+      console.log("Full Response:", data.userData);
       console.log("====================================");
 
       // Handle the success or failure based on response
       if (data.status === true || data.status === "true") {
+        setVehiLogUser(data.userData)
         // console.log("Login successful");
         toast.success("Login successful!", {
           position: "top-center",
@@ -98,7 +104,7 @@ function LoginVehiclePage() {
         localStorage.setItem('token', token);
         // If login is successful, log the success and navigate to the contact us page.
         setTimeout(() =>{
-          window.location.reload();
+          // window.location.reload();
           navigate('/dashboard')  
         }, 1500);
         // window.location.reload();
@@ -121,6 +127,8 @@ function LoginVehiclePage() {
     }
   };
 
+  
+
   return (
     <div>
       <Banner />
@@ -142,9 +150,9 @@ function LoginVehiclePage() {
                 type="text"
                 placeholder="Vehicle number"
                 required
-                name="vehicleNumber"
+                name="vehical_number"
                 autoComplete="username" // Suggests autocomplete for vehicle number
-                value={vehicalNumber}
+                value={vehical_number}
                 onChange={(e) => setVehicleNumber(e.target.value)}
                 // Handling input change to update vehicalNumber state.
               />
@@ -159,9 +167,9 @@ function LoginVehiclePage() {
                 type="password"
                 placeholder="password.."
                 required
-                name="password"
+                name="driver_password"
                 autoComplete="current-password" // Suggests autocomplete for password
-                value={password}
+                value={driver_password}
                 onChange={(e) => setPassword(e.target.value)}
                 // Handling input change to update password state.
               />

@@ -4,6 +4,8 @@ import Footer from "./components/Footer/Footer";
 import { Outlet } from "react-router";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import VehiLogUserContextProvider from "./context/vehicleLoginUser/VehiLogUserContextProvider";
+import BusiLoginContextProvider from "./context/BusinessLoginUser/BusiLoginContextProvider";
 
 function App() {
   useEffect(() => {
@@ -11,9 +13,13 @@ function App() {
   }, []);
   return (
     <>
-      <Header />
-      <Outlet />
-      <Footer />
+      <BusiLoginContextProvider>
+        <VehiLogUserContextProvider>
+          <Header />
+          <Outlet />
+          <Footer />
+        </VehiLogUserContextProvider>
+      </BusiLoginContextProvider>
     </>
   );
 }

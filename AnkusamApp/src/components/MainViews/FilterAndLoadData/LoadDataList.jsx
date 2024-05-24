@@ -246,8 +246,6 @@ function LoadDataList() {
                   </tr>
                 </thead>
                 <tbody className="text-center">
-                  {ploadData.length === 0 ? "Loading data..." : ""}
-                  {currentData.length === 0 ? "No data was found..." : ""}
                   {currentData.map((item, index) => (
                     <tr
                       key={item.id}
@@ -265,6 +263,8 @@ function LoadDataList() {
                   ))}
                 </tbody>
               </table>
+                  {ploadData.length === 0 ? "Loading data..." : ""}
+                  {currentData.length === 0 ? "No data was found..." : ""}
             </div>
           </div>
 

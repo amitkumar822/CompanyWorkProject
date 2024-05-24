@@ -24,7 +24,7 @@ function DashboardPage() {
     const options = {
       strings: [
         "Welcome to The Ankusam Logistics",
-        "Our services are the world's best services",
+        "Our services are the world's best services"
       ],
       typeSpeed: 50,
       backSpeed: 50,
@@ -40,7 +40,6 @@ function DashboardPage() {
   const [state, setState] = useState(""); // State to hold selected state
   const [city, setCity] = useState(""); // State to hold selected city
   const [weight, setWeight] = useState(""); // State to hold selected weight
-  const [states, setStates] = useState([]); // State to hold list of states
   const [cities, setCities] = useState([]); // State to hold list of cities
   const [ploadData, setPloadData] = useState([]); // State to hold payload data from API
   const [currentPage, setCurrentPage] = useState(1); // State to manage current page for pagination
@@ -273,8 +272,6 @@ function DashboardPage() {
                   </tr>
                 </thead>
                 <tbody className="text-center">
-                  {ploadData.length === 0 ? "Loading data..." : ""}
-                  {currentData.length === 0 ? "No data was found..." : ""}
                   {currentData.map((item, index) => (
                     <tr
                       key={item.id}
@@ -305,6 +302,8 @@ function DashboardPage() {
                   ))}
                 </tbody>
               </table>
+                  {ploadData.length === 0 ? "Loading data..." : ""}
+                  {currentData.length === 0 ? "No data was found..." : ""}
             </div>
           </div>
 

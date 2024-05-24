@@ -1,4 +1,4 @@
-import React, { useState } from "react"; // Import React and useState hook
+import React, { useContext, useState } from "react"; // Import React and useState hook
 import { Logo } from "../../../public/Photo/PhotosExport"; // Import Logo image
 import { IoIosArrowDown, IoMdCloseCircle } from "react-icons/io"; // Import arrow down and close circle icons
 import { IoBusiness, IoMenuSharp } from "react-icons/io5"; // Import menu icon
@@ -9,8 +9,14 @@ import { AiOutlineCluster } from "react-icons/ai";
 import { FaTruckMoving } from "react-icons/fa";
 import { RiContactsBook3Line } from "react-icons/ri";
 import LogOut from "../MainViews/RegLoginSignupPage/LogOut";
+//👇 vehicles user context global variables access 
+import VehiLogUserContext from "../../context/vehicleLoginUser/VehiLogUserContext";
+
+
 
 function Header() {
+  //👇 global variables access vehicle login user details
+  const { vehiLogUser } = useContext(VehiLogUserContext)
   const [registerClickBox, setRegisterClickBox] = useState(false); // State to toggle registration box visibility
   const [loginClickBox, setLoginClickBox] = useState(false); // State to toggle login box visibility
 
@@ -62,6 +68,8 @@ function Header() {
             {/* 👉 Menu Section  */}
             <div>
               <ul className="md:flex gap-3 text-white text-lg hidden text-[16px] items-center">
+                <li>
+                  {vehiLogUser?.vehical_number}</li>
                 <li className=" cursor-pointer uppercase hover:text-[#d8d4d4] duration-300 relative flex items-center gap-1">
                   <Link to="/dashboard">Dashboard</Link>
                 </li>
@@ -92,7 +100,6 @@ function Header() {
                   onClick={(event) => handleLoginClick(event)} // Show login box
                 >
                   {localStorage.getItem("token") ? <LogOut /> : "LOGIN"}
-                  {/* LOGIN */}
                   <IoIosArrowDown
                     className={`${loginClickBox ? " rotate-180" : ""}
                     ${localStorage.getItem("token") ? 'hidden' : ''}

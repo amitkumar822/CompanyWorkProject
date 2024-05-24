@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 function LogOut() {
   const handleLogOut = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("vehiLogUser");
     // Refresh the page
     window.location.reload();
   };
