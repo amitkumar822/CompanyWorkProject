@@ -5,18 +5,22 @@ import { IoBusiness, IoMenuSharp } from "react-icons/io5"; // Import menu icon
 import { FcGlobe } from "react-icons/fc"; // Import globe icon
 import { Link } from "react-router-dom"; // Import Link component for navigation
 import { MdAppRegistration, MdOutlineEventAvailable } from "react-icons/md";
-import { AiOutlineCluster } from "react-icons/ai";
+import { TbTruckLoading } from "react-icons/tb";
+import { AiFillSound, AiOutlineCluster } from "react-icons/ai";
 import { FaTruckMoving } from "react-icons/fa";
 import { RiContactsBook3Line } from "react-icons/ri";
+import { FaTruckFast } from "react-icons/fa6";
+import { LuUserCircle2 } from "react-icons/lu";
 import LogOut from "../MainViews/RegLoginSignupPage/LogOut";
-//👇 vehicles user context global variables access 
+//👇 vehicles or business user context global variables access using context
 import VehiLogUserContext from "../../context/vehicleLoginUser/VehiLogUserContext";
-
-
+import BusiLoginContext from "../../context/BusinessLoginUser/BusiLoginContext";
 
 function Header() {
   //👇 global variables access vehicle login user details
-  const { vehiLogUser } = useContext(VehiLogUserContext)
+  const { vehiLogUser } = useContext(VehiLogUserContext);
+  const { busiLogUser } = useContext(BusiLoginContext);
+
   const [registerClickBox, setRegisterClickBox] = useState(false); // State to toggle registration box visibility
   const [loginClickBox, setLoginClickBox] = useState(false); // State to toggle login box visibility
 
@@ -65,11 +69,23 @@ function Header() {
               </Link>
             </div>
 
-            {/* 👉 Menu Section  */}
-            <div>
+            {/*👉Vehicle or MenuListVehicle login after show */}
+            <div className={`${vehiLogUser ? "" : "hidden"}`}>
+              <MenuListVehicleLogin />
+            </div>
+
+            {/*👉Business or MenuListBusiness login after show */}
+            <div className={`${busiLogUser ? "" : "hidden"}`}>
+              <MenuListBusinessLogin />
+            </div>
+
+            {/* 👉 Main Menu List Section  */}
+            <div className={`${busiLogUser || vehiLogUser ? "hidden" : ""}`}>
               <ul className="md:flex gap-3 text-white text-lg hidden text-[16px] items-center">
-                <li>
-                  {vehiLogUser?.vehical_number}</li>
+                {/* buginess login user id */}
+                <li>{busiLogUser?.name}</li>
+                {/* Vehicale Login vehical number */}
+                <li>{vehiLogUser?.vehical_number}</li>
                 <li className=" cursor-pointer uppercase hover:text-[#d8d4d4] duration-300 relative flex items-center gap-1">
                   <Link to="/dashboard">Dashboard</Link>
                 </li>
@@ -102,7 +118,7 @@ function Header() {
                   {localStorage.getItem("token") ? <LogOut /> : "LOGIN"}
                   <IoIosArrowDown
                     className={`${loginClickBox ? " rotate-180" : ""}
-                    ${localStorage.getItem("token") ? 'hidden' : ''}
+                    ${localStorage.getItem("token") ? "hidden" : ""}
                      duration-300`} // Rotate arrow if box is visible
                   />
                 </li>
@@ -122,7 +138,7 @@ function Header() {
         </div>
       </div>
 
-      {/* 👉 Slide or Sidebar menu section */}
+      {/* 👉Main Slide or Sidebar menu section Before login*/}
       <div
         className={`back-overlay w-full h-screen top-0 fixed z-10 cursor-pointer ${
           toggleSlide ? "" : "hidden"
@@ -214,7 +230,7 @@ const RegistrationClickBox = () => {
   );
 };
 
-const LoginClickBox = ({ data1, data2 }) => {
+const LoginClickBox = () => {
   return (
     <>
       <div
@@ -229,6 +245,266 @@ const LoginClickBox = ({ data1, data2 }) => {
               <Link to="/vehiclelogin">VEHICLE LOGIN</Link>
             </li>
           </ul>
+        </div>
+      </div>
+    </>
+  );
+};
+
+const MenuListVehicleLogin = () => {
+  //👇Context global variables access vehicle login user details
+  const { vehiLogUser } = useContext(VehiLogUserContext);
+
+  const [toggleSlide, setToggleSlide] = useState(false);
+
+  return (
+    <>
+      <div>
+        {/* 👉 Menu button */}
+        <ul className=" text-white items-center md:hidden">
+          <li className=" cursor-pointer text-4xl mr-6">
+            <IoMenuSharp onClick={() => setToggleSlide(!toggleSlide)} />
+          </li>
+        </ul>
+      </div>
+
+      <div className=" leading-[21px] items-center gap-4 md:flex hidden">
+        <div>
+          <ul className="flex gap-4 border-b-[1px] text-white text-[1.2vw] uppercase font-semibold">
+            <li className="tracking-tight cursor-pointer hover:text-[#c3c2c2] duration-300">
+              <Link to="/contactus">CONTACT US</Link>
+            </li>
+            <li className="tracking-tight cursor-pointer hover:text-[#c3c2c2] duration-300">
+              <Link to="/loaddatalist">Load List</Link>
+            </li>
+            <li className="tracking-tight cursor-pointer hover:text-[#c3c2c2] duration-300">
+              <Link to='/postvehiavai'>Post Vehicle Availability</Link>
+            </li>
+            <li className="tracking-tight cursor-pointer hover:text-[#c3c2c2] duration-300">
+              Profile
+            </li>
+          </ul>
+          <ul className="text-[1.2vw] text-center">
+            <li className=" font-semibold">
+              <span className=" text-[#ede850]">Welcome,</span>{" "}
+              {/* <span className="text-[#86e852]"> Name: </span>{" "} */}
+              <span className="text-white">{vehiLogUser?.name}</span>
+              <span className="text-[#86e852]"> Number: </span>{" "}
+              <span className="text-white underline">
+                <a
+                  href={`tel: ${
+                    vehiLogUser?.driver_mobile_number || vehiLogUser?.phone
+                  }`}
+                >
+                  {vehiLogUser?.driver_mobile_number || vehiLogUser?.phone}
+                </a>
+              </span>
+            </li>
+          </ul>
+        </div>
+        <div className="text-[1.2vw]">
+          <LogOut />
+        </div>
+      </div>
+
+      {/* Slide bar or MenuList Vehicle Login Slide bar */}
+      <div
+        className={` fixed w-[300px] overflow-y-auto h-full py-20 px-3 bg-white top-0 z-20 right-0 md:hidden ${
+          toggleSlide ? "" : "hidden"
+        }`}
+      >
+        <div
+          onClick={() => setToggleSlide(!toggleSlide)}
+          className="text-4xl h-full absolute right-6 top-8 cursor-pointer text-orange-600 hover:text-rose-700 duration-300"
+        >
+          <IoMdCloseCircle />
+        </div>
+        <div className="flex items-center text-xl font-bold mt-5">
+          <FcGlobe className="text-[35px] mr-2" />
+          <h1>EXPLORE Menu</h1>
+        </div>
+        <div className="mt-2 px-4 text-lg ">
+          <div className="flex items-center gap-1 text-orange-600 font-semibold flex-wrap">
+            <AiFillSound className="text-[green] mr-1" />
+            <span>
+              Welcome,
+              <span className="text-[#7b7b74] uppercase ml-1">
+                {vehiLogUser?.name}
+              </span>
+            </span>
+          </div>
+          <div className="ml-[28px] text-orange-600 font-semibold">
+            userId:{" "}
+            <span className="text-[#7b7b74] ml-1">{vehiLogUser?.userid}</span>
+          </div>
+          <div className="ml-[28px] text-orange-600 font-semibold">
+            Veh_Number:{" "}
+            <span className="text-[#7b7b74] ml-1">
+              {vehiLogUser?.vehicle_register_number}
+            </span>
+          </div>
+          <hr className=" border-dashed border-[1.3px] my-1" />
+          <div className="flex items-center gap-2 font-semibold hover:text-[#6b6a6a] duration-200">
+            <LuUserCircle2 className="text-[green]" />
+            <Link to="" onClick={() => setToggleSlide(false)}>
+              Profile
+            </Link>
+          </div>
+          <hr className=" border-dashed border-[1.3px] my-1" />
+          <div className="flex items-center gap-2 font-semibold hover:text-[#6b6a6a] duration-200">
+            <FaTruckFast className="text-[green]" />
+            <Link to='/postvehiavai' onClick={() => setToggleSlide(false)}>
+              Post Load
+            </Link>
+          </div>
+          <hr className=" border-dashed border-[1.3px] my-1" />
+          <div className="flex items-center gap-2 font-semibold hover:text-[#6b6a6a] duration-200">
+            <TbTruckLoading className="text-[green]" />
+            <Link to="" onClick={() => setToggleSlide(false)}>
+              Load List
+            </Link>
+          </div>
+          <hr className=" border-dashed border-[1.3px] my-1" />
+          <div className="flex items-center gap-2 font-semibold hover:text-[#6b6a6a] duration-200">
+            <RiContactsBook3Line className="text-[green]" />
+            <Link to="/contactus" onClick={() => setToggleSlide(false)}>
+              Contact Us
+            </Link>
+          </div>
+          <hr className=" border-dashed border-[1.3px] my-1" />
+          <div className="w-[88px] mt-2">
+            <LogOut />
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+const MenuListBusinessLogin = () => {
+  //👇 global variables access vehicle login user details
+  const { busiLogUser } = useContext(BusiLoginContext);
+
+  const [toggleSlide, setToggleSlide] = useState(false);
+
+  return (
+    <>
+      <div>
+        {/* 👉 Menu button */}
+        <ul className=" text-white items-center md:hidden">
+          <li className=" cursor-pointer text-4xl mr-6">
+            <IoMenuSharp onClick={() => setToggleSlide(!toggleSlide)} />
+          </li>
+        </ul>
+      </div>
+
+      <div className=" leading-[21px] items-center gap-4 md:flex hidden">
+        <div>
+          <ul className="flex gap-4 border-b-[1px] text-white text-[1.2vw] uppercase font-semibold">
+            <li className="tracking-tight cursor-pointer hover:text-[#c3c2c2] duration-300">
+              <Link to="/contactus">CONTACT US</Link>
+            </li>
+            <li className="tracking-tight cursor-pointer hover:text-[#c3c2c2] duration-300">
+              <Link to="">Check Loads</Link>
+            </li>
+            <li className="tracking-tight cursor-pointer hover:text-[#c3c2c2] duration-300">
+              Check Available Vehicles
+            </li>
+            <li className="tracking-tight cursor-pointer hover:text-[#c3c2c2] duration-300">
+              Profile
+            </li>
+          </ul>
+          <ul className="text-[1.2vw] text-center">
+            <li className=" font-semibold">
+              <span className=" text-[#ede850]">Welcome,</span>{" "}
+              {/* <span className="text-[#86e852]"> Name: </span>{" "} */}
+              <span className="text-white">{busiLogUser?.name}</span>
+              <span className="text-[#86e852]"> Number: </span>{" "}
+              <span className="text-white underline">
+                <a
+                  href={`tel: ${
+                    busiLogUser?.driver_mobile_number || busiLogUser?.phone
+                  }`}
+                >
+                  {busiLogUser?.driver_mobile_number || busiLogUser?.phone}
+                </a>
+              </span>
+            </li>
+          </ul>
+        </div>
+        <div className="text-[1.2vw]">
+          <LogOut />
+        </div>
+      </div>
+
+      {/* Slide bar or MenuList Vehicle Login Slide bar */}
+      <div
+        className={` fixed w-[300px] overflow-y-auto h-full py-20 px-3 bg-white top-0 z-20 right-0 md:hidden ${
+          toggleSlide ? "" : "hidden"
+        }`}
+      >
+        <div
+          onClick={() => setToggleSlide(!toggleSlide)}
+          className="text-4xl h-full absolute right-6 top-8 cursor-pointer text-orange-600 hover:text-rose-700 duration-300"
+        >
+          <IoMdCloseCircle />
+        </div>
+        <div className="flex items-center text-xl font-bold mt-5">
+          <FcGlobe className="text-[35px] mr-2" />
+          <h1>EXPLORE Menu</h1>
+        </div>
+        <div className="mt-2 px-4 text-lg ">
+          <div className="flex items-center gap-1 text-orange-600 font-semibold flex-wrap">
+            <AiFillSound className="text-[green] mr-1" />
+            <span>
+              Welcome,
+              <span className="text-[#7b7b74] uppercase ml-1">
+                {busiLogUser?.name}
+              </span>
+            </span>
+          </div>
+          <div className="ml-[28px] text-orange-600 font-semibold">
+            userId:{" "}
+            <span className="text-[#7b7b74] ml-1">{busiLogUser?.userid}</span>
+          </div>
+          <div className="ml-[28px] text-orange-600 font-semibold">
+            Veh_Number:{" "}
+            <span className="text-[#7b7b74] ml-1">
+              {busiLogUser?.vehicle_register_number}
+            </span>
+          </div>
+          <hr className=" border-dashed border-[1.3px] my-1" />
+          <div className="flex items-center gap-2 font-semibold hover:text-[#6b6a6a] duration-200">
+            <LuUserCircle2 className="text-[green]" />
+            <Link to="" onClick={() => setToggleSlide(false)}>
+              Profile
+            </Link>
+          </div>
+          <hr className=" border-dashed border-[1.3px] my-1" />
+          <div className="flex items-center gap-2 font-semibold hover:text-[#6b6a6a] duration-200">
+            <TbTruckLoading className="text-[green]" />
+            <Link to="" onClick={() => setToggleSlide(false)}>
+              Check Loads
+            </Link>
+          </div>
+          <hr className=" border-dashed border-[1.3px] my-1" />
+          <div className="flex items-center gap-2 font-semibold hover:text-[#6b6a6a] duration-200">
+            <FaTruckFast className="text-[green]" />
+            <Link to="" onClick={() => setToggleSlide(false)}>
+              Check Available Vehicles
+            </Link>
+          </div>
+          <hr className=" border-dashed border-[1.3px] my-1" />
+          <div className="flex items-center gap-2 font-semibold hover:text-[#6b6a6a] duration-200">
+            <RiContactsBook3Line className="text-[green]" />
+            <Link to="/contactus" onClick={() => setToggleSlide(false)}>
+              Contact Us
+            </Link>
+          </div>
+          <hr className=" border-dashed border-[1.3px] my-1" />
+          <div className="w-[88px] mt-2">
+            <LogOut />
+          </div>
         </div>
       </div>
     </>

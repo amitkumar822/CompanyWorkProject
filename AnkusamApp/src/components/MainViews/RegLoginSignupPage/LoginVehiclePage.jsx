@@ -90,7 +90,6 @@ function LoginVehiclePage() {
       // Handle the success or failure based on response
       if (data.status === true || data.status === "true") {
         setVehiLogUser(data.userData)
-        // console.log("Login successful");
         toast.success("Login successful!", {
           position: "top-center",
           autoClose: 1000,

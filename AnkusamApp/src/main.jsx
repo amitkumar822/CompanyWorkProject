@@ -16,9 +16,7 @@ import LoginVehiclePage from "./components/MainViews/RegLoginSignupPage/LoginVeh
 import SignupVehiclePage from "./components/MainViews/RegLoginSignupPage/SignupVehiclePage.jsx";
 import ContactUsPage from "./components/MainViews/ContactPage/ContactUsPage.jsx";
 import DashboardPage from "./components/Dashboard/DashboardPage.jsx";
-import DashboardBusinessPage from "./components/BusinessPage/DashboardBusiness/DashboardBusinessPage.jsx";
-import PostYourNewLoad from "./components/BusinessPage/PostYourNewLoad/PostYourNewLoad.jsx";
-import AvailableVehicleCheck from "./components/BusinessPage/AvailableVehicles/AvailableVehicleCheck.jsx";
+import PostVehicleAvailability from "./components/VehiclePages/PostVehicleAvailability/PostVehicleAvailability.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -29,11 +27,9 @@ const router = createBrowserRouter(
       <Route path="/vehiclelogin" element={<LoginVehiclePage />} />
       <Route path="/vehiclesignup" element={<SignupVehiclePage />} />
       <Route path="/contactus" element={<ContactUsPage />} />
+      <Route path="/loaddatalist" element={<DashboardPage/>} /> //👉login after load list show 
       <Route path="/dashboard" element={<DashboardPage />} />
-      <Route path="/dashboardbusinesspage" element={<DashboardBusinessPage />} > 
-        <Route path="postnewload" element={<PostYourNewLoad />} />
-        <Route path="checkavailablevehicles" element={<AvailableVehicleCheck />} />
-      </Route>
+      <Route path="/postvehiavai" element={<PostVehicleAvailability />} />
     </Route>
   )
 );

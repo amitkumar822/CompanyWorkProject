@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { MdContactPhone } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,13 +9,17 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // React toastify component for notification showing
 
+import BusiLoginContext from "../../../context/BusinessLoginUser/BusiLoginContext";
+// use context for global access file or data
+
 function LoginBusinessPage() {
+  const { setBusiLogUser } = useContext(BusiLoginContext)
   
   const navigate = useNavigate();
   //after login page redirect dashboard
   useEffect(() => {
     if (localStorage.getItem("token")) {
-      navigate("/businessloginpage");
+      // navigate("/businessloginpage");
     }
   }, []);
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -64,14 +68,14 @@ function LoginBusinessPage() {
       // Parsing the JSON response body.
 
       // Log the entire response for debugging
-      console.log("Full Response:", data);
       console.log("====================================");
       console.log("Result:", data);
       console.log("====================================");
 
       // Handle the success or failure based on response
       if (data.status === true || data.status === "true") {
-        // console.log("Login successful");
+        setBusiLogUser(data.driverData)
+        console.log("Context Result:", data.driverData);
         toast.success("Login successful!", {
           position: "top-center",
           autoClose: 1000,
@@ -86,7 +90,7 @@ function LoginBusinessPage() {
         localStorage.setItem('token', token)
         // If login is successful, log the success and navigate to the contact us page.
         setTimeout(() => {
-          window.location.reload();
+          // window.location.reload();
           navigate('/dashboard')
         }, 1500)
         // navigate("/contactus");
