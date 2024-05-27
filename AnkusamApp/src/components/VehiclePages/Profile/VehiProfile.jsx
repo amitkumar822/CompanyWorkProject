@@ -5,6 +5,7 @@ import VehiLogUserContext from "../../../context/vehicleLoginUser/VehiLogUserCon
 import Typed from "typed.js"; // Importing Typed.js for typing animation
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"; // status percentage complete animation show
 import "react-circular-progressbar/dist/styles.css"; // styles status percentage complete animation show
+import { Link } from "react-router-dom";
 
 function VehiProfile() {
   //👇 global variables access vehicle login user details
@@ -12,7 +13,7 @@ function VehiProfile() {
   const typedRef = useRef(null);
   const typedRefPhone = useRef(null);
 
-  const percentage = 50; // Assuming user has completed 70% of their profile
+  const percentage = 10; // Assuming user has completed 70% of their profile
 
   // Function to determine color based on percentage
   const getColor = (percentage) => {
@@ -90,13 +91,15 @@ function VehiProfile() {
         </div>
 
         {/* Account Form Section */}
-        <div className="w-[90%] mx-auto lg:mt-6 h-full flex justify-evenly lg:flex-row flex-col gap-2">
+        <div className="w-[90%] mx-auto lg:mt-6 h-full flex justify-evenly lg:flex-row flex-col gap-4">
           {/* Form section */}
           <div className="lg:w-[70%] w-[100%] mx-auto md:mt-0 mt-4 bg-gray-300 border shadow-md shadow-gray-800 lg:order-1 order-2 rounded-lg">
             <div className="flex justify-between px-2 py-4 bg-white">
               <h1 className="md:text-2xl text-xl font-semibold">My Account</h1>
               <h1 className="md:text-2xl text-xl font-semibold bg-blue-500 hover:bg-blue-600 duration-300 px-2 py-1 rounded-lg text-white cursor-pointer">
+                <Link to='/loaddatalist'>
                 Home
+                </Link>
               </h1>
             </div>
             <form action="" className="px-4 py-2">
@@ -426,7 +429,7 @@ function VehiProfile() {
           </div>
 
           {/* Profile status */}
-          <div className="border lg:w-[26%] w-full min-h-[295px] md:mt-0 mt-4 bg-gray-300 mx-auto shadow-md shadow-gray-800 rounded-lg px-3 pt-4 lg:order-2 order-1">
+          <div className="border lg:w-[30%] w-full min-h-[295px] md:mt-0 mt-4 bg-gray-300 mx-auto shadow-md shadow-gray-800 rounded-lg px-3 pt-4 lg:order-2 order-1">
             <h1 className="text-xl font-semibold flex items-center gap-1">
               <CgProfile className="text-[green] text-2xl" />
               Profiles status
@@ -449,7 +452,7 @@ function VehiProfile() {
             {/* Profile Text part */}
             <div className="w-full md:mt-20 mt-14 lg:block hidden">
               <h1 className="text-[20px] font-semibold">
-                Welcome to Ankusam Logistics
+                🍁Welcome to Ankusam Logistics🍁
               </h1>
               <div className="text-lg mt-2">
                 <h1 className=" font-semibold pt-3">
@@ -504,15 +507,17 @@ function VehiProfile() {
                     process.
                   </li>
                 </ul>
-                <h1 className="text-xl font-semibold my-4">Get in Touch</h1>
-                <h1>
-                  <span className=" font-bold text-[#d455da] text-[22px]">
-                    R
-                  </span>
-                  eady to streamline your logistics operations? Contact us today
-                  to learn how Ankusam Logistics can drive your business forward
-                  within India.
-                </h1>
+                <div className="xl:block hidden">
+                  <h1 className="text-xl font-semibold my-4">Get in Touch</h1>
+                  <h1>
+                    <span className=" font-bold text-[#d455da] text-[22px]">
+                      R
+                    </span>
+                    eady to streamline your logistics operations? Contact us
+                    today to learn how Ankusam Logistics can drive your business
+                    forward within India.
+                  </h1>
+                </div>
               </div>
             </div>
           </div>
