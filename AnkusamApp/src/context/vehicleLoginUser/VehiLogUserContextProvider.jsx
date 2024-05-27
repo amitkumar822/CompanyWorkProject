@@ -25,17 +25,3 @@ const VehiLogUserContextProvider = ({ children }) => {
 };
 
 export default VehiLogUserContextProvider;
-
-// import React, { useState } from "react";
-// import VehiLogUserContext from "./VehiLogUserContext";
-
-// const VehiLogUserContextProvider = ( { children }) => {
-//     const [vehiLogUser, setVehiLogUser] = useState(null)
-//     return(
-//         <VehiLogUserContext.Provider value={{vehiLogUser, setVehiLogUser}}>
-//             {children}
-//         </VehiLogUserContext.Provider>
-//     )
-// }
-
-// export default VehiLogUserContextProvider;

@@ -3,6 +3,9 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      backgroundImage: {
+        'vehicleTruckImgProfile': "url('https://img.freepik.com/free-photo/truck-with-white-trailer-that-says-scania-side_123827-23486.jpg?t=st=1716641545~exp=1716645145~hmac=a849ad7e96e54314f0949223e0d78759b42e5996f98416d7a087cf03dfb973d8&w=900')",
+      },
       animation: {
         "spin-slow": "spin 8s linear infinite",
         "spin-slow2": "spin2 8s linear infinite",

@@ -17,6 +17,7 @@ import SignupVehiclePage from "./components/MainViews/RegLoginSignupPage/SignupV
 import ContactUsPage from "./components/MainViews/ContactPage/ContactUsPage.jsx";
 import DashboardPage from "./components/Dashboard/DashboardPage.jsx";
 import PostVehicleAvailability from "./components/VehiclePages/PostVehicleAvailability/PostVehicleAvailability.jsx";
+import VehiProfile from "./components/VehiclePages/Profile/VehiProfile.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,6 +31,7 @@ const router = createBrowserRouter(
       <Route path="/loaddatalist" element={<DashboardPage/>} /> //👉login after load list show 
       <Route path="/dashboard" element={<DashboardPage />} />
       <Route path="/postvehiavai" element={<PostVehicleAvailability />} />
+      <Route path="/vehiprofile" element={<VehiProfile />} />
     </Route>
   )
 );

@@ -278,10 +278,10 @@ const MenuListVehicleLogin = () => {
               <Link to="/loaddatalist">Load List</Link>
             </li>
             <li className="tracking-tight cursor-pointer hover:text-[#c3c2c2] duration-300">
-              <Link to='/postvehiavai'>Post Vehicle Availability</Link>
+              <Link to="/postvehiavai">Post Vehicle Availability</Link>
             </li>
             <li className="tracking-tight cursor-pointer hover:text-[#c3c2c2] duration-300">
-              Profile
+              <Link to="/vehiprofile">Profile</Link>
             </li>
           </ul>
           <ul className="text-[1.2vw] text-center">
@@ -346,14 +346,14 @@ const MenuListVehicleLogin = () => {
           <hr className=" border-dashed border-[1.3px] my-1" />
           <div className="flex items-center gap-2 font-semibold hover:text-[#6b6a6a] duration-200">
             <LuUserCircle2 className="text-[green]" />
-            <Link to="" onClick={() => setToggleSlide(false)}>
+            <Link to="/vehiprofile" onClick={() => setToggleSlide(false)}>
               Profile
             </Link>
           </div>
           <hr className=" border-dashed border-[1.3px] my-1" />
           <div className="flex items-center gap-2 font-semibold hover:text-[#6b6a6a] duration-200">
             <FaTruckFast className="text-[green]" />
-            <Link to='/postvehiavai' onClick={() => setToggleSlide(false)}>
+            <Link to="/postvehiavai" onClick={() => setToggleSlide(false)}>
               Post Load
             </Link>
           </div>

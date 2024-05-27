@@ -163,7 +163,7 @@ function PostVehicleAvailability() {
         </div>
 
         {/*👉 Shipping Post form */}
-        <div className="md:mt-36 mt-10 py-6 pt-10 px-6 border w-[80%] mx-auto bg-[#f4f4f4] rounded-lg shadow-md shadow-gray-700">
+        <div className="md:mt-36 mt-10 py-6 pt-10 px-6 border md:w-[80%] w-[95%] mx-auto bg-[#f4f4f4] rounded-lg shadow-md shadow-gray-700">
           <form>
             {/* Shipping from part */}
             <div className="w-full mx-auto grid lg:grid-cols-2">
@@ -180,7 +180,7 @@ function PostVehicleAvailability() {
                       <select 
                         name="fromState" 
                         id="fromState"
-                        className="cursor-pointer"
+                        className="cursor-pointer w-[130px]"
                         value={fromStateCode}
                         onChange={handleFromStateChange}
                       >
@@ -199,7 +199,7 @@ function PostVehicleAvailability() {
                       <select 
                         name="fromCity" 
                         id="fromCity"
-                        className="cursor-pointer"
+                        className="cursor-pointer w-[150px]"
                         value={fromCity}
                         onChange={handleFromCityChange}
                         disabled={!fromStateCode}
@@ -226,7 +226,7 @@ function PostVehicleAvailability() {
                     <select 
                       name="vehicleType" 
                       id="vehicleType"
-                      className="cursor-pointer"
+                      className="cursor-pointer w-[150px]"
                       // value={vehicleType}
                       onChange={(e) => setVehicleTyps(e.target.value)}
                     >
@@ -256,7 +256,7 @@ function PostVehicleAvailability() {
                       <select 
                         name="toState" 
                         id="toState"
-                        className="cursor-pointer"
+                        className="cursor-pointer w-[130px]"
                         value={toStateCode}
                         onChange={handleToStateChange}
                       >
@@ -275,7 +275,7 @@ function PostVehicleAvailability() {
                       <select 
                         name="toCity" 
                         id="toCity"
-                        className="cursor-pointer"
+                        className="cursor-pointer w-[150px]"
                         value={toCity}
                         onChange={handleToCityChange}
                         disabled={!toStateCode}
