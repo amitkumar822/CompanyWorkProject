@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef } from "react";
 import { RiMapPinUserFill } from "react-icons/ri";
+import { CgProfile } from "react-icons/cg";
 import VehiLogUserContext from "../../../context/vehicleLoginUser/VehiLogUserContext";
 import Typed from "typed.js"; // Importing Typed.js for typing animation
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"; // status percentage complete animation show
@@ -369,14 +370,15 @@ function VehiProfile() {
                   </div>
 
                   {/* Pollution */}
-                  <h1 className="md:text-[25px] mt-4 text-[20px] pt-2 font-semibold text-neutral-600">
+                  <h1 className="md:text-[25px] mt-4 text-[20px] pt-2 font-semibold text-[#4a8fc3]">
                     Upload Pollution Certification
                   </h1>
                   <div className="grid grid-cols-1">
-                    <span className="md:text-lg font-semibold text-neutral-600 mt-2">
-                      Pollution Certification Photo
+                    <span className="md:text-lg font-semibold text-[#4a8fc3] mt-2">
+                      Pollution Certification (
+                      <span className="text-[green]">Optional</span>)
                     </span>
-                    <span className=" text-neutral-600 font-serif cursor-pointer"></span>
+                    <span className=" text-[#4a8fc3] font-serif cursor-pointer"></span>
                     <input type="file" className="w-[200px] cursor-pointer" />
                   </div>
                 </div>
@@ -412,20 +414,23 @@ function VehiProfile() {
               </div>
 
               {/* Button Section */}
-              <div className="w-full mx-auto text-center mt-10"> 
-              <button
-                type="submit"
-                className="w-[120px] my-10 text-white py-3 ml-auto rounded-lg text-2xl shadow-md shadow-[yellow] font-bold bg-gradient-to-r from-fuchsia-400 to-red-500 hover:from-pink-500 hover:to-yellow-500"
-              >
-                Upload
-              </button>
+              <div className="w-full mx-auto text-center mt-10">
+                <button
+                  type="submit"
+                  className="w-[120px] my-10 text-white py-3 ml-auto rounded-lg text-2xl shadow-md shadow-[yellow] font-bold bg-gradient-to-r from-fuchsia-400 to-red-500 hover:from-pink-500 hover:to-yellow-500"
+                >
+                  Upload
+                </button>
               </div>
             </form>
           </div>
 
           {/* Profile status */}
-          <div className="border lg:w-[26%] w-full min-h-[280px] md:mt-0 mt-4 bg-red-500 mx-auto shadow-md shadow-gray-800 rounded-lg px-3 pt-4 lg:order-2 order-1">
-            <h1 className="text-xl font-semibold">Profiles status</h1>
+          <div className="border lg:w-[26%] w-full min-h-[295px] md:mt-0 mt-4 bg-gray-300 mx-auto shadow-md shadow-gray-800 rounded-lg px-3 pt-4 lg:order-2 order-1">
+            <h1 className="text-xl font-semibold flex items-center gap-1">
+              <CgProfile className="text-[green] text-2xl" />
+              Profiles status
+            </h1>
             <div className="md:w-48 md:h-48 w-40 h-40 mx-auto mt-4">
               <CircularProgressbar
                 value={percentage}
@@ -433,12 +438,82 @@ function VehiProfile() {
                 styles={buildStyles({
                   textColor: "black",
                   pathColor: getColor(percentage),
-                  trailColor: "#d6d6d6",
+                  trailColor: "white",
                 })}
               />
-              <h1 className=" text-center font-semibold mt-1">
+              <h1 className="text-lg text-center font-semibold mt-2 text-[#4961e9]">
                 Profile completion
               </h1>
+            </div>
+
+            {/* Profile Text part */}
+            <div className="w-full md:mt-20 mt-14 lg:block hidden">
+              <h1 className="text-[20px] font-semibold">
+                Welcome to Ankusam Logistics
+              </h1>
+              <div className="text-lg mt-2">
+                <h1 className=" font-semibold pt-3">
+                  Your Trusted Partner in Indian Logistics Solutions
+                </h1>
+                <h1 className="mt-2 text-[19px]">
+                  At Ankusam Logistics, we specialize in providing efficient,
+                  reliable, and innovative logistics services tailored to meet
+                  your unique needs within India. Our comprehensive solutions
+                  ensure your goods are transported safely and on time, every
+                  time.
+                </h1>
+                <h1 className="text-xl font-semibold my-4">Why Choose Us?</h1>
+                <ul className="list-disc ml-4">
+                  <li>
+                    <span className="font-semibold">Nationwide Reach:</span>{" "}
+                    With an extensive network across India, we deliver seamless
+                    domestic shipping solutions.
+                  </li>
+                  <li>
+                    <span className="font-semibold">
+                      Customer-Centric Approach:
+                    </span>{" "}
+                    Our dedicated team works around the clock to provide
+                    personalized service and support.
+                  </li>
+                  <li>
+                    <span className="font-semibold">Advanced Technology:</span>{" "}
+                    Leveraging state-of-the-art technology to optimize logistics
+                    operations and provide real-time tracking.
+                  </li>
+                  <li>
+                    <span className="font-semibold">
+                      Sustainability Commitment:
+                    </span>{" "}
+                    Committed to eco-friendly practices and reducing our carbon
+                    footprint in the logistics industry.
+                  </li>
+                </ul>
+                <h1 className="text-xl font-semibold my-4">Our Services</h1>
+                <ul className="list-disc ml-4">
+                  <li>
+                    <span className="font-semibold">Freight Forwarding:</span>{" "}
+                    Expert handling of road freight to ensure your cargo reaches
+                    its destination efficiently.
+                  </li>
+                  <li>
+                    <span className="font-semibold">
+                      Supply Chain Management:
+                    </span>{" "}
+                    Comprehensive solutions to optimize your entire supply chain
+                    process.
+                  </li>
+                </ul>
+                <h1 className="text-xl font-semibold my-4">Get in Touch</h1>
+                <h1>
+                  <span className=" font-bold text-[#d455da] text-[22px]">
+                    R
+                  </span>
+                  eady to streamline your logistics operations? Contact us today
+                  to learn how Ankusam Logistics can drive your business forward
+                  within India.
+                </h1>
+              </div>
             </div>
           </div>
         </div>
