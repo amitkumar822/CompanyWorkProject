@@ -18,6 +18,8 @@ import ContactUsPage from "./components/MainViews/ContactPage/ContactUsPage.jsx"
 import DashboardPage from "./components/Dashboard/DashboardPage.jsx";
 import PostVehicleAvailability from "./components/VehiclePages/PostVehicleAvailability/PostVehicleAvailability.jsx";
 import VehiProfile from "./components/VehiclePages/Profile/VehiProfile.jsx";
+import BusinessProfile from "./components/BusinessPage/Profile/BusinessProfile.jsx";
+import AvailableVehiclesList from "./components/BusinessPage/AvailableVehicles/AvailableVehiclesList.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -32,6 +34,8 @@ const router = createBrowserRouter(
       <Route path="/dashboard" element={<DashboardPage />} />
       <Route path="/postvehiavai" element={<PostVehicleAvailability />} />
       <Route path="/vehiprofile" element={<VehiProfile />} />
+      <Route path="/businessprofile" element={<BusinessProfile />} />
+      <Route path="/availablevehiclelist" element={<AvailableVehiclesList />} />
     </Route>
   )
 );

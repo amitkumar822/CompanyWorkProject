@@ -117,6 +117,7 @@ function VehiProfile() {
                   <input
                     type="text"
                     placeholder="Phone number"
+                    maxLength={10}
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
                 </div>
@@ -128,6 +129,7 @@ function VehiProfile() {
                   <input
                     type="text"
                     placeholder="Adhar number"
+                    maxLength={12}
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
                   <h1 className="text-[17px] pt-2 font-semibold">Home Town</h1>
@@ -238,9 +240,11 @@ function VehiProfile() {
                   />
                 </div>
               </div>
+              
+              <hr className="md:mt-12 mt-6 w-[94%]" />
 
               {/* Photo Upload section */}
-              <div className="md:mt-14 mt-10 grid sm:grid-cols-2">
+              <div className="mt-4 grid sm:grid-cols-2">
                 {/* Vehicle photo */}
                 <div className="">
                   <h1 className="md:text-[25px] text-[20px] pt-2 font-semibold text-purple-600">
