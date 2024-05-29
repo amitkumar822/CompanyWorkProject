@@ -121,12 +121,14 @@ function DashboardPage() {
     currentPage * ITEMS_PER_PAGE
   ); // Get current page data for pagination
 
-  // Toggle Button Section
-  const [isOn, setIsOn] = useState(false); // State to manage toggle button
-
-  const handleToggle = () => {
-    setIsOn(!isOn); // Handle toggle button click
-  };
+ // Reset filter state and city
+  const handleResetFilterStateAndCity = () => {
+    setState("");
+    setCity("");
+    setWeight("");
+    setFilteredData(ploadData);
+    setCurrentPage(1);
+  }
 
   // Search bar Functionality
   const handleFilter = (event) => {
@@ -140,6 +142,10 @@ function DashboardPage() {
     setFilteredData(filtered);
     setCurrentPage(1); // Reset to the first page whenever filter changes
   };
+
+  // console.log('====================================');
+  // console.log("State: ", state);
+  // console.log('====================================');
 
   return (
     <>
@@ -192,27 +198,11 @@ function DashboardPage() {
                 ))}
               </select>
 
-              {/* Toggle Button Section */}
-              <div className="relative flex items-center gap-4 mt-4">
-                <input
-                  type="checkbox"
-                  className="sr-only"
-                  checked={isOn}
-                  onChange={handleToggle} // Handle toggle button change
-                />
-                <div
-                  className={`w-12 h-6 flex items-center bg-gray-300 rounded-full p-1 cursor-pointer transition-colors duration-300 ${
-                    isOn ? "bg-green-500" : "bg-gray-300"
-                  }`}
-                  onClick={handleToggle} // Handle toggle button click
-                >
-                  <div
-                    className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform duration-300 ${
-                      isOn ? "translate-x-6" : ""
-                    }`}
-                  ></div>
-                </div>
-                <h1>Hide Load List.</h1>
+               {/* Reset Button */}
+               <div className="relative flex items-center gap-4 mt-4">
+                <button className="hover:bg-blue-600 bg-blue-500 duration-300 py-1 px-2 text-xl font-semibold text-white rounded-lg shadow-md shadow-gray-800 uppercase italic"
+                onClick={handleResetFilterStateAndCity}
+                >Reset</button>
               </div>
             </div>
 
@@ -224,17 +214,9 @@ function DashboardPage() {
         </div>
 
         {/* Load List */}
+        
         <div
-          className={`text-4xl text-center font-bold text-orange-600 border-b-2 ${
-            isOn ? "" : "hidden"
-          }`}
-        >
-          Load List is hidden.
-        </div>
-        <div
-          className={`container mx-auto px-4 py-6 border bg-[#f2f2f2] rounded-lg shadow-md ${
-            isOn ? "hidden" : ""
-          }`} // Conditional rendering based on toggle
+          className={`container mx-auto px-4 py-6 border bg-[#f2f2f2] rounded-lg shadow-md`} // Conditional rendering based on toggle
         >
           <h1 className="text-3xl text-center text-red-600 font-bold underline mb-4">
             Load List
@@ -260,9 +242,9 @@ function DashboardPage() {
                 <thead className="bg-white border-b border-gray-300 sticky top-0 z-[1]">
                   <tr className="whitespace-nowrap text-[14px] md:text-[16px]">
                     <th className="px-4 py-2 border-b">SI Nb</th>
-                    {/* <th className="px-4 py-2 border-b">From State</th> */}
+                    <th className={`px-4 py-2 border-b ${state.length==0 ? 'hidden' : ''}`}>From State</th>
                     <th className="px-4 py-2 border-b">From City</th>
-                    {/* <th className="px-4 py-2 border-b">To State</th> */}
+                    <th className={`px-4 py-2 border-b ${state.length==0 ? 'hidden' : ''}`}>To State</th>
                     <th className="px-4 py-2 border-b">To City</th>
                     <th className="px-4 py-2 border-b">Pickup Time</th>
                     <th className="px-4 py-2 border-b">Vehicle Type</th>
@@ -279,9 +261,9 @@ function DashboardPage() {
                       } whitespace-nowrap`}
                     >
                       <td className="px-4 py-2 border-b">{index + 1}</td>
-                      {/* <td className="px-4 py-2 border-b">{item.fromstate}</td> */}
+                      <td className={`px-4 py-2 border-b ${state.length==0 ? 'hidden' : ''}`}>{item.fromstate}</td>
                       <td className="px-4 py-2 border-b">{item.fromcity}</td>
-                      {/* <td className="px-4 py-2 border-b">{item.tostate}</td> */}
+                      <td className={`px-4 py-2 border-b ${state.length==0 ? 'hidden' : ''}`}>{item.tostate}</td>
                       <td className="px-4 py-2 border-b">{item.tocity}</td>
                       <td className="px-4 py-2 border-b">
                         {formatDate(item.pickupTime)}{" "}

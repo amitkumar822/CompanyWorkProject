@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { State, City } from 'country-state-city';
+import { State, City } from "country-state-city";
 import { weightdata } from "../../../data/WeightData";
 import Typed from "typed.js";
 import { IoSearch } from "react-icons/io5";
@@ -11,9 +11,7 @@ function LoadDataList() {
 
   useEffect(() => {
     const options = {
-      strings: [
-        "Welcome to Ankusam logistic",
-      ],
+      strings: ["Welcome to Ankusam logistic"],
       typeSpeed: 50,
       backSpeed: 50,
       loop: true,
@@ -35,16 +33,16 @@ function LoadDataList() {
   const [filteredData, setFilteredData] = useState([]);
 
   const normalizeString = (str) => {
-    return str.toLowerCase().replace(/[^a-z0-9]/gi, '');
+    return str.toLowerCase().replace(/[^a-z0-9]/gi, "");
   };
 
   const changeState = (event) => {
     const selectedState = event.target.value;
     setState(selectedState);
     if (selectedState) {
-      const stateCities = City.getCitiesOfState('IN', selectedState);
+      const stateCities = City.getCitiesOfState("IN", selectedState);
       setCities(stateCities);
-      setCity("");  // Reset city when state changes
+      setCity(""); // Reset city when state changes
     } else {
       setCities([]);
       setCity("");
@@ -81,7 +79,9 @@ function LoadDataList() {
 
     if (state) {
       filtered = filtered.filter(
-        (item) => normalizeString(item.fromstate) === normalizeString(State.getStateByCodeAndCountry(state, 'IN').name)
+        (item) =>
+          normalizeString(item.fromstate) ===
+          normalizeString(State.getStateByCodeAndCountry(state, "IN").name)
       );
     }
     if (city) {
@@ -115,11 +115,13 @@ function LoadDataList() {
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
-
-  const [isOn, setIsOn] = useState(false);
-
-  const handleToggle = () => {
-    setIsOn(!isOn);
+  // Reset filter state and city
+  const handleResetFilterStateAndCity = () => {
+    setState("");
+    setCity("");
+    setWeight("");
+    setFilteredData(ploadData);
+    setCurrentPage(1);
   };
 
   const handleFilter = (event) => {
@@ -149,7 +151,7 @@ function LoadDataList() {
                 onChange={changeState}
               >
                 <option value="">--State--</option>
-                {State.getStatesOfCountry('IN').map((state, index) => (
+                {State.getStatesOfCountry("IN").map((state, index) => (
                   <option key={index} value={state.isoCode}>
                     {state.name}
                   </option>
@@ -161,7 +163,7 @@ function LoadDataList() {
                 className="form-control w-full text-sm bg-[#F1F2F4] cursor-pointer"
                 value={city}
                 onChange={changeCity}
-                disabled={!state}  // Disable city dropdown if no state is selected
+                disabled={!state} // Disable city dropdown if no state is selected
               >
                 <option value="">--City--</option>
                 {cities.map((city, index) => (
@@ -184,23 +186,14 @@ function LoadDataList() {
                   </option>
                 ))}
               </select>
-
+              {/* Reset Button */}
               <div className="relative flex items-center gap-4 mt-4">
-                <input
-                  type="checkbox"
-                  className="sr-only"
-                  checked={isOn}
-                  onChange={handleToggle}
-                />
-                <div
-                  className={`w-12 h-6 flex items-center bg-gray-300 rounded-full p-1 cursor-pointer transition-colors duration-300 ${isOn ? "bg-green-500" : "bg-gray-300"}`}
-                  onClick={handleToggle}
+                <button
+                  className="hover:bg-blue-600 bg-blue-500 duration-300 py-1 px-2 text-xl font-semibold text-white rounded-lg shadow-md shadow-gray-800 uppercase italic"
+                  onClick={handleResetFilterStateAndCity}
                 >
-                  <div
-                    className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform duration-300 ${isOn ? "translate-x-6" : ""}`}
-                  ></div>
-                </div>
-                <h1>Hide Load List.</h1>
+                  Reset
+                </button>
               </div>
             </div>
 
@@ -209,11 +202,11 @@ function LoadDataList() {
             </div>
           </div>
         </div>
-
-        <div className={`text-4xl text-center font-bold text-orange-600 border-b-2 ${isOn ? '' : 'hidden'}`}>Load List is hidden.</div>
-        <div className={`container mx-auto px-4 py-6 border bg-[#f2f2f2] rounded-lg shadow-md ${isOn ? 'hidden' : ''}`}>
+        <div
+          className={`container mx-auto px-4 py-6 border bg-[#f2f2f2] rounded-lg shadow-md`}
+        >
           <h1 className="text-3xl text-center text-red-600 font-bold underline mb-4">
-            Load List
+            Load List2
           </h1>
 
           <div className="flex w-[50%] items-center justify-end gap-1 relative mb-4">
@@ -234,9 +227,21 @@ function LoadDataList() {
                 <thead className="bg-white border-b border-gray-300 sticky top-0 z-[1]">
                   <tr className="whitespace-nowrap text-[14px] md:text-[16px]">
                     <th className="px-4 py-2 border-b">SI Nb</th>
-                    <th className="px-4 py-2 border-b">From State</th>
+                    <th
+                      className={`px-4 py-2 border-b ${
+                        state.length == 0 ? "hidden" : ""
+                      }`}
+                    >
+                      From State
+                    </th>
                     <th className="px-4 py-2 border-b">From City</th>
-                    <th className="px-4 py-2 border-b">To State</th>
+                    <th
+                      className={`px-4 py-2 border-b ${
+                        state.length == 0 ? "hidden" : ""
+                      }`}
+                    >
+                      To State
+                    </th>
                     <th className="px-4 py-2 border-b">To City</th>
                     <th className="px-4 py-2 border-b">Pickup Time</th>
                     <th className="px-4 py-2 border-b">Vehicle Type</th>
@@ -247,22 +252,38 @@ function LoadDataList() {
                   {currentData.map((item, index) => (
                     <tr
                       key={item.id}
-                      className={`${index % 2 === 0 ? "bg-gray-200" : ""} whitespace-nowrap`}
+                      className={`${
+                        index % 2 === 0 ? "bg-gray-200" : ""
+                      } whitespace-nowrap`}
                     >
                       <td className="px-4 py-2 border-b">{index + 1}</td>
-                      <td className="px-4 py-2 border-b">{item.fromstate}</td>
+                      <td
+                        className={`px-4 py-2 border-b ${
+                          state.length == 0 ? "hidden" : ""
+                        }`}
+                      >
+                        {item.fromstate}
+                      </td>
                       <td className="px-4 py-2 border-b">{item.fromcity}</td>
-                      <td className="px-4 py-2 border-b">{item.tostate}</td>
+                      <td
+                        className={`px-4 py-2 border-b ${
+                          state.length == 0 ? "hidden" : ""
+                        }`}
+                      >
+                        {item.tostate}
+                      </td>
                       <td className="px-4 py-2 border-b">{item.tocity}</td>
-                      <td className="px-4 py-2 border-b">{formatDate(item.pickupTime)}</td>
+                      <td className="px-4 py-2 border-b">
+                        {formatDate(item.pickupTime)}
+                      </td>
                       <td className="px-4 py-2 border-b">{item.vship}</td>
                       <td className="px-4 py-2 border-b">{item.pkgweight}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-                  {ploadData.length === 0 ? "Loading data..." : ""}
-                  {currentData.length === 0 ? "No data was found..." : ""}
+              {ploadData.length === 0 ? "Loading data..." : ""}
+              {currentData.length === 0 ? "No data was found..." : ""}
             </div>
           </div>
 
@@ -276,7 +297,9 @@ function LoadDataList() {
             </button>
             <button
               onClick={handleNextPage}
-              disabled={currentPage === Math.ceil(filteredData.length / ITEMS_PER_PAGE)}
+              disabled={
+                currentPage === Math.ceil(filteredData.length / ITEMS_PER_PAGE)
+              }
               className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:bg-gray-200"
             >
               Next
