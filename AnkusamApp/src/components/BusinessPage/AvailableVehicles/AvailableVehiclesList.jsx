@@ -66,12 +66,12 @@ function AvailableVehiclesList() {
         </div>
 
         {/*👉 Available Vehicle List Section */}
-        <div className="w-[80%] mx-auto mt-12 bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-500 text-white px-2 py-8 rounded-lg shadow-lg">
-          <h1 className="text-3xl text-center font-serif underline mb-8">
+        <div className="w-[90%] mx-auto mt-12 bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-500 text-white px-2 py-8 rounded-lg shadow-lg">
+          <h1 className="md:text-3xl text-xl text-center font-serif underline mb-8">
             AVAILABLE VEHICLE LIST
           </h1>
           <div className="w-full mx-auto overflow-x-auto">
-            <table className="w-full mx-auto text-center border-collapse">
+            <table className="w-full mx-auto text-center border-collapse whitespace-nowrap">
               <thead className="bg-gray-700">
                 <tr>
                   <th className="px-4 py-2 border-b">SI NO</th>

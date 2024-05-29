@@ -3,6 +3,7 @@ import { FaFacebook } from "react-icons/fa";
 import { IoLogoInstagram } from "react-icons/io5";
 import { FaLocationDot } from "react-icons/fa6";
 import GoToUpBtn from "../GoToUpButton/GoToUpBtn";
+import { Link } from "react-router-dom";
 // import GoToUpBtn from "./GoToUpBtn";
 
 function Footer() {
@@ -28,7 +29,7 @@ function Footer() {
                     Tamilnadu, India - 641062.
                   </h2>
                   <h3 className="mt-4 text-[#634f63] cursor-pointer">
-                    +91 94873889706
+                    <a href={`tel:${94873889706}`}>+91 94873889706</a>
                   </h3>
                 </div>
               </div>
@@ -41,13 +42,19 @@ function Footer() {
                 </h1>
                 <ul>
                   <li className="text-lg pt-2 cursor-pointer hover:text-orange-700 font-semibold text-orange-900">
+                    <Link to='/about' >
                     About
+                    </Link>
                   </li>
                   <li className="text-lg pt-2 cursor-pointer hover:text-orange-700 font-semibold text-orange-900">
+                    <Link to='/businesssignup'>
                     Business People
+                    </Link>
                   </li>
                   <li className="text-lg pt-2 cursor-pointer hover:text-orange-700 font-semibold text-orange-900">
+                    <Link to='/contactus'>
                     Contact Us
+                    </Link>
                   </li>
                 </ul>
               </div>

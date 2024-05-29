@@ -20,11 +20,13 @@ import PostVehicleAvailability from "./components/VehiclePages/PostVehicleAvaila
 import VehiProfile from "./components/VehiclePages/Profile/VehiProfile.jsx";
 import BusinessProfile from "./components/BusinessPage/Profile/BusinessProfile.jsx";
 import AvailableVehiclesList from "./components/BusinessPage/AvailableVehicles/AvailableVehiclesList.jsx";
+import About from "./components/About/About.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route path="" element={<Home />} />
+      <Route path="/about" element={<About />} />
       <Route path="/businesslogin" element={<LoginBusinessPage />} />
       <Route path="/businesssignup" element={<SignupBusinessPage />} />
       <Route path="/vehiclelogin" element={<LoginVehiclePage />} />
