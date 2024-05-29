@@ -91,18 +91,16 @@ function VehiProfile() {
         </div>
 
         {/* Account Form Section */}
-        <div className="w-[90%] mx-auto lg:mt-6 h-full flex justify-evenly lg:flex-row flex-col gap-4">
+        <div className="w-[90%] mx-auto lg:mt-6 h-full flex justify-evenly lg:flex-row flex-col gap-4 pb-16">
           {/* Form section */}
-          <div className="lg:w-[70%] w-[100%] mx-auto md:mt-0 mt-4 bg-gray-300 border shadow-md shadow-gray-800 lg:order-1 order-2 rounded-lg">
+          <div className="lg:w-[70%] w-[100%] mx-auto md:mt-0 mt-4 pb-8 bg-gray-300 border shadow-md shadow-gray-800 lg:order-1 order-2 rounded-lg">
             <div className="flex justify-between px-2 py-4 bg-white">
               <h1 className="md:text-2xl text-xl font-semibold">My Account</h1>
               <h1 className="md:text-2xl text-xl font-semibold bg-blue-500 hover:bg-blue-600 duration-300 px-2 py-1 rounded-lg text-white cursor-pointer">
-                <Link to='/loaddatalist'>
-                Home
-                </Link>
+                <Link to="/loaddatalist">Home</Link>
               </h1>
             </div>
-            <form action="" className="px-4 py-2">
+            <form action="" className="px-4 pt-2">
               <div className="grid sm:grid-cols-2 md:mt-6">
                 <div>
                   <h1 className="text-[17px] pt-2 font-semibold">Name</h1>
@@ -248,13 +246,24 @@ function VehiProfile() {
                   />
                 </div>
               </div>
-              
-              <hr className="md:mt-12 mt-6 w-[94%]" />
+              {/* Button Section */}
+              <div className="w-full mx-auto text-center my-6">
+                <button
+                  type="submit"
+                  className="w-[120px] text-white py-3 ml-auto rounded-lg text-2xl shadow-md shadow-[yellow] font-bold bg-gradient-to-r from-fuchsia-400 to-red-500 hover:from-pink-500 hover:to-yellow-500"
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
+            <hr className="w-[94%] mx-auto" />
 
+            {/* All phot upload section */}
+            <div className="px-2">
               {/* Photo Upload section */}
               <div className="mt-4 grid sm:grid-cols-2">
                 {/* Vehicle photo */}
-                <div className="">
+                <form className="">
                   <h1 className="md:text-[25px] text-[20px] pt-2 font-semibold text-purple-600">
                     Upload Vehicle Photos
                   </h1>
@@ -304,11 +313,17 @@ function VehiProfile() {
                       />
                     </div>
                   </div>
-                </div>
+                  <button
+                    type="submit"
+                    className="w-[120px] text-white py-3 ml-auto rounded-lg text-2xl shadow-md shadow-[yellow] font-bold bg-gradient-to-r from-gray-400 to-purple-600 hover:from-pink-500 hover:to-gray-500 mt-6"
+                  >
+                    upload
+                  </button>
+                </form>
 
                 <div className="md:mt-0 mt-6">
                   {/* Vehicle Registration Document photo */}
-                  <div>
+                  <form>
                     <h1 className="md:text-[25px] text-[20px] pt-2 font-semibold text-gray-600">
                       Upload Vehicle Reg. Document
                     </h1>
@@ -334,9 +349,17 @@ function VehiProfile() {
                         className="w-[200px] cursor-pointer"
                       />
                     </div>
-                  </div>
+                    {/* Button Section */}
+                    <button
+                      type="submit"
+                      className="w-[120px] text-white py-3 ml-auto rounded-lg text-2xl shadow-md shadow-[yellow] font-bold bg-gradient-to-r from-[#212121] to-zinc-400 hover:from-blue-500 hover:to-[#499d11] mt-6"
+                    >
+                      upload
+                    </button>
+                  </form>
 
-                  <div className="mt-4">
+                  {/*👉 Vehicle Insurance */}
+                  <form className="mt-4">
                     <h1 className="md:text-[25px] text-[20px] pt-2 font-semibold text-blue-400">
                       Upload Vehicle Insurance
                     </h1>
@@ -351,54 +374,76 @@ function VehiProfile() {
                         className="w-[200px] cursor-pointer"
                       />
                     </div>
-                  </div>
+                    {/* Button Section */}
+                    <button
+                      type="submit"
+                      className="w-[120px] text-white py-3 ml-auto rounded-lg text-2xl shadow-md shadow-[yellow] font-bold bg-gradient-to-r from-[#900497] to-blue-400 hover:from-blue-400 hover:to-yellow-500 mt-6"
+                    >
+                      upload
+                    </button>
+                  </form>
                 </div>
               </div>
 
               <div className="md:mt-14 mt-8 grid sm:grid-cols-2">
                 {/* Upload Vehicle RC Book Section */}
                 <div>
-                  <h1 className="md:text-[25px] text-[20px] pt-2 font-semibold text-fuchsia-500">
-                    Upload Vehicle RC Book
-                  </h1>
-                  <div className="grid grid-cols-1">
-                    <span className="md:text-lg font-semibold text-fuchsia-500 mt-2">
-                      Front RC Book photo
-                    </span>
-                    <span className=" text-fuchsia-600 font-serif cursor-pointer"></span>
-                    <input
-                      type="file"
-                      required
-                      className="w-[200px] cursor-pointer"
-                    />
-                  </div>
-                  <div className="grid grid-cols-1">
-                    <span className="md:text-lg font-semibold text-fuchsia-600 mt-2">
-                      Back RC Book photo
-                    </span>
-                    <span className=" text-fuchsia-600 font-serif cursor-pointer"></span>
-                    <input
-                      type="file"
-                      className="w-[200px] cursor-pointer"
-                    />
-                  </div>
+                  <form>
+                    <h1 className="md:text-[25px] text-[20px] pt-2 font-semibold text-fuchsia-500">
+                      Upload Vehicle RC Book
+                    </h1>
+                    <div className="grid grid-cols-1">
+                      <span className="md:text-lg font-semibold text-fuchsia-500 mt-2">
+                        Front RC Book photo
+                      </span>
+                      <span className=" text-fuchsia-600 font-serif cursor-pointer"></span>
+                      <input
+                        type="file"
+                        required
+                        className="w-[200px] cursor-pointer"
+                      />
+                    </div>
+                    <div className="grid grid-cols-1">
+                      <span className="md:text-lg font-semibold text-fuchsia-600 mt-2">
+                        Back RC Book photo
+                      </span>
+                      <span className=" text-fuchsia-600 font-serif cursor-pointer"></span>
+                      <input type="file" className="w-[200px] cursor-pointer" />
+                    </div>
+                    {/* Button Section */}
+                    <button
+                      type="submit"
+                      className="w-[120px] text-white py-3 ml-auto rounded-lg text-2xl shadow-md shadow-[yellow] font-bold bg-gradient-to-r from-gray-400 to-fuchsia-500 hover:from-[#10a580] hover:to-slate-400 mt-4"
+                    >
+                      upload
+                    </button>
+                  </form>
 
                   {/* Pollution */}
-                  <h1 className="md:text-[25px] mt-4 text-[20px] pt-2 font-semibold text-[#4a8fc3]">
-                    Upload Pollution Certification
-                  </h1>
-                  <div className="grid grid-cols-1">
-                    <span className="md:text-lg font-semibold text-[#4a8fc3] mt-2">
-                      Pollution Certification (
-                      <span className="text-[green]">Optional</span>)
-                    </span>
-                    <span className=" text-[#4a8fc3] font-serif cursor-pointer"></span>
-                    <input type="file" className="w-[200px] cursor-pointer" />
-                  </div>
+                  <form>
+                    <h1 className="md:text-[25px] mt-4 text-[20px] pt-2 font-semibold text-[#4a8fc3]">
+                      Upload Pollution Certification
+                    </h1>
+                    <div className="grid grid-cols-1">
+                      <span className="md:text-lg font-semibold text-[#4a8fc3] mt-2">
+                        Pollution Certification (
+                        <span className="text-[green]">Optional</span>)
+                      </span>
+                      <span className=" text-[#4a8fc3] font-serif cursor-pointer"></span>
+                      <input type="file" className="w-[200px] cursor-pointer" />
+                    </div>
+                    {/* Button Section */}
+                    <button
+                      type="submit"
+                      className="w-[120px] text-white py-3 ml-auto rounded-lg text-2xl shadow-md shadow-[yellow] font-bold bg-gradient-to-r from-[#67882d] to-[#4a8fc3] hover:from-range-500 hover:to-yellow-500 mt-4"
+                    >
+                      upload
+                    </button>
+                  </form>
                 </div>
 
                 {/* Adhar card section */}
-                <div className="md:mt-0 mt-6">
+                <form className="md:mt-0 mt-6">
                   <h1 className="md:text-[25px] text-[20px] pt-2 font-semibold text-yellow-600">
                     Upload Adhar Card Document
                   </h1>
@@ -424,19 +469,16 @@ function VehiProfile() {
                       className="w-[200px] cursor-pointer"
                     />
                   </div>
-                </div>
+                  {/* Button Section */}
+                  <button
+                    type="submit"
+                    className="w-[120px] text-white py-3 ml-auto rounded-lg text-2xl shadow-md shadow-[yellow] font-bold bg-gradient-to-r from-neutral-500 to-yellow-600 hover:from-pink-500 hover:to-neutral-500 mt-4"
+                  >
+                    upload
+                  </button>
+                </form>
               </div>
-
-              {/* Button Section */}
-              <div className="w-full mx-auto text-center mt-10">
-                <button
-                  type="submit"
-                  className="w-[120px] my-10 text-white py-3 ml-auto rounded-lg text-2xl shadow-md shadow-[yellow] font-bold bg-gradient-to-r from-fuchsia-400 to-red-500 hover:from-pink-500 hover:to-yellow-500"
-                >
-                  Upload
-                </button>
-              </div>
-            </form>
+            </div>
           </div>
 
           {/* Profile status */}
@@ -518,7 +560,7 @@ function VehiProfile() {
                     process.
                   </li>
                 </ul>
-                <div className="xl:block hidden">
+                <div className="">
                   <h1 className="text-xl font-semibold my-4">Get in Touch</h1>
                   <h1>
                     <span className=" font-bold text-[#d455da] text-[22px]">
