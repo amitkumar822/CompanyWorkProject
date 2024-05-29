@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { City } from "country-state-city";
+import Select from 'react-select';
 
 // Define the specific states with their names and ISO codes
 const specificStates = [
@@ -47,65 +48,73 @@ function PostVehicleAvailability() {
   }, [toStateCode]);
 
   // Handle state change for "from"
-  const handleFromStateChange = (e) => {
-    const stateCode = e.target.value;
+  const handleFromStateChange = (selectedOption) => {
+    const stateCode = selectedOption ? selectedOption.value : "";
     setFromStateCode(stateCode);
     const state = specificStates.find((state) => state.isoCode === stateCode);
     setFromStateName(state ? state.name : "");
   };
 
   // Handle city change for "from"
-  const handleFromCityChange = (e) => {
-    const cityName = e.target.value;
+  const handleFromCityChange = (selectedOption) => {
+    const cityName = selectedOption ? selectedOption.label : "";
     setFromCity(cityName);
     const city = fromCities.find((city) => city.name === cityName);
     setFromCityName(city ? city.name : "");
   };
 
   // Handle state change for "to"
-  const handleToStateChange = (e) => {
-    const stateCode = e.target.value;
+  const handleToStateChange = (selectedOption) => {
+    const stateCode = selectedOption ? selectedOption.value : "";
     setToStateCode(stateCode);
     const state = specificStates.find((state) => state.isoCode === stateCode);
     setToStateName(state ? state.name : "");
   };
 
   // Handle city change for "to"
-  const handleToCityChange = (e) => {
-    const cityName = e.target.value;
+  const handleToCityChange = (selectedOption) => {
+    const cityName = selectedOption ? selectedOption.label : "";
     setToCity(cityName);
     const city = toCities.find((city) => city.name === cityName);
     setToCityName(city ? city.name : "");
   };
 
-  // console.log('====================================');
-  // console.log("FromState: ", fromStateName);
-  // console.log("FromCity: ", fromCityName);
-  // console.log("ToState: ", toStateName);
-  // console.log("ToCity: ", toCityName);
-  // console.log('====================================');
+  // Prepare state options for react-select
+  const stateOptions = specificStates.map((state) => ({
+    value: state.isoCode,
+    label: state.name
+  }));
+
+  // Prepare city options for react-select
+  const fromCityOptions = fromCities.map((city) => ({
+    value: city.name,
+    label: city.name
+  }));
+
+  const toCityOptions = toCities.map((city) => ({
+    value: city.name,
+    label: city.name
+  }));
 
   // Types of vehicles data stored in the state
   const [vehicleType, setVehicleTyps] = useState("")
-
-  // console.log('====================================');
-  // console.log("VehicleType: ",vehicleType);
-  // console.log('====================================');
 
   // Vehicle Capacity data stored in the state
   const [vehicleCapacity, setVehicleCapacity] = useState("")
   // Vehicle load data stored in the state
   const [vehicleLength , setVehicleLength] = useState("")
 
+
   console.log('====================================');
-  console.log("VehicleCapacity: ", vehicleCapacity);
-  console.log("VehicleLength: ", vehicleLength);
+  console.log("FromState: " + fromStateName);
+  console.log("FromCity: " + fromCityName);
+  console.log("ToState: " + toStateName);
+  console.log("ToCity: " + toCityName);
   console.log('====================================');
 
   return (
     <>
       <div className="mt-16">
-        
         {/*👉 Shipping Post form */}
         <div className="md:mt-36 mt-10 py-6 pt-10 px-6 border md:w-[80%] w-[95%] mx-auto bg-[#f4f4f4] rounded-lg shadow-md shadow-gray-700">
           <form>
@@ -121,40 +130,28 @@ function PostVehicleAvailability() {
                       <h3 className="md:text-lg font-semibold text-black">
                         SELECT STATE
                       </h3>
-                      <select 
+                      <Select 
                         name="fromState" 
                         id="fromState"
                         className="cursor-pointer w-[130px]"
-                        value={fromStateCode}
+                        value={stateOptions.find(option => option.value === fromStateCode)}
                         onChange={handleFromStateChange}
-                      >
-                        <option value="">Select State</option>
-                        {specificStates.map((state) => (
-                          <option key={state.isoCode} value={state.isoCode}>
-                            {state.name}
-                          </option>
-                        ))}
-                      </select>
+                        options={stateOptions}
+                      />
                     </div>
                     <div>
                       <h3 className="md:text-lg font-semibold text-black">
                         SELECT CITY
                       </h3>
-                      <select 
+                      <Select 
                         name="fromCity" 
                         id="fromCity"
                         className="cursor-pointer w-[150px]"
-                        value={fromCity}
+                        value={fromCityOptions.find(option => option.value === fromCity)}
                         onChange={handleFromCityChange}
-                        disabled={!fromStateCode}
-                      >
-                        <option value="">Select City</option>
-                        {fromCities.map((city) => (
-                          <option key={city.name} value={city.name}>
-                            {city.name}
-                          </option>
-                        ))}
-                      </select>
+                        options={fromCityOptions}
+                        isDisabled={!fromStateCode}
+                      />
                     </div>
                   </div>
                 </div>
@@ -197,40 +194,28 @@ function PostVehicleAvailability() {
                       <h3 className="md:text-lg font-semibold text-black">
                         SELECT STATE
                       </h3>
-                      <select 
+                      <Select 
                         name="toState" 
                         id="toState"
                         className="cursor-pointer w-[130px]"
-                        value={toStateCode}
+                        value={stateOptions.find(option => option.value === toStateCode)}
                         onChange={handleToStateChange}
-                      >
-                        <option value="">Select State</option>
-                        {specificStates.map((state) => (
-                          <option key={state.isoCode} value={state.isoCode}>
-                            {state.name}
-                          </option>
-                        ))}
-                      </select>
+                        options={stateOptions}
+                      />
                     </div>
                     <div>
                       <h3 className="md:text-lg font-semibold text-black">
                         SELECT CITY
                       </h3>
-                      <select 
+                      <Select 
                         name="toCity" 
                         id="toCity"
                         className="cursor-pointer w-[150px]"
-                        value={toCity}
+                        value={toCityOptions.find(option => option.value === toCity)}
                         onChange={handleToCityChange}
-                        disabled={!toStateCode}
-                      >
-                        <option value="">Select City</option>
-                        {toCities.map((city) => (
-                          <option key={city.name} value={city.name}>
-                            {city.name}
-                          </option>
-                        ))}
-                      </select>
+                        options={toCityOptions}
+                        isDisabled={!toStateCode}
+                      />
                     </div>
                   </div>
                 </div>
