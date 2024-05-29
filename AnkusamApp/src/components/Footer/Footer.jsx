@@ -25,7 +25,7 @@ function Footer() {
                   </h1>
                   <h2 className="text-[17px] font-semibold text-[#5c5050] cursor-pointer">
                     <FaLocationDot className="inline mr-1 text-orange-600 text-xl" />
-                    3/204 E2, Venkittapuram, Near L&T Bye Pass Road, Coimbatore
+                    3/204 E2, Venkittapuram, Near L&T Bypass Road, Coimbatore
                     Tamilnadu, India - 641062.
                   </h2>
                   <h3 className="mt-4 text-[#634f63] cursor-pointer">

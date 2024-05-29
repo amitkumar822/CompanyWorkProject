@@ -23,8 +23,7 @@ function DashboardPage() {
   useEffect(() => {
     const options = {
       strings: [
-        "Welcome to The Ankusam Logistics",
-        "Our services are the world's best services"
+        "Welcome to Ankusam logistic",
       ],
       typeSpeed: 50,
       backSpeed: 50,

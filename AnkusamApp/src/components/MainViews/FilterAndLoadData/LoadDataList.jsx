@@ -12,9 +12,7 @@ function LoadDataList() {
   useEffect(() => {
     const options = {
       strings: [
-        "Welcome to The Ankusam Engineering pvt ltd",
-        "Our services are the world's best services",
-        "Over 5,000+ Clients all over the world",
+        "Welcome to Ankusam logistic",
       ],
       typeSpeed: 50,
       backSpeed: 50,

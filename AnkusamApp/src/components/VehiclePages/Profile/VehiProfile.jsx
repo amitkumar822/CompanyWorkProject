@@ -105,10 +105,11 @@ function VehiProfile() {
             <form action="" className="px-4 py-2">
               <div className="grid sm:grid-cols-2 md:mt-6">
                 <div>
-                  <h1 className="text-[17px] pt-2 font-semibold">Username</h1>
+                  <h1 className="text-[17px] pt-2 font-semibold">Name</h1>
                   <input
                     type="text"
-                    placeholder="Username"
+                    placeholder="Enter your name"
+                    required
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
                   <h1 className="text-[17px] pt-2 font-semibold">
@@ -117,6 +118,7 @@ function VehiProfile() {
                   <input
                     type="text"
                     placeholder="Phone number"
+                    required
                     maxLength={10}
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
@@ -130,12 +132,14 @@ function VehiProfile() {
                     type="text"
                     placeholder="Adhar number"
                     maxLength={12}
+                    required
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
                   <h1 className="text-[17px] pt-2 font-semibold">Home Town</h1>
                   <input
                     type="text"
                     placeholder="Home Town"
+                    required
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
                 </div>
@@ -148,6 +152,7 @@ function VehiProfile() {
               <input
                 type="text"
                 placeholder="Driving license number.."
+                required
                 className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
               />
               <div className="grid lg:grid-cols-3 sm:grid-cols-2 mt-4">
@@ -193,6 +198,7 @@ function VehiProfile() {
                   <input
                     type="text"
                     placeholder="Vehicle register Number"
+                    required
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
                   <h1 className="text-[17px] pt-2 font-semibold">
@@ -201,6 +207,7 @@ function VehiProfile() {
                   <input
                     type="text"
                     placeholder="Vehicle name"
+                    required
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
                   <h1 className="text-[17px] pt-2 font-semibold">
@@ -209,6 +216,7 @@ function VehiProfile() {
                   <input
                     type="text"
                     placeholder="Vehicle capacity in ton"
+                    required
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
                 </div>
@@ -222,14 +230,14 @@ function VehiProfile() {
                     placeholder="Vehicle make and model"
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
-                  <h1 className="text-[17px] pt-2 font-semibold">
+                  {/* <h1 className="text-[17px] pt-2 font-semibold">
                     Vehicle Mode
                   </h1>
                   <input
                     type="text"
                     placeholder="Vehicle model"
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
-                  />
+                  /> */}
                   <h1 className="text-[17px] pt-2 font-semibold">
                     Vehicle Length
                   </h1>
@@ -371,7 +379,6 @@ function VehiProfile() {
                     <span className=" text-fuchsia-600 font-serif cursor-pointer"></span>
                     <input
                       type="file"
-                      required
                       className="w-[200px] cursor-pointer"
                     />
                   </div>
