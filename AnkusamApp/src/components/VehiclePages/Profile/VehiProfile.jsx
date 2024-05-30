@@ -9,6 +9,7 @@ import "react-circular-progressbar/dist/styles.css"; // styles status percentage
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import loadingGfg from '../../../data/GfgLoding/loading.gif'
 
 function VehiProfile() {
   //👇 global variables access vehicle login user details
@@ -44,7 +45,14 @@ function VehiProfile() {
     };
   }, []);
 
-  // vehicles 4 sides photos upload
+  // loading animation state handle
+  const [isLoading, setIsLoading] = useState(false);
+
+//=====================👇Start vehicles 4 sides photos upload section👇==============================
+
+  // image upload after successful message show vehicle text
+  const [isVehiImgUpload, setIsVehiImgUpload] = useState(false)
+
   const [filesVehicle, setFilesVehicle] = useState({
     front: null,
     back: null,
@@ -61,6 +69,7 @@ function VehiProfile() {
   }
 
   const handleVehiclePhotoSubmit = async (e) => {
+    setIsLoading(true);
     e.preventDefault();
     const formData = new FormData();
     formData.append("driver_id", vehiLogUser?.driver_id);
@@ -77,6 +86,8 @@ function VehiProfile() {
       });
       // console.log("Response: ", response.data);
       if (response.data) {
+        setIsVehiImgUpload(true)
+        setIsLoading(false);
         toast.success('Success upload!', {
           position: "top-center",
           autoClose: 2000,
@@ -88,6 +99,7 @@ function VehiProfile() {
           theme: "colored",
           });
       } else {
+        setIsVehiImgUpload(false)
         toast.error('Upload failed', {
           position: "top-center",
           autoClose: 2000,
@@ -100,13 +112,93 @@ function VehiProfile() {
           });
       }
     } catch (error) {
+      setIsVehiImgUpload(false)
       console.log("Error: ", error);
     }
   }
-//End vehicles 4 sides photos upload
+
+//=====================👆End vehicles 4 sides photos upload section👆=============================
+
+
+//=====================👇Start Pollution section👇==============================
+
+  // image upload after successful message show pollution text
+  const [isPollutionImgUpload, setIsPollutionImgUpload] = useState(false)
+
+  const [pollFile, setPollFile] = useState({
+    pollution_certification: null,
+  })
+
+  const handlePollutionChange = (e) => {
+    const {name, files} = e.target;
+    setPollFile((prevState) => ({
+       ...prevState,
+        [name]: files[0],
+    }))
+  }
+
+  const handlePollutionSubmit = async (e) => {
+    setIsLoading(true);
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("driver_id", vehiLogUser?.driver_id);
+    formData.append("pollution_certification", pollFile.pollution_certification);
+    
+    try {
+      const response = await axios.post('/api/driver/vehical_polution_certificate_upload.php', formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      // console.log("Response: ", response.data);
+      if (response.data) {
+        setIsPollutionImgUpload(true)
+        setIsLoading(false);
+        toast.success('Success upload!', {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
+      } else {
+        setIsPollutionImgUpload(false)
+        toast.error('Upload failed', {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
+      }
+    } catch (error) {
+      setIsPollutionImgUpload(false)
+      console.log("Error: ", error);
+    }
+  }
+
+//=====================👆 End Pollution section 👆==============================
+
   return (
     <>
-      <div className="mt-16 w-full h-full">
+      <div className="mt-16 w-full h-full relative">
+        {/* Loading image section */}
+        <div className={`w-full h-full z-10 bg-[rgba(0,0,0,0.5)] absolute ${isLoading ? '' : 'hidden'}`}>
+          <div className=" absolute w-full h-screen flex justify-center items-center">
+            <img
+              className="w-[100px] h-[100px] fixed"
+              src={loadingGfg}
+              alt=""
+            />
+          </div>
+        </div>
+
         {/* First Banner Part */}
         <div className="bg-vehicleTruckImgProfile w-full bg-no-repeat bg-cover ">
           {/* Top image background section */}
@@ -337,7 +429,7 @@ function VehiProfile() {
                       <span className="md:text-lg font-semibold text-purple-600 mt-2">
                         Vehicle Front photo
                       </span>
-                      <span className=" text-pink-600 font-serif cursor-pointer"></span>
+                      <span className={`text-pink-600 font-serif  ${isVehiImgUpload ? '' : 'hidden'}`}>upload successfully</span>
                       <input
                         type="file"
                         required
@@ -350,7 +442,7 @@ function VehiProfile() {
                       <span className="md:text-lg font-semibold text-purple-600 mt-2">
                         Vehicle Back photo
                       </span>
-                      <span className=" text-pink-600 font-serif cursor-pointer"></span>
+                      <span className={`text-pink-600 font-serif  ${isVehiImgUpload ? '' : 'hidden'}`}>upload successfully</span>
                       <input
                         type="file"
                         required
@@ -363,7 +455,7 @@ function VehiProfile() {
                       <span className="md:text-lg font-semibold text-purple-600 mt-2">
                         Vehicle Left Side photo
                       </span>
-                      <span className=" text-pink-600 font-serif cursor-pointer"></span>
+                      <span className={`text-pink-600 font-serif  ${isVehiImgUpload ? '' : 'hidden'}`}>upload successfully</span>
                       <input
                         type="file"
                         required
@@ -376,7 +468,7 @@ function VehiProfile() {
                       <span className="md:text-lg font-semibold text-purple-600 mt-2">
                         Vehicle Right Side photo
                       </span>
-                      <span className=" text-pink-600 font-serif cursor-pointer"></span>
+                      <span className={`text-pink-600 font-serif  ${isVehiImgUpload ? '' : 'hidden'}`}>upload successfully</span>
                       <input
                         type="file"
                         required
@@ -493,7 +585,9 @@ function VehiProfile() {
                   </form>
 
                   {/* Pollution */}
-                  <form>
+                  <form
+                  onSubmit={handlePollutionSubmit}
+                  >
                     <h1 className="md:text-[25px] mt-4 text-[20px] pt-2 font-semibold text-[#4a8fc3]">
                       Upload Pollution Certification
                     </h1>
@@ -502,8 +596,11 @@ function VehiProfile() {
                         Pollution Certification (
                         <span className="text-[green]">Optional</span>)
                       </span>
-                      <span className=" text-[#4a8fc3] font-serif cursor-pointer"></span>
-                      <input type="file" className="w-[200px] cursor-pointer" />
+                      <span className={`text-pink-600 font-serif  ${isPollutionImgUpload ? '' : 'hidden'}`}>upload successfully</span>
+                      <input type="file" 
+                      name="pollution_certification"
+                      onChange={handlePollutionChange}
+                      className="w-[200px] cursor-pointer" />
                     </div>
                     {/* Button Section */}
                     <button
