@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import axios from 'axios';
+import axios from "axios";
 import { RiMapPinUserFill } from "react-icons/ri";
 import { CgProfile } from "react-icons/cg";
 import VehiLogUserContext from "../../../context/vehicleLoginUser/VehiLogUserContext";
@@ -7,9 +7,9 @@ import Typed from "typed.js"; // Importing Typed.js for typing animation
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"; // status percentage complete animation show
 import "react-circular-progressbar/dist/styles.css"; // styles status percentage complete animation show
 import { Link } from "react-router-dom";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import loadingGfg from '../../../data/GfgLoding/loading.gif'
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import loadingGfg from "../../../data/GfgLoding/loading.gif";
 
 function VehiProfile() {
   //👇 global variables access vehicle login user details
@@ -47,11 +47,12 @@ function VehiProfile() {
 
   // loading animation state handle
   const [isLoading, setIsLoading] = useState(false);
+  const [isErrorMessage, setIsErrorMessage] = useState("Upload failed");
 
-//=====================👇Start vehicles 4 sides photos upload section👇==============================
+  //=====================👇Start vehicles 4 sides photos upload section👇==============================
 
   // image upload after successful message show vehicle text
-  const [isVehiImgUpload, setIsVehiImgUpload] = useState(false)
+  const [isVehiImgUpload, setIsVehiImgUpload] = useState(false);
 
   const [filesVehicle, setFilesVehicle] = useState({
     front: null,
@@ -61,12 +62,12 @@ function VehiProfile() {
   });
 
   const handleVehicleFileChange = (e) => {
-    const {name, files} = e.target;
+    const { name, files } = e.target;
     setFilesVehicle((prevState) => ({
-       ...prevState,
-        [name]: files[0],
-    }))
-  }
+      ...prevState,
+      [name]: files[0],
+    }));
+  };
 
   const handleVehiclePhotoSubmit = async (e) => {
     setIsLoading(true);
@@ -79,16 +80,20 @@ function VehiProfile() {
     formData.append("vehical_photos_right", filesVehicle.right);
 
     try {
-      const response = await axios.post('/api/driver/vehical_photo_upload.php', formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.post(
+        "/api/driver/vehical_photo_upload.php",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       // console.log("Response: ", response.data);
       if (response.data) {
-        setIsVehiImgUpload(true)
+        setIsVehiImgUpload(true);
         setIsLoading(false);
-        toast.success('Success upload!', {
+        toast.success("Success upload!", {
           position: "top-center",
           autoClose: 2000,
           hideProgressBar: false,
@@ -97,10 +102,11 @@ function VehiProfile() {
           draggable: true,
           progress: undefined,
           theme: "colored",
-          });
+        });
       } else {
-        setIsVehiImgUpload(false)
-        toast.error('Upload failed', {
+        setIsVehiImgUpload(false);
+        setIsLoading(false);
+        toast.error("Upload faild", {
           position: "top-center",
           autoClose: 2000,
           hideProgressBar: false,
@@ -109,52 +115,78 @@ function VehiProfile() {
           draggable: true,
           progress: undefined,
           theme: "colored",
-          });
+        });
       }
     } catch (error) {
-      setIsVehiImgUpload(false)
+      setIsVehiImgUpload(false);
+      setIsLoading(false);
+
+      {
+        error.message === "Network Error" ||
+        error.message === "Request failed with status code 500"
+          ? setIsErrorMessage("Network Error")
+          : setIsErrorMessage("Upload failed");
+      }
+
+      toast.error(isErrorMessage, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       console.log("Error: ", error);
+      // console.log("Error: ", error.message);
     }
-  }
+  };
 
-//=====================👆End vehicles 4 sides photos upload section👆=============================
+  //=====================👆End vehicles 4 sides photos upload section👆=============================
 
-
-//=====================👇Start Pollution section👇==============================
+  //=====================👇Start Pollution section👇==============================
 
   // image upload after successful message show pollution text
-  const [isPollutionImgUpload, setIsPollutionImgUpload] = useState(false)
+  const [isPollutionImgUpload, setIsPollutionImgUpload] = useState(false);
 
   const [pollFile, setPollFile] = useState({
     pollution_certification: null,
-  })
+  });
 
   const handlePollutionChange = (e) => {
-    const {name, files} = e.target;
+    const { name, files } = e.target;
     setPollFile((prevState) => ({
-       ...prevState,
-        [name]: files[0],
-    }))
-  }
+      ...prevState,
+      [name]: files[0],
+    }));
+  };
 
   const handlePollutionSubmit = async (e) => {
     setIsLoading(true);
     e.preventDefault();
     const formData = new FormData();
     formData.append("driver_id", vehiLogUser?.driver_id);
-    formData.append("pollution_certification", pollFile.pollution_certification);
-    
+    formData.append(
+      "pollution_certification",
+      pollFile.pollution_certification
+    );
+
     try {
-      const response = await axios.post('/api/driver/vehical_polution_certificate_upload.php', formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.post(
+        "/api/driver/vehical_polution_certificate_upload.php",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       // console.log("Response: ", response.data);
       if (response.data) {
-        setIsPollutionImgUpload(true)
+        setIsPollutionImgUpload(true);
         setIsLoading(false);
-        toast.success('Success upload!', {
+        toast.success("Success upload!", {
           position: "top-center",
           autoClose: 2000,
           hideProgressBar: false,
@@ -163,10 +195,11 @@ function VehiProfile() {
           draggable: true,
           progress: undefined,
           theme: "colored",
-          });
+        });
       } else {
-        setIsPollutionImgUpload(false)
-        toast.error('Upload failed', {
+        setIsPollutionImgUpload(false);
+        setIsLoading(false);
+        toast.error("Upload faild", {
           position: "top-center",
           autoClose: 2000,
           hideProgressBar: false,
@@ -175,21 +208,321 @@ function VehiProfile() {
           draggable: true,
           progress: undefined,
           theme: "colored",
-          });
+        });
       }
     } catch (error) {
-      setIsPollutionImgUpload(false)
+      setIsPollutionImgUpload(false);
+      setIsLoading(false);
+
+      {
+        error.message === "Network Error" ||
+        error.message === "Request failed with status code 500"
+          ? setIsErrorMessage("Network Error")
+          : setIsErrorMessage("Upload failed");
+      }
+
+      toast.error(isErrorMessage, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       console.log("Error: ", error);
     }
-  }
+  };
 
-//=====================👆 End Pollution section 👆==============================
+  //=====================👆 End Pollution section 👆==============================
+
+  //=====================👇Start Vehicle Reg. or book rc section👇==============================
+
+  // image upload after successful message show vehicle registration text
+  const [isRegistrationImgUpload, setIsRegistrationImgUpload] = useState(false);
+
+  const [filesRegistration, setFilesRegistration] = useState({
+    regFront: null,
+    regBack: null,
+  });
+
+  const handleRegistrationFileChange = (e) => {
+    const { name, files } = e.target;
+    setFilesRegistration((prevState) => ({
+      ...prevState,
+      [name]: files[0],
+    }));
+  };
+
+  const handleRegSumbmit = async (e) => {
+    setIsLoading(true);
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("driver_id", vehiLogUser?.driver_id);
+    formData.append("book_rc_front", filesRegistration.regFront);
+    formData.append("book_rc_back", filesRegistration.regBack);
+
+    try {
+      const response = await axios.post(
+        "/api/driver/vehical_registration_photo.php",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      // console.log("Response: ", response.data);
+      if (response.data) {
+        setIsRegistrationImgUpload(true);
+        setIsLoading(false);
+        toast.success("Success upload!", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      } else {
+        setIsRegistrationImgUpload(false);
+        setIsLoading(false);
+        toast.error("Upload faild", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      }
+    } catch (error) {
+      setIsRegistrationImgUpload(false);
+      setIsLoading(false);
+
+      {
+        error.message === "Network Error" ||
+        error.message === "Request failed with status code 500"
+          ? setIsErrorMessage("Network Error")
+          : setIsErrorMessage("Upload failed");
+      }
+
+      toast.error(isErrorMessage, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      console.log("Error: ", error);
+    }
+  };
+
+  //=====================👆 End  Vehicle Reg. or book rc section 👆==============================
+
+  //=====================👇Start Vehicle Insurance section👇==============================
+
+  // image upload after successful message show vehicle insurance text
+  const [isInsuranceImgUpload, setIsInsuranceImgUpload] = useState(false);
+
+  const [insurance, setInsurance] = useState({
+    insurance: null,
+  });
+
+  const handleInsuranceChange = (e) => {
+    const { name, files } = e.target;
+    setInsurance((prevState) => ({
+      ...prevState,
+      [name]: files[0],
+    }));
+  };
+
+  const handleInsuranceSubmit = async (e) => {
+    setIsLoading(true);
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("driver_id", vehiLogUser?.driver_id);
+    formData.append("insurance", insurance.insurance);
+
+    try {
+      const response = await axios.post(
+        "/api/driver/vehical_insurence.php",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      // console.log("Response: ", response.data);
+      if (response.data) {
+        setIsInsuranceImgUpload(true);
+        setIsLoading(false);
+        toast.success("Success upload!", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      } else {
+        setIsInsuranceImgUpload(false);
+        setIsLoading(false);
+        toast.error("Upload faild", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      }
+    } catch (error) {
+      setIsInsuranceImgUpload(false);
+      setIsLoading(false);
+
+      {
+        error.message === "Network Error" ||
+        error.message === "Request failed with status code 500"
+          ? setIsErrorMessage("Network Error")
+          : setIsErrorMessage("Upload failed");
+      }
+
+      toast.error(isErrorMessage, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      console.log("Error: ", error);
+    }
+  };
+
+  //=====================👆 End  Insurance section 👆==============================
+
+
+  //=====================👇Start Adhar Card And Driving license section👇==========================
+
+    // image upload after successful message show adhar and license text
+    const [isAdharLicenseImgUpload, setIsAdharLicenseImgUpload] = useState(false);
+
+    const [fileAdharLicense, setFileAdharLicense] = useState({
+      adhar_front: null,
+      adhar_back: null,
+      driving_lic_front: null,
+      driving_lic_back: null,
+    })
+
+    const handleAdharLicenseFileChange = (e) => {
+      const { name, files } = e.target;
+      setFileAdharLicense((prevState) => ({
+       ...prevState,
+        [name]: files[0],
+      }));
+    };
+
+    const handleAdharLicenseSubmit = async (e) => {
+      setIsLoading(true);
+      e.preventDefault();
+      const formData = new FormData();
+      formData.append("driver_id", vehiLogUser?.driver_id);
+      formData.append("adhar_card_img", fileAdharLicense.adhar_front);
+      formData.append("adhar_card_back_img", fileAdharLicense.adhar_back);
+      formData.append("driving_lic_front_img", fileAdharLicense.driving_lic_front);
+      formData.append("driving_lic_back_img", fileAdharLicense.driving_lic_back);
+
+      
+    try {
+      const response = await axios.post(
+        "/api/driver/driver_registration_updates.php",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      // console.log("Response: ", response.data);
+      if (response.data) {
+        setIsAdharLicenseImgUpload(true);
+        setIsLoading(false);
+        toast.success("Success upload!", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      } else {
+        setIsAdharLicenseImgUpload(false);
+        setIsLoading(false);
+        toast.error("Upload faild", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      }
+    } catch (error) {
+      setIsAdharLicenseImgUpload(false);
+      setIsLoading(false);
+
+      {
+        error.message === "Network Error" ||
+        error.message === "Request failed with status code 500"
+          ? setIsErrorMessage("Network Error")
+          : setIsErrorMessage("Upload failed");
+      }
+
+      toast.error(isErrorMessage, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      console.log("Error: ", error);
+    }
+    }
+
+  //=====================👆 End  Adhar Card And Driving license section 👆==============================
 
   return (
     <>
       <div className="mt-16 w-full h-full relative">
         {/* Loading image section */}
-        <div className={`w-full h-full z-10 bg-[rgba(0,0,0,0.5)] absolute ${isLoading ? '' : 'hidden'}`}>
+        <div
+          className={`w-full h-full z-10 bg-[rgba(0,0,0,0.5)] absolute ${
+            isLoading ? "" : "hidden"
+          }`}
+        >
           <div className=" absolute w-full h-screen flex justify-center items-center">
             <img
               className="w-[100px] h-[100px] fixed"
@@ -256,6 +589,7 @@ function VehiProfile() {
                 <Link to="/loaddatalist">Home</Link>
               </h1>
             </div>
+            {/* Text form section */}
             <form action="" className="px-4 pt-2">
               <div className="grid sm:grid-cols-2 md:mt-6">
                 <div>
@@ -414,13 +748,12 @@ function VehiProfile() {
             </form>
             <hr className="w-[94%] mx-auto" />
 
-
             {/* All phot upload section */}
             <div className="px-2">
               {/* Photo Upload section */}
               <div className="mt-4 grid sm:grid-cols-2">
                 {/* Vehicle photo */}
-                <form onSubmit={handleVehiclePhotoSubmit} >
+                <form onSubmit={handleVehiclePhotoSubmit}>
                   <h1 className="md:text-[25px] text-[20px] pt-2 font-semibold text-purple-600">
                     Upload Vehicle Photos
                   </h1>
@@ -429,7 +762,13 @@ function VehiProfile() {
                       <span className="md:text-lg font-semibold text-purple-600 mt-2">
                         Vehicle Front photo
                       </span>
-                      <span className={`text-pink-600 font-serif  ${isVehiImgUpload ? '' : 'hidden'}`}>upload successfully</span>
+                      <span
+                        className={`text-green-600 font-serif  ${
+                          isVehiImgUpload ? "" : "hidden"
+                        }`}
+                      >
+                        upload successfully
+                      </span>
                       <input
                         type="file"
                         required
@@ -442,7 +781,13 @@ function VehiProfile() {
                       <span className="md:text-lg font-semibold text-purple-600 mt-2">
                         Vehicle Back photo
                       </span>
-                      <span className={`text-pink-600 font-serif  ${isVehiImgUpload ? '' : 'hidden'}`}>upload successfully</span>
+                      <span
+                        className={`text-green-600 font-serif  ${
+                          isVehiImgUpload ? "" : "hidden"
+                        }`}
+                      >
+                        upload successfully
+                      </span>
                       <input
                         type="file"
                         required
@@ -455,7 +800,13 @@ function VehiProfile() {
                       <span className="md:text-lg font-semibold text-purple-600 mt-2">
                         Vehicle Left Side photo
                       </span>
-                      <span className={`text-pink-600 font-serif  ${isVehiImgUpload ? '' : 'hidden'}`}>upload successfully</span>
+                      <span
+                        className={`text-green-600 font-serif  ${
+                          isVehiImgUpload ? "" : "hidden"
+                        }`}
+                      >
+                        upload successfully
+                      </span>
                       <input
                         type="file"
                         required
@@ -468,7 +819,13 @@ function VehiProfile() {
                       <span className="md:text-lg font-semibold text-purple-600 mt-2">
                         Vehicle Right Side photo
                       </span>
-                      <span className={`text-pink-600 font-serif  ${isVehiImgUpload ? '' : 'hidden'}`}>upload successfully</span>
+                      <span
+                        className={`text-green-600 font-serif  ${
+                          isVehiImgUpload ? "" : "hidden"
+                        }`}
+                      >
+                        upload successfully
+                      </span>
                       <input
                         type="file"
                         required
@@ -487,8 +844,8 @@ function VehiProfile() {
                 </form>
 
                 <div className="md:mt-0 mt-6">
-                  {/* Vehicle Registration Document photo */}
-                  <form>
+                  {/* Vehicle Registration or book rc Document photo */}
+                  <form onSubmit={handleRegSumbmit}>
                     <h1 className="md:text-[25px] text-[20px] pt-2 font-semibold text-gray-600">
                       Upload Vehicle Reg. Document
                     </h1>
@@ -496,10 +853,18 @@ function VehiProfile() {
                       <span className="md:text-lg font-semibold text-gray-600 mt-2">
                         Reg. Front photo
                       </span>
-                      <span className=" text-gray-600 font-serif cursor-pointer"></span>
+                      <span
+                        className={`text-green-600 font-serif  ${
+                          isRegistrationImgUpload ? "" : "hidden"
+                        }`}
+                      >
+                        upload successfully
+                      </span>
                       <input
                         type="file"
                         required
+                        name="regFront"
+                        onChange={handleRegistrationFileChange}
                         className="w-[200px] cursor-pointer"
                       />
                     </div>
@@ -507,10 +872,18 @@ function VehiProfile() {
                       <span className="md:text-lg font-semibold text-gray-600 mt-2">
                         Reg. Back photo
                       </span>
-                      <span className=" text-gray-600 font-serif cursor-pointer"></span>
+                      <span
+                        className={`text-green-600 font-serif  ${
+                          isRegistrationImgUpload ? "" : "hidden"
+                        }`}
+                      >
+                        upload successfully
+                      </span>
                       <input
                         type="file"
                         required
+                        name="regBack"
+                        onChange={handleRegistrationFileChange}
                         className="w-[200px] cursor-pointer"
                       />
                     </div>
@@ -524,7 +897,7 @@ function VehiProfile() {
                   </form>
 
                   {/*👉 Vehicle Insurance */}
-                  <form className="mt-4">
+                  <form onSubmit={handleInsuranceSubmit} className="mt-4">
                     <h1 className="md:text-[25px] text-[20px] pt-2 font-semibold text-blue-400">
                       Upload Vehicle Insurance
                     </h1>
@@ -532,10 +905,18 @@ function VehiProfile() {
                       <span className="md:text-lg font-semibold text-blue-400 mt-2">
                         Vehicle Insurance photo
                       </span>
-                      <span className=" text-blue-400 font-serif cursor-pointer"></span>
+                      <span
+                        className={`text-green-600 font-serif  ${
+                          isInsuranceImgUpload ? "" : "hidden"
+                        }`}
+                      >
+                        upload successfully
+                      </span>
                       <input
                         type="file"
                         required
+                        name="insurance"
+                        onChange={handleInsuranceChange}
                         className="w-[200px] cursor-pointer"
                       />
                     </div>
@@ -550,99 +931,111 @@ function VehiProfile() {
                 </div>
               </div>
 
-              <div className="md:mt-14 mt-8 grid sm:grid-cols-2">
-                {/* Upload Vehicle RC Book Section */}
-                <div>
-                  <form>
-                    <h1 className="md:text-[25px] text-[20px] pt-2 font-semibold text-fuchsia-500">
-                      Upload Vehicle RC Book
+              <div className="mt-8 grid sm:grid-cols-2">
+                {/* Adhar card and License section */}
+                <form
+                onSubmit={handleAdharLicenseSubmit}
+                className="md:mt-0 mt-6">
+                  <div>
+                    <h1 className="md:text-[25px] text-[20px] pt-2 font-semibold text-yellow-600">
+                      Upload Adhar Card Document
                     </h1>
                     <div className="grid grid-cols-1">
-                      <span className="md:text-lg font-semibold text-fuchsia-500 mt-2">
-                        Front RC Book photo
+                      <span className="md:text-lg font-semibold text-yellow-600 mt-2">
+                        Adhar Front photo
                       </span>
-                      <span className=" text-fuchsia-600 font-serif cursor-pointer"></span>
+                      <span className=" text-yellow-600 font-serif cursor-pointer"></span>
                       <input
                         type="file"
                         required
+                        name="adhar_front"
+                        onChange={handleAdharLicenseFileChange}
                         className="w-[200px] cursor-pointer"
                       />
                     </div>
                     <div className="grid grid-cols-1">
-                      <span className="md:text-lg font-semibold text-fuchsia-600 mt-2">
-                        Back RC Book photo
+                      <span className="md:text-lg font-semibold text-yellow-600 mt-2">
+                        Adhar Back photo
                       </span>
-                      <span className=" text-fuchsia-600 font-serif cursor-pointer"></span>
-                      <input type="file" className="w-[200px] cursor-pointer" />
+                      <span className=" text-yellow-600 font-serif cursor-pointer"></span>
+                      <input
+                        type="file"
+                        required
+                        name="adhar_back"
+                        onChange={handleAdharLicenseFileChange}
+                        className="w-[200px] cursor-pointer"
+                      />
                     </div>
-                    {/* Button Section */}
-                    <button
-                      type="submit"
-                      className="w-[120px] text-white py-3 ml-auto rounded-lg text-2xl shadow-md shadow-[yellow] font-bold bg-gradient-to-r from-gray-400 to-fuchsia-500 hover:from-[#10a580] hover:to-slate-400 mt-4"
-                    >
-                      upload
-                    </button>
-                  </form>
+                  </div>
 
-                  {/* Pollution */}
-                  <form
-                  onSubmit={handlePollutionSubmit}
-                  >
-                    <h1 className="md:text-[25px] mt-4 text-[20px] pt-2 font-semibold text-[#4a8fc3]">
-                      Upload Pollution Certification
+                  {/* Driver License upload section */}
+                  <div>
+                    <h1 className="md:text-[25px] text-[20px] pt-2 font-semibold text-yellow-800">
+                      Upload Driving license
                     </h1>
                     <div className="grid grid-cols-1">
-                      <span className="md:text-lg font-semibold text-[#4a8fc3] mt-2">
-                        Pollution Certification (
-                        <span className="text-[green]">Optional</span>)
+                      <span className="md:text-lg font-semibold text-yellow-800 mt-2">
+                        license Front photo
                       </span>
-                      <span className={`text-pink-600 font-serif  ${isPollutionImgUpload ? '' : 'hidden'}`}>upload successfully</span>
-                      <input type="file" 
-                      name="pollution_certification"
-                      onChange={handlePollutionChange}
-                      className="w-[200px] cursor-pointer" />
+                      <span className=" text-yellow-800 font-serif cursor-pointer"></span>
+                      <input
+                        type="file"
+                        required
+                        name="driving_lic_front"
+                        onChange={handleAdharLicenseFileChange}
+                        className="w-[200px] cursor-pointer"
+                      />
                     </div>
-                    {/* Button Section */}
-                    <button
-                      type="submit"
-                      className="w-[120px] text-white py-3 ml-auto rounded-lg text-2xl shadow-md shadow-[yellow] font-bold bg-gradient-to-r from-[#67882d] to-[#4a8fc3] hover:from-range-500 hover:to-yellow-500 mt-4"
-                    >
-                      upload
-                    </button>
-                  </form>
-                </div>
-
-                {/* Adhar card section */}
-                <form className="md:mt-0 mt-6">
-                  <h1 className="md:text-[25px] text-[20px] pt-2 font-semibold text-yellow-600">
-                    Upload Adhar Card Document
+                    <div className="grid grid-cols-1">
+                      <span className="md:text-lg font-semibold text-yellow-800 mt-2">
+                        license Back photo
+                      </span>
+                      <span className=" text-yellow-600 font-serif cursor-pointer"></span>
+                      <input
+                        type="file"
+                        required
+                        name="driving_lic_back"
+                        onChange={handleAdharLicenseFileChange}
+                        className="w-[200px] cursor-pointer"
+                      />
+                    </div>
+                  </div>
+                  {/* Button Section */}
+                  <button
+                    type="submit"
+                    className="w-[120px] text-white py-3 ml-auto rounded-lg text-2xl shadow-md shadow-[yellow] font-bold bg-gradient-to-r from-neutral-500 to-yellow-600 hover:from-pink-500 hover:to-neutral-500 mt-4"
+                  >
+                    upload
+                  </button>
+                </form>
+                {/* Pollution */}
+                <form onSubmit={handlePollutionSubmit}>
+                  <h1 className="md:text-[25px] mt-4 text-[20px] pt-2 font-semibold text-[#4a8fc3]">
+                    Upload Pollution Certification
                   </h1>
                   <div className="grid grid-cols-1">
-                    <span className="md:text-lg font-semibold text-yellow-600 mt-2">
-                      Adhar Front photo
+                    <span className="md:text-lg font-semibold text-[#4a8fc3] mt-2">
+                      Pollution Certification (
+                      <span className="text-[green]">Optional</span>)
                     </span>
-                    <span className=" text-yellow-600 font-serif cursor-pointer"></span>
+                    <span
+                      className={`text-green-600 font-serif  ${
+                        isPollutionImgUpload ? "" : "hidden"
+                      }`}
+                    >
+                      upload successfully
+                    </span>
                     <input
                       type="file"
-                      required
-                      className="w-[200px] cursor-pointer"
-                    />
-                  </div>
-                  <div className="grid grid-cols-1">
-                    <span className="md:text-lg font-semibold text-yellow-600 mt-2">
-                      Adhar Back photo
-                    </span>
-                    <span className=" text-yellow-600 font-serif cursor-pointer"></span>
-                    <input
-                      type="file"
-                      required
+                      name="pollution_certification"
+                      onChange={handlePollutionChange}
                       className="w-[200px] cursor-pointer"
                     />
                   </div>
                   {/* Button Section */}
                   <button
                     type="submit"
-                    className="w-[120px] text-white py-3 ml-auto rounded-lg text-2xl shadow-md shadow-[yellow] font-bold bg-gradient-to-r from-neutral-500 to-yellow-600 hover:from-pink-500 hover:to-neutral-500 mt-4"
+                    className="w-[120px] text-white py-3 ml-auto rounded-lg text-2xl shadow-md shadow-[yellow] font-bold bg-gradient-to-r from-[#67882d] to-[#4a8fc3] hover:from-range-500 hover:to-yellow-500 mt-4"
                   >
                     upload
                   </button>
