@@ -43,7 +43,7 @@ function LoginVehiclePage() {
     return token;
   };
 
-  // Handle form submission
+  // Handle form submission functions
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevents page reload on form submit
 

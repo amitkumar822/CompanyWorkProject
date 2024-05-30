@@ -1,4 +1,5 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import axios from 'axios';
 import { RiMapPinUserFill } from "react-icons/ri";
 import { CgProfile } from "react-icons/cg";
 import VehiLogUserContext from "../../../context/vehicleLoginUser/VehiLogUserContext";
@@ -6,6 +7,8 @@ import Typed from "typed.js"; // Importing Typed.js for typing animation
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"; // status percentage complete animation show
 import "react-circular-progressbar/dist/styles.css"; // styles status percentage complete animation show
 import { Link } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function VehiProfile() {
   //👇 global variables access vehicle login user details
@@ -40,6 +43,67 @@ function VehiProfile() {
       typedPhone.destroy(); // Cleanup animation on component unmount
     };
   }, []);
+
+  // vehicles 4 sides photos upload
+  const [filesVehicle, setFilesVehicle] = useState({
+    front: null,
+    back: null,
+    left: null,
+    right: null,
+  });
+
+  const handleVehicleFileChange = (e) => {
+    const {name, files} = e.target;
+    setFilesVehicle((prevState) => ({
+       ...prevState,
+        [name]: files[0],
+    }))
+  }
+
+  const handleVehiclePhotoSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("driver_id", vehiLogUser?.driver_id);
+    formData.append("vehical_photos_front", filesVehicle.front);
+    formData.append("vehical_photos_back", filesVehicle.back);
+    formData.append("vehical_photos_left", filesVehicle.left);
+    formData.append("vehical_photos_right", filesVehicle.right);
+
+    try {
+      const response = await axios.post('/api/driver/vehical_photo_upload.php', formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      // console.log("Response: ", response.data);
+      if (response.data) {
+        toast.success('Success upload!', {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
+      } else {
+        toast.error('Upload failed', {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
+      }
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  }
+//End vehicles 4 sides photos upload
   return (
     <>
       <div className="mt-16 w-full h-full">
@@ -258,12 +322,13 @@ function VehiProfile() {
             </form>
             <hr className="w-[94%] mx-auto" />
 
+
             {/* All phot upload section */}
             <div className="px-2">
               {/* Photo Upload section */}
               <div className="mt-4 grid sm:grid-cols-2">
                 {/* Vehicle photo */}
-                <form className="">
+                <form onSubmit={handleVehiclePhotoSubmit} >
                   <h1 className="md:text-[25px] text-[20px] pt-2 font-semibold text-purple-600">
                     Upload Vehicle Photos
                   </h1>
@@ -276,6 +341,8 @@ function VehiProfile() {
                       <input
                         type="file"
                         required
+                        name="front"
+                        onChange={handleVehicleFileChange}
                         className="w-[200px] cursor-pointer"
                       />
                     </div>
@@ -287,6 +354,8 @@ function VehiProfile() {
                       <input
                         type="file"
                         required
+                        name="back"
+                        onChange={handleVehicleFileChange}
                         className="w-[200px] cursor-pointer"
                       />
                     </div>
@@ -298,6 +367,8 @@ function VehiProfile() {
                       <input
                         type="file"
                         required
+                        name="left"
+                        onChange={handleVehicleFileChange}
                         className="w-[200px] cursor-pointer"
                       />
                     </div>
@@ -309,6 +380,8 @@ function VehiProfile() {
                       <input
                         type="file"
                         required
+                        name="right"
+                        onChange={handleVehicleFileChange}
                         className="w-[200px] cursor-pointer"
                       />
                     </div>
@@ -576,6 +649,7 @@ function VehiProfile() {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 }
