@@ -89,7 +89,6 @@ function VehiProfile() {
           },
         }
       );
-      // console.log("Response: ", response.data);
       if (response.data) {
         setIsVehiImgUpload(true);
         setIsLoading(false);
@@ -182,7 +181,6 @@ function VehiProfile() {
           },
         }
       );
-      // console.log("Response: ", response.data);
       if (response.data) {
         setIsPollutionImgUpload(true);
         setIsLoading(false);
@@ -273,7 +271,6 @@ function VehiProfile() {
           },
         }
       );
-      // console.log("Response: ", response.data);
       if (response.data) {
         setIsRegistrationImgUpload(true);
         setIsLoading(false);
@@ -362,7 +359,6 @@ function VehiProfile() {
           },
         }
       );
-      // console.log("Response: ", response.data);
       if (response.data) {
         setIsInsuranceImgUpload(true);
         setIsLoading(false);
@@ -417,38 +413,39 @@ function VehiProfile() {
 
   //=====================👆 End  Insurance section 👆==============================
 
-
   //=====================👇Start Adhar Card And Driving license section👇==========================
 
-    // image upload after successful message show adhar and license text
-    const [isAdharLicenseImgUpload, setIsAdharLicenseImgUpload] = useState(false);
+  // image upload after successful message show adhar and license text
+  const [isAdharLicenseImgUpload, setIsAdharLicenseImgUpload] = useState(false);
 
-    const [fileAdharLicense, setFileAdharLicense] = useState({
-      adhar_front: null,
-      adhar_back: null,
-      driving_lic_front: null,
-      driving_lic_back: null,
-    })
+  const [fileAdharLicense, setFileAdharLicense] = useState({
+    adhar_front: null,
+    adhar_back: null,
+    driving_lic_front: null,
+    driving_lic_back: null,
+  });
 
-    const handleAdharLicenseFileChange = (e) => {
-      const { name, files } = e.target;
-      setFileAdharLicense((prevState) => ({
-       ...prevState,
-        [name]: files[0],
-      }));
-    };
+  const handleAdharLicenseFileChange = (e) => {
+    const { name, files } = e.target;
+    setFileAdharLicense((prevState) => ({
+      ...prevState,
+      [name]: files[0],
+    }));
+  };
 
-    const handleAdharLicenseSubmit = async (e) => {
-      setIsLoading(true);
-      e.preventDefault();
-      const formData = new FormData();
-      formData.append("driver_id", vehiLogUser?.driver_id);
-      formData.append("adhar_card_img", fileAdharLicense.adhar_front);
-      formData.append("adhar_card_back_img", fileAdharLicense.adhar_back);
-      formData.append("driving_lic_front_img", fileAdharLicense.driving_lic_front);
-      formData.append("driving_lic_back_img", fileAdharLicense.driving_lic_back);
+  const handleAdharLicenseSubmit = async (e) => {
+    setIsLoading(true);
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("driver_id", vehiLogUser?.driver_id);
+    formData.append("adhar_card_img", fileAdharLicense.adhar_front);
+    formData.append("adhar_card_back_img", fileAdharLicense.adhar_back);
+    formData.append(
+      "driving_lic_front_img",
+      fileAdharLicense.driving_lic_front
+    );
+    formData.append("driving_lic_back_img", fileAdharLicense.driving_lic_back);
 
-      
     try {
       const response = await axios.post(
         "/api/driver/driver_registration_updates.php",
@@ -459,7 +456,6 @@ function VehiProfile() {
           },
         }
       );
-      // console.log("Response: ", response.data);
       if (response.data) {
         setIsAdharLicenseImgUpload(true);
         setIsLoading(false);
@@ -510,7 +506,7 @@ function VehiProfile() {
       });
       console.log("Error: ", error);
     }
-    }
+  };
 
   //=====================👆 End  Adhar Card And Driving license section 👆==============================
 
@@ -934,8 +930,9 @@ function VehiProfile() {
               <div className="mt-8 grid sm:grid-cols-2">
                 {/* Adhar card and License section */}
                 <form
-                onSubmit={handleAdharLicenseSubmit}
-                className="md:mt-0 mt-6">
+                  onSubmit={handleAdharLicenseSubmit}
+                  className="md:mt-0 mt-6"
+                >
                   <div>
                     <h1 className="md:text-[25px] text-[20px] pt-2 font-semibold text-yellow-600">
                       Upload Adhar Card Document
