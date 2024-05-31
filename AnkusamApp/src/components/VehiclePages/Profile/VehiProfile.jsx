@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import loadingGfg from "../../../data/GfgLoding/loading.gif";
+import {weightdata} from '../../../data/WeightData'
 
 function VehiProfile() {
   //👇 global variables access vehicle login user details
@@ -585,6 +586,7 @@ function VehiProfile() {
                 <Link to="/loaddatalist">Home</Link>
               </h1>
             </div>
+
             {/* Text form section */}
             <form action="" className="px-4 pt-2">
               <div className="grid sm:grid-cols-2 md:mt-6">
@@ -600,9 +602,10 @@ function VehiProfile() {
                     Phone Number
                   </h1>
                   <input
-                    type="text"
+                    type="tel"
                     placeholder="Phone number"
                     required
+                    minLength={10}
                     maxLength={10}
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
@@ -613,8 +616,9 @@ function VehiProfile() {
                     Aadhar Numbar
                   </h1>
                   <input
-                    type="text"
+                    type="tel"
                     placeholder="Adhar number"
+                    minLength={12}
                     maxLength={12}
                     required
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
@@ -644,7 +648,9 @@ function VehiProfile() {
                   <h1 className="text-[17px] pt-2 font-semibold">
                     License Type
                   </h1>
-                  <select className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]">
+                  <select className="py-2 px-4 rounded-lg md:w-[80%] w-[90%] cursor-pointer"
+                  required
+                  >
                     <option value="">Select License Type</option>
                     <option value="Heavy">Heavy</option>
                     <option value="Batch">Batch</option>
@@ -655,7 +661,9 @@ function VehiProfile() {
                   <h1 className="text-[17px] pt-2 font-semibold">
                     Operator Type
                   </h1>
-                  <select className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]">
+                  <select className="py-2 px-4 rounded-lg md:w-[80%] w-[90%] cursor-pointer"
+                  required
+                  >
                     <option value="">Select Operator Type</option>
                     <option value="Owner">Owner</option>
                     <option value="Driver">Driver</option>
@@ -666,7 +674,9 @@ function VehiProfile() {
                   <h1 className="text-[17px] pt-2 font-semibold">
                     Vehicle Type
                   </h1>
-                  <select className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]">
+                  <select className="py-2 px-4 rounded-lg md:w-[80%] w-[90%] cursor-pointer"
+                  required
+                  >
                     <option value="">Select Type of Vehicle</option>
                     <option value="Open Body">Open Body</option>
                     <option value="Closed Body">Closed Body</option>
@@ -697,12 +707,20 @@ function VehiProfile() {
                   <h1 className="text-[17px] pt-2 font-semibold">
                     Vehicle Capacity(tons)
                   </h1>
-                  <input
-                    type="text"
-                    placeholder="Vehicle capacity in ton"
-                    required
-                    className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
-                  />
+                  <select className="py-2 px-4 rounded-lg md:w-[80%] w-[90%] cursor-pointer"
+                  required
+                  >
+                    <option value="">Select capacity</option>
+                    {
+                      weightdata.map((capacity, index) => {
+                        return (
+                          <option key={index} value={capacity}>
+                            {capacity}
+                          </option>
+                        )
+                      })
+                    }
+                  </select>
                 </div>
 
                 <div>
@@ -711,22 +729,16 @@ function VehiProfile() {
                   </h1>
                   <input
                     type="text"
+                    required
                     placeholder="Vehicle make and model"
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
-                  {/* <h1 className="text-[17px] pt-2 font-semibold">
-                    Vehicle Mode
-                  </h1>
-                  <input
-                    type="text"
-                    placeholder="Vehicle model"
-                    className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
-                  /> */}
                   <h1 className="text-[17px] pt-2 font-semibold">
                     Vehicle Length
                   </h1>
                   <input
                     type="text"
+                    required
                     placeholder="Vehicle length"
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
