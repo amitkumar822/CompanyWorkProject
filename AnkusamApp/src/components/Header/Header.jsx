@@ -213,7 +213,7 @@ const RegistrationClickBox = () => {
   return (
     <>
       <div
-        className={`flex w-[210px] h-[97px] bg-white px-2 text-black absolute top-9 left-[320px] rounded-lg items-center shadow-md shadow-gray-800 justify-center`}
+        className={`flex w-[210px] h-[97px] bg-white px-2 text-black absolute top-9 left-[370px] rounded-lg items-center shadow-md shadow-gray-800 justify-center`}
       >
         <div>
           <ul className="leading-8">
@@ -408,10 +408,10 @@ const MenuListBusinessLogin = () => {
               <Link to="">Check Loads</Link>
             </li>
             <li className="tracking-tight cursor-pointer hover:text-[#c3c2c2] duration-300">
-              <Link to='/availablevehiclelist'>Check Available Vehicles</Link>
+              <Link to="/availablevehiclelist">Check Available Vehicles</Link>
             </li>
             <li className="tracking-tight cursor-pointer hover:text-[#c3c2c2] duration-300">
-              <Link to='/businessprofile'>Profile</Link>
+              <Link to="/businessprofile">Profile</Link>
             </li>
           </ul>
           <ul className="text-[1.2vw] text-center">
@@ -476,14 +476,17 @@ const MenuListBusinessLogin = () => {
           <hr className=" border-dashed border-[1.3px] my-1" />
           <div className="flex items-center gap-2 font-semibold hover:text-[#6b6a6a] duration-200">
             <LuUserCircle2 className="text-[green]" />
-            <Link to='/businessprofile' onClick={() => setToggleSlide(false)}>
+            <Link to="/businessprofile" onClick={() => setToggleSlide(false)}>
               Profile
             </Link>
           </div>
           <hr className=" border-dashed border-[1.3px] my-1" />
           <div className="flex items-center gap-2 font-semibold hover:text-[#6b6a6a] duration-200">
             <TbTruckLoading className="text-[green]" />
-            <Link to="/availablevehiclelist" onClick={() => setToggleSlide(false)}>
+            <Link
+              to="/availablevehiclelist"
+              onClick={() => setToggleSlide(false)}
+            >
               Check Loads
             </Link>
           </div>
