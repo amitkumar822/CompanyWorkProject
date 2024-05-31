@@ -33,17 +33,19 @@ function SignupVehiclePage() {
 
     if (!isCheckedTermsConditions) {
       // Check if terms and conditions are agreed
-      // alert("You must agree to the terms and conditions before signing up.");
-      toast.info('You must agree to the terms and conditions before signing up!', {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+      toast.info(
+        "You must agree to the terms and conditions before signing up!",
+        {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        }
+      );
       return;
     }
 
@@ -69,44 +71,62 @@ function SignupVehiclePage() {
 
     try {
       // Send POST request to backend
-      const response = await fetch("/api/driver/signup.php", {
-        method: "POST",
-        body: formData, // Send form data
-      });
+      const vehical_validation = await fetch(
+        "/api/driver/vehical_validation.php",
+        {
+          method: "POST",
+          body: formData, // Send form data
+        }
+      );
 
-      // Log the response status and headers
-      console.log("Response Status:", response.status);
-      console.log("Response Headers:", response.headers);
+      
+      const vehicalFound = await vehical_validation.json()
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok " + response.statusText); // Throw error if response is not ok
-      }
+      console.log('====================================');
+      console.log("VResponse: ", vehicalFound.vehicalFound);
+      console.log('====================================');
 
-      // Parse JSON response
-      const data = await response.json();
+      if (!vehicalFound.vehicalFound) {
+        // Send POST request to backend
+        const response = await fetch("/api/driver/signup.php", {
+          method: "POST",
+          body: formData, // Send form data
+        });
 
-      // Log the entire response for debugging
-      console.log("Full Response:", data);
-      console.log("====================================");
-      console.log("Result:", data);
-      console.log("====================================");
+        // Log the response status and headers
+        console.log("Response Status:", response.status);
+        console.log("Response Headers:", response.headers);
 
-      // Handle the success or failure based on response
-      if (data.status === true || data.status === "true") {
-        toast.success('Signup successful!', {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
+        if (!response.ok) {
+          throw new Error("Network response was not ok " + response.statusText); // Throw error if response is not ok
+        }
+
+        // Parse JSON response
+        const data = await response.json();
+
+        // Log the entire response for debugging
+        console.log("Full Response:", data);
+        console.log("====================================");
+        console.log("Status-> :", data.success);
+        console.log("====================================");
+
+        // Handle the success or failure based on response
+        if (data.success) {
+          toast.success("Signup successful!", {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
           });
-        // Redirect to a different page on successful login (uncomment below line when navigation is setup)
-        // navigate('/dashboard')
+          // Redirect to a different page on successful login (uncomment below line when navigation is setup)
+          // navigate('/dashboard')
+        }
       } else {
-        toast.error("This vehicle number already exists!", {
+        toast.error("Vehicle number already exists!", {
           position: "top-center",
           autoClose: 3000,
           hideProgressBar: false,
@@ -116,6 +136,7 @@ function SignupVehiclePage() {
           progress: undefined,
           theme: "colored",
         });
+        return;
       }
     } catch (error) {
       // Handle errors (currently empty, but can add error logging)
