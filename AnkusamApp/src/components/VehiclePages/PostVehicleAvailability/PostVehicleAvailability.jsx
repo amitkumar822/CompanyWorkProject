@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { City } from "country-state-city";
 import Select from 'react-select';
+import { weightdata } from "../../../data/WeightData";
 
 // Define the specific states with their names and ISO codes
 const specificStates = [
@@ -167,7 +168,7 @@ function PostVehicleAvailability() {
                     <select 
                       name="vehicleType" 
                       id="vehicleType"
-                      className="cursor-pointer w-[150px]"
+                      className="py-2 px-4 md:w-[60%] border outline-none rounded-lg shadow-md cursor-pointer "
                       // value={vehicleType}
                       onChange={(e) => setVehicleTyps(e.target.value)}
                     >
@@ -227,14 +228,18 @@ function PostVehicleAvailability() {
                     <h3 className="md:text-lg font-semibold text-black">
                       Vehicle Capacity in Tons
                     </h3>
-                    <input
-                      className="py-2 px-4 md:w-[60%] border outline-none rounded-lg shadow-md"
-                      type="text"
-                      placeholder="Please enter capacity in tons..."
-                      required
-                      value={vehicleCapacity}
-                      onChange={(e) => setVehicleCapacity(e.target.value)}
-                    />
+                   <select name="" id=""
+                   className="py-2 px-4 md:w-[60%] border outline-none rounded-lg shadow-md cursor-pointer"
+                   >
+                    <option value="">Select capacity</option>
+                    {
+                      weightdata.map((capacity, index) => (
+                        <option key={index} value={capacity.capacity}>
+                          {capacity}
+                        </option>
+                      ))
+                    }
+                   </select>
                     <br />
                     <h3 className="md:text-lg font-semibold text-black">
                       Vehicle Length
