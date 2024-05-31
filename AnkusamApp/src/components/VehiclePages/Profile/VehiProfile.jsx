@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import loadingGfg from "../../../data/GfgLoding/loading.gif";
-import {weightdata} from '../../../data/WeightData'
+import { weightdata } from "../../../data/WeightData";
 
 function VehiProfile() {
   //👇 global variables access vehicle login user details
@@ -49,6 +49,150 @@ function VehiProfile() {
   // loading animation state handle
   const [isLoading, setIsLoading] = useState(false);
   const [isErrorMessage, setIsErrorMessage] = useState("Upload failed");
+
+  //=====================👇Start Form Text section👇==============================
+
+  const [driverVehiFormText, setDriverVehiFormText] = useState({
+    driver_name: null,
+    aadhar_number: null,
+    phone: null,
+    htown: null,
+    driving_license_number: null,
+    license_type: "",
+    vehicle_register_number: null,
+    vehicle_make_and_model: null,
+    operator_type: "",
+    vehicle_name: null,
+    vehicle_length: null,
+    vehicle_capacity_in_tons: "",
+    vehicle_type: "",
+  });
+
+  const handleDriverVehiFormTextChange = (e) => {
+    const { name, value } = e.target;
+    setDriverVehiFormText((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleDriverVehiFormTextSubmit = async (e) => {
+    setIsLoading(true);
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("driver_id", vehiLogUser?.driver_id);
+    formData.append("driver_name", driverVehiFormText.driver_name);
+    formData.append("aadhar_number", driverVehiFormText.aadhar_number);
+    formData.append("phone", driverVehiFormText.phone);
+    formData.append("htown", driverVehiFormText.htown);
+    formData.append(
+      "driving_license_number",
+      driverVehiFormText.driving_license_number
+    );
+    formData.append("license_type", driverVehiFormText.license_type);
+    formData.append(
+      "vehicle_register_number",
+      driverVehiFormText.vehicle_register_number
+    );
+    formData.append(
+      "vehicle_make_and_model",
+      driverVehiFormText.vehicle_make_and_model
+    );
+    formData.append("operator_type", driverVehiFormText.operator_type);
+    formData.append("vehicle_name", driverVehiFormText.vehicle_name);
+    formData.append("vehicle_length", driverVehiFormText.vehicle_length);
+    formData.append(
+      "vehicle_capacity_in_tons",
+      driverVehiFormText.vehicle_capacity_in_tons
+    );
+    formData.append("vehicle_type", driverVehiFormText.vehicle_type);
+
+    try {
+      const response = await axios.post(
+        "/api/driver/webapi/driver_vehicle_form.php",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      if (response.data) {
+        setIsLoading(false);
+        toast.success("Success submit!", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      } else {
+        setIsLoading(false);
+        toast.error("Submit faild", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      }
+    } catch (error) {
+      setIsLoading(false);
+      {
+        error.message === "Network Error" ||
+        error.message === "Request failed with status code 500"
+          ? setIsErrorMessage("Network Error")
+          : setIsErrorMessage("Submit failed");
+      }
+
+      toast.error(isErrorMessage, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      console.log("Error: ", error);
+    }
+  };
+
+  console.log("====================================");
+  console.log("Adhar number: ", driverVehiFormText.driver_name);
+  console.log("phone: ", driverVehiFormText.phone);
+  console.log("htown: ", driverVehiFormText.htown);
+  console.log(
+    "driving_license_number: ",
+    driverVehiFormText.driving_license_number
+  );
+  console.log("license_type: ", driverVehiFormText.license_type);
+  console.log(
+    "vehicle_register_number: ",
+    driverVehiFormText.vehicle_register_number
+  );
+  console.log(
+    "vehicle_make_and_model: ",
+    driverVehiFormText.vehicle_make_and_model
+  );
+  console.log("operator_type: ", driverVehiFormText.operator_type);
+  console.log("vehicle_name: ", driverVehiFormText.vehicle_name);
+  console.log("vehicle_length: ", driverVehiFormText.vehicle_length);
+  console.log(
+    "vehicle_capacity_in_tons: ",
+    driverVehiFormText.vehicle_capacity_in_tons
+  );
+  console.log("vehicle_type: ", driverVehiFormText.vehicle_type);
+  console.log("====================================");
+  //=====================👆End Form Text section👆=============================
 
   //=====================👇Start vehicles 4 sides photos upload section👇==============================
 
@@ -588,7 +732,11 @@ function VehiProfile() {
             </div>
 
             {/* Text form section */}
-            <form action="" className="px-4 pt-2">
+            <form
+              onSubmit={handleDriverVehiFormTextSubmit}
+              action=""
+              className="px-4 pt-2"
+            >
               <div className="grid sm:grid-cols-2 md:mt-6">
                 <div>
                   <h1 className="text-[17px] pt-2 font-semibold">Name</h1>
@@ -596,6 +744,8 @@ function VehiProfile() {
                     type="text"
                     placeholder="Enter your name"
                     required
+                    name="driver_name"
+                    onChange={handleDriverVehiFormTextChange}
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
                   <h1 className="text-[17px] pt-2 font-semibold">
@@ -607,6 +757,8 @@ function VehiProfile() {
                     required
                     minLength={10}
                     maxLength={10}
+                    name="phone"
+                    onChange={handleDriverVehiFormTextChange}
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
                 </div>
@@ -621,6 +773,8 @@ function VehiProfile() {
                     minLength={12}
                     maxLength={12}
                     required
+                    name="aadhar_number"
+                    onChange={handleDriverVehiFormTextChange}
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
                   <h1 className="text-[17px] pt-2 font-semibold">Home Town</h1>
@@ -628,6 +782,8 @@ function VehiProfile() {
                     type="text"
                     placeholder="Home Town"
                     required
+                    name="htown"
+                    onChange={handleDriverVehiFormTextChange}
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
                 </div>
@@ -641,15 +797,21 @@ function VehiProfile() {
                 type="text"
                 placeholder="Driving license number.."
                 required
+                name="driving_license_number"
+                onChange={handleDriverVehiFormTextChange}
                 className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
               />
+
               <div className="grid lg:grid-cols-3 sm:grid-cols-2 mt-4">
                 <div>
                   <h1 className="text-[17px] pt-2 font-semibold">
                     License Type
                   </h1>
-                  <select className="py-2 px-4 rounded-lg md:w-[80%] w-[90%] cursor-pointer"
-                  required
+                  <select
+                    className="py-2 px-4 rounded-lg md:w-[80%] w-[90%] cursor-pointer"
+                    required
+                    name="license_type"
+                    onChange={handleDriverVehiFormTextChange}
                   >
                     <option value="">Select License Type</option>
                     <option value="Heavy">Heavy</option>
@@ -661,8 +823,11 @@ function VehiProfile() {
                   <h1 className="text-[17px] pt-2 font-semibold">
                     Operator Type
                   </h1>
-                  <select className="py-2 px-4 rounded-lg md:w-[80%] w-[90%] cursor-pointer"
-                  required
+                  <select
+                    className="py-2 px-4 rounded-lg md:w-[80%] w-[90%] cursor-pointer"
+                    required
+                    name="operator_type"
+                    onChange={handleDriverVehiFormTextChange}
                   >
                     <option value="">Select Operator Type</option>
                     <option value="Owner">Owner</option>
@@ -674,8 +839,11 @@ function VehiProfile() {
                   <h1 className="text-[17px] pt-2 font-semibold">
                     Vehicle Type
                   </h1>
-                  <select className="py-2 px-4 rounded-lg md:w-[80%] w-[90%] cursor-pointer"
-                  required
+                  <select
+                    className="py-2 px-4 rounded-lg md:w-[80%] w-[90%] cursor-pointer"
+                    required
+                    name="vehicle_type"
+                    onChange={handleDriverVehiFormTextChange}
                   >
                     <option value="">Select Type of Vehicle</option>
                     <option value="Open Body">Open Body</option>
@@ -693,6 +861,8 @@ function VehiProfile() {
                     type="text"
                     placeholder="Vehicle register Number"
                     required
+                    name="vehicle_register_number"
+                    onChange={handleDriverVehiFormTextChange}
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
                   <h1 className="text-[17px] pt-2 font-semibold">
@@ -702,24 +872,27 @@ function VehiProfile() {
                     type="text"
                     placeholder="Vehicle name"
                     required
+                    name="vehicle_name"
+                    onChange={handleDriverVehiFormTextChange}
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
                   <h1 className="text-[17px] pt-2 font-semibold">
                     Vehicle Capacity(tons)
                   </h1>
-                  <select className="py-2 px-4 rounded-lg md:w-[80%] w-[90%] cursor-pointer"
-                  required
+                  <select
+                    className="py-2 px-4 rounded-lg md:w-[80%] w-[90%] cursor-pointer"
+                    required
+                    name="vehicle_capacity_in_tons"
+                    onChange={handleDriverVehiFormTextChange}
                   >
                     <option value="">Select capacity</option>
-                    {
-                      weightdata.map((capacity, index) => {
-                        return (
-                          <option key={index} value={capacity}>
-                            {capacity}
-                          </option>
-                        )
-                      })
-                    }
+                    {weightdata.map((capacity, index) => {
+                      return (
+                        <option key={index} value={capacity}>
+                          {capacity}
+                        </option>
+                      );
+                    })}
                   </select>
                 </div>
 
@@ -730,6 +903,8 @@ function VehiProfile() {
                   <input
                     type="text"
                     required
+                    name="vehicle_make_and_model"
+                    onChange={handleDriverVehiFormTextChange}
                     placeholder="Vehicle make and model"
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
@@ -739,6 +914,8 @@ function VehiProfile() {
                   <input
                     type="text"
                     required
+                    name="vehicle_length"
+                    onChange={handleDriverVehiFormTextChange}
                     placeholder="Vehicle length"
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
