@@ -15,6 +15,7 @@ import { weightdata } from "../../../data/WeightData";
 function VehiProfile() {
   //👇 global variables access vehicle login user details
   const { vehiLogUser } = useContext(VehiLogUserContext);
+
   const typedRef = useRef(null);
   const typedRefPhone = useRef(null);
 
@@ -166,32 +167,6 @@ function VehiProfile() {
     }
   };
 
-  console.log("====================================");
-  console.log("Adhar number: ", driverVehiFormText.driver_name);
-  console.log("phone: ", driverVehiFormText.phone);
-  console.log("htown: ", driverVehiFormText.htown);
-  console.log(
-    "driving_license_number: ",
-    driverVehiFormText.driving_license_number
-  );
-  console.log("license_type: ", driverVehiFormText.license_type);
-  console.log(
-    "vehicle_register_number: ",
-    driverVehiFormText.vehicle_register_number
-  );
-  console.log(
-    "vehicle_make_and_model: ",
-    driverVehiFormText.vehicle_make_and_model
-  );
-  console.log("operator_type: ", driverVehiFormText.operator_type);
-  console.log("vehicle_name: ", driverVehiFormText.vehicle_name);
-  console.log("vehicle_length: ", driverVehiFormText.vehicle_length);
-  console.log(
-    "vehicle_capacity_in_tons: ",
-    driverVehiFormText.vehicle_capacity_in_tons
-  );
-  console.log("vehicle_type: ", driverVehiFormText.vehicle_type);
-  console.log("====================================");
   //=====================👆End Form Text section👆=============================
 
   //=====================👇Start vehicles 4 sides photos upload section👇==============================
@@ -655,6 +630,32 @@ function VehiProfile() {
 
   //=====================👆 End  Adhar Card And Driving license section 👆==============================
 
+  // driver vehicle all details
+
+  const [driverVehiAllDetails, setDriverVehiAllDetails] = useState("");
+
+  useEffect(() => {
+    const driverVehiAllDetails = async () => {
+      const formData = new FormData();
+      formData.append("driver_id", vehiLogUser?.driver_id);
+
+      try {
+        const response = await axios.post(
+          "/api/driver/webapi/driver_vehicle_all_detail.php",
+          formData
+        );
+
+        setDriverVehiAllDetails(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    driverVehiAllDetails();
+  }, []);
+
+  console.log("driverVehiAllDetails in state vpro: ", driverVehiAllDetails);
+  console.log("License: ", driverVehiAllDetails.book_rc_back);
+
   return (
     <>
       <div className="mt-16 w-full h-full relative">
@@ -943,16 +944,26 @@ function VehiProfile() {
                     Upload Vehicle Photos
                   </h1>
                   <div className="overflow-hidden">
+                    {/* vehicle front photo */}
                     <div className="grid grid-cols-1">
                       <span className="md:text-lg font-semibold text-purple-600 mt-2">
                         Vehicle Front photo
                       </span>
                       <span
-                        className={`text-green-600 font-serif  ${
+                        className={`text-green-800 font-serif  ${
                           isVehiImgUpload ? "" : "hidden"
                         }`}
                       >
                         upload successfully
+                      </span>
+                      {/* if upload vehicle front photo show text in browser*/}
+                      <span className="w-[250px] overflow-hidden text-green-600">
+                        <a
+                          href={`https://ankusamlogistics.com/driver/${driverVehiAllDetails?.vehical_photos_front}`}
+                          target="_blank"
+                        >
+                          {driverVehiAllDetails?.vehical_photos_front}
+                        </a>
                       </span>
                       <input
                         type="file"
@@ -962,16 +973,26 @@ function VehiProfile() {
                         className="w-[200px] cursor-pointer"
                       />
                     </div>
+                    {/* vehicle back photo */}
                     <div className="grid grid-cols-1">
                       <span className="md:text-lg font-semibold text-purple-600 mt-2">
                         Vehicle Back photo
                       </span>
                       <span
-                        className={`text-green-600 font-serif  ${
+                        className={`text-green-800 font-serif  ${
                           isVehiImgUpload ? "" : "hidden"
                         }`}
                       >
                         upload successfully
+                      </span>
+                      {/* if upload vehicle back photo show text in browser*/}
+                      <span className="w-[250px] overflow-hidden text-green-600">
+                        <a
+                          href={`https://ankusamlogistics.com/driver/${driverVehiAllDetails?.vehical_photos_back}`}
+                          target="_blank"
+                        >
+                          {driverVehiAllDetails?.vehical_photos_back}
+                        </a>
                       </span>
                       <input
                         type="file"
@@ -981,16 +1002,26 @@ function VehiProfile() {
                         className="w-[200px] cursor-pointer"
                       />
                     </div>
+                    {/* vehicle left photo */}
                     <div className="grid grid-cols-1">
                       <span className="md:text-lg font-semibold text-purple-600 mt-2">
                         Vehicle Left Side photo
                       </span>
                       <span
-                        className={`text-green-600 font-serif  ${
+                        className={`text-green-800 font-serif  ${
                           isVehiImgUpload ? "" : "hidden"
                         }`}
                       >
                         upload successfully
+                      </span>
+                      {/* if upload vehicle left photo show text in browser*/}
+                      <span className="w-[250px] overflow-hidden text-green-600">
+                        <a
+                          href={`https://ankusamlogistics.com/driver/${driverVehiAllDetails?.vehical_photos_left}`}
+                          target="_blank"
+                        >
+                          {driverVehiAllDetails?.vehical_photos_left}
+                        </a>
                       </span>
                       <input
                         type="file"
@@ -1000,16 +1031,26 @@ function VehiProfile() {
                         className="w-[200px] cursor-pointer"
                       />
                     </div>
+                    {/* vehicle right photo */}
                     <div className="grid grid-cols-1">
                       <span className="md:text-lg font-semibold text-purple-600 mt-2">
                         Vehicle Right Side photo
                       </span>
                       <span
-                        className={`text-green-600 font-serif  ${
+                        className={`text-green-800 font-serif  ${
                           isVehiImgUpload ? "" : "hidden"
                         }`}
                       >
                         upload successfully
+                      </span>
+                      {/* if upload vehicle right photo show text in browser*/}
+                      <span className="w-[250px] overflow-hidden text-green-600">
+                        <a
+                          href={`https://ankusamlogistics.com/driver/${driverVehiAllDetails?.vehical_photos_right}`}
+                          target="_blank"
+                        >
+                          {driverVehiAllDetails?.vehical_photos_right}
+                        </a>
                       </span>
                       <input
                         type="file"
@@ -1039,11 +1080,19 @@ function VehiProfile() {
                         Reg. Front photo
                       </span>
                       <span
-                        className={`text-green-600 font-serif  ${
+                        className={`text-green-800 font-serif  ${
                           isRegistrationImgUpload ? "" : "hidden"
                         }`}
                       >
                         upload successfully
+                      </span>
+                      <span className="w-[250px] overflow-hidden text-green-600">
+                        <a
+                          href={`https://ankusamlogistics.com/driver/${driverVehiAllDetails?.book_rc_front}`}
+                          target="_blank"
+                        >
+                          {driverVehiAllDetails?.vehical_photos_front}
+                        </a>
                       </span>
                       <input
                         type="file"
@@ -1058,11 +1107,19 @@ function VehiProfile() {
                         Reg. Back photo
                       </span>
                       <span
-                        className={`text-green-600 font-serif  ${
+                        className={`text-green-800 font-serif  ${
                           isRegistrationImgUpload ? "" : "hidden"
                         }`}
                       >
                         upload successfully
+                      </span>
+                      <span className="w-[250px] overflow-hidden text-green-600">
+                        <a
+                          href={`https://ankusamlogistics.com/driver/${driverVehiAllDetails?.book_rc_front}`}
+                          target="_blank"
+                        >
+                          {driverVehiAllDetails?.vehical_photos_back}
+                        </a>
                       </span>
                       <input
                         type="file"
@@ -1091,11 +1148,20 @@ function VehiProfile() {
                         Vehicle Insurance photo
                       </span>
                       <span
-                        className={`text-green-600 font-serif  ${
+                        className={`text-green-800 font-serif  ${
                           isInsuranceImgUpload ? "" : "hidden"
                         }`}
                       >
                         upload successfully
+                      </span>
+                      {/* if upload insurance show text in browser */}
+                      <span className="w-[250px] overflow-hidden text-green-600">
+                        <a
+                          href={`https://ankusamlogistics.com/driver/${driverVehiAllDetails?.insurance}`}
+                          target="_blank"
+                        >
+                          {driverVehiAllDetails?.insurance}
+                        </a>
                       </span>
                       <input
                         type="file"
@@ -1126,11 +1192,27 @@ function VehiProfile() {
                     <h1 className="md:text-[25px] text-[20px] pt-2 font-semibold text-yellow-600">
                       Upload Adhar Card Document
                     </h1>
+                    {/* adhar front photo */}
                     <div className="grid grid-cols-1">
                       <span className="md:text-lg font-semibold text-yellow-600 mt-2">
-                        Adhar Front photo
+                        Aadhar Front photo
                       </span>
-                      <span className=" text-yellow-600 font-serif cursor-pointer"></span>
+                      <span
+                        className={`text-green-800 font-serif  ${
+                          isAdharLicenseImgUpload ? "" : "hidden"
+                        }`}
+                      >
+                        upload successfully
+                      </span>
+                      {/* if upload Adhar front photo show text in browser */}
+                      <span className="w-[250px] overflow-hidden text-green-600">
+                        <a
+                          href={`https://ankusamlogistics.com/driver/${driverVehiAllDetails?.adhar_card_img}`}
+                          target="_blank"
+                        >
+                          {driverVehiAllDetails?.adhar_card_img}
+                        </a>
+                      </span>
                       <input
                         type="file"
                         required
@@ -1139,11 +1221,27 @@ function VehiProfile() {
                         className="w-[200px] cursor-pointer"
                       />
                     </div>
+                    {/* Aadhar back photo */}
                     <div className="grid grid-cols-1">
                       <span className="md:text-lg font-semibold text-yellow-600 mt-2">
-                        Adhar Back photo
+                        Aadhar Back photo
                       </span>
-                      <span className=" text-yellow-600 font-serif cursor-pointer"></span>
+                      <span
+                        className={`text-green-800 font-serif  ${
+                          isAdharLicenseImgUpload ? "" : "hidden"
+                        }`}
+                      >
+                        upload successfully
+                      </span>
+                      {/* if upload Adhar back photo show text in browser */}
+                      <span className="w-[250px] overflow-hidden text-green-600">
+                        <a
+                          href={`https://ankusamlogistics.com/driver/${driverVehiAllDetails?.adhar_card_back_img}`}
+                          target="_blank"
+                        >
+                          {driverVehiAllDetails?.adhar_card_back_img}
+                        </a>
+                      </span>
                       <input
                         type="file"
                         required
@@ -1163,7 +1261,22 @@ function VehiProfile() {
                       <span className="md:text-lg font-semibold text-yellow-800 mt-2">
                         license Front photo
                       </span>
-                      <span className=" text-yellow-800 font-serif cursor-pointer"></span>
+                      <span
+                        className={`text-green-800 font-serif  ${
+                          isAdharLicenseImgUpload ? "" : "hidden"
+                        }`}
+                      >
+                        upload successfully
+                      </span>
+                      {/* if upload driver license front photo show text in browser */}
+                      <span className="w-[250px] overflow-hidden text-green-600">
+                        <a
+                          href={`https://ankusamlogistics.com/driver/${driverVehiAllDetails?.driving_lic_front_img}`}
+                          target="_blank"
+                        >
+                          {driverVehiAllDetails?.driving_lic_front_img}
+                        </a>
+                      </span>
                       <input
                         type="file"
                         required
@@ -1176,7 +1289,22 @@ function VehiProfile() {
                       <span className="md:text-lg font-semibold text-yellow-800 mt-2">
                         license Back photo
                       </span>
-                      <span className=" text-yellow-600 font-serif cursor-pointer"></span>
+                      <span
+                        className={`text-green-800 font-serif  ${
+                          isAdharLicenseImgUpload ? "" : "hidden"
+                        }`}
+                      >
+                        upload successfully
+                      </span>
+                      {/* if upload driver license back photo show text in browser */}
+                      <span className="w-[250px] overflow-hidden text-green-600">
+                        <a
+                          href={`https://ankusamlogistics.com/driver/${driverVehiAllDetails?.driving_lic_back_img}`}
+                          target="_blank"
+                        >
+                          {driverVehiAllDetails?.driving_lic_back_img}
+                        </a>
+                      </span>
                       <input
                         type="file"
                         required
@@ -1194,6 +1322,7 @@ function VehiProfile() {
                     upload
                   </button>
                 </form>
+
                 {/* Pollution */}
                 <form onSubmit={handlePollutionSubmit}>
                   <h1 className="md:text-[25px] mt-4 text-[20px] pt-2 font-semibold text-[#4a8fc3]">
@@ -1205,11 +1334,20 @@ function VehiProfile() {
                       <span className="text-[green]">Optional</span>)
                     </span>
                     <span
-                      className={`text-green-600 font-serif  ${
+                      className={`text-green-800 font-serif  ${
                         isPollutionImgUpload ? "" : "hidden"
                       }`}
                     >
                       upload successfully
+                    </span>
+                    {/* if upload vehicle pollution photo show text in browser */}
+                    <span className="w-[250px] overflow-hidden text-green-600">
+                      <a
+                        href={`https://ankusamlogistics.com/driver/${driverVehiAllDetails?.pollution_certification}`}
+                        target="_blank"
+                      >
+                        {driverVehiAllDetails?.pollution_certification}
+                      </a>
                     </span>
                     <input
                       type="file"
