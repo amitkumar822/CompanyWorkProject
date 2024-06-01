@@ -5,6 +5,7 @@ function LogOut() {
     localStorage.removeItem("token");
     localStorage.removeItem("vehiLogUser");
     localStorage.removeItem("busiLogUser")
+    localStorage.removeItem("TokenLoginBusinpage")
     // Refresh the page
     window.location.reload();
   };

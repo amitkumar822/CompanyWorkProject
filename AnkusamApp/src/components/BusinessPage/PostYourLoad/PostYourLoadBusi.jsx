@@ -1,59 +1,70 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Country, State, City } from "country-state-city";
 import Select from "react-select";
 import { weightdata } from "../../../data/WeightData";
+import { useNavigate } from "react-router";
 
 function PostYourLoadBusi() {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if(!localStorage.getItem('TokenLoginBusinpage')) {
+            navigate('/businesslogin')
+            return;
+        }
+    }, [])
+
   // State management for shipping from and to locations
   const [fromState, setFromState] = useState(null);
   const [fromCity, setFromCity] = useState(null);
-  const [fromStateName, setFromStateName] = useState('');
-  const [fromCityName, setFromCityName] = useState('');
+  const [fromStateName, setFromStateName] = useState("");
+  const [fromCityName, setFromCityName] = useState("");
   const [toState, setToState] = useState(null);
   const [toCity, setToCity] = useState(null);
-  const [toStateName, setToStateName] = useState('');
-  const [toCityName, setToCityName] = useState('');
+  const [toStateName, setToStateName] = useState("");
+  const [toCityName, setToCityName] = useState("");
 
   // Fetch Indian states
   const indianStates = State.getStatesOfCountry("IN");
 
   // Fetch cities based on selected state
-  const fromCities = fromState ? City.getCitiesOfState("IN", fromState.isoCode) : [];
+  const fromCities = fromState
+    ? City.getCitiesOfState("IN", fromState.isoCode)
+    : [];
   const toCities = toState ? City.getCitiesOfState("IN", toState.isoCode) : [];
 
   // Handle state selection change
-  const handleFromStateChange = selected => {
+  const handleFromStateChange = (selected) => {
     setFromState(selected.value);
     setFromStateName(selected.label);
     setFromCity(null); // Reset city selection
-    setFromCityName('');
+    setFromCityName("");
   };
 
-  const handleToStateChange = selected => {
+  const handleToStateChange = (selected) => {
     setToState(selected.value);
     setToStateName(selected.label);
     setToCity(null); // Reset city selection
-    setToCityName('');
+    setToCityName("");
   };
 
   // Handle city selection change
-  const handleFromCityChange = selected => {
+  const handleFromCityChange = (selected) => {
     setFromCity(selected.value);
     setFromCityName(selected.label);
   };
 
-  const handleToCityChange = selected => {
+  const handleToCityChange = (selected) => {
     setToCity(selected.value);
     setToCityName(selected.label);
   };
 
-
-  console.log('====================================');
+  console.log("====================================");
   console.log("From state: " + fromStateName);
   console.log("From city: " + fromCityName);
   console.log("To state: " + toStateName);
   console.log("To city: " + toCityName);
-  console.log('====================================');
+  console.log("====================================");
 
   return (
     <>
@@ -73,9 +84,13 @@ function PostYourLoadBusi() {
                       SELECT STATE
                     </h3>
                     <Select
-                      options={indianStates.map(state => ({ value: state, label: state.name }))}
+                      options={indianStates.map((state) => ({
+                        value: state,
+                        label: state.name,
+                      }))}
                       onChange={handleFromStateChange}
                       placeholder="Select State"
+                      required
                       className="min-w-[180px] lg:w-[70%] w-[95%]"
                     />
                   </div>
@@ -84,9 +99,13 @@ function PostYourLoadBusi() {
                       SELECT CITY
                     </h3>
                     <Select
-                      options={fromCities.map(city => ({ value: city, label: city.name }))}
+                      options={fromCities.map((city) => ({
+                        value: city,
+                        label: city.name,
+                      }))}
                       onChange={handleFromCityChange}
                       placeholder="Select City"
+                      required
                       className="min-w-[180px] lg:w-[70%] w-[95%]"
                       isDisabled={!fromState}
                     />
@@ -104,9 +123,13 @@ function PostYourLoadBusi() {
                       SELECT STATE
                     </h3>
                     <Select
-                      options={indianStates.map(state => ({ value: state, label: state.name }))}
+                      options={indianStates.map((state) => ({
+                        value: state,
+                        label: state.name,
+                      }))}
                       onChange={handleToStateChange}
                       placeholder="Select State"
+                      required
                       className="min-w-[180px] lg:w-[70%] w-[95%]"
                     />
                   </div>
@@ -115,9 +138,13 @@ function PostYourLoadBusi() {
                       SELECT CITY
                     </h3>
                     <Select
-                      options={toCities.map(city => ({ value: city, label: city.name }))}
+                      options={toCities.map((city) => ({
+                        value: city,
+                        label: city.name,
+                      }))}
                       onChange={handleToCityChange}
                       placeholder="Select City"
+                      required
                       className="min-w-[180px] lg:w-[70%] w-[95%]"
                       isDisabled={!toState}
                     />
@@ -131,6 +158,7 @@ function PostYourLoadBusi() {
                   <input
                     className="py-2 px-4 md:w-[60%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
                     type="date"
+                    required
                   />
                 </div>
               </div>
@@ -147,7 +175,10 @@ function PostYourLoadBusi() {
                     <h1 className="md:text-lg font-semibold text-black uppercase mb-2">
                       TYPE OF VEHICLE NEEDED
                     </h1>
-                    <select className="py-2 px-4 min-w-[180px] lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer">
+                    <select
+                      required
+                      className="py-2 px-4 min-w-[180px] lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
+                    >
                       <option>Select one...</option>
                       <option value="Open Body">Open Body</option>
                       <option value="Closed Body">Closed Body</option>
@@ -159,7 +190,10 @@ function PostYourLoadBusi() {
                     <h1 className="md:text-lg font-semibold text-black uppercase mb-2">
                       PACKAGE WEIGHT (Ton)
                     </h1>
-                    <select className="py-2 px-4 min-w-[180px] lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer">
+                    <select
+                      required
+                      className="py-2 px-4 min-w-[180px] lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
+                    >
                       <option>Select one...</option>
                       {weightdata.map((capacity, index) => {
                         return (
@@ -209,7 +243,10 @@ function PostYourLoadBusi() {
                 <h1 className="md:text-lg font-semibold text-black uppercase mb-2">
                   Goods Type
                 </h1>
-                <select className="py-2 px-4 min-w-[180px] lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer">
+                <select
+                  required
+                  className="py-2 px-4 min-w-[180px] lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
+                >
                   <option>Select one...</option>
                   <option value="Personal Goods">Personal Goods</option>
                   <option value="Machine">Machine</option>
@@ -247,6 +284,11 @@ function PostYourLoadBusi() {
                   className="py-2 px-4 mt-2 min-w-[180px] bg-gray-300 lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
                 />
               </div>
+            </div>
+            <div className="w-full mx-auto flex justify-center items-center">
+              <button class="py-2 px-4 text-2xl font-semibold italic text-white rounded-xl mt-10 bg-gradient-to-r from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500 ...">
+                POST
+              </button>
             </div>
           </form>
         </div>

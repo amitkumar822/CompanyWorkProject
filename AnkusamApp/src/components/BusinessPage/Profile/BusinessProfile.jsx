@@ -5,10 +5,19 @@ import { CgProfile } from "react-icons/cg";
 import Typed from "typed.js"; // Importing Typed.js for typing animation
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"; // status percentage complete animation show
 import "react-circular-progressbar/dist/styles.css"; // styles status percentage complete animation show
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import BusiLoginContext from "../../../context/BusinessLoginUser/BusiLoginContext";
 
 function BusinessProfile() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    if(!localStorage.getItem("TokenLoginBusinpage")) {
+      navigate('/businesslogin');
+      return;
+    }
+  }, [])
+
+
   //👇 global variables access vehicle login user details
   const { busiLogUser } = useContext(BusiLoginContext);
   const typedRef = useRef(null);

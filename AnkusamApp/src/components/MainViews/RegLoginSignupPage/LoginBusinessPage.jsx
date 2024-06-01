@@ -18,10 +18,12 @@ function LoginBusinessPage() {
   const navigate = useNavigate();
   //after login page redirect dashboard
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      // navigate("/businessloginpage");
+    if (localStorage.getItem("TokenLoginBusinpage")) {
+      navigate("/postyourloadbusi");
+      return;
     }
   }, []);
+
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
 
@@ -35,10 +37,10 @@ function LoginBusinessPage() {
     e.preventDefault();
 
     // Generate the token
-    const token = generateToken(phoneNumber, password);
+    const TokenLoginBusinpage = generateToken(phoneNumber, password);
 
-    console.log("phoneNumber: ", phoneNumber);
-    console.log("password: ", password);
+    // console.log("phoneNumber: ", phoneNumber);
+    // console.log("password: ", password);
 
     // Create form data to match what the backend expects
     const formData = new FormData();
@@ -87,11 +89,11 @@ function LoginBusinessPage() {
           theme: "colored",
         });
         
-        localStorage.setItem('token', token)
+        localStorage.setItem('TokenLoginBusinpage', TokenLoginBusinpage)
         // If login is successful, log the success and navigate to the contact us page.
         setTimeout(() => {
           // window.location.reload();
-          navigate('/dashboard')
+          navigate('/postyourloadbusi')
         }, 1500)
         // navigate("/contactus");
       } else {

@@ -1,6 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router";
 
 function AvailableVehiclesList() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    if(!localStorage.getItem("TokenLoginBusinpage")) {
+      navigate('/businesslogin');
+      return;
+    }
+  }, [])
   return (
     <>
       <div className="mt-16">
