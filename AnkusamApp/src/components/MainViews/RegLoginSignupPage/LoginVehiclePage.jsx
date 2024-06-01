@@ -12,15 +12,18 @@ import Banner from "../Banner/Banner";
 import BannerButtomUp from "../BannerButtomUp/BannerButtomUp";
 // Importing custom components, Banner and BannerButtomUp, presumably for consistent layout or additional information.
 
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer, toast, Zoom } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // React toastify component for notification showing
 
 import VehiLogUserContext from "../../../context/vehicleLoginUser/VehiLogUserContext";
 // use context for global access file or data
+import loadingGfg from "../../../data/GfgLoding/loading.gif";
 
 function LoginVehiclePage() {
-  const { setVehiLogUser } = useContext(VehiLogUserContext)
+  const { setVehiLogUser } = useContext(VehiLogUserContext);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -46,6 +49,7 @@ function LoginVehiclePage() {
   // Handle form submission functions
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevents page reload on form submit
+    setIsLoading(true);
 
     // Generate the token
     const TokeLoginVehiPage = generateToken(vehical_number, driver_password);
@@ -82,14 +86,15 @@ function LoginVehiclePage() {
       // Parsing the JSON response body.
 
       // Log the entire response for debugging
-      
+
       console.log("====================================");
       console.log("Full Response:", data.userData);
       console.log("====================================");
 
       // Handle the success or failure based on response
       if (data.status === true || data.status === "true") {
-        setVehiLogUser(data.userData)
+        setVehiLogUser(data.userData);
+        setIsLoading(false);
         toast.success("Login successful!", {
           position: "top-center",
           autoClose: 1000,
@@ -100,14 +105,15 @@ function LoginVehiclePage() {
           progress: undefined,
           theme: "colored",
         });
-        localStorage.setItem('TokeLoginVehiPage', TokeLoginVehiPage);
+        localStorage.setItem("TokeLoginVehiPage", TokeLoginVehiPage);
         // If login is successful, log the success and navigate to the contact us page.
-        setTimeout(() =>{
+        setTimeout(() => {
           // window.location.reload();
-          navigate('/loaddatalist')  
+          navigate("/loaddatalist");
         }, 1500);
         // window.location.reload();
       } else {
+        setIsLoading(false);
         // console.log("Login failed");
         toast.error("Vehicle number or Password is wrong!", {
           position: "top-center",
@@ -121,15 +127,34 @@ function LoginVehiclePage() {
         });
       }
     } catch (error) {
+      setIsLoading(false);
       console.error("There was an error!", error);
+      toast.error("Internal Server or Network Error", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       // Catching and logging any errors that occur during the fetch request.
     }
   };
 
-  
-
   return (
-    <div>
+    <div className=" relative">
+      {/* Loading image section */}
+      <div
+        className={`w-full h-full z-10 bg-[rgba(0,0,0,0.5)] absolute ${
+          isLoading ? "" : "hidden"
+        }`}
+      >
+        <div className=" absolute w-full h-screen flex justify-center items-center">
+          <img className="w-[100px] h-[100px] fixed" src={loadingGfg} alt="" />
+        </div>
+      </div>
       <Banner />
       {/* Rendering the Banner component at the top of the page. */}
       <div className="w-full mx-auto m-10">
@@ -179,7 +204,20 @@ function LoginVehiclePage() {
             <div className="w-[90%] mx-auto">
               <h1
                 onClick={() =>
-                  alert("Please contact the admin for password assistance.")
+                  // alert("Please contact the admin for password assistance.")
+                  toast.warn(
+                    "Please contact the admin for password assistance.!",
+                    {
+                      position: "top-center",
+                      autoClose: 5000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: "colored",
+                    }
+                  )
                 }
                 className="font-semibold py-2 cursor-pointer"
               >

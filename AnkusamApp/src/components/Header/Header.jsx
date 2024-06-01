@@ -209,7 +209,7 @@ const RegistrationClickBox = () => {
   return (
     <>
       <div
-        className={`flex w-[210px] h-[97px] bg-white px-2 text-black absolute top-9 left-[370px] rounded-lg items-center shadow-md shadow-gray-800 justify-center`}
+        className={`flex w-[210px] h-[97px] bg-white px-2 text-black absolute top-9 left-[270px] rounded-lg items-center shadow-md shadow-gray-800 justify-center`}
       >
         <div>
           <ul className="leading-8">
@@ -230,7 +230,7 @@ const LoginClickBox = () => {
   return (
     <>
       <div
-        className={`flex w-[183px] h-[97px] bg-white text-black absolute top-9 left-[480px] rounded-lg items-center  shadow-md shadow-gray-800 justify-center`}
+        className={`flex w-[183px] h-[97px] bg-white text-black absolute top-9 left-[380px] rounded-lg items-center  shadow-md shadow-gray-800 justify-center`}
       >
         <div>
           <ul className="leading-8">

@@ -10,6 +10,7 @@ import TermsAndConditionsDialog from "./TermsAndConditionsDialog ";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // React toastify component for notification showing
+import loadingGfg from "../../../data/GfgLoding/loading.gif";
 
 function SignupBusinessPage() {
   const navigate = useNavigate();
@@ -30,8 +31,11 @@ function SignupBusinessPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsLoading(true);
 
     if (!isCheckedTermsConditions) {
       // Check if terms and conditions are agreed
@@ -69,19 +73,19 @@ function SignupBusinessPage() {
 
     const formData = new FormData();
     formData.append("username", username);
-    formData.append("phone", phone)
-    formData.append("password", password)
+    formData.append("phone", phone);
+    formData.append("password", password);
 
-    console.log('====================================');
-    console.log("username: ", username);
-    console.log("phone: ", phone);
-    console.log("password: ", password);
-    console.log("confirmPassword: ", confirmPassword);
-    console.log('====================================');
+    // console.log('====================================');
+    // console.log("username: ", username);
+    // console.log("phone: ", phone);
+    // console.log("password: ", password);
+    // console.log("confirmPassword: ", confirmPassword);
+    // console.log('====================================');
 
     try {
       // Send POST request to backend
-      const response = await fetch('url', {
+      const response = await fetch("url", {
         method: "POST",
         body: formData, // Send form data
       });
@@ -90,7 +94,7 @@ function SignupBusinessPage() {
       console.log("Response Status:", response.status);
       console.log("Response Headers:", response.headers);
 
-      if(!response.ok) {
+      if (!response.ok) {
         throw new Error("Network response was not ok " + response.statusText); // Throw error if response is not ok
       }
 
@@ -98,14 +102,14 @@ function SignupBusinessPage() {
       const data = await response.json();
 
       // Log the entire response for debugging
-      console.log("Full Response:", data);
       console.log("====================================");
       console.log("Result:", data);
       console.log("====================================");
 
       // Handle the success or failure based on response
-      if(data.status === true || data.status === "true"){
-        toast.success('Signup successful!', {
+      if (data.status === true || data.status === "true") {
+        setIsLoading(false);
+        toast.success("Signup successful!", {
           position: "top-center",
           autoClose: 3000,
           hideProgressBar: false,
@@ -114,11 +118,12 @@ function SignupBusinessPage() {
           draggable: true,
           progress: undefined,
           theme: "colored",
-          });
+        });
         // Redirect to a different page on successful login (uncomment below line when navigation is setup)
         // navigate('/dashboard')
-      }else{
-        toast.error('Signup failed!', {
+      } else {
+        setIsLoading(false);
+        toast.error("Signup failed!", {
           position: "top-center",
           autoClose: 3000,
           hideProgressBar: false,
@@ -127,15 +132,37 @@ function SignupBusinessPage() {
           draggable: true,
           progress: undefined,
           theme: "colored",
-          });
+        });
       }
     } catch (error) {
       // Handle errors (currently empty, but can add error logging)
+      console.error("There was an error!", error);
+      setIsLoading(false);
+      toast.error("Internal Server or Network Error!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     }
   };
 
   return (
-    <div>
+    <div className="relative">
+      {/* Loading image section */}
+      <div
+        className={`w-full h-full z-10 bg-[rgba(0,0,0,0.5)] absolute ${
+          isLoading ? "" : "hidden"
+        }`}
+      >
+        <div className=" absolute w-full h-screen flex justify-center items-center">
+          <img className="w-[100px] h-[100px] fixed" src={loadingGfg} alt="" />
+        </div>
+      </div>
       <div>
         <Banner />
         <div className="w-full mx-auto m-10">

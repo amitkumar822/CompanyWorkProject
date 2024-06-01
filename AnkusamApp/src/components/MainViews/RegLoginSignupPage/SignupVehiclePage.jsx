@@ -10,6 +10,7 @@ import TermsAndConditionsDialog from "./TermsAndConditionsDialog "; // Import Te
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // React toastify component for notification showing
+import loadingGfg from "../../../data/GfgLoding/loading.gif";
 
 function SignupVehiclePage() {
   const [phoneNumber, setPhoneNumber] = useState(""); // State for phone number input
@@ -27,6 +28,8 @@ function SignupVehiclePage() {
     useState(false);
   const handleCheckboxChange = () =>
     setIsCheckedTermsConditions(!isCheckedTermsConditions); // Toggle checkbox state
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent default form submission
@@ -64,6 +67,8 @@ function SignupVehiclePage() {
       return;
     }
 
+    setIsLoading(true);
+
     const formData = new FormData(); // Create FormData object
     formData.append("phoneNumber", phoneNumber); // Append phone number to form data
     formData.append("vehicalNumber", vehicalNumber); // Append vehicle number to form data
@@ -79,12 +84,11 @@ function SignupVehiclePage() {
         }
       );
 
-      
-      const vehicalFound = await vehical_validation.json()
+      const vehicalFound = await vehical_validation.json();
 
-      console.log('====================================');
+      console.log("====================================");
       console.log("VResponse: ", vehicalFound.vehicalFound);
-      console.log('====================================');
+      console.log("====================================");
 
       if (!vehicalFound.vehicalFound) {
         // Send POST request to backend
@@ -112,6 +116,7 @@ function SignupVehiclePage() {
 
         // Handle the success or failure based on response
         if (data.success) {
+          setIsLoading(false);
           toast.success("Signup successful!", {
             position: "top-center",
             autoClose: 3000,
@@ -126,6 +131,7 @@ function SignupVehiclePage() {
           // navigate('/dashboard')
         }
       } else {
+        setIsLoading(false);
         toast.error("Vehicle number already exists!", {
           position: "top-center",
           autoClose: 3000,
@@ -140,11 +146,33 @@ function SignupVehiclePage() {
       }
     } catch (error) {
       // Handle errors (currently empty, but can add error logging)
+      console.error("There was an error!", error);
+      setIsLoading(false);
+      toast.error("Internal Server or Network Error!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     }
   };
 
   return (
-    <div>
+    <div className="relative">
+      {/* Loading image section */}
+      <div
+        className={`w-full h-full z-10 bg-[rgba(0,0,0,0.5)] absolute ${
+          isLoading ? "" : "hidden"
+        }`}
+      >
+        <div className=" absolute w-full h-screen flex justify-center items-center">
+          <img className="w-[100px] h-[100px] fixed" src={loadingGfg} alt="" />
+        </div>
+      </div>
       <div>
         <Banner /> {/* Render Banner component */}
         <div className="w-full mx-auto m-10">

@@ -59,18 +59,18 @@ function PostYourLoadBusi() {
     setToCityName(selected.label);
   };
 
-  console.log("====================================");
-  console.log("From state: " + fromStateName);
-  console.log("From city: " + fromCityName);
-  console.log("To state: " + toStateName);
-  console.log("To city: " + toCityName);
-  console.log("====================================");
+  // console.log("====================================");
+  // console.log("From state: " + fromStateName);
+  // console.log("From city: " + fromCityName);
+  // console.log("To state: " + toStateName);
+  // console.log("To city: " + toCityName);
+  // console.log("====================================");
 
   return (
     <>
       <div className="mt-16">
         <div className="lg:w-[80%] w-[90%] mx-auto pt-14">
-          <form className="w-full mx-auto border pt-6 pb-10 pl-4 rounded-xl bg-gray-00 shadow-md shadow-gray-800">
+          <form className="w-full mx-auto border bg-gray-200 pt-6 pb-10 pl-4 rounded-xl bg-gray-00 shadow-md shadow-gray-800">
             {/* Shipping from and Shipping to form section */}
             <div className="grid lg:grid-cols-2">
               {/* shipping from section */}

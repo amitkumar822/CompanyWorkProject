@@ -11,10 +11,13 @@ import "react-toastify/dist/ReactToastify.css";
 
 import BusiLoginContext from "../../../context/BusinessLoginUser/BusiLoginContext";
 // use context for global access file or data
+import loadingGfg from "../../../data/GfgLoding/loading.gif";
 
 function LoginBusinessPage() {
-  const { setBusiLogUser } = useContext(BusiLoginContext)
-  
+  const { setBusiLogUser } = useContext(BusiLoginContext);
+
+  const [isLoading, setIsLoading] = useState(false);
+
   const navigate = useNavigate();
   //after login page redirect dashboard
   useEffect(() => {
@@ -31,10 +34,11 @@ function LoginBusinessPage() {
   const generateToken = (phoneNumber, password) => {
     const token = btoa(`${phoneNumber}:${password}`); // Base64 encode the credentials
     return token;
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     // Generate the token
     const TokenLoginBusinpage = generateToken(phoneNumber, password);
@@ -76,7 +80,8 @@ function LoginBusinessPage() {
 
       // Handle the success or failure based on response
       if (data.status === true || data.status === "true") {
-        setBusiLogUser(data.driverData)
+        setBusiLogUser(data.driverData);
+        setIsLoading(false);
         console.log("Context Result:", data.driverData);
         toast.success("Login successful!", {
           position: "top-center",
@@ -88,17 +93,18 @@ function LoginBusinessPage() {
           progress: undefined,
           theme: "colored",
         });
-        
-        localStorage.setItem('TokenLoginBusinpage', TokenLoginBusinpage)
+
+        localStorage.setItem("TokenLoginBusinpage", TokenLoginBusinpage);
         // If login is successful, log the success and navigate to the contact us page.
         setTimeout(() => {
           // window.location.reload();
-          navigate('/postyourloadbusi')
-        }, 1500)
+          navigate("/postyourloadbusi");
+        }, 1500);
         // navigate("/contactus");
       } else {
+        setIsLoading(false);
         // console.log("Login failed");
-        toast.error("Login failed!", {
+        toast.error("Phone number or Password wrong!", {
           position: "top-center",
           autoClose: 3000,
           hideProgressBar: false,
@@ -112,12 +118,33 @@ function LoginBusinessPage() {
       }
     } catch (error) {
       console.error("There was an error!", error);
+      setIsLoading(false);
+      toast.error("Internal Server or Network Error", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       // Catching and logging any errors that occur during the fetch request.
     }
   };
 
   return (
-    <div>
+    <div className=" relative">
+      {/* Loading image section */}
+      <div
+        className={`w-full h-full z-10 bg-[rgba(0,0,0,0.5)] absolute ${
+          isLoading ? "" : "hidden"
+        }`}
+      >
+        <div className=" absolute w-full h-screen flex justify-center items-center">
+          <img className="w-[100px] h-[100px] fixed" src={loadingGfg} alt="" />
+        </div>
+      </div>
       <div>
         <Banner />
         <div className="w-full mx-auto m-10">
@@ -127,9 +154,7 @@ function LoginBusinessPage() {
             </h1>
           </div>
           <div className="md:min-w-[400px] lg:w-[40%] sm:w-[320px] w-[370px] mx-auto border p-4 bg-gradient-to-r from-cyan-500 to-blue-500 md:to-[#bbe0bb] rounded-lg shadow-lg shadow-[#c78c5c]">
-            <h1 className="text-3xl text-center font-semibold">
-              Login
-            </h1>
+            <h1 className="text-3xl text-center font-semibold">Login</h1>
             <form onSubmit={handleSubmit} className="w-full mx-auto">
               <div className="w-[90%] mx-auto mt-4 relative">
                 <input
@@ -185,7 +210,7 @@ function LoginBusinessPage() {
         </div>
         <BannerButtomUp />
         <ToastContainer />
-      {/* React toastify component for notification showing */}
+        {/* React toastify component for notification showing */}
       </div>
     </div>
   );
