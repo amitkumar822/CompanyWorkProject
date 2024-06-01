@@ -152,7 +152,7 @@ function AvailableLoad() {
       <div className="w-full mt-20">
         {/* Filter Section */}
         <div className="w-[80%] mx-auto mb-10">
-          <h1 className="text-3xl font-semibold text-center">Data Filter Available load</h1>
+          <h1 className="text-3xl font-semibold text-center">Data Filter</h1>
 
           <div className="w-[100%] mx-auto gap-14 order-1 justify-content-center d-flex vh-100 bg-dark grid lg:grid-cols-2 grid-cols-1">
             <div className="min-w-[310px] mt-5">
@@ -216,14 +216,16 @@ function AvailableLoad() {
         {/* Load List */}
         
         <div
-          className={`container mx-auto px-4 py-6 border bg-[#f2f2f2] rounded-lg shadow-md`} // Conditional rendering based on toggle
+          className={`
+          // container w-[95%]
+           mx-auto px-4 py-6 border bg-[#f2f2f2] rounded-lg shadow-md`} // Conditional rendering based on toggle
         >
           <h1 className="text-3xl text-center text-red-600 font-bold underline mb-4">
             Load List
           </h1>
 
           {/* Search functionality bar */}
-          <div className="flex w-[50%] items-center justify-end gap-1 relative mb-4">
+          <div className="flex md:w-[50%] w-[90%] items-center justify-end gap-1 relative mb-4">
             <span>Search</span>{" "}
             <input
               className="py-1 w-full px-2 border border-[black] rounded-lg outline-none"
@@ -249,7 +251,8 @@ function AvailableLoad() {
                     <th className="px-4 py-2 border-b">Pickup Time</th>
                     <th className="px-4 py-2 border-b">Vehicle Type</th>
                     <th className="px-4 py-2 border-b">Weight</th>
-                    <th className="px-4 py-2 border-b">Contact Number</th>
+                    <th className={`px-4 py-2 border-b ${localStorage.getItem('TokeLoginVehiPage') || 
+                      localStorage.getItem('TokenLoginBusinpage') ? '' : 'hidden'}`}>Contact Number</th>
                   </tr>
                 </thead>
                 <tbody className="text-center">
@@ -271,7 +274,9 @@ function AvailableLoad() {
                       </td>
                       <td className="px-4 py-2 border-b">{item.vship}</td>
                       <td className="px-4 py-2 border-b">{item.pkgweight}</td>
-                      <td className="px-4 py-2 border-b">
+                      <td className={`px-4 py-2 border-b 
+                      ${localStorage.getItem('TokeLoginVehiPage') || 
+                      localStorage.getItem('TokenLoginBusinpage') ? '' : 'hidden'}`}>
                         <a
                           href={`tel:${item.phone}`}
                           className="text-blue-500 underline"

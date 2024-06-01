@@ -111,7 +111,7 @@ function Header() {
                   className=" cursor-pointer hover:text-[#d8d4d4] duration-300 relative flex items-center gap-1"
                   onClick={(event) => handleLoginClick(event)} // Show login box
                 >
-                  {localStorage.getItem("token") ? <LogOut /> : "LOGIN"}
+                  LOGIN
                   <IoIosArrowDown
                     className={`${loginClickBox ? " rotate-180" : ""}
                     ${localStorage.getItem("token") ? "hidden" : ""}

@@ -104,7 +104,7 @@ function LoginVehiclePage() {
         // If login is successful, log the success and navigate to the contact us page.
         setTimeout(() =>{
           // window.location.reload();
-          navigate('/dashboard')  
+          navigate('/loaddatalist')  
         }, 1500);
         // window.location.reload();
       } else {
