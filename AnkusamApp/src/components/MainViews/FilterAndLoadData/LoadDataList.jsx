@@ -206,7 +206,7 @@ function LoadDataList() {
           className={`container mx-auto px-4 py-6 border bg-[#f2f2f2] rounded-lg shadow-md`}
         >
           <h1 className="text-3xl text-center text-red-600 font-bold underline mb-4">
-            Load List2
+            Load List
           </h1>
 
           <div className="flex w-[50%] items-center justify-end gap-1 relative mb-4">
