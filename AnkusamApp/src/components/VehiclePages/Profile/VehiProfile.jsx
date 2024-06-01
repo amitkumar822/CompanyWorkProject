@@ -85,7 +85,7 @@ function VehiProfile() {
     formData.append("driver_id", vehiLogUser?.driver_id);
     formData.append("driver_name", driverVehiFormText.driver_name);
     formData.append("aadhar_number", driverVehiFormText.aadhar_number);
-    formData.append("phone", driverVehiFormText.phone);
+    formData.append("driver_mobile_number", driverVehiFormText.phone);
     formData.append("htown", driverVehiFormText.htown);
     formData.append(
       "driving_license_number",
