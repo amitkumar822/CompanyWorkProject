@@ -33,8 +33,7 @@ const router = createBrowserRouter(
       <Route path="/vehiclelogin" element={<LoginVehiclePage />} />
       <Route path="/vehiclesignup" element={<SignupVehiclePage />} />
       <Route path="/contactus" element={<ContactUsPage />} />
-      <Route path="/loaddatalist" element={<AvailableLoad/>} /> //👉login after load list show 
-      {/* <Route path="/dashboard" element={<DashboardPage />} /> */}
+      <Route path="/loaddatalist" element={<AvailableLoad/>} />
       <Route path="/postvehiavai" element={<PostVehicleAvailability />} />
       <Route path="/vehiprofile" element={<VehiProfile />} />
       <Route path="/businessprofile" element={<BusinessProfile />} />
