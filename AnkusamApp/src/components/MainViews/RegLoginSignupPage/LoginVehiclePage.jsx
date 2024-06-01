@@ -24,7 +24,7 @@ function LoginVehiclePage() {
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
-      navigate("/dashboard");
+      navigate("/loaddatalist");
     }
   }, []);
 
@@ -48,7 +48,7 @@ function LoginVehiclePage() {
     event.preventDefault(); // Prevents page reload on form submit
 
     // Generate the token
-    const token = generateToken(vehical_number, driver_password);
+    const TokeLoginVehiPage = generateToken(vehical_number, driver_password);
 
     // console.log("vehical_number:", vehical_number);
     // console.log("driver_password:", driver_password);
@@ -100,7 +100,7 @@ function LoginVehiclePage() {
           progress: undefined,
           theme: "colored",
         });
-        localStorage.setItem('token', token);
+        localStorage.setItem('TokeLoginVehiPage', TokeLoginVehiPage);
         // If login is successful, log the success and navigate to the contact us page.
         setTimeout(() =>{
           // window.location.reload();

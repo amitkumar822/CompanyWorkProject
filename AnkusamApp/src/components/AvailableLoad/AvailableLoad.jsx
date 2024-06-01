@@ -8,13 +8,13 @@ import { useNavigate } from "react-router-dom";
 // Table how many items to show per page
 const ITEMS_PER_PAGE = 40; // Constant to define items per page
 
-function DashboardPage() {
+function AvailableLoad() {
   const typedRef = useRef(null); // Reference for the typing animation
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!localStorage.getItem("token")) {
+    if (!localStorage.getItem("TokeLoginVehiPage")) {
         navigate("/");
         return;
     }
@@ -152,7 +152,7 @@ function DashboardPage() {
       <div className="w-full mt-20">
         {/* Filter Section */}
         <div className="w-[80%] mx-auto mb-10">
-          <h1 className="text-3xl font-semibold text-center">Data Filter</h1>
+          <h1 className="text-3xl font-semibold text-center">Data Filter Available load</h1>
 
           <div className="w-[100%] mx-auto gap-14 order-1 justify-content-center d-flex vh-100 bg-dark grid lg:grid-cols-2 grid-cols-1">
             <div className="min-w-[310px] mt-5">
@@ -313,7 +313,7 @@ function DashboardPage() {
   );
 }
 
-export default DashboardPage;
+export default AvailableLoad;
 
 // Date Format function
 function formatDate(dateString) {

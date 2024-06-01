@@ -140,7 +140,7 @@ function LoadDataList() {
     <>
       <div className="w-full mt-20">
         <div className="w-[80%] mx-auto mb-10">
-          <h1 className="text-3xl font-semibold text-center">Data Filter</h1>
+          <h1 className="text-3xl font-semibold text-center">Data Filter Load Data List</h1>
 
           <div className="w-[100%] mx-auto gap-14 order-1 justify-content-center d-flex vh-100 bg-dark grid lg:grid-cols-2 grid-cols-1">
             <div className="min-w-[310px] mt-5">

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 function LogOut() {
   const handleLogOut = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("TokeLoginVehiPage");
     localStorage.removeItem("vehiLogUser");
     localStorage.removeItem("busiLogUser")
     localStorage.removeItem("TokenLoginBusinpage")

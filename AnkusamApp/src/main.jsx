@@ -15,7 +15,7 @@ import SignupBusinessPage from "./components/MainViews/RegLoginSignupPage/Signup
 import LoginVehiclePage from "./components/MainViews/RegLoginSignupPage/LoginVehiclePage.jsx";
 import SignupVehiclePage from "./components/MainViews/RegLoginSignupPage/SignupVehiclePage.jsx";
 import ContactUsPage from "./components/MainViews/ContactPage/ContactUsPage.jsx";
-import DashboardPage from "./components/Dashboard/DashboardPage.jsx";
+import AvailableLoad from "./components/AvailableLoad/AvailableLoad.jsx";
 import PostVehicleAvailability from "./components/VehiclePages/PostVehicleAvailability/PostVehicleAvailability.jsx";
 import VehiProfile from "./components/VehiclePages/Profile/VehiProfile.jsx";
 import BusinessProfile from "./components/BusinessPage/Profile/BusinessProfile.jsx";
@@ -33,8 +33,8 @@ const router = createBrowserRouter(
       <Route path="/vehiclelogin" element={<LoginVehiclePage />} />
       <Route path="/vehiclesignup" element={<SignupVehiclePage />} />
       <Route path="/contactus" element={<ContactUsPage />} />
-      <Route path="/loaddatalist" element={<DashboardPage/>} /> //👉login after load list show 
-      <Route path="/dashboard" element={<DashboardPage />} />
+      <Route path="/loaddatalist" element={<AvailableLoad/>} /> //👉login after load list show 
+      {/* <Route path="/dashboard" element={<DashboardPage />} /> */}
       <Route path="/postvehiavai" element={<PostVehicleAvailability />} />
       <Route path="/vehiprofile" element={<VehiProfile />} />
       <Route path="/businessprofile" element={<BusinessProfile />} />

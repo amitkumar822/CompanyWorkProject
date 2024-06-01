@@ -86,12 +86,8 @@ function Header() {
                 <li>{busiLogUser?.name}</li>
                 {/* Vehicale Login vehical number */}
                 <li>{vehiLogUser?.vehical_number}</li>
-                <li className=" cursor-pointer uppercase hover:text-[#d8d4d4] duration-300 relative flex items-center gap-1">
-                  <Link to="/dashboard">Dashboard</Link>
-                </li>
-
                 <li className=" cursor-pointer hover:text-[#d8d4d4] duration-300">
-                  AVAILABLE LOAD
+                  <Link to="/loaddatalist">AVAILABLE LOAD</Link>
                 </li>
                 <li className=" cursor-pointer hover:text-[#d8d4d4] duration-300">
                   <Link to="/contactus">CONTACT US</Link>
