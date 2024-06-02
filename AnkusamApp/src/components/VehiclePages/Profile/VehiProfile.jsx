@@ -6,7 +6,7 @@ import VehiLogUserContext from "../../../context/vehicleLoginUser/VehiLogUserCon
 import Typed from "typed.js"; // Importing Typed.js for typing animation
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"; // status percentage complete animation show
 import "react-circular-progressbar/dist/styles.css"; // styles status percentage complete animation show
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import loadingGfg from "../../../data/GfgLoding/loading.gif";
@@ -15,6 +15,15 @@ import { weightdata } from "../../../data/WeightData";
 function VehiProfile() {
   //👇 global variables access vehicle login user details
   const { vehiLogUser } = useContext(VehiLogUserContext);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!localStorage.getItem("TokeLoginVehiPage")) {
+      navigate("/vehiclelogin");
+      return;
+    }
+  }, []);
 
   const typedRef = useRef(null);
   const typedRefPhone = useRef(null);

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { City } from "country-state-city";
 import Select from 'react-select';
 import { weightdata } from "../../../data/WeightData";
+import { useNavigate } from "react-router";
 
 // Define the specific states with their names and ISO codes
 const specificStates = [
@@ -16,6 +17,15 @@ const specificStates = [
 const indiaCountryCode = "IN";
 
 function PostVehicleAvailability() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!localStorage.getItem("TokeLoginVehiPage")) {
+      navigate("/vehiclelogin");
+      return;
+    }
+  }, []);
+
   // State for "Shipping From"
   const [fromStateCode, setFromStateCode] = useState("");
   const [fromCity, setFromCity] = useState("");
@@ -106,12 +116,12 @@ function PostVehicleAvailability() {
   const [vehicleLength , setVehicleLength] = useState("")
 
 
-  console.log('====================================');
-  console.log("FromState: " + fromStateName);
-  console.log("FromCity: " + fromCityName);
-  console.log("ToState: " + toStateName);
-  console.log("ToCity: " + toCityName);
-  console.log('====================================');
+  // console.log('====================================');
+  // console.log("FromState: " + fromStateName);
+  // console.log("FromCity: " + fromCityName);
+  // console.log("ToState: " + toStateName);
+  // console.log("ToCity: " + toCityName);
+  // console.log('====================================');
 
   return (
     <>

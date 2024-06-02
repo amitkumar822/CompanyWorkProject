@@ -8,7 +8,7 @@ function ContactUsPage() {
       id: 1,
       state: "Tamilnadu",
       address:
-        "Ankusam Logistics 3/204 E2, Venkittapuram, Near L&T Bye Pass Road, Coimbatore Tamilnadu, India - 641062",
+        "Ankusam Logistics 3/204 E2, Venkittapuram, Near L&T ByPass Road, Coimbatore Tamilnadu, India - 641062",
     },
     {
       id: 2,
@@ -23,6 +23,7 @@ function ContactUsPage() {
         "Ankusam Logistics Vikas Vihar, Rohni sector 22, New Delhi , India",
     },
   ];
+
   return (
     <div>
       <Banner />
