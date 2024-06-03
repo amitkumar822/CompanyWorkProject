@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react"; // Import React and useState hook
-import { Logo } from "../../../public/Photo/PhotosExport"; // Import Logo image
 import { IoIosArrowDown, IoMdCloseCircle } from "react-icons/io"; // Import arrow down and close circle icons
 import { IoBusiness, IoMenuSharp } from "react-icons/io5"; // Import menu icon
 import { FcGlobe } from "react-icons/fc"; // Import globe icon
@@ -63,7 +62,7 @@ function Header() {
               <Link to="">
                 <img
                   className="min-scale-125 cursor-pointer text-[13px] text-white font-semibold"
-                  src={Logo} // Logo image source
+                  src="https://www.ankusamlogistics.com/include/assest/images/header_logo_one.svg" // Logo image source
                   alt="ankusam logistics"
                 />
               </Link>

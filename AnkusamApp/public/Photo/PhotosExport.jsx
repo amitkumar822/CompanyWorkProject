@@ -1,6 +1,3 @@
-import Logo from './Logo/AnkusamLogo.png'
-import BannerPhoto from './Banner/AnkusamBanner.jpeg'
-import BannerButtomUpPhoto from './BannerButtomUp/BannerButtomUp.jpeg'
+import BannerPhoto from "./Banner/AnkusamBanner.jpeg";
 
-
-export { Logo , BannerPhoto , BannerButtomUpPhoto }
+export { BannerPhoto };
