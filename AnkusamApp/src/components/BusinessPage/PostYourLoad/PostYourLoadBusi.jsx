@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Country, State, City } from "country-state-city";
 import Select from "react-select";
 import { weightdata } from "../../../data/WeightData";
@@ -7,7 +7,6 @@ import axios from "axios";
 import BusiLoginContext from "../../../context/BusinessLoginUser/BusiLoginContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 
 import loadingGfg from "../../../data/GfgLoding/loading.gif";
 
@@ -72,15 +71,13 @@ function PostYourLoadBusi() {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const phoneNumber = useRef('');
-
   const [formFiles, setFormFiles] = useState({
     PickUpDate: null,
     VehicleType: null,
     PackageWeight: null,
-    NumberOfWheels: null || 1,
+    NumberOfWheels: null,
     GoodsType: null,
-    VehicleLength: null || 1,
+    VehicleLength: null,
     ContactNumber: null,
   });
 
@@ -94,6 +91,12 @@ function PostYourLoadBusi() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+
+   if(!fromCityName) {
+    toast("From City is required!");
+    return;
+   }
+
     setIsLoading(true);
 
     const formData = new FormData();
@@ -122,34 +125,65 @@ function PostYourLoadBusi() {
       );
 
       if (response.data) {
-        toast("Successfully post!");
+        toast.success('Successfully post!', {
+          position: "top-center",
+          autoClose: 1700,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
+
         setIsLoading(false);
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       } else {
-        toast("faild to post!");
+        toast.error('Faild to post!', {
+          position: "top-center",
+          autoClose: 1700,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
+
         setIsLoading(false);
       }
     } catch (error) {
       setIsLoading(false);
-      toast("Check Your Network Connection!");
+      toast.error('Check Your Network Connection!', {
+        position: "top-center",
+        autoClose: 1700,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
       console.log("Error: ", error);
     }
-    phoneNumber.current.value = ''
-
-    // Reset from
-    setFormFiles({
-      PickUpDate: null,
-      VehicleType: null,
-      PackageWeight: null,
-      NumberOfWheels: null,
-      GoodsType: null,
-      VehicleLength: null,
-      ContactNumber: null,
-    });
-    setFromStateName("");
-    setToStateName("");
-    setFromCityName("");
-    setToCityName("");
   };
+
+  
+    console.log('====================================');
+    console.log("FromState: " + fromStateName)
+    console.log("FromCity: " + fromCityName);
+    console.log("ToState: " + toStateName);
+    console.log("ToCity: " + toCityName);
+    console.log("FromPickupDate: " + formFiles.PickUpDate);
+    console.log("VehicleType: " + formFiles.VehicleType);
+    console.log("PackageWeight: " + formFiles.PackageWeight);
+    console.log("NumberOfWheels: " + formFiles.NumberOfWheels);
+    console.log("GoodsType: " + formFiles.GoodsType);
+    console.log("VehicleLength: " + formFiles.VehicleLength);
+    console.log("ContactNumber: " + formFiles.ContactNumber);
+    console.log('====================================');
 
   return (
     <>
@@ -379,7 +413,6 @@ function PostYourLoadBusi() {
                   minLength={10}
                   maxLength={10}
                   name="ContactNumber"
-                  ref={phoneNumber} // reset phone number
                   onChange={handleFormChange}
                   placeholder="Enter your number"
                   className="py-2 px-4 min-w-[180px] lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
@@ -416,3 +449,6 @@ function PostYourLoadBusi() {
 }
 
 export default PostYourLoadBusi;
+
+
+
