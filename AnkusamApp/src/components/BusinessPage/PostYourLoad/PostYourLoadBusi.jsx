@@ -1,18 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Country, State, City } from "country-state-city";
 import Select from "react-select";
 import { weightdata } from "../../../data/WeightData";
 import { useNavigate } from "react-router";
+import axios from "axios";
+import BusiLoginContext from "../../../context/BusinessLoginUser/BusiLoginContext";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+
+import loadingGfg from "../../../data/GfgLoding/loading.gif";
 
 function PostYourLoadBusi() {
-    const navigate = useNavigate();
+  const { busiLogUser } = useContext(BusiLoginContext);
 
-    useEffect(() => {
-        if(!localStorage.getItem('TokenLoginBusinpage')) {
-            navigate('/businesslogin')
-            return;
-        }
-    }, [])
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!localStorage.getItem("TokenLoginBusinpage")) {
+      navigate("/businesslogin");
+      return;
+    }
+  }, []);
 
   // State management for shipping from and to locations
   const [fromState, setFromState] = useState(null);
@@ -59,18 +68,111 @@ function PostYourLoadBusi() {
     setToCityName(selected.label);
   };
 
-  // console.log("====================================");
-  // console.log("From state: " + fromStateName);
-  // console.log("From city: " + fromCityName);
-  // console.log("To state: " + toStateName);
-  // console.log("To city: " + toCityName);
-  // console.log("====================================");
+  // ==============👇 Post load Url 👇=============================
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const phoneNumber = useRef('');
+
+  const [formFiles, setFormFiles] = useState({
+    PickUpDate: null,
+    VehicleType: null,
+    PackageWeight: null,
+    NumberOfWheels: null || 1,
+    GoodsType: null,
+    VehicleLength: null || 1,
+    ContactNumber: null,
+  });
+
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    setFormFiles((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    const formData = new FormData();
+    formData.append("BusinessUsersId", busiLogUser?.driver_id);
+    formData.append("PickUpDate", formFiles.PickUpDate);
+    formData.append("VehicleType", formFiles.VehicleType);
+    formData.append("PackageWeight", formFiles.PackageWeight);
+    formData.append("NumberOfWheels", formFiles.NumberOfWheels);
+    formData.append("GoodsType", formFiles.GoodsType);
+    formData.append("VehicleLength", formFiles.VehicleLength);
+    formData.append("ContactNumber", formFiles.ContactNumber);
+    formData.append("FromState", fromStateName);
+    formData.append("FromCity", fromCityName);
+    formData.append("ToState", toStateName);
+    formData.append("ToCity", toCityName);
+
+    try {
+      const response = await axios.post(
+        "/api/driver/webapi/post_load.php",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (response.data) {
+        toast("Successfully post!");
+        setIsLoading(false);
+      } else {
+        toast("faild to post!");
+        setIsLoading(false);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      toast("Check Your Network Connection!");
+      console.log("Error: ", error);
+    }
+    phoneNumber.current.value = ''
+
+    // Reset from
+    setFormFiles({
+      PickUpDate: null,
+      VehicleType: null,
+      PackageWeight: null,
+      NumberOfWheels: null,
+      GoodsType: null,
+      VehicleLength: null,
+      ContactNumber: null,
+    });
+    setFromStateName("");
+    setToStateName("");
+    setFromCityName("");
+    setToCityName("");
+  };
 
   return (
     <>
-      <div className="mt-16">
+      <div className="mt-16 relative">
+        {/* Loading image section */}
+        <div
+          className={`w-full h-full z-10 bg-[rgba(0,0,0,0.5)] absolute ${
+            isLoading ? "" : "hidden"
+          }`}
+        >
+          <div className=" absolute w-full h-screen flex justify-center items-center">
+            <img
+              className="w-[100px] h-[100px] fixed"
+              src={loadingGfg}
+              alt=""
+            />
+          </div>
+        </div>
         <div className="lg:w-[80%] w-[90%] mx-auto pt-14">
-          <form className="w-full mx-auto border bg-gray-200 pt-6 pb-10 pl-4 rounded-xl bg-gray-00 shadow-md shadow-gray-800">
+          <form
+            onSubmit={handleFormSubmit}
+            className="w-full mx-auto border bg-gray-200 pt-6 pb-10 pl-4 rounded-xl bg-gray-00 shadow-md shadow-gray-800"
+          >
             {/* Shipping from and Shipping to form section */}
             <div className="grid lg:grid-cols-2">
               {/* shipping from section */}
@@ -159,6 +261,8 @@ function PostYourLoadBusi() {
                     className="py-2 px-4 md:w-[60%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
                     type="date"
                     required
+                    name="PickUpDate"
+                    onChange={handleFormChange}
                   />
                 </div>
               </div>
@@ -177,6 +281,8 @@ function PostYourLoadBusi() {
                     </h1>
                     <select
                       required
+                      name="VehicleType"
+                      onChange={handleFormChange}
                       className="py-2 px-4 min-w-[180px] lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
                     >
                       <option>Select one...</option>
@@ -192,6 +298,8 @@ function PostYourLoadBusi() {
                     </h1>
                     <select
                       required
+                      name="PackageWeight"
+                      onChange={handleFormChange}
                       className="py-2 px-4 min-w-[180px] lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
                     >
                       <option>Select one...</option>
@@ -216,6 +324,8 @@ function PostYourLoadBusi() {
                     defaultValue={1}
                     min={1}
                     required
+                    name="NumberOfWheels"
+                    onChange={handleFormChange}
                     placeholder="Enter your wheel number"
                     className="py-2 px-4 min-w-[180px] lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
                   />
@@ -229,6 +339,8 @@ function PostYourLoadBusi() {
                     defaultValue={1}
                     min={1}
                     required
+                    name="VehicleLength"
+                    onChange={handleFormChange}
                     placeholder="Enter your wheel length"
                     className="py-2 px-4 min-w-[180px] lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
                   />
@@ -245,6 +357,8 @@ function PostYourLoadBusi() {
                 </h1>
                 <select
                   required
+                  name="GoodsType"
+                  onChange={handleFormChange}
                   className="py-2 px-4 min-w-[180px] lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
                 >
                   <option>Select one...</option>
@@ -264,6 +378,9 @@ function PostYourLoadBusi() {
                   required
                   minLength={10}
                   maxLength={10}
+                  name="ContactNumber"
+                  ref={phoneNumber} // reset phone number
+                  onChange={handleFormChange}
                   placeholder="Enter your number"
                   className="py-2 px-4 min-w-[180px] lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
                 />
@@ -275,24 +392,25 @@ function PostYourLoadBusi() {
                 </h1>
                 <input
                   type="file"
-                  required
+                  // required
                   className="py-2 px-4 min-w-[180px] bg-gray-300 lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
                 />
                 <input
                   type="file"
-                  required
+                  // required
                   className="py-2 px-4 mt-2 min-w-[180px] bg-gray-300 lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
                 />
               </div>
             </div>
             <div className="w-full mx-auto flex justify-center items-center">
-              <button class="py-2 px-4 text-2xl font-semibold italic text-white rounded-xl mt-10 bg-gradient-to-r from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500 ...">
+              <button className="py-2 px-4 text-2xl font-semibold italic text-white rounded-xl mt-10 bg-gradient-to-r from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500 ...">
                 POST
               </button>
             </div>
           </form>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 }

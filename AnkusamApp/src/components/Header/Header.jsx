@@ -10,6 +10,7 @@ import { FaTruckMoving } from "react-icons/fa";
 import { RiContactsBook3Line } from "react-icons/ri";
 import { FaTruckFast } from "react-icons/fa6";
 import { LuUserCircle2 } from "react-icons/lu";
+import logo from '../../data/Photo/Logo/AnkusamLogo.png'
 import LogOut from "../MainViews/RegLoginSignupPage/LogOut";
 //👇 vehicles or business user context global variables access using context
 import VehiLogUserContext from "../../context/vehicleLoginUser/VehiLogUserContext";
@@ -62,7 +63,7 @@ function Header() {
               <Link to="">
                 <img
                   className="min-scale-125 cursor-pointer text-[13px] text-white font-semibold"
-                  src="https://www.ankusamlogistics.com/include/assest/images/header_logo_one.svg" // Logo image source
+                  src={logo} // Logo image source
                   alt="ankusam logistics"
                 />
               </Link>

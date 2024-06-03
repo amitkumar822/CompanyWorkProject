@@ -1,5 +1,5 @@
 import React from "react";
-import { BannerPhoto } from "../../../../public/Photo/PhotosExport";
+import BannerPhotos from '../../../data/Photo/Banner/AnkusamBanner.jpeg'
 
 function Banner() {
   return (
@@ -11,7 +11,7 @@ function Banner() {
       >
         <img
           className=" border rounded-lg shadow-md"
-          src={ BannerPhoto }
+          src={ BannerPhotos }
           alt=""
         />
       </div>
