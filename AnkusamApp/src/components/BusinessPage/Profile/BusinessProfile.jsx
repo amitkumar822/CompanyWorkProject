@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
+import Select from "react-select";
 import { Country, State, City } from "country-state-city";
 import { RiMapPinUserFill } from "react-icons/ri";
 import { CgProfile } from "react-icons/cg";
@@ -11,21 +12,18 @@ import BusiLoginContext from "../../../context/BusinessLoginUser/BusiLoginContex
 function BusinessProfile() {
   const navigate = useNavigate();
   useEffect(() => {
-    if(!localStorage.getItem("TokenLoginBusinpage")) {
-      navigate('/businesslogin');
+    if (!localStorage.getItem("TokenLoginBusinpage")) {
+      navigate("/businesslogin");
       return;
     }
-  }, [])
+  }, []);
 
-
-  //👇 global variables access vehicle login user details
   const { busiLogUser } = useContext(BusiLoginContext);
   const typedRef = useRef(null);
   const typedRefPhone = useRef(null);
 
   const percentage = 60; // Assuming user has completed 60% of their profile
 
-  // Function to determine color based on percentage
   const getColor = (percentage) => {
     const red = Math.floor((100 - percentage) * 2.55);
     const green = Math.floor(percentage * 2.55);
@@ -53,38 +51,44 @@ function BusinessProfile() {
 
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
-  // Here store state and city name in useState()
-  const [stateName, setStateName] = useState("");    
-  const [cityName, setCityName] = useState("");    
+  const [stateName, setStateName] = useState("");
+  const [cityName, setCityName] = useState("");
 
-  const handleStateChange = (e) => {
-    const selectedStateCode = e.target.value;
-    const selectedState = State.getStateByCodeAndCountry(selectedStateCode, "IN");
+  const handleStateChange = (selectedOption) => {
+    const selectedStateCode = selectedOption?.value || "";
+    const selectedState = State.getStateByCodeAndCountry(
+      selectedStateCode,
+      "IN"
+    );
     setState(selectedStateCode);
     setStateName(selectedState?.name || "");
     setCity("");
   };
 
-  const handleCityChange = (e) => {
-    const selectedCityName = e.target.value;
+  const handleCityChange = (selectedOption) => {
+    const selectedCityName = selectedOption?.value || "";
     setCity(selectedCityName);
     setCityName(selectedCityName);
   };
 
-  const states = State.getStatesOfCountry("IN");
-  const cities = City.getCitiesOfState("IN", state);
+  const states = State.getStatesOfCountry("IN").map((state) => ({
+    value: state.isoCode,
+    label: state.name,
+  }));
 
-  console.log('====================================');
+  const cities = City.getCitiesOfState("IN", state).map((city) => ({
+    value: city.name,
+    label: city.name,
+  }));
+
   console.log("States: ", stateName);
   console.log("Cities: ", cityName);
-  console.log('====================================');
 
   return (
     <>
       <div className="mt-16 w-full h-full">
         {/* First Banner Part */}
         <div className="bg-vehicleTruckImgProfile w-full bg-no-repeat bg-cover ">
-          {/* Top image background section */}
           <div className="w-full md:h-[560px] h-[400px] mx-auto bg-[rgba(0,0,0,0.5)] text-white">
             <div className="w-[90%] mx-auto md:pt-28 pt-10 flex justify-around">
               <div className="md:w-[30%]">
@@ -93,12 +97,7 @@ function BusinessProfile() {
                   <span className="text-[#f95151]">Profile</span>
                 </h1>
                 <div className="md:mt-20 mt-4">
-                  <h1 className="text-3xl font-bold text-[#3ef94d]">
-                    Hello{" "}
-                    {/* <span className="uppercase text-[yellow]">
-                      {busiLogUser?.name}
-                    </span> */}
-                  </h1>
+                  <h1 className="text-3xl font-bold text-[#3ef94d]">Hello </h1>
                   <h1 className="md:text-3xl font-bold my-3">
                     {busiLogUser?.userid}
                   </h1>
@@ -110,11 +109,9 @@ function BusinessProfile() {
                   </p>
                 </div>
               </div>
-              {/* Typed js Text or moving text */}
               <div className="md:w-[50%] md:text-4xl text-center font-serif mt-28 bg-clip-text text-transparent bg-gradient-to-r from-[#3ef94d] via-[yellow] to-[red] -ml-[10%] md:block hidden">
                 <span ref={typedRef} className=" font-bold"></span>
               </div>
-              {/* User profile */}
               <div className="md:flex md:flex-col items-center">
                 <RiMapPinUserFill className="md:text-7xl text-4xl text-[#86f860]" />
                 <span className="uppercase text-[yellow] md:text-2xl font-bold">
@@ -131,7 +128,6 @@ function BusinessProfile() {
 
         {/* Account Form Section */}
         <div className="w-[90%] mx-auto lg:mt-6 h-full flex justify-evenly lg:flex-row flex-col gap-4">
-          {/* Form section */}
           <div className="lg:w-[70%] w-[100%] mx-auto md:mt-0 mt-4 bg-gray-300 border shadow-md shadow-gray-800 lg:order-1 order-2 rounded-lg">
             <div className="flex justify-between px-2 py-4 bg-white">
               <h1 className="md:text-2xl text-xl font-semibold">My Account</h1>
@@ -195,45 +191,31 @@ function BusinessProfile() {
               </div>
 
               {/* State City Section */}
-              <div className="grid grid-cols-2 mt-4">
-                <div>
+              <div className="grid md:grid-cols-2 mt-4">
+                <div className="md:w-[60%] w-[90%] min-w-[200px]">
                   <h3 className="text-[17px] pt-2 font-semibold">
                     SELECT STATE
                   </h3>
-                  <select
-                    name="state"
-                    id="state"
-                    className="cursor-pointer w-[150px] rounded-lg px-2 py-1 mt-2"
-                    value={state}
+                  <Select
+                    options={states}
+                    className="mt-2"
+                    value={states.find((option) => option.value === state)}
                     onChange={handleStateChange}
-                  >
-                    <option value="">Select State</option>
-                    {states.map((state) => (
-                      <option key={state.isoCode} value={state.isoCode}>
-                        {state.name}
-                      </option>
-                    ))}
-                  </select>
+                    isClearable
+                  />
                 </div>
-                <div>
+                <div className="md:w-[60%] w-[90%] min-w-[200px]">
                   <h3 className="text-[17px] pt-2 font-semibold">
                     SELECT CITY
                   </h3>
-                  <select
-                    name="city"
-                    id="city"
-                    className="cursor-pointer w-[150px] rounded-lg px-2 py-1 mt-2"
-                    value={city}
+                  <Select
+                    options={cities}
+                    className="mt-2"
+                    value={cities.find((option) => option.value === city)}
                     onChange={handleCityChange}
-                    disabled={!state}
-                  >
-                    <option value="">Select City</option>
-                    {cities.map((city) => (
-                      <option key={city.name} value={city.name}>
-                        {city.name}
-                      </option>
-                    ))}
-                  </select>
+                    isDisabled={!state}
+                    isClearable
+                  />
                 </div>
               </div>
 
@@ -270,7 +252,6 @@ function BusinessProfile() {
               </h1>
             </div>
 
-            {/* Profile Text part */}
             <div className="w-full md:mt-20 mt-14 lg:block hidden">
               <h1 className="text-[20px] font-semibold">
                 🍁Welcome to Ankusam Logistics🍁
@@ -286,59 +267,6 @@ function BusinessProfile() {
                   ensure your goods are transported safely and on time, every
                   time.
                 </h1>
-                {/* <h1 className="text-xl font-semibold my-4">Why Choose Us?</h1>
-                <ul className="list-disc ml-4">
-                  <li>
-                    <span className="font-semibold">Nationwide Reach:</span>{" "}
-                    With an extensive network across India, we deliver seamless
-                    domestic shipping solutions.
-                  </li>
-                  <li>
-                    <span className="font-semibold">
-                      Customer-Centric Approach:
-                    </span>{" "}
-                    Our dedicated team works around the clock to provide
-                    personalized service and support.
-                  </li>
-                  <li>
-                    <span className="font-semibold">Advanced Technology:</span>{" "}
-                    Leveraging state-of-the-art technology to optimize logistics
-                    operations and provide real-time tracking.
-                  </li>
-                  <li>
-                    <span className="font-semibold">
-                      Sustainability Commitment:
-                    </span>{" "}
-                    Committed to eco-friendly practices and reducing our carbon
-                    footprint in the logistics industry.
-                  </li>
-                </ul>
-                <h1 className="text-xl font-semibold my-4">Our Services</h1>
-                <ul className="list-disc ml-4">
-                  <li>
-                    <span className="font-semibold">Freight Forwarding:</span>{" "}
-                    Expert handling of road freight to ensure your cargo reaches
-                    its destination efficiently.
-                  </li>
-                  <li>
-                    <span className="font-semibold">
-                      Supply Chain Management:
-                    </span>{" "}
-                    Comprehensive solutions to optimize your entire supply chain
-                    process.
-                  </li>
-                </ul>
-                <div className="xl:block hidden">
-                  <h1 className="text-xl font-semibold my-4">Get in Touch</h1>
-                  <h1>
-                    <span className=" font-bold text-[#d455da] text-[22px]">
-                      R
-                    </span>
-                    eady to streamline your logistics operations? Contact us
-                    today to learn how Ankusam Logistics can drive your business
-                    forward within India.
-                  </h1>
-                </div> */}
               </div>
             </div>
           </div>
