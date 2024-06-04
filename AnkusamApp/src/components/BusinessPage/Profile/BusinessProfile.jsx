@@ -8,8 +8,10 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar"; /
 import "react-circular-progressbar/dist/styles.css"; // styles status percentage complete animation show
 import { Link, useNavigate } from "react-router-dom";
 import BusiLoginContext from "../../../context/BusinessLoginUser/BusiLoginContext";
+import axios from "axios";
 
 function BusinessProfile() {
+
   const navigate = useNavigate();
   useEffect(() => {
     if (!localStorage.getItem("TokenLoginBusinpage")) {
@@ -81,8 +83,56 @@ function BusinessProfile() {
     label: city.name,
   }));
 
-  console.log("States: ", stateName);
-  console.log("Cities: ", cityName);
+  // =============👇 URL section 👇===================
+  
+  // loading animation state handle
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [files, setFiles] = useState({
+    name: null,
+    phone: null,
+    alternativenumber: null,
+    email: null,
+    address: null,
+  })
+
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    setFiles((prevState) => ({
+     ...prevState,
+      [name]: files[0],
+    }));
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    const formData = new FormData();
+    formData.append("id", busiLogUser?.id);
+    formData.append("name", files.name);
+    formData.append("phone", files.phone);
+    formData.append("alternativenumber", files.alternativenumber);
+    formData.append("email", files.email);
+    formData.append("address", files.address);
+    formData.append("state", stateName);
+    formData.append("city", cityName);
+
+
+    // try {
+    //   const response = await axios.post('url', formData, {
+    //     headers: {
+    //       "Content-Type": "multipart/form-data",
+    //     },
+    //   })
+
+    //   if(response.data){
+    //     setIsLoading(false);
+    //   }
+    // } catch (error) {
+      
+    // }
+  }
 
   return (
     <>
@@ -136,12 +186,14 @@ function BusinessProfile() {
               </h1>
             </div>
             <form action="" className="px-4 py-2">
+              
+        <h1 className="text-3xl">This data show on Available load section</h1>
               <div className="grid sm:grid-cols-2 md:mt-6">
                 <div>
-                  <h1 className="text-[17px] pt-2 font-semibold">Username</h1>
+                  <h1 className="text-[17px] pt-2 font-semibold">Name</h1>
                   <input
                     type="text"
-                    placeholder="Username"
+                    placeholder="Enter your name"
                     required
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />

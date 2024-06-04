@@ -72,8 +72,8 @@ function LoginVehiclePage() {
       });
 
       // Log the response status and headers
-      console.log("Response Status:", response.status);
-      console.log("Response Headers:", response.headers);
+      // console.log("Response Status:", response.status);
+      // console.log("Response Headers:", response.headers);
       // Logging the response status and headers for debugging.
 
       if (!response.ok) {
@@ -87,9 +87,9 @@ function LoginVehiclePage() {
 
       // Log the entire response for debugging
 
-      console.log("====================================");
-      console.log("Full Response:", data.userData);
-      console.log("====================================");
+      // console.log("====================================");
+      // console.log("Full Response:", data.userData);
+      // console.log("====================================");
 
       // Handle the success or failure based on response
       if (data.status === true || data.status === "true") {

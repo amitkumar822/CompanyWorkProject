@@ -251,7 +251,11 @@ function PostVehicleAvailability() {
                 </div>
               </div>
 
-              <div className="md:mt-20 mt-10">
+              
+                <h1 className="text-3xl">Here add current location and this data show on business available load section</h1>
+
+
+              {/* <div className="md:mt-20 mt-10">
                 <h2 className="lg:text-4xl md:text-3xl text-[22px]">
                   How would you like to deliver?
                 </h2>
@@ -271,7 +275,7 @@ function PostVehicleAvailability() {
                     <option value="Closed Body">Closed Body</option>
                   </select>
                 </div>
-              </div>
+              </div> */}
             </div>
 
             {/* Shipping To part */}
@@ -322,7 +326,7 @@ function PostVehicleAvailability() {
                 </h2>
                 <div className="mt-4">
                   <h3 className="md:text-lg font-semibold text-black">
-                    Vehicle Capacity in Tons
+                    Available Capacity in Tons
                   </h3>
                   <select
                     name="vehicle_capacity_in_tons"

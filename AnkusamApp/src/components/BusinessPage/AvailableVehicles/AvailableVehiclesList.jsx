@@ -14,6 +14,7 @@ function AvailableVehiclesList() {
       <div className="mt-16">
         {/*👉 Available Vehicle List Section */}
         <div className="w-[90%] mx-auto md:mt-36 mt-24 bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-500 text-white px-2 py-8 rounded-lg shadow-lg">
+          <h1 className="text-3xl">Here Show vehicle/driver profile data</h1>
           <h1 className="md:text-3xl text-xl text-center font-serif underline mb-8">
             AVAILABLE VEHICLE LIST
           </h1>

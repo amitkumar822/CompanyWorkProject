@@ -24,11 +24,9 @@ function PostYourLoadBusi() {
 
   // State management for shipping from and to locations
   const [fromState, setFromState] = useState(null);
-  const [fromCity, setFromCity] = useState(null);
   const [fromStateName, setFromStateName] = useState("");
   const [fromCityName, setFromCityName] = useState("");
   const [toState, setToState] = useState(null);
-  const [toCity, setToCity] = useState(null);
   const [toStateName, setToStateName] = useState("");
   const [toCityName, setToCityName] = useState("");
 
@@ -45,25 +43,21 @@ function PostYourLoadBusi() {
   const handleFromStateChange = (selected) => {
     setFromState(selected.value);
     setFromStateName(selected.label);
-    setFromCity(null); // Reset city selection
     setFromCityName("");
   };
 
   const handleToStateChange = (selected) => {
     setToState(selected.value);
     setToStateName(selected.label);
-    setToCity(null); // Reset city selection
     setToCityName("");
   };
 
   // Handle city selection change
   const handleFromCityChange = (selected) => {
-    setFromCity(selected.value);
     setFromCityName(selected.label);
   };
 
   const handleToCityChange = (selected) => {
-    setToCity(selected.value);
     setToCityName(selected.label);
   };
 
@@ -71,9 +65,18 @@ function PostYourLoadBusi() {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const [errors, setErrors] = useState({
+    fromState: "",
+    fromCityName: "",
+    toState: "",
+    toCityName: "",
+    VehicleType: "",
+    PackageWeight: "",
+  });
+
   const [formFiles, setFormFiles] = useState({
     PickUpDate: null,
-    VehicleType: null,
+    VehicleType: "Both",
     PackageWeight: null,
     NumberOfWheels: null,
     GoodsType: null,
@@ -92,10 +95,34 @@ function PostYourLoadBusi() {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-   if(!fromCityName) {
-    toast("From City is required!");
-    return;
-   }
+    if (!fromCityName) {
+      toast("From City is required!");
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        fromCityName: "Please select from city",
+      }));
+      return;
+    }else{
+      setErrors((prevErrors) => ({
+       ...prevErrors,
+        fromCityName: "",
+      }));
+    }
+
+    if (!toCityName) {
+      toast("To City is required!");
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        toCityName: "Please select to city",
+      }));
+      return;
+    }else{
+      setErrors((prevErrors) => ({
+       ...prevErrors,
+        toCityName: "",
+        fromCityName: "",
+      }));
+    }
 
     setIsLoading(true);
 
@@ -125,7 +152,7 @@ function PostYourLoadBusi() {
       );
 
       if (response.data) {
-        toast.success('Successfully post!', {
+        toast.success("Successfully post!", {
           position: "top-center",
           autoClose: 1700,
           hideProgressBar: false,
@@ -134,14 +161,14 @@ function PostYourLoadBusi() {
           draggable: true,
           progress: undefined,
           theme: "colored",
-          });
+        });
 
         setIsLoading(false);
         setTimeout(() => {
           window.location.reload();
         }, 2000);
       } else {
-        toast.error('Faild to post!', {
+        toast.error("Faild to post!", {
           position: "top-center",
           autoClose: 1700,
           hideProgressBar: false,
@@ -150,13 +177,13 @@ function PostYourLoadBusi() {
           draggable: true,
           progress: undefined,
           theme: "colored",
-          });
+        });
 
         setIsLoading(false);
       }
     } catch (error) {
       setIsLoading(false);
-      toast.error('Check Your Network Connection!', {
+      toast.error("Check Your Network Connection!", {
         position: "top-center",
         autoClose: 1700,
         hideProgressBar: false,
@@ -165,14 +192,12 @@ function PostYourLoadBusi() {
         draggable: true,
         progress: undefined,
         theme: "colored",
-        });
+      });
       console.log("Error: ", error);
     }
-  };
 
-  
-    console.log('====================================');
-    console.log("FromState: " + fromStateName)
+    console.log("====================================");
+    console.log("FromState: " + fromStateName);
     console.log("FromCity: " + fromCityName);
     console.log("ToState: " + toStateName);
     console.log("ToCity: " + toCityName);
@@ -183,7 +208,8 @@ function PostYourLoadBusi() {
     console.log("GoodsType: " + formFiles.GoodsType);
     console.log("VehicleLength: " + formFiles.VehicleLength);
     console.log("ContactNumber: " + formFiles.ContactNumber);
-    console.log('====================================');
+    console.log("====================================");
+  };
 
   return (
     <>
@@ -245,6 +271,9 @@ function PostYourLoadBusi() {
                       className="min-w-[180px] lg:w-[70%] w-[95%]"
                       isDisabled={!fromState}
                     />
+                    {errors.fromCityName && (
+                      <p className="text-red-500">{errors.fromCityName}</p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -284,6 +313,9 @@ function PostYourLoadBusi() {
                       className="min-w-[180px] lg:w-[70%] w-[95%]"
                       isDisabled={!toState}
                     />
+                    {errors.toCityName && (
+                      <p className="text-red-500">{errors.toCityName}</p>
+                    )}
                   </div>
                 </div>
                 {/* pickup date */}
@@ -319,10 +351,10 @@ function PostYourLoadBusi() {
                       onChange={handleFormChange}
                       className="py-2 px-4 min-w-[180px] lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
                     >
-                      <option>Select one...</option>
+                      {/* <option>Select one...</option> */}
+                      <option value="Both">Both</option>
                       <option value="Open Body">Open Body</option>
                       <option value="Closed Body">Closed Body</option>
-                      <option value="Both">Both</option>
                     </select>
                   </div>
                   {/* TYPE OF VEHICLE NEEDED */}
@@ -357,7 +389,6 @@ function PostYourLoadBusi() {
                     type="number"
                     defaultValue={1}
                     min={1}
-                    required
                     name="NumberOfWheels"
                     onChange={handleFormChange}
                     placeholder="Enter your wheel number"
@@ -372,7 +403,6 @@ function PostYourLoadBusi() {
                     type="number"
                     defaultValue={1}
                     min={1}
-                    required
                     name="VehicleLength"
                     onChange={handleFormChange}
                     placeholder="Enter your wheel length"
@@ -390,7 +420,6 @@ function PostYourLoadBusi() {
                   Goods Type
                 </h1>
                 <select
-                  required
                   name="GoodsType"
                   onChange={handleFormChange}
                   className="py-2 px-4 min-w-[180px] lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
@@ -449,6 +478,3 @@ function PostYourLoadBusi() {
 }
 
 export default PostYourLoadBusi;
-
-
-
