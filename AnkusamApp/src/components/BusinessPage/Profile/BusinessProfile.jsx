@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import Select from "react-select";
-import { Country, State, City } from "country-state-city";
+import { State, City } from "country-state-city";
 import { RiMapPinUserFill } from "react-icons/ri";
 import { CgProfile } from "react-icons/cg";
 import Typed from "typed.js"; // Importing Typed.js for typing animation
@@ -9,9 +9,11 @@ import "react-circular-progressbar/dist/styles.css"; // styles status percentage
 import { Link, useNavigate } from "react-router-dom";
 import BusiLoginContext from "../../../context/BusinessLoginUser/BusiLoginContext";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import loadingGfg from "../../../data/GfgLoding/loading.gif";
 
 function BusinessProfile() {
-
   const navigate = useNavigate();
   useEffect(() => {
     if (!localStorage.getItem("TokenLoginBusinpage")) {
@@ -65,6 +67,7 @@ function BusinessProfile() {
     setState(selectedStateCode);
     setStateName(selectedState?.name || "");
     setCity("");
+    setCityName("");
   };
 
   const handleCityChange = (selectedOption) => {
@@ -83,10 +86,19 @@ function BusinessProfile() {
     label: city.name,
   }));
 
-  // =============👇 URL section 👇===================
-  
+  // =============👇 Form Submit Section 👇===================
+
+  // Reset form or form fields input clearing
+  const formRef = useRef();
+  const stateInputRef = useRef();
+  const cityInputRef = useRef();
+
   // loading animation state handle
   const [isLoading, setIsLoading] = useState(false);
+  const [isErrorsMessage, setIsErrorsMessage] = useState({
+    stateName: "",
+    cityName: "",
+  });
 
   const [files, setFiles] = useState({
     name: null,
@@ -94,18 +106,33 @@ function BusinessProfile() {
     alternativenumber: null,
     email: null,
     address: null,
-  })
+  });
 
   const handleFileChange = (e) => {
-    const { name, files } = e.target;
+    const { name, value } = e.target;
     setFiles((prevState) => ({
-     ...prevState,
-      [name]: files[0],
+      ...prevState,
+      [name]: value,
     }));
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!cityName) {
+      toast("City is required!");
+      setIsErrorsMessage((prevState) => ({
+        ...prevState,
+        cityName: "City is required!",
+      }));
+      return;
+    } else {
+      setIsErrorsMessage((prevState) => ({
+        ...prevState,
+        cityName: "",
+      }));
+    }
+
     setIsLoading(true);
 
     const formData = new FormData();
@@ -118,25 +145,79 @@ function BusinessProfile() {
     formData.append("state", stateName);
     formData.append("city", cityName);
 
+    try {
+      const response = await axios.post(
+        "/api/driver/webapi/business_profile_update1.php",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
-    // try {
-    //   const response = await axios.post('url', formData, {
-    //     headers: {
-    //       "Content-Type": "multipart/form-data",
-    //     },
-    //   })
-
-    //   if(response.data){
-    //     setIsLoading(false);
-    //   }
-    // } catch (error) {
-      
-    // }
-  }
+      if (response.data) {
+        setIsLoading(false);
+        toast.success("Successfully updated!", {
+          position: "top-center",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        // Reset form input fields
+        formRef.current.reset();
+        stateInputRef.current.clearValue();
+        cityInputRef.current.clearValue();
+      } else {
+        setIsLoading(false);
+        toast.error("Something went wrong!", {
+          position: "top-center",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      }
+    } catch (error) {
+      setIsLoading(false);
+      toast.error("Server or Network Error!", {
+        position: "top-center",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      console.log("Error: ", error);
+    }
+  };
 
   return (
     <>
-      <div className="mt-16 w-full h-full">
+      <div className="mt-16 w-full h-full relative">
+        {/* Loading image section */}
+        <div
+          className={`w-full h-full z-10 bg-[rgba(0,0,0,0.5)] absolute ${
+            isLoading ? "" : "hidden"
+          }`}
+        >
+          <div className=" absolute w-full h-screen flex justify-center items-center">
+            <img
+              className="w-[100px] h-[100px] fixed"
+              src={loadingGfg}
+              alt=""
+            />
+          </div>
+        </div>
         {/* First Banner Part */}
         <div className="bg-vehicleTruckImgProfile w-full bg-no-repeat bg-cover ">
           <div className="w-full md:h-[560px] h-[400px] mx-auto bg-[rgba(0,0,0,0.5)] text-white">
@@ -185,14 +266,17 @@ function BusinessProfile() {
                 <Link to="/loaddatalist">Home</Link>
               </h1>
             </div>
-            <form action="" className="px-4 py-2">
-              
-        <h1 className="text-3xl">This data show on Available load section</h1>
+            <form onSubmit={handleSubmit} ref={formRef} className="px-4 py-2">
+              {/* <h1 className="text-3xl">
+                This data show on Available load section
+              </h1> */}
               <div className="grid sm:grid-cols-2 md:mt-6">
                 <div>
                   <h1 className="text-[17px] pt-2 font-semibold">Name</h1>
                   <input
                     type="text"
+                    name="name"
+                    onChange={handleFileChange}
                     placeholder="Enter your name"
                     required
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
@@ -202,6 +286,8 @@ function BusinessProfile() {
                   </h1>
                   <input
                     type="text"
+                    name="phone"
+                    onChange={handleFileChange}
                     placeholder="Phone number"
                     maxLength={10}
                     required
@@ -215,6 +301,9 @@ function BusinessProfile() {
                   </h1>
                   <input
                     type="email"
+                    name="email"
+                    required
+                    onChange={handleFileChange}
                     placeholder="Enter email address"
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
@@ -223,6 +312,8 @@ function BusinessProfile() {
                   </h1>
                   <input
                     type="text"
+                    name="alternativenumber"
+                    onChange={handleFileChange}
                     maxLength={10}
                     placeholder="Enter Your Alternative Number"
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
@@ -236,6 +327,8 @@ function BusinessProfile() {
                 <h1 className="text-[17px] pt-2 font-semibold">Address</h1>
                 <input
                   type="text"
+                  name="address"
+                  onChange={handleFileChange}
                   required
                   placeholder="Enter your address.."
                   className="py-2 px-4 rounded-lg w-[90%]"
@@ -249,7 +342,9 @@ function BusinessProfile() {
                     SELECT STATE
                   </h3>
                   <Select
+                    ref={stateInputRef}
                     options={states}
+                    required
                     className="mt-2"
                     value={states.find((option) => option.value === state)}
                     onChange={handleStateChange}
@@ -261,13 +356,18 @@ function BusinessProfile() {
                     SELECT CITY
                   </h3>
                   <Select
+                    ref={cityInputRef}
                     options={cities}
+                    required
                     className="mt-2"
                     value={cities.find((option) => option.value === city)}
                     onChange={handleCityChange}
                     isDisabled={!state}
                     isClearable
                   />
+                  {isErrorsMessage && (
+                    <p className="text-red-500">{isErrorsMessage.cityName}</p>
+                  )}
                 </div>
               </div>
 
@@ -324,6 +424,7 @@ function BusinessProfile() {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 }
