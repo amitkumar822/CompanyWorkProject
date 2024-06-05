@@ -790,7 +790,9 @@ function VehiProfile() {
                     onChange={handleDriverVehiFormTextChange}
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
-                  <h1 className="text-[17px] pt-2 font-semibold">Home Town</h1>
+                  <h1 className="text-[17px] pt-2 font-semibold">
+                    Home Town 1
+                  </h1>
                   <input
                     type="text"
                     placeholder="Home Town"
@@ -802,6 +804,30 @@ function VehiProfile() {
                   />
                 </div>
               </div>
+
+              <div className="grid sm:grid-cols-2 md:mt-6">
+                <div>
+                  <h1 className="text-[17px] pt-2 font-semibold">
+                    Home Town2 (optional)
+                  </h1>
+                  <input
+                    type="text"
+                    placeholder="Home Town3 (optional)"
+                    className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
+                  />
+                </div>
+                <div>
+                  <h1 className="text-[17px] pt-2 font-semibold">
+                    Home Town3 (optional)
+                  </h1>
+                  <input
+                    type="text"
+                    placeholder="Home Town3 (optional)"
+                    className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
+                  />
+                </div>
+              </div>
+
               <hr className="md:mt-12 mt-6 w-[94%]" />
               {/*👉 Vehicle and license details */}
               <h1 className="text-[17px] pt-2 font-semibold">

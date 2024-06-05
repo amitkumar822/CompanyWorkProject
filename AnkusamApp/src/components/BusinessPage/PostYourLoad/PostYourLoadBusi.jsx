@@ -66,11 +66,8 @@ function PostYourLoadBusi() {
   const [isLoading, setIsLoading] = useState(false);
 
   const [errors, setErrors] = useState({
-    fromState: "",
     fromCityName: "",
-    toState: "",
     toCityName: "",
-    VehicleType: "",
     PackageWeight: "",
   });
 
@@ -102,9 +99,9 @@ function PostYourLoadBusi() {
         fromCityName: "Please select from city",
       }));
       return;
-    }else{
+    } else {
       setErrors((prevErrors) => ({
-       ...prevErrors,
+        ...prevErrors,
         fromCityName: "",
       }));
     }
@@ -116,9 +113,25 @@ function PostYourLoadBusi() {
         toCityName: "Please select to city",
       }));
       return;
-    }else{
+    } else {
       setErrors((prevErrors) => ({
-       ...prevErrors,
+        ...prevErrors,
+        toCityName: "",
+        fromCityName: "",
+      }));
+    }
+
+    if (!formFiles.PackageWeight) {
+      toast("PackageWeight is required!");
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        PackageWeight: "Please select PackageWeight",
+      }));
+      return;
+    } else {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        PackageWeight: "",
         toCityName: "",
         fromCityName: "",
       }));
@@ -196,19 +209,19 @@ function PostYourLoadBusi() {
       console.log("Error: ", error);
     }
 
-    console.log("====================================");
-    console.log("FromState: " + fromStateName);
-    console.log("FromCity: " + fromCityName);
-    console.log("ToState: " + toStateName);
-    console.log("ToCity: " + toCityName);
-    console.log("FromPickupDate: " + formFiles.PickUpDate);
-    console.log("VehicleType: " + formFiles.VehicleType);
-    console.log("PackageWeight: " + formFiles.PackageWeight);
-    console.log("NumberOfWheels: " + formFiles.NumberOfWheels);
-    console.log("GoodsType: " + formFiles.GoodsType);
-    console.log("VehicleLength: " + formFiles.VehicleLength);
-    console.log("ContactNumber: " + formFiles.ContactNumber);
-    console.log("====================================");
+    // console.log("====================================");
+    // console.log("FromState: " + fromStateName);
+    // console.log("FromCity: " + fromCityName);
+    // console.log("ToState: " + toStateName);
+    // console.log("ToCity: " + toCityName);
+    // console.log("FromPickupDate: " + formFiles.PickUpDate);
+    // console.log("VehicleType: " + formFiles.VehicleType);
+    // console.log("PackageWeight: " + formFiles.PackageWeight);
+    // console.log("NumberOfWheels: " + formFiles.NumberOfWheels);
+    // console.log("GoodsType: " + formFiles.GoodsType);
+    // console.log("VehicleLength: " + formFiles.VehicleLength);
+    // console.log("ContactNumber: " + formFiles.ContactNumber);
+    // console.log("====================================");
   };
 
   return (
@@ -363,7 +376,6 @@ function PostYourLoadBusi() {
                       PACKAGE WEIGHT (Ton)
                     </h1>
                     <select
-                      required
                       name="PackageWeight"
                       onChange={handleFormChange}
                       className="py-2 px-4 min-w-[180px] lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
@@ -377,6 +389,9 @@ function PostYourLoadBusi() {
                         );
                       })}
                     </select>
+                    {errors.PackageWeight && (
+                      <p className="text-red-500">{errors.PackageWeight}</p>
+                    )}
                   </div>
                 </div>
               </div>

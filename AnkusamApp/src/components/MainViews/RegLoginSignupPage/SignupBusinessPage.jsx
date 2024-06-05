@@ -76,13 +76,6 @@ function SignupBusinessPage() {
     formData.append("phone", phone);
     formData.append("password", password);
 
-    // console.log('====================================');
-    // console.log("username: ", username);
-    // console.log("phone: ", phone);
-    // console.log("password: ", password);
-    // console.log("confirmPassword: ", confirmPassword);
-    // console.log('====================================');
-
     try {
       // Send POST request to backend
       const response = await fetch("url", {
@@ -119,8 +112,6 @@ function SignupBusinessPage() {
           progress: undefined,
           theme: "colored",
         });
-        // Redirect to a different page on successful login (uncomment below line when navigation is setup)
-        // navigate('/dashboard')
       } else {
         setIsLoading(false);
         toast.error("Signup failed!", {
