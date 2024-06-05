@@ -229,20 +229,6 @@ function PostYourLoadBusi() {
       });
       console.log("Error: ", error);
     }
-
-    console.log("====================================");
-    console.log("FromState: " + fromStateName);
-    console.log("FromCity: " + fromCityName);
-    console.log("ToState: " + toStateName);
-    console.log("ToCity: " + toCityName);
-    console.log("FromPickupDate: " + formFiles.PickUpDate);
-    console.log("VehicleType: " + formFiles.VehicleType);
-    console.log("PackageWeight: " + formFiles.PackageWeight);
-    console.log("NumberOfWheels: " + formFiles.NumberOfWheels);
-    console.log("GoodsType: " + formFiles.GoodsType);
-    console.log("VehicleLength: " + formFiles.VehicleLength);
-    console.log("ContactNumber: " + formFiles.ContactNumber);
-    console.log("====================================");
   };
 
   return (
