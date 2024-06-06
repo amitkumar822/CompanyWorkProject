@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import { State, City } from 'country-state-city'; // Importing from country-state-city package
+import { State, City } from "country-state-city"; // Importing from country-state-city package
+import Select from "react-select";
 import { weightdata } from "../../data/WeightData"; // Importing weight data
 import Typed from "typed.js"; // Importing Typed.js for typing animation
 import { IoSearch } from "react-icons/io5"; // Importing search icon
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 // Table how many items to show per page
 const ITEMS_PER_PAGE = 40; // Constant to define items per page
@@ -13,18 +15,17 @@ function AvailableLoad() {
 
   const navigate = useNavigate();
 
+  // Check if user is logged in
   useEffect(() => {
     if (!localStorage.getItem("TokeLoginVehiPage")) {
-        navigate("/");
-        return;
+      navigate("/");
+      return;
     }
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     const options = {
-      strings: [
-        "Welcome to Ankusam logistic",
-      ],
+      strings: ["Welcome to Ankusam logistic"],
       typeSpeed: 50,
       backSpeed: 50,
       loop: true,
@@ -36,116 +37,98 @@ function AvailableLoad() {
     };
   }, []);
 
-  const [state, setState] = useState(""); // State to hold selected state
-  const [city, setCity] = useState(""); // State to hold selected city
-  const [weight, setWeight] = useState(""); // State to hold selected weight
-  const [cities, setCities] = useState([]); // State to hold list of cities
-  const [ploadData, setPloadData] = useState([]); // State to hold payload data from API
-  const [currentPage, setCurrentPage] = useState(1); // State to manage current page for pagination
-  const [searchInput, setSearchInput] = useState(""); // State to hold search input
-  const [filteredData, setFilteredData] = useState([]); // State to hold filtered data
+  //=======👇 States and Cities filter sections 👇======
 
-  const normalizeString = (str) => {
-    return str.toLowerCase().replace(/[^a-z0-9]/gi, ""); // Function to normalize strings for comparison
-  };
+  const [state, setState] = useState("");
+  const [city, setCity] = useState("");
+  const [stateName, setStateName] = useState("");
+  const [cityName, setCityName] = useState("");
 
-  const changeState = (event) => {
-    setState(event.target.value);
-    const selectedState = State.getStatesOfCountry('IN').find(s => s.name === event.target.value);
-    setCities(selectedState ? City.getCitiesOfState('IN', selectedState.isoCode) : []);
+  const handleStateChange = (selectedOption) => {
+    const selectedStateCode = selectedOption?.value || "";
+    const selectedState = State.getStateByCodeAndCountry(
+      selectedStateCode,
+      "IN"
+    );
+    setState(selectedStateCode);
+    setStateName(selectedState ? selectedState.name : "");
+    // Reset cities
     setCity("");
+    setCityName("");
   };
 
-  const changeCity = (event) => {
-    setCity(event.target.value); // Update city state
+  const handleCityChange = (selectedOption) => {
+    const selectedCityName = selectedOption?.value || "";
+    setCity(selectedCityName);
+    setCityName(selectedCityName);
   };
 
-  const changeWeight = (event) => {
-    setWeight(event.target.value); // Update weight state
-  };
+  // State and cities input search functionality
+  const states = State.getStatesOfCountry("IN").map((state) => ({
+    value: state.isoCode,
+    label: state.name,
+  }));
+
+  const cities = City.getCitiesOfState("IN", state).map((city) => ({
+    value: city.name,
+    label: city.name,
+  }));
+
+  //=========== 👇 Filter Section Start 👇================
+
+  const stateInputRef = useRef();
+  const cityInputRef = useRef();
+
+  const [weight, setWeight] = useState("");
+  const [searchInput, setSearchInput] = useState("");
+  const [currentData, setCurrentData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/api/driver/filtter_by_current_date.php");
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const result = await response.json();
-        setPloadData(result); // Set payload data from API response
-        setFilteredData(result); // Initialize filteredData with all data
+        const response = await axios.get(
+          "/api/driver/webapi/get_load_data.php"
+        );
+        setCurrentData(response.data);
+        setFilteredData(response.data); // Initialize filtered data with the full dataset
       } catch (error) {
-        console.log(error.message);
+        console.log("Error: ", error);
       }
     };
-    fetchData(); // Fetch data on component mount
+    fetchData();
   }, []);
 
+  // Filter state and city and weight wise
   const filterData = () => {
-    let filtered = ploadData;
+    const filteredData = currentData.filter((item) => {
+      const matchState = state === "" || item.FromState === stateName;
+      const matchCity = city === "" || item.FromCity === cityName;
+      const matchWeight = weight === "" || item.PackageWeight === weight;
 
-    if (state) {
-      filtered = filtered.filter(
-        (item) => normalizeString(item.fromstate) === normalizeString(state)
-      );
-    }
-    if (city) {
-      filtered = filtered.filter(
-        (item) => normalizeString(item.fromcity) === normalizeString(city)
-      );
-    }
-    if (weight) {
-      filtered = filtered.filter((item) => item.pkgweight === weight);
-    }
+      const matchSearch =
+        searchInput === "" ||
+        item.FromState.toString()
+          .toLowerCase()
+          .includes(searchInput.toString().trim().toLowerCase()) ||
+        item.FromCity.toString()
+          .toLowerCase()
+          .includes(searchInput.toString().trim().toLowerCase()) ||
+        item.PackageWeight.toString()
+          .toLowerCase()
+          .includes(searchInput.toString().trim().toLowerCase()) ||
+        item.ContactNumber.toString()
+          .toLowerCase()
+          .includes(searchInput.toString().trim().toLowerCase());
 
-    setFilteredData(filtered); // Set filtered data
-    setCurrentPage(1); // Reset to the first page whenever filter changes
+      return matchState && matchCity && matchWeight && matchSearch;
+    });
+    setFilteredData(filteredData);
   };
 
   useEffect(() => {
-    filterData(); // Apply filters whenever state, city, or weight changes
-  }, [state, city, weight]);
-
-  const handleNextPage = () => {
-    setCurrentPage((prevPage) =>
-      Math.min(prevPage + 1, Math.ceil(filteredData.length / ITEMS_PER_PAGE))
-    ); // Handle next page in pagination
-  };
-
-  const handlePrevPage = () => {
-    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1)); // Handle previous page in pagination
-  };
-
-  const currentData = filteredData.slice(
-    (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
-  ); // Get current page data for pagination
-
- // Reset filter state and city
-  const handleResetFilterStateAndCity = () => {
-    setState("");
-    setCity("");
-    setWeight("");
-    setFilteredData(ploadData);
-    setCurrentPage(1);
-  }
-
-  // Search bar Functionality
-  const handleFilter = (event) => {
-    const query = normalizeString(event.target.value);
-    setSearchInput(query);
-
-    const filtered = ploadData.filter((item) =>
-      normalizeString(item.fromcity).includes(query)
-    );
-
-    setFilteredData(filtered);
-    setCurrentPage(1); // Reset to the first page whenever filter changes
-  };
-
-  // console.log('====================================');
-  // console.log("State: ", state);
-  // console.log('====================================');
+    filterData();
+  }, [state, city, weight, searchInput, currentData]);
 
   return (
     <>
@@ -157,38 +140,31 @@ function AvailableLoad() {
           <div className="w-[100%] mx-auto gap-14 order-1 justify-content-center d-flex vh-100 bg-dark grid lg:grid-cols-2 grid-cols-1">
             <div className="min-w-[310px] mt-5">
               <h1 className="text-green-500">Filter by state</h1>
-              <select
+              <Select
+                ref={stateInputRef}
                 className="form-control w-full text-sm bg-[#F1F2F4] cursor-pointer"
-                value={state}
-                onChange={changeState} // Handle state change
-              >
-                <option value="">--State--</option>
-                {State.getStatesOfCountry('IN').map((state, index) => (
-                  <option key={index} value={state.name}>
-                    {state.name}
-                  </option>
-                ))}
-              </select>
+                options={states}
+                required
+                value={states.find((option) => option.value === state)}
+                onChange={handleStateChange}
+              />
               <br />
               <h1 className="text-[#49796a]">Filter by city</h1>
-              <select
+              <Select
+                ref={cityInputRef}
                 className="form-control w-full text-sm bg-[#F1F2F4] cursor-pointer"
-                value={city}
-                onChange={changeCity} // Handle city change
-              >
-                <option value="">--City--</option>
-                {cities.map((city, index) => (
-                  <option key={index} value={city.name}>
-                    {city.name}
-                  </option>
-                ))}
-              </select>
+                options={cities}
+                required
+                value={cities.find((option) => option.value === city)}
+                onChange={handleCityChange}
+                isDisabled={!state}
+              />
               <br />
               <h1>Weight:</h1>
               <select
                 className="form-control w-full text-sm bg-[#F1F2F4] cursor-pointer"
                 value={weight}
-                onChange={changeWeight} // Handle weight change
+                onChange={(e) => setWeight(e.target.value)}
               >
                 <option value="">Select one..</option>
                 {weightdata.map((weight, index) => (
@@ -198,11 +174,25 @@ function AvailableLoad() {
                 ))}
               </select>
 
-               {/* Reset Button */}
-               <div className="relative flex items-center gap-4 mt-4">
-                <button className="hover:bg-blue-600 bg-blue-500 duration-300 py-1 px-2 text-xl font-semibold text-white rounded-lg shadow-md shadow-gray-800 uppercase italic"
-                onClick={handleResetFilterStateAndCity}
-                >Reset</button>
+              {/* Reset Button */}
+              <div className="relative flex items-center gap-4 mt-4">
+                <button
+                  className="hover:bg-blue-600 bg-blue-500 duration-300 py-1 px-2 text-xl font-semibold text-white rounded-lg shadow-md shadow-gray-800 uppercase italic"
+                  onClick={() => {
+                    setState("");
+                    setCity("");
+                    setWeight("");
+                    setStateName("");
+                    setCityName("");
+                    setSearchInput("");
+                    setFilteredData(currentData); // Reset filtered data
+                    //cleare all state and city input fields help of useRef
+                    stateInputRef.current.clearValue();
+                    cityInputRef.current.clearValue();
+                  }}
+                >
+                  Reset
+                </button>
               </div>
             </div>
 
@@ -214,9 +204,8 @@ function AvailableLoad() {
         </div>
 
         {/* Load List */}
-        
         <div
-          className={`md:w-[90%] w-[95%] mx-auto md:px-4 px-2 py-6 border bg-[#f2f2f2] rounded-lg shadow-md`} // Conditional rendering based on toggle
+          className={`md:w-[90%] w-[95%] mx-auto md:px-4 px-2 py-6 border bg-[#f2f2f2] rounded-lg shadow-md`}
         >
           <h1 className="text-3xl text-center text-red-600 font-bold underline mb-4">
             Load List
@@ -230,7 +219,7 @@ function AvailableLoad() {
               type="text"
               placeholder="Search by from city..."
               value={searchInput}
-              onChange={handleFilter} // Handle search input change
+              onChange={(e) => setSearchInput(e.target.value)}
             />
             <IoSearch className="absolute right-4" />
           </div>
@@ -242,71 +231,78 @@ function AvailableLoad() {
                 <thead className="bg-white border-b border-gray-300 sticky top-0 z-[1]">
                   <tr className="whitespace-nowrap text-[14px] md:text-[16px]">
                     <th className="px-4 py-2 border-b">SI Nb</th>
-                    <th className={`px-4 py-2 border-b ${state.length==0 ? 'hidden' : ''}`}>From State</th>
+                    <th className={`px-4 py-2 border-b `}>From State</th>
                     <th className="px-4 py-2 border-b">From City</th>
-                    <th className={`px-4 py-2 border-b ${state.length==0 ? 'hidden' : ''}`}>To State</th>
+                    <th className={`px-4 py-2 border-b `}>To State</th>
                     <th className="px-4 py-2 border-b">To City</th>
                     <th className="px-4 py-2 border-b">Pickup Time</th>
                     <th className="px-4 py-2 border-b">Vehicle Type</th>
                     <th className="px-4 py-2 border-b">Weight</th>
-                    <th className={`px-4 py-2 border-b ${localStorage.getItem('TokeLoginVehiPage') || 
-                      localStorage.getItem('TokenLoginBusinpage') ? '' : 'hidden'}`}>Contact Number</th>
+                    <th
+                      className={`px-4 py-2 border-b ${
+                        localStorage.getItem("TokeLoginVehiPage") ||
+                        localStorage.getItem("TokenLoginBusinpage")
+                          ? ""
+                          : "hidden"
+                      }`}
+                    >
+                      Contact Number
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="text-center">
-                  {currentData.map((item, index) => (
+                  {filteredData.map((item, index) => (
                     <tr
-                      key={item.id}
+                      key={index}
                       className={`${
                         index % 2 === 0 ? "bg-gray-200" : ""
                       } whitespace-nowrap`}
                     >
                       <td className="px-4 py-2 border-b">{index + 1}</td>
-                      <td className={`px-4 py-2 border-b ${state.length==0 ? 'hidden' : ''}`}>{item.fromstate}</td>
-                      <td className="px-4 py-2 border-b">{item.fromcity}</td>
-                      <td className={`px-4 py-2 border-b ${state.length==0 ? 'hidden' : ''}`}>{item.tostate}</td>
-                      <td className="px-4 py-2 border-b">{item.tocity}</td>
+                      <td className={`px-4 py-2 border-b `}>
+                        {item.FromState}
+                      </td>
+                      <td className="px-4 py-2 border-b">{item.FromCity}</td>
+                      <td className={`px-4 py-2 border-b `}>{item.ToState}</td>
+                      <td className="px-4 py-2 border-b">{item.ToCity}</td>
                       <td className="px-4 py-2 border-b">
-                        {formatDate(item.pickupTime)}{" "}
+                        {formatDate(item.PickUpDate)}{" "}
                         {/* Format date for display */}
                       </td>
-                      <td className="px-4 py-2 border-b">{item.vship}</td>
-                      <td className="px-4 py-2 border-b">{item.pkgweight}</td>
-                      <td className={`px-4 py-2 border-b 
-                      ${localStorage.getItem('TokeLoginVehiPage') || 
-                      localStorage.getItem('TokenLoginBusinpage') ? '' : 'hidden'}`}>
+                      <td className="px-4 py-2 border-b">
+                        {item.TypeOfVehicle}
+                      </td>
+                      <td className="px-4 py-2 border-b">
+                        {item.PackageWeight}
+                      </td>
+                      <td
+                        className={`px-4 py-2 border-b ${
+                          localStorage.getItem("TokeLoginVehiPage") ||
+                          localStorage.getItem("TokenLoginBusinpage")
+                            ? ""
+                            : "hidden"
+                        }`}
+                      >
                         <a
-                          href={`tel:${item.phone}`}
+                          href={`tel:${item.ContactNumber}`}
                           className="text-blue-500 underline"
                         >
-                          {item.phone}
+                          {item.ContactNumber}
                         </a>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-                  {ploadData.length === 0 ? "Loading data..." : ""}
-                  {currentData.length === 0 ? "No data was found..." : ""}
             </div>
           </div>
 
           {/* Pagination Section */}
           <div className="flex justify-between mt-4">
-            <button
-              onClick={handlePrevPage}
-              disabled={currentPage === 1} // Disable button if on first page
-              className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:bg-gray-200"
-            >
+            <button className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:bg-gray-200">
               Previous
             </button>
-            <button
-              onClick={handleNextPage}
-              disabled={
-                currentPage === Math.ceil(filteredData.length / ITEMS_PER_PAGE) // Disable button if on last page
-              }
-              className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:bg-gray-200"
-            >
+            <button className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:bg-gray-200">
               Next
             </button>
           </div>
