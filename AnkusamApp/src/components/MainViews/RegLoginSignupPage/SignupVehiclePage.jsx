@@ -1,5 +1,5 @@
 import React, { useState } from "react"; // Import React and useState hook
-import { Link } from "react-router-dom"; // Import Link component for navigation
+import { Link, useNavigate } from "react-router-dom"; // Import Link component for navigation
 import { RiLockPasswordFill } from "react-icons/ri"; // Import lock icon
 import { MdContactPhone } from "react-icons/md"; // Import contact phone icon
 import { IoCarSportSharp } from "react-icons/io5"; // Import car sport icon
@@ -13,6 +13,8 @@ import "react-toastify/dist/ReactToastify.css";
 import loadingGfg from "../../../data/GfgLoding/loading.gif";
 
 function SignupVehiclePage() {
+  const navigate = useNavigate();
+
   const [phoneNumber, setPhoneNumber] = useState(""); // State for phone number input
   const [vehicalNumber, setVehicalNumber] = useState(""); // State for vehicle number input
   const [password, setPassword] = useState(""); // State for password input
@@ -128,7 +130,7 @@ function SignupVehiclePage() {
             theme: "colored",
           });
           // Redirect to a different page on successful login (uncomment below line when navigation is setup)
-          // navigate('/dashboard')
+          navigate("/vehiclelogin");
         }
       } else {
         setIsLoading(false);
@@ -146,7 +148,7 @@ function SignupVehiclePage() {
       }
     } catch (error) {
       // Handle errors (currently empty, but can add error logging)
-      console.error("There was an error!", error);
+      console.error("Network or Server Error!", error);
       setIsLoading(false);
       toast.error("Internal Server or Network Error!", {
         position: "top-center",
