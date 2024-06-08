@@ -92,9 +92,9 @@ function PostYourLoadBusi() {
     PickUpDate: null,
     VehicleType: "Both",
     PackageWeight: null,
-    NumberOfWheels: null,
+    NumberOfWheels: 1,
     GoodsType: null,
-    VehicleLength: null,
+    VehicleLength: 1,
     ContactNumber: null,
   });
 
@@ -164,7 +164,7 @@ function PostYourLoadBusi() {
     setIsLoading(true);
 
     const formData = new FormData();
-    formData.append("vendorId", busiLogUser?.driver_id);
+    formData.append("vendorId", busiLogUser?.userid);
     formData.append("PickUpDate", formFiles.PickUpDate);
     formData.append("VehicleType", formFiles.VehicleType);
     formData.append("PackageWeight", formFiles.PackageWeight);
@@ -509,11 +509,6 @@ function PostYourLoadBusi() {
 }
 
 export default PostYourLoadBusi;
-
-
-
-
-
 
 // import React, { useContext, useEffect, useState } from "react";
 // import { Country, State, City } from "country-state-city";
