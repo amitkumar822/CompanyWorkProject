@@ -35,11 +35,9 @@ function SignupBusinessPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setIsLoading(true);
 
+    // Check if terms and conditions are agreed
     if (!isCheckedTermsConditions) {
-      // Check if terms and conditions are agreed
-      // alert("You must agree to the terms and conditions before signing up.");
       toast.info(
         "You must agree to the terms and conditions before signing up!",
         {
@@ -56,8 +54,8 @@ function SignupBusinessPage() {
       return;
     }
 
+    // Check if passwords match
     if (password !== confirmPassword) {
-      // Check if passwords match
       toast.warn("Passwords do not match!", {
         position: "top-center",
         autoClose: 3000,
@@ -71,21 +69,22 @@ function SignupBusinessPage() {
       return;
     }
 
+    setIsLoading(true);
+
     const formData = new FormData();
-    formData.append("username", username);
-    formData.append("phone", phone);
-    formData.append("password", password);
+    formData.append("userName", username);
+    formData.append("userPhone", phone);
+    formData.append("vendorPassword", password);
 
     try {
       // Send POST request to backend
-      const response = await fetch("url", {
+      const response = await fetch("/api/driver/business_signup.php", {
         method: "POST",
         body: formData, // Send form data
       });
 
       // Log the response status and headers
       console.log("Response Status:", response.status);
-      console.log("Response Headers:", response.headers);
 
       if (!response.ok) {
         throw new Error("Network response was not ok " + response.statusText); // Throw error if response is not ok
@@ -97,10 +96,11 @@ function SignupBusinessPage() {
       // Log the entire response for debugging
       console.log("====================================");
       console.log("Result:", data);
+      // console.log("Result Status:", data.success);
       console.log("====================================");
 
       // Handle the success or failure based on response
-      if (data.status === true || data.status === "true") {
+      if (data.success) {
         setIsLoading(false);
         toast.success("Signup successful!", {
           position: "top-center",
@@ -112,9 +112,10 @@ function SignupBusinessPage() {
           progress: undefined,
           theme: "colored",
         });
+        navigate("/businesssignup");
       } else {
         setIsLoading(false);
-        toast.error("Signup failed!", {
+        toast.error("Number already exists!", {
           position: "top-center",
           autoClose: 3000,
           hideProgressBar: false,
@@ -129,7 +130,7 @@ function SignupBusinessPage() {
       // Handle errors (currently empty, but can add error logging)
       console.error("There was an error!", error);
       setIsLoading(false);
-      toast.error("Internal Server or Network Error!", {
+      toast.error("Network or Server Error!", {
         position: "top-center",
         autoClose: 3000,
         hideProgressBar: false,
