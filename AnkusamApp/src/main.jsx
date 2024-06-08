@@ -22,6 +22,7 @@ import BusinessProfile from "./components/BusinessPage/Profile/BusinessProfile.j
 import AvailableVehiclesList from "./components/BusinessPage/AvailableVehicles/AvailableVehiclesList.jsx";
 import About from "./components/About/About.jsx";
 import PostYourLoadBusi from "./components/BusinessPage/PostYourLoad/PostYourLoadBusi.jsx";
+import LoadListBusi from "./components/BusinessPage/LoadsCheckAndEdit/LoadsListBusi.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -39,6 +40,7 @@ const router = createBrowserRouter(
       <Route path="/businessprofile" element={<BusinessProfile />} />
       <Route path="/postyourloadbusi" element={<PostYourLoadBusi />} />
       <Route path="/availablevehiclelist" element={<AvailableVehiclesList />} />
+      <Route path="/loadslistbusi" element={<LoadListBusi />} />
     </Route>
   )
 );

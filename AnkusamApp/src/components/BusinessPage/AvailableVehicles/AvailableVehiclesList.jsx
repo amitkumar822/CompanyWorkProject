@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
 function AvailableVehiclesList() {
   const navigate = useNavigate();
@@ -52,6 +53,9 @@ function AvailableVehiclesList() {
                 {/* Add more rows as needed */}
               </tbody>
             </table>
+          </div>
+          <div className="mt-4 w-full flex justify-center">
+            <Link className="text-2xl font-bold rounded-xl shadow-md shadow-yellow-400 py-2 px-3 bg-gradient-to-r from-red-400 to-[#192177] hover:from-pink-500 hover:to-yellow-500" to='/postyourloadbusi'>POST</Link>
           </div>
         </div>
       </div>

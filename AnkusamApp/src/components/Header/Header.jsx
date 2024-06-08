@@ -10,7 +10,7 @@ import { FaTruckMoving } from "react-icons/fa";
 import { RiContactsBook3Line } from "react-icons/ri";
 import { FaTruckFast } from "react-icons/fa6";
 import { LuUserCircle2 } from "react-icons/lu";
-import logo from '../../data/Photo/Logo/AnkusamLogo.png'
+import logo from "../../data/Photo/Logo/AnkusamLogo.png";
 import LogOut from "../MainViews/RegLoginSignupPage/LogOut";
 //👇 vehicles or business user context global variables access using context
 import VehiLogUserContext from "../../context/vehicleLoginUser/VehiLogUserContext";
@@ -70,12 +70,12 @@ function Header() {
             </div>
 
             {/*👉Vehicle or MenuListVehicle login after show */}
-            <div className={`${vehiLogUser ? "" : "hidden"}`}>
+            <div className={`${!localStorage.getItem('TokeLoginVehiPage') && "hidden"}`}>
               <MenuListVehicleLogin />
             </div>
 
             {/*👉Business or MenuListBusiness login after show */}
-            <div className={`${busiLogUser ? "" : "hidden"}`}>
+            <div className={`${!localStorage.getItem('TokenLoginBusinpage') && "hidden"}`}>
               <MenuListBusinessLogin />
             </div>
 
@@ -414,15 +414,15 @@ const MenuListBusinessLogin = () => {
             <li className=" font-semibold">
               <span className=" text-[#ede850]">Welcome,</span>{" "}
               {/* <span className="text-[#86e852]"> Name: </span>{" "} */}
-              <span className="text-white">{busiLogUser?.name}</span>
+              <span className="text-white">{busiLogUser?.userName}</span>
               <span className="text-[#86e852]"> Number: </span>{" "}
               <span className="text-white underline">
                 <a
                   href={`tel: ${
-                    busiLogUser?.driver_mobile_number || busiLogUser?.phone
+                    busiLogUser?.driver_mobile_number || busiLogUser?.userPhone
                   }`}
                 >
-                  {busiLogUser?.driver_mobile_number || busiLogUser?.phone}
+                  {busiLogUser?.driver_mobile_number || busiLogUser?.userPhone}
                 </a>
               </span>
             </li>

@@ -48,8 +48,8 @@ function LoginBusinessPage() {
 
     // Create form data to match what the backend expects
     const formData = new FormData();
-    formData.append("phoneNumber", phoneNumber);
-    formData.append("password", password);
+    formData.append("userPhone", phoneNumber);
+    formData.append("vendorPassword", password);
     // Constructing a FormData object to send in the POST request.
 
     try {
@@ -79,8 +79,8 @@ function LoginBusinessPage() {
       console.log("====================================");
 
       // Handle the success or failure based on response
-      if (data.status === true || data.status === "true") {
-        setBusiLogUser(data.driverData);
+      if (data.success) {
+        setBusiLogUser(data.userData);
         setIsLoading(false);
         console.log("Context Result:", data.driverData);
         toast.success("Login successful!", {
@@ -119,7 +119,7 @@ function LoginBusinessPage() {
     } catch (error) {
       console.error("There was an error!", error);
       setIsLoading(false);
-      toast.error("Internal Server or Network Error", {
+      toast.error("Internal Server or Network Error!", {
         position: "top-center",
         autoClose: 3000,
         hideProgressBar: false,

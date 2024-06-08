@@ -242,9 +242,9 @@ function AvailableLoad() {
                 <thead className="bg-white border-b border-gray-300 sticky top-0 z-[1]">
                   <tr className="whitespace-nowrap text-[14px] md:text-[16px]">
                     <th className="px-4 py-2 border-b">SI Nb</th>
-                    <th className={`px-4 py-2 border-b ${!stateName  && 'hidden'} `}>From State</th>
+                    <th className={`px-4 py-2 border-b ${(!stateName && !searchInput.trim())  && 'hidden'}`}>From State</th>
                     <th className="px-4 py-2 border-b">From City</th>
-                    <th className={`px-4 py-2 border-b `}>To State</th>
+                    <th className={`px-4 py-2 border-b ${(!stateName && !searchInput.trim())  && 'hidden'}`}>To State</th>
                     <th className="px-4 py-2 border-b">To City</th>
                     <th className="px-4 py-2 border-b">Pickup Time</th>
                     <th className="px-4 py-2 border-b">Vehicle Type</th>
@@ -270,11 +270,11 @@ function AvailableLoad() {
                       } whitespace-nowrap`}
                     >
                       <td className="px-4 py-2 border-b">{index + 1}</td>
-                      <td className={`px-4 py-2 border-b ${!stateName && 'hidden'}`}>
+                      <td className={`px-4 py-2 border-b ${(!stateName && !searchInput.trim()) && 'hidden'}`}>
                         {item.FromState}
                       </td>
                       <td className="px-4 py-2 border-b">{item.FromCity}</td>
-                      <td className={`px-4 py-2 border-b `}>{item.ToState}</td>
+                      <td className={`px-4 py-2 border-b ${(!stateName && !searchInput.trim())  && 'hidden'}`}>{item.ToState}</td>
                       <td className="px-4 py-2 border-b">{item.ToCity}</td>
                       <td className="px-4 py-2 border-b">
                         {formatDate(item.PickUpDate)}{" "}

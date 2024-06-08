@@ -104,7 +104,7 @@ function SignupBusinessPage() {
         setIsLoading(false);
         toast.success("Signup successful!", {
           position: "top-center",
-          autoClose: 3000,
+          autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -112,7 +112,9 @@ function SignupBusinessPage() {
           progress: undefined,
           theme: "colored",
         });
-        navigate("/businesssignup");
+        setTimeout(() => {
+          navigate("/businesslogin");
+        }, 1300);
       } else {
         setIsLoading(false);
         toast.error("Number already exists!", {
@@ -165,20 +167,18 @@ function SignupBusinessPage() {
           </div>
           <div className="md:min-w-[400px] lg:w-[40%] sm:w-[350px] w-[370px] mx-auto border p-4 bg-gradient-to-r from-cyan-500 to-blue-500 md:to-[#bbe0bb] rounded-lg shadow-lg shadow-[#c78c5c]">
             <h1 className="text-3xl text-center font-semibold">
-              Sign Up working right know
+              Sign Up
             </h1>
             <form onSubmit={handleSubmit} className="w-full mx-auto">
               <div className="w-[90%] mx-auto mt-4 relative">
                 <input
                   className="w-full border border-[#888686] outline-none px-11 py-2 absolute rounded-lg"
                   type="text"
-                  placeholder="username"
+                  placeholder="Enter your name"
                   required
                   name="username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  // Add autocomplete attribute with value "username"
-                  // autoComplete="username"
                 />
                 <FaUser className="relative top-3 left-2 text-2xl" />
               </div>
@@ -194,8 +194,6 @@ function SignupBusinessPage() {
                   name="phone"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  // Add autocomplete attribute with value "tel"
-                  // autoComplete="tel"
                 />
                 <MdContactPhone className="relative top-3 left-2 text-2xl" />
               </div>
@@ -210,8 +208,6 @@ function SignupBusinessPage() {
                   name="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  // Add autocomplete attribute with value "new-password"
-                  // autoComplete="new-password"
                 />
                 <RiLockPasswordFill className="relative top-3 left-2 text-2xl" />
               </div>
@@ -226,8 +222,6 @@ function SignupBusinessPage() {
                   name="confirmPassword"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  // Add autocomplete attribute with value "new-password"
-                  // autoComplete="new-password"
                 />
                 <RiLockPasswordFill className="relative top-3 left-2 text-2xl" />
               </div>

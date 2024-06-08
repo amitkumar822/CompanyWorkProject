@@ -121,7 +121,7 @@ function SignupVehiclePage() {
           setIsLoading(false);
           toast.success("Signup successful!", {
             position: "top-center",
-            autoClose: 3000,
+            autoClose: 1000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -130,7 +130,9 @@ function SignupVehiclePage() {
             theme: "colored",
           });
           // Redirect to a different page on successful login (uncomment below line when navigation is setup)
-          navigate("/vehiclelogin");
+          setTimeout(() => {
+            navigate("/vehiclelogin");
+          }, 1300);
         }
       } else {
         setIsLoading(false);
@@ -185,7 +187,7 @@ function SignupVehiclePage() {
           </div>
           <div className="md:min-w-[400px] lg:w-[40%] sm:w-[350px] w-[370px] mx-auto border p-4 bg-gradient-to-r from-cyan-500 to-blue-500 md:to-[#bbe0bb] rounded-lg shadow-lg shadow-[#c78c5c]">
             <h1 className="text-3xl text-center font-semibold">
-              Sign Up Don this page
+              Sign Up
             </h1>
             <form
               onSubmit={handleSubmit} // Form submit handler
