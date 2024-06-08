@@ -88,10 +88,16 @@ function AvailableLoad() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
+          // "/api/driver/webapi/filtter_by_city.php"
           "/api/driver/webapi/get_load_data.php"
         );
         setCurrentData(response.data);
-        setFilteredData(response.data); // Initialize filtered data with the full dataset
+        if (Array.isArray(response.data)) {
+          setFilteredData(response.data);
+          console.error("filteredData is not an array:", filteredData);
+          return null; // Or handle the error appropriately
+        }
+        // setFilteredData(response.data); // Initialize filtered data with the full dataset
       } catch (error) {
         console.log("Error: ", error);
       }
@@ -101,6 +107,11 @@ function AvailableLoad() {
 
   // Filter state and city and weight wise
   const filterData = () => {
+    if (!Array.isArray(currentData)) {
+      console.error("currentData is not an array:", currentData);
+      return null; // Or handle the error appropriately
+    }
+
     const filteredData = currentData.filter((item) => {
       const matchState = state === "" || item.FromState === stateName;
       const matchCity = city === "" || item.FromCity === cityName;
@@ -231,7 +242,7 @@ function AvailableLoad() {
                 <thead className="bg-white border-b border-gray-300 sticky top-0 z-[1]">
                   <tr className="whitespace-nowrap text-[14px] md:text-[16px]">
                     <th className="px-4 py-2 border-b">SI Nb</th>
-                    <th className={`px-4 py-2 border-b `}>From State</th>
+                    <th className={`px-4 py-2 border-b ${!stateName  && 'hidden'} `}>From State</th>
                     <th className="px-4 py-2 border-b">From City</th>
                     <th className={`px-4 py-2 border-b `}>To State</th>
                     <th className="px-4 py-2 border-b">To City</th>
@@ -259,7 +270,7 @@ function AvailableLoad() {
                       } whitespace-nowrap`}
                     >
                       <td className="px-4 py-2 border-b">{index + 1}</td>
-                      <td className={`px-4 py-2 border-b `}>
+                      <td className={`px-4 py-2 border-b ${!stateName && 'hidden'}`}>
                         {item.FromState}
                       </td>
                       <td className="px-4 py-2 border-b">{item.FromCity}</td>
@@ -294,6 +305,20 @@ function AvailableLoad() {
                   ))}
                 </tbody>
               </table>
+              <h1
+                className={`${
+                  currentData.length !== 0 && "hidden"
+                } text-red-500`}
+              >
+                Data is loading ...
+              </h1>
+              <h1
+                className={`${filteredData.length !== 0 && "hidden"} ${
+                  currentData.length === 0 && "hidden"
+                } text-red-500`}
+              >
+                No data found ...
+              </h1>
             </div>
           </div>
 
