@@ -164,7 +164,7 @@ function PostYourLoadBusi() {
     setIsLoading(true);
 
     const formData = new FormData();
-    formData.append("vendorId", busiLogUser?.userid);
+    formData.append("vendorId", busiLogUser?.vendorId);
     formData.append("PickUpDate", formFiles.PickUpDate);
     formData.append("VehicleType", formFiles.VehicleType);
     formData.append("PackageWeight", formFiles.PackageWeight);

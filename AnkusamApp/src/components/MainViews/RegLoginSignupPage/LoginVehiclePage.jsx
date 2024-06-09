@@ -165,7 +165,7 @@ function LoginVehiclePage() {
           {/* Heading for the login page. */}
         </div>
         <div className="md:min-w-[400px] lg:w-[40%] sm:w-[320px] w-[370px] mx-auto border p-4 bg-gradient-to-r from-cyan-500 to-blue-500 md:to-[#bbe0bb] rounded-lg shadow-lg shadow-[#c78c5c]">
-          <h1 className="text-3xl text-center font-semibold">Login complete</h1>
+          <h1 className="text-3xl text-center font-semibold">Login</h1>
           {/* Heading inside the form container. */}
           <form onSubmit={handleSubmit} className="w-full mx-auto">
             <div className="w-[90%] mx-auto mt-4 relative">
@@ -236,7 +236,7 @@ function LoginVehiclePage() {
 
           <div className="flex mt-2 gap-2 justify-center items-center">
             <h1>Don't have an account?</h1>{" "}
-            <Link to="/businesssignup">
+            <Link to="/vehiclesignup">
               <h2 className="rounded-lg px-2 py-1 font-bold text-[#f44646] uppercase">
                 Sign Up
               </h2>

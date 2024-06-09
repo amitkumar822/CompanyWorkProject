@@ -401,7 +401,7 @@ const MenuListBusinessLogin = () => {
               <Link to="/contactus">CONTACT US</Link>
             </li>
             <li className="tracking-tight cursor-pointer hover:text-[#c3c2c2] duration-300">
-              <Link to="">Check Loads</Link>
+              <Link to="/loadslistbusi">Check Loads</Link>
             </li>
             <li className="tracking-tight cursor-pointer hover:text-[#c3c2c2] duration-300">
               <Link to="/availablevehiclelist">Check Available Vehicles</Link>
@@ -455,18 +455,18 @@ const MenuListBusinessLogin = () => {
             <span>
               Welcome,
               <span className="text-[#7b7b74] uppercase ml-1">
-                {busiLogUser?.name}
+                {busiLogUser?.userName}
               </span>
             </span>
           </div>
-          <div className="ml-[28px] text-orange-600 font-semibold">
+          {/* <div className="ml-[28px] text-orange-600 font-semibold">
             userId:{" "}
             <span className="text-[#7b7b74] ml-1">{busiLogUser?.userid}</span>
-          </div>
+          </div> */}
           <div className="ml-[28px] text-orange-600 font-semibold">
-            Veh_Number:{" "}
+            Number:{" "}
             <span className="text-[#7b7b74] ml-1">
-              {busiLogUser?.vehicle_register_number}
+              {busiLogUser?.userPhone}
             </span>
           </div>
           <hr className=" border-dashed border-[1.3px] my-1" />
@@ -480,7 +480,7 @@ const MenuListBusinessLogin = () => {
           <div className="flex items-center gap-2 font-semibold hover:text-[#6b6a6a] duration-200">
             <TbTruckLoading className="text-[green]" />
             <Link
-              to="/availablevehiclelist"
+              to="/loadslistbusi"
               onClick={() => setToggleSlide(false)}
             >
               Check Loads
@@ -489,7 +489,7 @@ const MenuListBusinessLogin = () => {
           <hr className=" border-dashed border-[1.3px] my-1" />
           <div className="flex items-center gap-2 font-semibold hover:text-[#6b6a6a] duration-200">
             <FaTruckFast className="text-[green]" />
-            <Link to="" onClick={() => setToggleSlide(false)}>
+            <Link to="/availablevehiclelist" onClick={() => setToggleSlide(false)}>
               Check Available Vehicles
             </Link>
           </div>
