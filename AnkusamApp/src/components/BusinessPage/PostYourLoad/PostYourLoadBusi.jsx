@@ -109,13 +109,6 @@ function PostYourLoadBusi() {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    // Use `current` to reset form elements correctly
-    if (formInputRef.current) formInputRef.current.reset();
-    if (fromStateInputRef.current) fromStateInputRef.current.clearValue();
-    if (toStateInputRef.current) toStateInputRef.current.clearValue();
-    if (fromCityInputRef.current) fromCityInputRef.current.clearValue();
-    if (toCityInputRef.current) toCityInputRef.current.clearValue();
-
     if (!fromCityName) {
       toast("From City is required!");
       setErrors((prevErrors) => ({
@@ -201,6 +194,13 @@ function PostYourLoadBusi() {
         });
 
         setIsLoading(false);
+
+        // Use `current` to reset form elements correctly
+        if (formInputRef.current) formInputRef.current.reset();
+        if (fromStateInputRef.current) fromStateInputRef.current.clearValue();
+        if (toStateInputRef.current) toStateInputRef.current.clearValue();
+        if (fromCityInputRef.current) fromCityInputRef.current.clearValue();
+        if (toCityInputRef.current) toCityInputRef.current.clearValue();
       } else {
         toast.error("Faild to post!", {
           position: "top-center",
