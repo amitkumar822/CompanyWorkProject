@@ -9,6 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import loadingGfg from "../../../data/GfgLoding/loading.gif";
+import { Link } from "react-router-dom";
 
 function PostYourLoadBusi() {
   const { busiLogUser } = useContext(BusiLoginContext);
@@ -248,11 +249,11 @@ function PostYourLoadBusi() {
             />
           </div>
         </div>
-        <div className="lg:w-[80%] w-[90%] mx-auto pt-14">
+        <div className="lg:w-[80%] w-[90%] mx-auto mt-24 pt-6 bg-gray-200 pb-10 pl-4 rounded-xl bg-gray-00 shadow-md shadow-gray-800">
           <form
             ref={formInputRef}
             onSubmit={handleFormSubmit}
-            className="w-full mx-auto border bg-gray-200 pt-6 pb-10 pl-4 rounded-xl bg-gray-00 shadow-md shadow-gray-800"
+            className="w-full mx-auto border md:pl-4"
           >
             {/* Shipping from and Shipping to form section */}
             <div className="grid lg:grid-cols-2">
@@ -496,11 +497,17 @@ function PostYourLoadBusi() {
               </div>
             </div>
             <div className="w-full mx-auto flex justify-center items-center">
-              <button className="py-2 px-4 text-2xl font-semibold italic text-white rounded-xl mt-10 bg-gradient-to-r from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500 ...">
+              <button className="py-2 px-4 text-2xl font-semibold italic text-white rounded-xl mt-10 bg-gradient-to-r from-green-400 to-blue-500 hover:from-pink-700 hover:to-yellow-700 ...">
                 POST
               </button>
             </div>
           </form>
+          <hr className="w-[98%] mx-auto mt-6 bg-black border-dashed " />
+          <div className="w-full mx-auto flex justify-center items-center">
+              <Link to='/loadslistbusi' className="py-2 px-4 text-2xl font-semibold italic text-white rounded-xl mt-4 bg-gradient-to-r hover:from-amber-300 hover:to-gray-500 from-pink-500 to-yellow-500 ...">
+                Check Your Loads
+              </Link>
+            </div>
         </div>
       </div>
       <ToastContainer />
