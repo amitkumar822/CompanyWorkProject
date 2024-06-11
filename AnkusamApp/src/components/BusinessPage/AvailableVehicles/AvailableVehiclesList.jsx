@@ -55,7 +55,7 @@ function AvailableVehiclesList() {
             </table>
           </div>
           <div className="mt-4 w-full flex justify-center">
-            <Link className="text-2xl font-bold rounded-xl shadow-md shadow-yellow-400 py-2 px-3 bg-gradient-to-r from-red-400 to-[#192177] hover:from-pink-500 hover:to-yellow-500" to='/postyourloadbusi'>POST</Link>
+            <Link to='/loadslistbusi' className="text-2xl font-bold rounded-xl shadow-md shadow-yellow-400 py-2 px-3 bg-gradient-to-r from-red-400 to-[#192177] hover:from-pink-500 hover:to-yellow-500" >Check Loads</Link>
           </div>
         </div>
       </div>
