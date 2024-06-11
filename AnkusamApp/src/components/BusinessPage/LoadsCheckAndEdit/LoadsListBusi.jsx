@@ -15,7 +15,7 @@ function LoadListBusi() {
       setError(null);
 
       const formData = new FormData();
-      formData.append("vendorId", id);
+      formData.append("vendorId", busiLogUser?.vendorId);
 
       try {
         const response = await axios.post(
@@ -24,11 +24,10 @@ function LoadListBusi() {
           { headers: { "Content-Type": "multipart/form-data" } }
         );
 
-        console.log("Response1: ", response.data.success);
+        // console.log("Response1: ", response.data.success);
         // console.log("Response2: ", JSON.stringify(response, null, 2));
 
         if (!response.data.success) {
-          console.log("Response 2: ", JSON.stringify(response, null, 2));
           setVendorAllDetails(response.data);
         } else {
           setError(response.data.message || "No Rows Found");
@@ -39,14 +38,11 @@ function LoadListBusi() {
       }
     };
 
-    if (id) {
+    if (busiLogUser?.vendorId) {
       fetchData();
     }
-  }, [id]);
+  }, []);
 
-  // console.log('====================================');
-  // console.log("Vendor details: "+ vendorAllDetails.LoadId);
-  // console.log('====================================');
 
   return (
     <>
@@ -99,23 +95,29 @@ function LoadListBusi() {
                     </td>
                     <td className="px-4 py-2 border-b">{detail.GoodsTypes}</td>
                     <td className="px-4 py-2 border-b">
-                      {detail.GoodsPhotoOne}
+                      {/* {detail.GoodsPhotoOne} */}
+                      <label className=" cursor-pointer text-blue-500">View Photo</label>
                     </td>
                     <td className="px-4 py-2 border-b">{formatDate(detail.PickUpDate)}</td>
                     <td className="px-4 py-2 border-b">
+                      <a href={`tel:${detail.ContactNumber}`}
+                      className="text-blue-500 underline"
+                      >
                       {detail.ContactNumber}
+                      </a>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+            <h1 className={`text-xl ${vendorAllDetails.length && 'hidden'}`}>Data is loading...</h1>
           <div className="mt-4 w-full flex justify-center">
             <Link
               className="text-2xl font-bold rounded-xl shadow-md shadow-yellow-400 py-2 px-3 bg-gradient-to-r from-red-400 to-[#192177] hover:from-pink-500 hover:to-yellow-500"
               to="/postyourloadbusi"
             >
-              POST
+              POST YOUR LOAD
             </Link>
           </div>
         </div>
