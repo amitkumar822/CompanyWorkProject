@@ -11,6 +11,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import loadingGfg from "../../../data/GfgLoding/loading.gif";
 import { weightdata } from "../../../data/WeightData";
+import { RiVerifiedBadgeFill } from "react-icons/ri";
 
 function VehiProfile() {
   //👇 global variables access vehicle login user details
@@ -28,7 +29,7 @@ function VehiProfile() {
   const typedRef = useRef(null);
   const typedRefPhone = useRef(null);
 
-  const percentage = 10; // Assuming user has completed 70% of their profile
+  const percentage = 70; // Assuming user has completed 70% of their profile
 
   // Function to determine color based on percentage
   const getColor = (percentage) => {
@@ -749,7 +750,7 @@ function VehiProfile() {
             >
               <div className="grid sm:grid-cols-2 md:mt-6">
                 <div>
-                  <h1 className="text-[17px] pt-2 font-semibold">Name</h1>
+                  <h1 className="text-[17px] pt-2 font-semibold flex items-center gap-1">Name <span className={`${!driverVehiFormText.driver_name && 'hidden'} text-blue-500`}><RiVerifiedBadgeFill/></span></h1>
                   <input
                     type="text"
                     placeholder="Enter your name"
@@ -759,8 +760,8 @@ function VehiProfile() {
                     onChange={handleDriverVehiFormTextChange}
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
-                  <h1 className="text-[17px] pt-2 font-semibold">
-                    Phone Number
+                  <h1 className="text-[17px] pt-2 font-semibold flex items-center gap-1">
+                    Phone Number <span className={`${!driverVehiFormText.phone && 'hidden'} text-blue-500`}><RiVerifiedBadgeFill/></span>
                   </h1>
                   <input
                     type="tel"
@@ -776,8 +777,8 @@ function VehiProfile() {
                 </div>
 
                 <div>
-                  <h1 className="text-[17px] pt-2 font-semibold">
-                    Aadhar Numbar
+                  <h1 className="text-[17px] pt-2 font-semibold flex items-center gap-1">
+                    Aadhar Numbar <span className={`${!driverVehiFormText.aadhar_number && 'hidden'} text-blue-500`}><RiVerifiedBadgeFill/></span>
                   </h1>
                   <input
                     type="tel"
@@ -790,8 +791,8 @@ function VehiProfile() {
                     onChange={handleDriverVehiFormTextChange}
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
-                  <h1 className="text-[17px] pt-2 font-semibold">
-                    Home Town 1
+                  <h1 className="text-[17px] pt-2 font-semibold flex items-center gap-1">
+                    Home Town 1 <span className={`${!driverVehiFormText.htown && 'hidden'} text-blue-500`}><RiVerifiedBadgeFill/></span>
                   </h1>
                   <input
                     type="text"
@@ -830,8 +831,8 @@ function VehiProfile() {
 
               <hr className="md:mt-12 mt-6 w-[94%]" />
               {/*👉 Vehicle and license details */}
-              <h1 className="text-[17px] pt-2 font-semibold">
-                Driving license Number
+              <h1 className="text-[17px] pt-2 font-semibold flex items-center gap-1">
+                Driving license Number <span className={`${!driverVehiFormText.driving_license_number && 'hidden'} text-blue-500`}><RiVerifiedBadgeFill/></span>
               </h1>
               <input
                 type="text"
@@ -845,8 +846,8 @@ function VehiProfile() {
 
               <div className="grid lg:grid-cols-3 sm:grid-cols-2 mt-4">
                 <div>
-                  <h1 className="text-[17px] pt-2 font-semibold">
-                    License Type
+                  <h1 className="text-[17px] pt-2 font-semibold flex items-center gap-1">
+                    License Type <span className={`${!driverVehiFormText.license_type && 'hidden'} text-blue-500`}><RiVerifiedBadgeFill/></span>
                   </h1>
                   <select
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%] cursor-pointer"
@@ -862,8 +863,8 @@ function VehiProfile() {
                 </div>
 
                 <div>
-                  <h1 className="text-[17px] pt-2 font-semibold">
-                    Operator Type
+                  <h1 className="text-[17px] pt-2 font-semibold flex items-center gap-1">
+                    Operator Type <span className={`${!driverVehiFormText.operator_type && 'hidden'} text-blue-500`}><RiVerifiedBadgeFill/></span>
                   </h1>
                   <select
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%] cursor-pointer"
@@ -879,8 +880,8 @@ function VehiProfile() {
                 </div>
 
                 <div>
-                  <h1 className="text-[17px] pt-2 font-semibold">
-                    Vehicle Type
+                  <h1 className="text-[17px] pt-2 font-semibold flex items-center gap-1">
+                    Vehicle Type <span className={`${!driverVehiFormText.vehicle_type && 'hidden'} text-blue-500`}><RiVerifiedBadgeFill/></span>
                   </h1>
                   <select
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%] cursor-pointer"
@@ -898,8 +899,8 @@ function VehiProfile() {
 
               <div className="grid sm:grid-cols-2 mt-10">
                 <div>
-                  <h1 className="text-[17px] pt-2 font-semibold">
-                    Vehicle register Number
+                  <h1 className="text-[17px] pt-2 font-semibold flex items-center gap-1">
+                    Vehicle register Number <span className={`${!driverVehiFormText.vehicle_register_number && 'hidden'} text-blue-500`}><RiVerifiedBadgeFill/></span>
                   </h1>
                   <input
                     type="text"
@@ -910,8 +911,8 @@ function VehiProfile() {
                     onChange={handleDriverVehiFormTextChange}
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
-                  <h1 className="text-[17px] pt-2 font-semibold">
-                    Vehicle Name
+                  <h1 className="text-[17px] pt-2 font-semibold flex items-center gap-1">
+                    Vehicle Name <span className={`${!driverVehiFormText.vehicle_name && 'hidden'} text-blue-500`}><RiVerifiedBadgeFill/></span>
                   </h1>
                   <input
                     type="text"
@@ -922,8 +923,8 @@ function VehiProfile() {
                     onChange={handleDriverVehiFormTextChange}
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
-                  <h1 className="text-[17px] pt-2 font-semibold">
-                    Vehicle Capacity(tons)
+                  <h1 className="text-[17px] pt-2 font-semibold flex items-center gap-1">
+                    Vehicle Capacity(tons) <span className={`${!driverVehiFormText.vehicle_capacity_in_tons && 'hidden'} text-blue-500`}><RiVerifiedBadgeFill/></span>
                   </h1>
                   <select
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%] cursor-pointer"
@@ -944,8 +945,8 @@ function VehiProfile() {
                 </div>
 
                 <div>
-                  <h1 className="text-[17px] pt-2 font-semibold">
-                    Vehicle make/model
+                  <h1 className="text-[17px] pt-2 font-semibold flex items-center gap-1">
+                    Vehicle make/model <span className={`${!driverVehiFormText.vehicle_make_and_model && 'hidden'} text-blue-500`}><RiVerifiedBadgeFill/></span>
                   </h1>
                   <input
                     type="text"
@@ -956,8 +957,8 @@ function VehiProfile() {
                     placeholder="Vehicle make and model"
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
-                  <h1 className="text-[17px] pt-2 font-semibold">
-                    Vehicle Length
+                  <h1 className="text-[17px] pt-2 font-semibold flex items-center gap-1">
+                    Vehicle Length <span className={`${!driverVehiFormText.vehicle_length && 'hidden'} text-blue-500`}><RiVerifiedBadgeFill/></span>
                   </h1>
                   <input
                     type="text"
@@ -994,8 +995,8 @@ function VehiProfile() {
                   <div className="overflow-hidden">
                     {/* vehicle front photo */}
                     <div className="grid grid-cols-1">
-                      <span className="md:text-lg font-semibold text-purple-600 mt-2">
-                        Vehicle Front photo
+                      <span className="md:text-lg font-semibold text-purple-600 mt-2 flex items-center gap-1">
+                        Vehicle Front photo <span className={`${!driverVehiAllDetails.vehical_photos_front && 'hidden'} text-blue-500`}><RiVerifiedBadgeFill/></span>
                       </span>
                       <span
                         className={`text-green-800 font-serif  ${
@@ -1023,8 +1024,8 @@ function VehiProfile() {
                     </div>
                     {/* vehicle back photo */}
                     <div className="grid grid-cols-1">
-                      <span className="md:text-lg font-semibold text-purple-600 mt-2">
-                        Vehicle Back photo
+                      <span  className="md:text-lg font-semibold text-purple-600 mt-2 flex items-center gap-1">
+                        Vehicle Back photo <span className={`${!driverVehiAllDetails.vehical_photos_back && 'hidden'} text-blue-500`}><RiVerifiedBadgeFill/></span>
                       </span>
                       <span
                         className={`text-green-800 font-serif  ${
@@ -1052,8 +1053,8 @@ function VehiProfile() {
                     </div>
                     {/* vehicle left photo */}
                     <div className="grid grid-cols-1">
-                      <span className="md:text-lg font-semibold text-purple-600 mt-2">
-                        Vehicle Left Side photo
+                      <span  className="md:text-lg font-semibold text-purple-600 mt-2 flex items-center gap-1">
+                        Vehicle Left Side photo <span className={`${!driverVehiAllDetails.vehical_photos_left && 'hidden'} text-blue-500`}><RiVerifiedBadgeFill/></span>
                       </span>
                       <span
                         className={`text-green-800 font-serif  ${
@@ -1081,8 +1082,8 @@ function VehiProfile() {
                     </div>
                     {/* vehicle right photo */}
                     <div className="grid grid-cols-1">
-                      <span className="md:text-lg font-semibold text-purple-600 mt-2">
-                        Vehicle Right Side photo
+                      <span className="md:text-lg font-semibold text-purple-600 mt-2 flex items-center gap-1">
+                        Vehicle Right Side photo <span className={`${!driverVehiAllDetails.vehical_photos_right && 'hidden'} text-blue-500`}><RiVerifiedBadgeFill/></span>
                       </span>
                       <span
                         className={`text-green-800 font-serif  ${
@@ -1124,8 +1125,8 @@ function VehiProfile() {
                       Upload Vehicle Reg. Document
                     </h1>
                     <div className="grid grid-cols-1">
-                      <span className="md:text-lg font-semibold text-gray-600 mt-2">
-                        Reg. Front photo
+                      <span className="md:text-lg font-semibold text-gray-600 mt-2 flex items-center gap-1">
+                        Reg. Front photo <span className={`${!driverVehiAllDetails.book_rc_front && 'hidden'} text-blue-500`}><RiVerifiedBadgeFill/></span>
                       </span>
                       <span
                         className={`text-green-800 font-serif  ${
@@ -1151,8 +1152,8 @@ function VehiProfile() {
                       />
                     </div>
                     <div className="grid grid-cols-1">
-                      <span className="md:text-lg font-semibold text-gray-600 mt-2">
-                        Reg. Back photo
+                      <span className="md:text-lg font-semibold text-gray-600 mt-2 flex items-center gap-1">
+                        Reg. Back photo <span className={`${!driverVehiAllDetails.book_rc_back && 'hidden'} text-blue-500`}><RiVerifiedBadgeFill/></span>
                       </span>
                       <span
                         className={`text-green-800 font-serif  ${
@@ -1163,7 +1164,7 @@ function VehiProfile() {
                       </span>
                       <span className="w-[250px] overflow-hidden text-green-600">
                         <a
-                          href={`https://ankusamlogistics.com/driver/${driverVehiAllDetails?.book_rc_front}`}
+                          href={`https://ankusamlogistics.com/driver/${driverVehiAllDetails?.book_rc_back}`}
                           target="_blank"
                         >
                           {driverVehiAllDetails?.vehical_photos_back}
@@ -1192,8 +1193,8 @@ function VehiProfile() {
                       Upload Vehicle Insurance
                     </h1>
                     <div className="grid grid-cols-1">
-                      <span className="md:text-lg font-semibold text-blue-400 mt-2">
-                        Vehicle Insurance photo
+                      <span className="md:text-lg font-semibold text-blue-400 mt-2 flex items-center gap-1">
+                        Vehicle Insurance photo <span className={`${!driverVehiAllDetails.insurance && 'hidden'} text-blue-500`}><RiVerifiedBadgeFill/></span>
                       </span>
                       <span
                         className={`text-green-800 font-serif  ${
@@ -1242,8 +1243,8 @@ function VehiProfile() {
                     </h1>
                     {/* adhar front photo */}
                     <div className="grid grid-cols-1">
-                      <span className="md:text-lg font-semibold text-yellow-600 mt-2">
-                        Aadhar Front photo
+                      <span className="md:text-lg font-semibold text-yellow-600 mt-2 flex items-center gap-1">
+                        Aadhar Front photo <span className={`${!driverVehiAllDetails.adhar_card_img && 'hidden'} text-blue-500`}><RiVerifiedBadgeFill/></span>
                       </span>
                       <span
                         className={`text-green-800 font-serif  ${
@@ -1271,8 +1272,8 @@ function VehiProfile() {
                     </div>
                     {/* Aadhar back photo */}
                     <div className="grid grid-cols-1">
-                      <span className="md:text-lg font-semibold text-yellow-600 mt-2">
-                        Aadhar Back photo
+                      <span className="md:text-lg font-semibold text-yellow-600 mt-2 flex items-center gap-1">
+                        Aadhar Back photo <span className={`${!driverVehiAllDetails.adhar_card_back_img && 'hidden'} text-blue-500`}><RiVerifiedBadgeFill/></span>
                       </span>
                       <span
                         className={`text-green-800 font-serif  ${
@@ -1306,8 +1307,8 @@ function VehiProfile() {
                       Upload Driving license
                     </h1>
                     <div className="grid grid-cols-1">
-                      <span className="md:text-lg font-semibold text-yellow-800 mt-2">
-                        license Front photo
+                      <span className="md:text-lg font-semibold text-yellow-800 mt-2 flex items-center gap-1">
+                        license Front photo <span className={`${!driverVehiAllDetails.driving_lic_front_img && 'hidden'} text-blue-500`}><RiVerifiedBadgeFill/></span>
                       </span>
                       <span
                         className={`text-green-800 font-serif  ${
@@ -1334,8 +1335,8 @@ function VehiProfile() {
                       />
                     </div>
                     <div className="grid grid-cols-1">
-                      <span className="md:text-lg font-semibold text-yellow-800 mt-2">
-                        license Back photo
+                      <span className="md:text-lg font-semibold text-yellow-800 mt-2 flex items-center gap-1">
+                        license Back photo <span className={`${!driverVehiAllDetails.driving_lic_back_img && 'hidden'} text-blue-500`}><RiVerifiedBadgeFill/></span>
                       </span>
                       <span
                         className={`text-green-800 font-serif  ${
@@ -1377,9 +1378,9 @@ function VehiProfile() {
                     Upload Pollution Certification
                   </h1>
                   <div className="grid grid-cols-1">
-                    <span className="md:text-lg font-semibold text-[#4a8fc3] mt-2">
+                    <span className="md:text-lg font-semibold text-[#4a8fc3] mt-2 flex items-center gap-1">
                       Pollution Certification (
-                      <span className="text-[green]">Optional</span>)
+                      <span className="text-[green]">Optional</span>) <span className={`${!driverVehiAllDetails.driving_lic_back_img && 'hidden'} text-blue-500`}><RiVerifiedBadgeFill/></span>
                     </span>
                     <span
                       className={`text-green-800 font-serif  ${
