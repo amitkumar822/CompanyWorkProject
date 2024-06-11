@@ -94,7 +94,7 @@ function AvailableLoad() {
         setCurrentData(response.data);
         if (Array.isArray(response.data)) {
           setFilteredData(response.data);
-          console.error("filteredData is not an array:", filteredData);
+          // console.error("filteredData is not an array:", filteredData);
           return null; // Or handle the error appropriately
         }
         // setFilteredData(response.data); // Initialize filtered data with the full dataset
