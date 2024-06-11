@@ -201,6 +201,10 @@ function BusinessProfile() {
     }
   };
 
+  console.log('====================================');
+  console.log("UserName: ", busiLogUser);
+  console.log('====================================');
+
   return (
     <>
       <div className="mt-16 w-full h-full relative">
@@ -246,8 +250,8 @@ function BusinessProfile() {
               <div className="md:flex md:flex-col items-center">
                 <RiMapPinUserFill className="md:text-7xl text-4xl text-[#86f860]" />
                 <span className="uppercase text-[yellow] md:text-2xl font-bold">
-                  {busiLogUser?.name}
-                </span>
+                  {busiLogUser?.userName}
+                </span> 
                 <h1 className="md:text-xl font-bold">{busiLogUser?.userid}</h1>
               </div>
             </div>

@@ -176,6 +176,7 @@ function PostVehicleAvailability() {
 
     const formData = new FormData();
     formData.append("driver_id", vehiLogUser?.driver_id);
+    formData.append("phone", vehiLogUser?.phone);
     formData.append("typeOfVehicle", files.typeOfVehicle);
     formData.append("vehicle_capacity_in_tons", files.vehicle_capacity_in_tons);
     formData.append("vehicleLength", files.vehicleLength);
@@ -240,17 +241,11 @@ function PostVehicleAvailability() {
         theme: "colored",
       });
     }
-
-    console.log("====================================");
-    console.log("FromState: " + fromStateName);
-    console.log("FromCity: " + fromCityName);
-    console.log("ToState: " + toStateName);
-    console.log("ToCity: " + toCityName);
-    console.log("typeOfVehicle: " + files.typeOfVehicle);
-    console.log("vehicle_capacity_in_tons: " + files.vehicle_capacity_in_tons);
-    console.log("vehicleLength: " + files.vehicleLength);
-    console.log("====================================");
   };
+
+  // console.log('====================================');
+  // console.log("Vehicle number: ", vehiLogUser.phone);
+  // console.log('====================================');
 
   return (
     <div className="mt-16 relative">

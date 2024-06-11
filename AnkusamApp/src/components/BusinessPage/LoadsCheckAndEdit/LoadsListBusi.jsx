@@ -7,7 +7,6 @@ function LoadListBusi() {
   const { busiLogUser } = useContext(BusiLoginContext);
   const [vendorAllDetails, setVendorAllDetails] = useState([]);
   const [error, setError] = useState(null);
-  const id = 31;
   // const id = busiLogUser?.vendorId;
 
   useEffect(() => {
@@ -41,8 +40,7 @@ function LoadListBusi() {
     if (busiLogUser?.vendorId) {
       fetchData();
     }
-  }, []);
-
+  }, [vendorAllDetails]);
 
   return (
     <>
@@ -52,9 +50,9 @@ function LoadListBusi() {
           <h1 className="md:text-3xl text-xl text-center font-serif underline mb-8 uppercase">
             Load List
           </h1>
-          <div className="w-full mx-auto overflow-x-auto">
+          <div className="w-full max-h-[800px] mx-auto overflow-x-auto rounded-lg">
             <table className="w-full mx-auto text-center border-collapse whitespace-nowrap">
-              <thead className="bg-gray-700">
+              <thead className="bg-[#893381] sticky top-0 z-10">
                 <tr>
                   <th className="px-4 py-2 border-b">SI NO</th>
                   {/* <th className="px-4 py-2 border-b">Vendor Id</th> */}
@@ -96,14 +94,19 @@ function LoadListBusi() {
                     <td className="px-4 py-2 border-b">{detail.GoodsTypes}</td>
                     <td className="px-4 py-2 border-b">
                       {/* {detail.GoodsPhotoOne} */}
-                      <label className=" cursor-pointer text-blue-500">View Photo</label>
+                      <label className=" cursor-pointer text-blue-500">
+                        View Photo
+                      </label>
                     </td>
-                    <td className="px-4 py-2 border-b">{formatDate(detail.PickUpDate)}</td>
                     <td className="px-4 py-2 border-b">
-                      <a href={`tel:${detail.ContactNumber}`}
-                      className="text-blue-500 underline"
+                      {formatDate(detail.PickUpDate)}
+                    </td>
+                    <td className="px-4 py-2 border-b">
+                      <a
+                        href={`tel:${detail.ContactNumber}`}
+                        className="text-blue-500 underline"
                       >
-                      {detail.ContactNumber}
+                        {detail.ContactNumber}
                       </a>
                     </td>
                   </tr>
@@ -111,7 +114,9 @@ function LoadListBusi() {
               </tbody>
             </table>
           </div>
-            <h1 className={`text-xl ${vendorAllDetails.length && 'hidden'}`}>Data is loading...</h1>
+          <h1 className={`text-xl ${vendorAllDetails.length && "hidden"}`}>
+            Data is loading...
+          </h1>
           <div className="mt-4 w-full flex justify-center">
             <Link
               className="text-2xl font-bold rounded-xl shadow-md shadow-yellow-400 py-2 px-3 bg-gradient-to-r from-red-400 to-[#192177] hover:from-pink-500 hover:to-yellow-500"
@@ -130,17 +135,17 @@ export default LoadListBusi;
 
 // Date Formate functions
 const formatDate = (dateString) => {
-  if(!dateString) return "";
+  if (!dateString) return "";
 
   const date = new Date(dateString);
-  if(isNaN(date.getTime())) {
+  if (isNaN(date.getTime())) {
     console.error("Invalid date:", dateString);
     return dateString; // Return the original string if the date is invalid
   }
 
-  const options = { month: "long", day: 'numeric'};
+  const options = { month: "long", day: "numeric" };
   const formattedData = new Intl.DateTimeFormat("en-US", options).format(date);
   const [month, day] = formattedData.split(" ");
 
   return `${month}, ${day}`; // Format date to 'Month, Day'
-}
+};
