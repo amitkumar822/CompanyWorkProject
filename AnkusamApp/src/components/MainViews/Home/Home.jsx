@@ -3,11 +3,13 @@ import Banner from "../Banner/Banner";
 import LoadDataList from "../FilterAndLoadData/LoadDataList";
 import BannerButtomUp from "../BannerButtomUp/BannerButtomUp";
 import AvailableLoad from "../../AvailableLoad/AvailableLoad";
+import MobileNumberPopup from "../MobileNumberPopup/MobileNumberPopup";
 
 function Home() {
   return (
     <>
       <Banner />
+      <MobileNumberPopup />
       <AvailableLoad />
       <BannerButtomUp />
     </>
