@@ -25,7 +25,7 @@ function AvailableLoad() {
 
   useEffect(() => {
     const options = {
-      strings: ["Welcome to Ankusam logistic"],
+      strings: ["Welcome to Ankusam logistic!"],
       typeSpeed: 50,
       backSpeed: 50,
       loop: true,

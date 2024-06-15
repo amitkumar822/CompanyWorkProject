@@ -16,12 +16,12 @@ function LoadListBusi() {
   const { busiLogUser } = useContext(BusiLoginContext);
   const [vendorAllDetails, setVendorAllDetails] = useState([]);
 
-  const id = 31;
+  // const id = 31;
   useEffect(() => {
     const fetchData = async () => {
       const formData = new FormData();
-      formData.append("vendorId", id);
-      // formData.append("vendorId", busiLogUser?.vendorId);
+      formData.append("vendorId", busiLogUser?.vendorId);
+      // formData.append("vendorId", id);
 
       try {
         const response = await axios.post(
@@ -33,18 +33,44 @@ function LoadListBusi() {
         // console.log("Response2: ", JSON.stringify(response, null, 2));
 
         if (!response.data.success) {
-          setVendorAllDetails(response.data);
+          if (Array.isArray(response.data)) {
+            setVendorAllDetails(response.data);
+          }
         }
       } catch (err) {
         // console.log("Error fetching data");
-        console.error("Error: ",err.message);
+        console.error("Error: ", err.message);
       }
     };
 
     if (busiLogUser?.vendorId) {
       fetchData();
     }
-  }, [id]);
+  }, []);
+
+  //============👇 Delte Section 👇=================
+  const deleteData = async (loadId) => {
+    const formData = new FormData();
+    formData.append("LoadId", loadId);
+
+    try {
+      const response = await axios.post(
+        "/api/driver/delete_load_th_vendor_id.php",
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+
+      if (response.data === "deleted") {
+        setVendorAllDetails((prevDetails) =>
+          prevDetails.filter((item) => item.LoadId !== loadId)
+        );
+      } else {
+        console.error("Failed to delete data: ", response.data);
+      }
+    } catch (err) {
+      console.error("Error: ", err.message);
+    }
+  };
 
   return (
     <>
@@ -59,7 +85,6 @@ function LoadListBusi() {
               <thead className="bg-[#893381] sticky top-0 z-10">
                 <tr>
                   <th className="px-4 py-2 border-b">SI NO</th>
-                  {/* <th className="px-4 py-2 border-b">Vendor Id</th> */}
                   <th className="px-4 py-2 border-b">From State</th>
                   <th className="px-4 py-2 border-b">From City</th>
                   <th className="px-4 py-2 border-b">To State</th>
@@ -72,13 +97,15 @@ function LoadListBusi() {
                   <th className="px-4 py-2 border-b">Goods Photo 1</th>
                   <th className="px-4 py-2 border-b">PickUpDate</th>
                   <th className="px-4 py-2 border-b">Phone</th>
+                  <th className="px-4 py-2 border-b">Status</th>
+                  {/* <th className="px-4 py-2 border-b">Response</th> */}
+                  <th className="px-4 py-2 border-b">Action</th>
                 </tr>
               </thead>
               <tbody className="bg-gray-100 text-black">
                 {vendorAllDetails.map((detail, index) => (
                   <tr key={detail.LoadId} className="bg-white odd:bg-gray-200">
                     <td className="px-4 py-2 border-b">{index + 1}</td>
-                    {/* <td className="px-4 py-2 border-b">{detail.vendorId}</td> */}
                     <td className="px-4 py-2 border-b">{detail?.FromState}</td>
                     <td className="px-4 py-2 border-b">{detail?.FromCity}</td>
                     <td className="px-4 py-2 border-b">{detail?.ToState}</td>
@@ -112,6 +139,18 @@ function LoadListBusi() {
                       >
                         {detail?.ContactNumber}
                       </a>
+                    </td>
+                    <td className="px-4 py-2 border-b">Active</td>
+                    <td className="px-4 py-2 border-b">
+                      <span className="px-2 py-1 mx-1 bg-green-500 cursor-pointer rounded-md text-white text-lg font-semibold">
+                        Edit
+                      </span>
+                      <span
+                        className="px-2 py-1 mx-1 bg-red-500 cursor-pointer rounded-md text-white text-lg font-semibold"
+                        onClick={() => deleteData(detail?.LoadId)}
+                      >
+                        Delete {detail?.LoadId}
+                      </span>
                     </td>
                   </tr>
                 ))}
