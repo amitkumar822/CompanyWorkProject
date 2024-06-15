@@ -40,10 +40,7 @@ function VehiProfile() {
 
   useEffect(() => {
     const options = {
-      strings: [
-        "Welcome to The Ankusam Logistics.",
-        "Our services are the world's best services.",
-      ],
+      strings: ["Welcome to The Ankusam Logistics!"],
       typeSpeed: 50,
       backSpeed: 50,
       loop: true,
@@ -268,7 +265,6 @@ function VehiProfile() {
         theme: "colored",
       });
       console.log("Error: ", error);
-      // console.log("Error: ", error.message);
     }
   };
 
@@ -765,7 +761,7 @@ function VehiProfile() {
                     placeholder="Enter your name"
                     required
                     name="driver_name"
-                    value={driverVehiFormText?.driver_name || ''}
+                    value={driverVehiFormText?.driver_name || ""}
                     onChange={handleDriverVehiFormTextChange}
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
@@ -786,7 +782,7 @@ function VehiProfile() {
                     minLength={10}
                     maxLength={10}
                     name="phone"
-                    value={driverVehiFormText?.phone || ''}
+                    value={driverVehiFormText?.phone || ""}
                     onChange={handleDriverVehiFormTextChange}
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
@@ -810,7 +806,7 @@ function VehiProfile() {
                     maxLength={12}
                     required
                     name="aadhar_number"
-                    value={driverVehiFormText?.aadhar_number || ''}
+                    value={driverVehiFormText?.aadhar_number || ""}
                     onChange={handleDriverVehiFormTextChange}
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
@@ -829,7 +825,7 @@ function VehiProfile() {
                     placeholder="Home Town"
                     required
                     name="htown"
-                    value={driverVehiFormText?.htown || ''}
+                    value={driverVehiFormText?.htown || ""}
                     onChange={handleDriverVehiFormTextChange}
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
@@ -876,7 +872,7 @@ function VehiProfile() {
                 placeholder="Driving license number.."
                 required
                 name="driving_license_number"
-                value={driverVehiFormText?.driving_license_number || ''}
+                value={driverVehiFormText?.driving_license_number || ""}
                 onChange={handleDriverVehiFormTextChange}
                 className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
               />
@@ -897,7 +893,7 @@ function VehiProfile() {
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%] cursor-pointer"
                     required
                     name="license_type"
-                    value={driverVehiFormText?.license_type || ''}
+                    value={driverVehiFormText?.license_type || ""}
                     onChange={handleDriverVehiFormTextChange}
                   >
                     <option value="">Select License Type</option>
@@ -921,7 +917,7 @@ function VehiProfile() {
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%] cursor-pointer"
                     required
                     name="operator_type"
-                    value={driverVehiFormText?.operator_type || ''}
+                    value={driverVehiFormText?.operator_type || ""}
                     onChange={handleDriverVehiFormTextChange}
                   >
                     <option value="">Select Operator Type</option>
@@ -945,7 +941,7 @@ function VehiProfile() {
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%] cursor-pointer"
                     required
                     name="vehicle_type"
-                    value={driverVehiFormText?.vehicle_type || ''}
+                    value={driverVehiFormText?.vehicle_type || ""}
                     onChange={handleDriverVehiFormTextChange}
                   >
                     <option value="">Select Type of Vehicle</option>
@@ -972,7 +968,7 @@ function VehiProfile() {
                     placeholder="Vehicle register Number"
                     required
                     name="vehicle_register_number"
-                    value={driverVehiFormText?.vehicle_register_number || ''}
+                    value={driverVehiFormText?.vehicle_register_number || ""}
                     onChange={handleDriverVehiFormTextChange}
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
@@ -989,7 +985,7 @@ function VehiProfile() {
                   <input
                     type="text"
                     placeholder="Vehicle name"
-                    value={driverVehiFormText?.vehicle_name || ''}
+                    value={driverVehiFormText?.vehicle_name || ""}
                     required
                     name="vehicle_name"
                     onChange={handleDriverVehiFormTextChange}
@@ -1009,7 +1005,7 @@ function VehiProfile() {
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%] cursor-pointer"
                     required
                     name="vehicle_capacity_in_tons"
-                    value={driverVehiFormText?.vehicle_capacity_in_tons || ''}
+                    value={driverVehiFormText?.vehicle_capacity_in_tons || ""}
                     onChange={handleDriverVehiFormTextChange}
                   >
                     <option value="">Select capacity</option>
@@ -1038,7 +1034,7 @@ function VehiProfile() {
                     type="text"
                     required
                     name="vehicle_make_and_model"
-                    value={driverVehiFormText?.vehicle_make_and_model || ''}
+                    value={driverVehiFormText?.vehicle_make_and_model || ""}
                     onChange={handleDriverVehiFormTextChange}
                     placeholder="Vehicle make and model"
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
@@ -1057,7 +1053,7 @@ function VehiProfile() {
                     type="text"
                     required
                     name="vehicle_length"
-                    value={driverVehiFormText?.vehicle_length || ''}
+                    value={driverVehiFormText?.vehicle_length || ""}
                     onChange={handleDriverVehiFormTextChange}
                     placeholder="Vehicle length"
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"

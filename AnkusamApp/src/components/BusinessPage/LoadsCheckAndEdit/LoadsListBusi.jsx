@@ -37,7 +37,7 @@ function LoadListBusi() {
         }
       } catch (err) {
         // console.log("Error fetching data");
-        console.error(err.message);
+        console.error("Error: ",err.message);
       }
     };
 

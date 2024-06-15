@@ -114,7 +114,6 @@ function LoginVehiclePage() {
         // window.location.reload();
       } else {
         setIsLoading(false);
-        // console.log("Login failed");
         toast.error("Vehicle number or Password is wrong!", {
           position: "top-center",
           autoClose: 3000,

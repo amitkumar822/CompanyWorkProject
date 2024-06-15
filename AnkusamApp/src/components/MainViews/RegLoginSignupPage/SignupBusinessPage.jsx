@@ -84,7 +84,7 @@ function SignupBusinessPage() {
       });
 
       // Log the response status and headers
-      console.log("Response Status:", response.status);
+      // console.log("Response Status:", response.status);
 
       if (!response.ok) {
         throw new Error("Network response was not ok " + response.statusText); // Throw error if response is not ok
@@ -94,10 +94,10 @@ function SignupBusinessPage() {
       const data = await response.json();
 
       // Log the entire response for debugging
-      console.log("====================================");
-      console.log("Result:", data);
+      // console.log("====================================");
+      // console.log("Result:", data);
       // console.log("Result Status:", data.success);
-      console.log("====================================");
+      // console.log("====================================");
 
       // Handle the success or failure based on response
       if (data.success) {

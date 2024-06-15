@@ -68,7 +68,7 @@ function LoadDataList() {
         setPloadData(result);
         setFilteredData(result);
       } catch (error) {
-        console.log(error.message);
+        console.log("Error: ",error.message);
       }
     };
     fetchData();

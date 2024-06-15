@@ -36,10 +36,7 @@ function BusinessProfile() {
 
   useEffect(() => {
     const options = {
-      strings: [
-        "Welcome to The Ankusam Logistics.",
-        "Our services are the world's best services.",
-      ],
+      strings: ["Welcome to The Ankusam Logistics!"],
       typeSpeed: 50,
       backSpeed: 50,
       loop: true,
@@ -201,10 +198,6 @@ function BusinessProfile() {
     }
   };
 
-  console.log('====================================');
-  console.log("UserName: ", busiLogUser);
-  console.log('====================================');
-
   return (
     <>
       <div className="mt-16 w-full h-full relative">
@@ -251,7 +244,7 @@ function BusinessProfile() {
                 <RiMapPinUserFill className="md:text-7xl text-4xl w-full text-[#86f860]" />
                 <span className="uppercase text-[yellow] md:text-2xl text-[14px] whitespace-nowrap font-bold">
                   {busiLogUser?.userName}
-                </span> 
+                </span>
                 <h1 className="md:text-xl font-bold">{busiLogUser?.userid}</h1>
               </div>
             </div>

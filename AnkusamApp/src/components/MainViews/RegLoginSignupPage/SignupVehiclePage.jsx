@@ -88,9 +88,9 @@ function SignupVehiclePage() {
 
       const vehicalFound = await vehical_validation.json();
 
-      console.log("====================================");
-      console.log("VResponse: ", vehicalFound.vehicalFound);
-      console.log("====================================");
+      // console.log("====================================");
+      // console.log("VResponse: ", vehicalFound.vehicalFound);
+      // console.log("====================================");
 
       if (!vehicalFound.vehicalFound) {
         // Send POST request to backend
@@ -100,8 +100,8 @@ function SignupVehiclePage() {
         });
 
         // Log the response status and headers
-        console.log("Response Status:", response.status);
-        console.log("Response Headers:", response.headers);
+        // console.log("Response Status:", response.status);
+        // console.log("Response Headers:", response.headers);
 
         if (!response.ok) {
           throw new Error("Network response was not ok " + response.statusText); // Throw error if response is not ok
@@ -111,10 +111,10 @@ function SignupVehiclePage() {
         const data = await response.json();
 
         // Log the entire response for debugging
-        console.log("Full Response:", data);
-        console.log("====================================");
-        console.log("Status-> :", data.success);
-        console.log("====================================");
+        // console.log("Full Response:", data);
+        // console.log("====================================");
+        // console.log("Status-> :", data.success);
+        // console.log("====================================");
 
         // Handle the success or failure based on response
         if (data.success) {

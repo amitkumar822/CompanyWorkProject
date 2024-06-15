@@ -43,9 +43,6 @@ function LoginBusinessPage() {
     // Generate the token
     const TokenLoginBusinpage = generateToken(phoneNumber, password);
 
-    // console.log("phoneNumber: ", phoneNumber);
-    // console.log("password: ", password);
-
     // Create form data to match what the backend expects
     const formData = new FormData();
     formData.append("userPhone", phoneNumber);
@@ -60,8 +57,8 @@ function LoginBusinessPage() {
       });
 
       // Log the response status and headers
-      console.log("Response Status:", response.status);
-      console.log("Response Headers:", response.headers);
+      // console.log("Response Status:", response.status);
+      // console.log("Response Headers:", response.headers);
       // Logging the response status and headers for debugging.
 
       if (!response.ok) {
@@ -74,15 +71,11 @@ function LoginBusinessPage() {
       // Parsing the JSON response body.
 
       // Log the entire response for debugging
-      console.log("====================================");
-      console.log("Result:", data);
-      console.log("====================================");
 
       // Handle the success or failure based on response
       if (data.success) {
         setBusiLogUser(data.userData);
         setIsLoading(false);
-        console.log("Context Result:", data.driverData);
         toast.success("Login successful!", {
           position: "top-center",
           autoClose: 1000,
