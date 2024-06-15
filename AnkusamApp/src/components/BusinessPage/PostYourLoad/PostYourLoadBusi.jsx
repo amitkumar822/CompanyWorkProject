@@ -246,10 +246,6 @@ function PostYourLoadBusi() {
     }
   };
 
-  console.log("====================================");
-  console.log("Time: ", time);
-  console.log("====================================");
-
   return (
     <>
       <div className="mt-16 relative">
@@ -383,7 +379,7 @@ function PostYourLoadBusi() {
 
                   <div className="pr-2">
                     <h3 className="md:text-lg font-semibold text-black uppercase mb-2">
-                      PICKUP  TIME
+                      PICKUP TIME
                     </h3>
                     <select
                       name="hour"
