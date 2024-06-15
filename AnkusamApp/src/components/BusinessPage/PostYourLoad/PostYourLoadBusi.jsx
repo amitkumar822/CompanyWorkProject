@@ -83,6 +83,20 @@ function PostYourLoadBusi() {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const [time, setTime] = useState({
+    hour: "",
+    minute: "",
+    period: "AM",
+  });
+
+  const handleTimeChange = (e) => {
+    const { name, value } = e.target;
+    setTime((prevTime) => ({
+      ...prevTime,
+      [name]: value,
+    }));
+  };
+
   const [errors, setErrors] = useState({
     fromCityName: "",
     toCityName: "",
@@ -232,6 +246,10 @@ function PostYourLoadBusi() {
     }
   };
 
+  console.log("====================================");
+  console.log("Time: ", time);
+  console.log("====================================");
+
   return (
     <>
       <div className="mt-16 relative">
@@ -249,7 +267,7 @@ function PostYourLoadBusi() {
             />
           </div>
         </div>
-        <div className="lg:w-[80%] w-[90%] mx-auto mt-24 pt-6 bg-gray-200 pb-10 pl-4 rounded-xl bg-gray-00 shadow-md shadow-gray-800">
+        <div className="lg:w-[85%] w-[90%] mx-auto mt-24 pt-6 bg-gray-200 pb-10 pl-4 rounded-xl bg-gray-00 shadow-md shadow-gray-800">
           <form
             ref={formInputRef}
             onSubmit={handleFormSubmit}
@@ -349,17 +367,77 @@ function PostYourLoadBusi() {
                   </div>
                 </div>
                 {/* pickup date */}
-                <div className="mt-4">
-                  <h3 className="md:text-lg font-semibold text-black uppercase mb-2">
-                    PICKUP DATE
-                  </h3>
-                  <input
-                    className="py-2 px-4 md:w-[60%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
-                    type="date"
-                    required
-                    name="PickUpDate"
-                    onChange={handleFormChange}
-                  />
+                <div className="mt-4 grid md:grid-cols-2">
+                  <div>
+                    <h3 className="md:text-lg font-semibold text-black uppercase mb-2">
+                      PICKUP DATE
+                    </h3>
+                    <input
+                      className="py-2 px-4 md:w-[60%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
+                      type="date"
+                      required
+                      name="PickUpDate"
+                      onChange={handleFormChange}
+                    />
+                  </div>
+
+                  <div className="pr-2">
+                    <h3 className="md:text-lg font-semibold text-black uppercase mb-2">
+                      PICKUP  TIME
+                    </h3>
+                    <select
+                      name="hour"
+                      className="w-1/3 p-2 border border-gray-300 rounded"
+                      value={time.hour}
+                      onChange={handleTimeChange}
+                      required
+                    >
+                      <option value="" disabled>
+                        Hour
+                      </option>
+                      {Array.from({ length: 12 }, (_, i) => i + 1).map(
+                        (hour) => (
+                          <option
+                            key={hour}
+                            value={hour < 10 ? `0${hour}` : hour}
+                          >
+                            {hour < 10 ? `0${hour}` : hour}
+                          </option>
+                        )
+                      )}
+                    </select>
+
+                    <select
+                      name="minute"
+                      className="w-1/3 p-2 border border-gray-300 rounded"
+                      value={time.minute}
+                      onChange={handleTimeChange}
+                      required
+                    >
+                      <option value="" disabled>
+                        Minute
+                      </option>
+                      {Array.from({ length: 60 }, (_, i) => i).map((minute) => (
+                        <option
+                          key={minute}
+                          value={minute < 10 ? `0${minute}` : minute}
+                        >
+                          {minute < 10 ? `0${minute}` : minute}
+                        </option>
+                      ))}
+                    </select>
+
+                    <select
+                      name="period"
+                      className="w-1/3 p-2 border border-gray-300 rounded"
+                      value={time.period}
+                      onChange={handleTimeChange}
+                      required
+                    >
+                      <option value="AM">AM</option>
+                      <option value="PM">PM</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>
