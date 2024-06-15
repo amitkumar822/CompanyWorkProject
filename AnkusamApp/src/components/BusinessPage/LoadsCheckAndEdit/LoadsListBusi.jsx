@@ -1,13 +1,20 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import BusiLoginContext from "../../../context/BusinessLoginUser/BusiLoginContext";
 import axios from "axios";
 
 function LoadListBusi() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if(!localStorage.getItem("TokenLoginBusinpage")) {
+      navigate("/businesslogin");
+      return;
+    }
+  }, [])
+
   const { busiLogUser } = useContext(BusiLoginContext);
   const [vendorAllDetails, setVendorAllDetails] = useState([]);
-  const [error, setError] = useState(null);
-  // const id = busiLogUser?.vendorId;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,16 +30,15 @@ function LoadListBusi() {
           { headers: { "Content-Type": "multipart/form-data" } }
         );
 
-        // console.log("Response1: ", response.data.success);
         // console.log("Response2: ", JSON.stringify(response, null, 2));
 
         if (!response.data.success) {
           setVendorAllDetails(response.data);
         } else {
-          setError(response.data.message || "No Rows Found");
+          console.log("No Rows Found");
         }
       } catch (err) {
-        setError("Error fetching data");
+        // console.log("Error fetching data");
         console.error(err.message);
       }
     };

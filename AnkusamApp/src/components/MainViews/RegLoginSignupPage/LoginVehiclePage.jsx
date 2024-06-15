@@ -204,12 +204,11 @@ function LoginVehiclePage() {
             <div className="w-[90%] mx-auto">
               <h1
                 onClick={() =>
-                  // alert("Please contact the admin for password assistance.")
-                  toast.warn(
-                    "Please contact the admin for password assistance.!",
+                  toast.info(
+                    "Please contact the admin for password assistance!",
                     {
                       position: "top-center",
-                      autoClose: 5000,
+                      autoClose: 3000,
                       hideProgressBar: false,
                       closeOnClick: true,
                       pauseOnHover: true,

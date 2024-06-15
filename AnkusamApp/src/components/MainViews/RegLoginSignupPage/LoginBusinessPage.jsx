@@ -187,7 +187,19 @@ function LoginBusinessPage() {
               <div className="w-[90%] mx-auto">
                 <h1
                   onClick={() =>
-                    alert("Please contact the admin for password assistance.")
+                    toast.info(
+                      "Please contact the admin for password assistance!",
+                      {
+                        position: "top-center",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "colored",
+                      }
+                    )
                   }
                   className="font-semibold py-2 cursor-pointer"
                 >
