@@ -21,7 +21,9 @@ function AvailableVehiclesList() {
           "/api/driver/webapi/get_vehicle_availity_for_driver_detail.php"
         );
         // console.log("Response: " + JSON.stringify(response.data, null, 2));
-        setVehicleAllDetails(response.data);
+        if(Array.isArray(response.data)){
+          setVehicleAllDetails(response.data);
+        }
       } catch (error) {
         console.log("Eroor: ", error);
       }
