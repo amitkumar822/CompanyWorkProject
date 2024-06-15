@@ -58,7 +58,7 @@ function AvailableVehiclesList() {
               </thead>
               <tbody className="bg-gray-100 text-black">
                 {vehicleAllDetails.map((details, index) => (
-                  <tr className="bg-white odd:bg-gray-200">
+                  <tr key={index} className="bg-white odd:bg-gray-200">
                     <td className="px-4 py-2 border-b">{index + 1}</td>
                     <td className="px-4 py-2 border-b">{details?.driver_id}</td>
                     <td className="px-4 py-2 border-b">{details?.FromState}</td>

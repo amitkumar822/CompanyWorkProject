@@ -7,21 +7,21 @@ function LoadListBusi() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(!localStorage.getItem("TokenLoginBusinpage")) {
+    if (!localStorage.getItem("TokenLoginBusinpage")) {
       navigate("/businesslogin");
       return;
     }
-  }, [])
+  }, []);
 
   const { busiLogUser } = useContext(BusiLoginContext);
   const [vendorAllDetails, setVendorAllDetails] = useState([]);
 
+  const id = 31;
   useEffect(() => {
     const fetchData = async () => {
-      setError(null);
-
       const formData = new FormData();
-      formData.append("vendorId", busiLogUser?.vendorId);
+      formData.append("vendorId", id);
+      // formData.append("vendorId", busiLogUser?.vendorId);
 
       try {
         const response = await axios.post(
@@ -34,8 +34,6 @@ function LoadListBusi() {
 
         if (!response.data.success) {
           setVendorAllDetails(response.data);
-        } else {
-          console.log("No Rows Found");
         }
       } catch (err) {
         // console.log("Error fetching data");
@@ -46,7 +44,7 @@ function LoadListBusi() {
     if (busiLogUser?.vendorId) {
       fetchData();
     }
-  }, [vendorAllDetails]);
+  }, [id]);
 
   return (
     <>
@@ -81,23 +79,23 @@ function LoadListBusi() {
                   <tr key={detail.LoadId} className="bg-white odd:bg-gray-200">
                     <td className="px-4 py-2 border-b">{index + 1}</td>
                     {/* <td className="px-4 py-2 border-b">{detail.vendorId}</td> */}
-                    <td className="px-4 py-2 border-b">{detail.FromState}</td>
-                    <td className="px-4 py-2 border-b">{detail.FromCity}</td>
-                    <td className="px-4 py-2 border-b">{detail.ToState}</td>
-                    <td className="px-4 py-2 border-b">{detail.ToCity}</td>
+                    <td className="px-4 py-2 border-b">{detail?.FromState}</td>
+                    <td className="px-4 py-2 border-b">{detail?.FromCity}</td>
+                    <td className="px-4 py-2 border-b">{detail?.ToState}</td>
+                    <td className="px-4 py-2 border-b">{detail?.ToCity}</td>
                     <td className="px-4 py-2 border-b">
-                      {detail.TypeOfVehicle}
+                      {detail?.TypeOfVehicle}
                     </td>
                     <td className="px-4 py-2 border-b">
-                      {detail.PackageWeight}
+                      {detail?.PackageWeight}
                     </td>
                     <td className="px-4 py-2 border-b">
-                      {detail.NumberOfWheels}
+                      {detail?.NumberOfWheels}
                     </td>
                     <td className="px-4 py-2 border-b">
-                      {detail.VehicleLength}
+                      {detail?.VehicleLength}
                     </td>
-                    <td className="px-4 py-2 border-b">{detail.GoodsTypes}</td>
+                    <td className="px-4 py-2 border-b">{detail?.GoodsTypes}</td>
                     <td className="px-4 py-2 border-b">
                       {/* {detail.GoodsPhotoOne} */}
                       <label className=" cursor-pointer text-blue-500">
@@ -105,14 +103,14 @@ function LoadListBusi() {
                       </label>
                     </td>
                     <td className="px-4 py-2 border-b">
-                      {formatDate(detail.PickUpDate)}
+                      {formatDate(detail?.PickUpDate)}
                     </td>
                     <td className="px-4 py-2 border-b">
                       <a
-                        href={`tel:${detail.ContactNumber}`}
+                        href={`tel:${detail?.ContactNumber}`}
                         className="text-blue-500 underline"
                       >
-                        {detail.ContactNumber}
+                        {detail?.ContactNumber}
                       </a>
                     </td>
                   </tr>
@@ -120,7 +118,11 @@ function LoadListBusi() {
               </tbody>
             </table>
           </div>
-          <h1 className={`text-xl ${vendorAllDetails.length && "hidden"}`}>
+          <h1
+            className={`text-xl ${
+              vendorAllDetails.length ? "hidden" : undefined
+            }`}
+          >
             Data is loading...
           </h1>
           <div className="mt-4 w-full flex justify-center">

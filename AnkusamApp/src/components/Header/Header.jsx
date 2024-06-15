@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react"; // Import React and useStat
 import { IoIosArrowDown, IoMdCloseCircle } from "react-icons/io"; // Import arrow down and close circle icons
 import { IoBusiness, IoMenuSharp } from "react-icons/io5"; // Import menu icon
 import { FcGlobe } from "react-icons/fc"; // Import globe icon
-import { Link } from "react-router-dom"; // Import Link component for navigation
+import { Link, NavLink } from "react-router-dom"; // Import Link component for navigation
 import { MdAppRegistration, MdOutlineEventAvailable } from "react-icons/md";
 import { TbTruckLoading } from "react-icons/tb";
 import { AiFillSound, AiOutlineCluster } from "react-icons/ai";
@@ -70,27 +70,51 @@ function Header() {
             </div>
 
             {/*👉Vehicle or MenuListVehicle login after show */}
-            <div className={`${!localStorage.getItem('TokeLoginVehiPage') && "hidden"}`}>
+            <div
+              className={`${
+                !localStorage.getItem("TokeLoginVehiPage") && "hidden"
+              }`}
+            >
               <MenuListVehicleLogin />
             </div>
 
             {/*👉Business or MenuListBusiness login after show */}
-            <div className={`${!localStorage.getItem('TokenLoginBusinpage') && "hidden"}`}>
+            <div
+              className={`${
+                !localStorage.getItem("TokenLoginBusinpage") && "hidden"
+              }`}
+            >
               <MenuListBusinessLogin />
             </div>
 
             {/* 👉 Main Menu List Section  */}
-            <div className={`${busiLogUser || vehiLogUser ? "hidden" : ""}`}>
+            <div
+              className={`${busiLogUser || vehiLogUser ? "hidden" : undefined}`}
+            >
               <ul className="md:flex gap-3 text-white text-lg hidden text-[16px] items-center">
                 {/* buginess login user id */}
-                <li>{busiLogUser?.name}</li>
+                {/* <li>{busiLogUser?.name}</li> */}
                 {/* Vehicale Login vehical number */}
-                <li>{vehiLogUser?.vehical_number}</li>
+                {/* <li>{vehiLogUser?.vehical_number}</li> */}
                 <li className=" cursor-pointer hover:text-[#d8d4d4] duration-300">
-                  <Link to="/loaddatalist">AVAILABLE LOAD</Link>
+                  <NavLink
+                    to=""
+                    className={({ isActive }) =>
+                      isActive ? "text-[yellow]" : ""
+                    }
+                  >
+                    AVAILABLE LOAD
+                  </NavLink>
                 </li>
                 <li className=" cursor-pointer hover:text-[#d8d4d4] duration-300">
-                  <Link to="/contactus">CONTACT US</Link>
+                  <NavLink
+                    to="/contactus"
+                    className={({ isActive }) =>
+                      isActive ? "text-[yellow]" : ""
+                    }
+                  >
+                    CONTACT US
+                  </NavLink>
                 </li>
 
                 <li
@@ -268,21 +292,44 @@ const MenuListVehicleLogin = () => {
         <div>
           <ul className="flex gap-4 border-b-[1px] text-white text-[1.2vw] uppercase font-semibold">
             <li className="tracking-tight cursor-pointer hover:text-[#c3c2c2] duration-300">
-              <Link to="/contactus">CONTACT US</Link>
+              <NavLink
+                to="/contactus"
+                className={({ isActive }) => (isActive ? "text-[yellow]" : "")}
+              >
+                CONTACT US
+              </NavLink>
             </li>
             <li className="tracking-tight cursor-pointer hover:text-[#c3c2c2] duration-300">
-              <Link to="/loaddatalist">Load List</Link>
+              <NavLink
+                to="/loaddatalist"
+                className={({ isActive }) => (isActive ? "text-[yellow]" : "")}
+              >
+                Load List
+              </NavLink>
             </li>
             <li className="tracking-tight cursor-pointer hover:text-[#c3c2c2] duration-300">
-              <Link to="/postvehiavai">Post Vehicle Availability</Link>
+              <NavLink
+                to="/postvehiavai"
+                className={({ isActive }) => (isActive ? "text-[yellow]" : "")}
+              >
+                Post Vehicle Availability
+              </NavLink>
             </li>
             <li className="tracking-tight cursor-pointer hover:text-[#c3c2c2] duration-300">
-              <Link to="/vehiprofile">Profile</Link>
+              <NavLink
+                to="/vehiprofile"
+                className={({ isActive }) => (isActive ? "text-[yellow]" : "")}
+              >
+                Profile
+              </NavLink>
             </li>
           </ul>
           <ul className="text-[1.2vw] text-center">
             <li className=" font-semibold">
-              <span className=" text-[#ede850]">Welcome,</span>{" "}
+              <span className=" text-[#86e852]">
+                Welcome:{" "}
+                <span className="text-white">{vehiLogUser?.driver_name}</span>
+              </span>{" "}
               {/* <span className="text-[#86e852]"> Name: </span>{" "} */}
               <span className="text-white">{vehiLogUser?.name}</span>
               <span className="text-[#86e852]"> Number: </span>{" "}
@@ -398,16 +445,36 @@ const MenuListBusinessLogin = () => {
         <div>
           <ul className="flex gap-4 border-b-[1px] text-white text-[1.2vw] uppercase font-semibold">
             <li className="tracking-tight cursor-pointer hover:text-[#c3c2c2] duration-300">
-              <Link to="/contactus">CONTACT US</Link>
+              <NavLink
+                to="/contactus"
+                className={({ isActive }) => (isActive ? "text-[yellow]" : "")}
+              >
+                CONTACT US
+              </NavLink>
             </li>
             <li className="tracking-tight cursor-pointer hover:text-[#c3c2c2] duration-300">
-              <Link to="/loadslistbusi">Check Loads</Link>
+              <NavLink
+                to="/loadslistbusi"
+                className={({ isActive }) => (isActive ? "text-[yellow]" : "")}
+              >
+                Check Loads
+              </NavLink>
             </li>
             <li className="tracking-tight cursor-pointer hover:text-[#c3c2c2] duration-300">
-              <Link to="/availablevehiclelist">Check Available Vehicles</Link>
+              <NavLink
+                to="/availablevehiclelist"
+                className={({ isActive }) => (isActive ? "text-[yellow]" : "")}
+              >
+                Check Available Vehicles
+              </NavLink>
             </li>
             <li className="tracking-tight cursor-pointer hover:text-[#c3c2c2] duration-300">
-              <Link to="/businessprofile">Profile</Link>
+              <NavLink
+                to="/businessprofile"
+                className={({ isActive }) => (isActive ? "text-[yellow]" : "")}
+              >
+                Profile
+              </NavLink>
             </li>
           </ul>
           <ul className="text-[1.2vw] text-center">
@@ -479,17 +546,17 @@ const MenuListBusinessLogin = () => {
           <hr className=" border-dashed border-[1.3px] my-1" />
           <div className="flex items-center gap-2 font-semibold hover:text-[#6b6a6a] duration-200">
             <TbTruckLoading className="text-[green]" />
-            <Link
-              to="/loadslistbusi"
-              onClick={() => setToggleSlide(false)}
-            >
+            <Link to="/loadslistbusi" onClick={() => setToggleSlide(false)}>
               Check Loads
             </Link>
           </div>
           <hr className=" border-dashed border-[1.3px] my-1" />
           <div className="flex items-center gap-2 font-semibold hover:text-[#6b6a6a] duration-200">
             <FaTruckFast className="text-[green]" />
-            <Link to="/availablevehiclelist" onClick={() => setToggleSlide(false)}>
+            <Link
+              to="/availablevehiclelist"
+              onClick={() => setToggleSlide(false)}
+            >
               Check Available Vehicles
             </Link>
           </div>

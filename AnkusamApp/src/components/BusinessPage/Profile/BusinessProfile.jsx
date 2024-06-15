@@ -248,8 +248,8 @@ function BusinessProfile() {
                 <span ref={typedRef} className=" font-bold"></span>
               </div>
               <div className="md:flex md:flex-col items-center">
-                <RiMapPinUserFill className="md:text-7xl text-4xl text-[#86f860]" />
-                <span className="uppercase text-[yellow] md:text-2xl font-bold">
+                <RiMapPinUserFill className="md:text-7xl text-4xl w-full text-[#86f860]" />
+                <span className="uppercase text-[yellow] md:text-2xl text-[14px] whitespace-nowrap font-bold">
                   {busiLogUser?.userName}
                 </span> 
                 <h1 className="md:text-xl font-bold">{busiLogUser?.userid}</h1>

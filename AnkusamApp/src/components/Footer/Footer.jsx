@@ -3,7 +3,7 @@ import { FaFacebook } from "react-icons/fa";
 import { IoLogoInstagram } from "react-icons/io5";
 import { FaLocationDot } from "react-icons/fa6";
 import GoToUpBtn from "../GoToUpButton/GoToUpBtn";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 // import GoToUpBtn from "./GoToUpBtn";
 
 function Footer() {
@@ -37,13 +37,28 @@ function Footer() {
             </h1>
             <ul>
               <li className="text-lg pt-2 cursor-pointer hover:text-orange-700 font-semibold text-orange-900">
-                <Link to="/about">About</Link>
+                <NavLink
+                  to="/about"
+                  className={({ isActive }) => isActive ? "text-[#3c61ab]" : undefined}
+                >
+                  About
+                </NavLink>
               </li>
               <li className="text-lg pt-2 cursor-pointer hover:text-orange-700 font-semibold text-orange-900">
-                <Link to="/businesssignup">Business People</Link>
+                <NavLink
+                  to="/businesssignup"
+                  className={({ isActive }) => isActive ? "text-[#3c61ab]" : undefined}
+                >
+                  Business People
+                </NavLink>
               </li>
               <li className="text-lg pt-2 cursor-pointer hover:text-orange-700 font-semibold text-orange-900">
-                <Link to="/contactus">Contact Us</Link>
+                <NavLink
+                  to="/contactus"
+                  className={({ isActive }) => isActive ? "text-[#3c61ab]" : undefined}
+                >
+                  Contact Us
+                </NavLink>
               </li>
             </ul>
           </div>
