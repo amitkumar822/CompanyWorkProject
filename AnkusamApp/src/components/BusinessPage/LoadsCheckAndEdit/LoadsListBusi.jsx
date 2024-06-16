@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import BusiLoginContext from "../../../context/BusinessLoginUser/BusiLoginContext";
 import axios from "axios";
+import PostYourLoadBusi from "../PostYourLoad/PostYourLoadBusi";
+import EditLoadList from "./EditLoadList";
 
 function LoadListBusi() {
   const navigate = useNavigate();
@@ -15,13 +17,14 @@ function LoadListBusi() {
 
   const { busiLogUser } = useContext(BusiLoginContext);
   const [vendorAllDetails, setVendorAllDetails] = useState([]);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
 
-  // const id = 31;
+  //============👇 Fetch Data Section 👇=================
   useEffect(() => {
     const fetchData = async () => {
       const formData = new FormData();
       formData.append("vendorId", busiLogUser?.vendorId);
-      // formData.append("vendorId", id);
 
       try {
         const response = await axios.post(
@@ -30,15 +33,12 @@ function LoadListBusi() {
           { headers: { "Content-Type": "multipart/form-data" } }
         );
 
-        // console.log("Response2: ", JSON.stringify(response, null, 2));
-
         if (!response.data.success) {
           if (Array.isArray(response.data)) {
             setVendorAllDetails(response.data);
           }
         }
       } catch (err) {
-        // console.log("Error fetching data");
         console.error("Error: ", err.message);
       }
     };
@@ -46,9 +46,9 @@ function LoadListBusi() {
     if (busiLogUser?.vendorId) {
       fetchData();
     }
-  }, []);
+  }, [busiLogUser]);
 
-  //============👇 Delte Section 👇=================
+  //============👇 Delete Section 👇=================
   const deleteData = async (loadId) => {
     const formData = new FormData();
     formData.append("LoadId", loadId);
@@ -70,6 +70,24 @@ function LoadListBusi() {
     } catch (err) {
       console.error("Error: ", err.message);
     }
+  };
+
+  const handleDelete = (loadId) => {
+    setDeleteId(loadId);
+    setShowConfirmation(true);
+  };
+
+  const confirmDelete = () => {
+    if (deleteId) {
+      deleteData(deleteId);
+      setShowConfirmation(false);
+      setDeleteId(null);
+    }
+  };
+
+  const cancelDelete = () => {
+    setShowConfirmation(false);
+    setDeleteId(null);
   };
 
   return (
@@ -94,11 +112,10 @@ function LoadListBusi() {
                   <th className="px-4 py-2 border-b">Number Of Wheels</th>
                   <th className="px-4 py-2 border-b">Vehicle Length</th>
                   <th className="px-4 py-2 border-b">Goods Types</th>
-                  <th className="px-4 py-2 border-b">Goods Photo 1</th>
+                  {/* <th className="px-4 py-2 border-b">Goods Photo 1</th> */}
                   <th className="px-4 py-2 border-b">PickUpDate</th>
                   <th className="px-4 py-2 border-b">Phone</th>
                   <th className="px-4 py-2 border-b">Status</th>
-                  {/* <th className="px-4 py-2 border-b">Response</th> */}
                   <th className="px-4 py-2 border-b">Action</th>
                 </tr>
               </thead>
@@ -123,12 +140,12 @@ function LoadListBusi() {
                       {detail?.VehicleLength}
                     </td>
                     <td className="px-4 py-2 border-b">{detail?.GoodsTypes}</td>
-                    <td className="px-4 py-2 border-b">
-                      {/* {detail.GoodsPhotoOne} */}
+                    {/* <td className="px-4 py-2 border-b">
+                      {detail.GoodsPhotoOne}
                       <label className=" cursor-pointer text-blue-500">
                         View Photo
                       </label>
-                    </td>
+                    </td> */}
                     <td className="px-4 py-2 border-b">
                       {formatDate(detail?.PickUpDate)}
                     </td>
@@ -147,9 +164,9 @@ function LoadListBusi() {
                       </span>
                       <span
                         className="px-2 py-1 mx-1 bg-red-500 cursor-pointer rounded-md text-white text-lg font-semibold"
-                        onClick={() => deleteData(detail?.LoadId)}
+                        onClick={() => handleDelete(detail?.LoadId)}
                       >
-                        Delete {detail?.LoadId}
+                        Delete
                       </span>
                     </td>
                   </tr>
@@ -174,13 +191,38 @@ function LoadListBusi() {
           </div>
         </div>
       </div>
+
+      {/* Confirmation Asking when delete */}
+      {showConfirmation && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 px-3 z-50">
+          <div className="sm:w-[430px] bg-white p-6 rounded shadow-lg">
+            <h2 className="sm:text-xl mb-4">
+              Are you sure you want to delete this item?
+            </h2>
+            <div className="flex justify-end">
+              <button
+                onClick={cancelDelete}
+                className="bg-green-500 text-gray-800 px-4 py-2 rounded mr-2 hover:bg-gray-400"
+              >
+                No
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700"
+              >
+                Yes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
 
 export default LoadListBusi;
 
-// Date Formate functions
+// Date Format function
 const formatDate = (dateString) => {
   if (!dateString) return "";
 
