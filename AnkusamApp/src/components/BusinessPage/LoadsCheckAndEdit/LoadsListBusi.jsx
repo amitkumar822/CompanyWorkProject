@@ -6,6 +6,8 @@ import { Country, State, City } from "country-state-city";
 import Select from "react-select";
 import { weightdata } from "../../../data/WeightData";
 import { RiCloseCircleLine } from "react-icons/ri";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function LoadListBusi() {
   const navigate = useNavigate();
@@ -49,7 +51,7 @@ function LoadListBusi() {
     if (busiLogUser?.vendorId) {
       fetchData();
     }
-  }, []);
+  }, [vendorAllDetails]);
 
   //============👇 Delete Section 👇=================
   const deleteData = async (loadId) => {
@@ -197,6 +199,52 @@ function LoadListBusi() {
 
   const handleEditFormSubmit = async (e) => {
     e.preventDefault();
+
+    if (!fromCityName) {
+      toast("From City is required!");
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        fromCityName: "Please select from city",
+      }));
+      return;
+    } else {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        fromCityName: "",
+      }));
+    }
+
+    if (!toCityName) {
+      toast("To City is required!");
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        toCityName: "Please select to city",
+      }));
+      return;
+    } else {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        toCityName: "",
+        fromCityName: "",
+      }));
+    }
+
+    if (!formFiles.PackageWeight) {
+      toast("PackageWeight is required!");
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        PackageWeight: "Please select PackageWeight",
+      }));
+      return;
+    } else {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        PackageWeight: "",
+        toCityName: "",
+        fromCityName: "",
+      }));
+    }
+
     try {
       const formData = new FormData();
       formData.append("LoadId", editLoadId);
@@ -218,15 +266,24 @@ function LoadListBusi() {
         { headers: { "Content-Type": "multipart/form-data" } }
       );
 
-      console.log("SaveEdit Response: ", response.data);
+      // console.log("SaveEdit Response: ", response.data);
 
       if (response.data === "Updated") {
         setVendorAllDetails((prevDetails) =>
           prevDetails.filter((item) => item.LoadId !== editLoadId)
         );
         seteditLoadId(null);
-        alert("Close")
         setEditCloseOpenBox(false);
+        toast.success("Successful Update!", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       } else {
         console.error("Failed to update data: ", response.data);
       }
@@ -235,28 +292,15 @@ function LoadListBusi() {
     }
   };
 
-//   console.log("====================================");
-//   console.log("FromState: ", fromStateName);
-//   console.log("FromCity: ", fromCityName);
-//   console.log("ToState: ", toStateName);
-//   console.log("ToCity: ", toCityName);
-//   console.log("PickUpDate: ", formFiles.PickUpDate);
-//   console.log("VehicleType: ", formFiles.VehicleType);
-//   console.log("PackageWeight: ", formFiles.PackageWeight);
-//   console.log("NumberOfWheels: ", formFiles.NumberOfWheels);
-//   console.log("GoodsType: ", formFiles.GoodsType);
-//   console.log("VehicleLength: ", formFiles.VehicleLength);
-//   console.log("ContactNumber: ", formFiles.ContactNumber);
-//   console.log(
-//     "PickUpTime: ",
-//     time.hour + ":" + time.minute + " " + time.period
-//   );
-//   console.log("====================================");
+  // console.log("====================================");
+  // console.log("All Details: ", vendorAllDetails);
+  // console.log("====================================");
 
   return (
     <>
       <div className="mt-16">
-        {/*👉 Available Vehicle List Section */}
+        {/*==================👇 Available Vehicle List Section 👇====================*/}
+
         <div className="w-[90%] mx-auto md:mt-36 mt-24 bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-500 text-white px-2 py-8 rounded-lg shadow-lg">
           <h1 className="md:text-3xl text-xl text-center font-serif underline mb-8 uppercase">
             Load List
@@ -351,7 +395,8 @@ function LoadListBusi() {
         </div>
       </div>
 
-      {/*👇 Edit Load Modal 👇*/}
+      {/*=================👇 Edit Load Modal or Update Details 👇===================*/}
+
       {editCloseOpenBox && (
         <div className="absolute md:mt-40 md:top-0 top-[850px] inset-0 flex items-center justify-center px-3 z-50">
           <div className="mt-16 w-full max-w-6xl mx-auto">
@@ -362,9 +407,10 @@ function LoadListBusi() {
               >
                 <RiCloseCircleLine />
               </span>
-              <form 
-              onSubmit={handleEditFormSubmit}
-              className="w-full mx-auto border md:pl-4">
+              <form
+                onSubmit={handleEditFormSubmit}
+                className="w-full mx-auto border md:pl-4"
+              >
                 {/* Shipping from and Shipping to form section */}
                 <div className="grid lg:grid-cols-2">
                   {/* Shipping from section */}
@@ -380,9 +426,10 @@ function LoadListBusi() {
                         <Select
                           isClearable
                           options={indianStates.map((state) => ({
-                            value: state,
+                            value: state || vendorAllDetails?.FromState,
                             label: state.name,
                           }))}
+                          // value={vendorAllDetails?.FromState || ''}
                           onChange={handleFromStateChange}
                           placeholder="Select State"
                           required
@@ -673,7 +720,7 @@ function LoadListBusi() {
         </div>
       )}
 
-      {/*👇 Confirmation Asking when delete 👇*/}
+      {/*======================👇 Confirmation Asking when delete 👇=====================*/}
       {showConfirmation && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 px-3 z-50">
           <div className="sm:w-[430px] bg-white p-6 rounded shadow-lg">
@@ -697,6 +744,8 @@ function LoadListBusi() {
           </div>
         </div>
       )}
+
+      <ToastContainer />
     </>
   );
 }
