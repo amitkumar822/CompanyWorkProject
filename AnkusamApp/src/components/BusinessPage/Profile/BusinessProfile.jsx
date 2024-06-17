@@ -130,6 +130,38 @@ function BusinessProfile() {
       }));
     }
 
+    if(isNaN(files.phone)){
+      toast.warn("Invalid Phone Number!",
+        {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        }
+      )
+      return;
+    }
+
+    if(isNaN(files.alternativenumber)){
+      toast.warn("Invalid Alternative Number!",
+        {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        }
+      )
+      return;
+    }
+
     setIsLoading(true);
 
     const formData = new FormData();
@@ -290,6 +322,7 @@ function BusinessProfile() {
                     name="phone"
                     onChange={handleFileChange}
                     placeholder="Phone number"
+                    minLength={10}
                     maxLength={10}
                     required
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
@@ -315,6 +348,7 @@ function BusinessProfile() {
                     type="text"
                     name="alternativenumber"
                     onChange={handleFileChange}
+                    minLength={10}
                     maxLength={10}
                     placeholder="Enter Your Alternative Number"
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
