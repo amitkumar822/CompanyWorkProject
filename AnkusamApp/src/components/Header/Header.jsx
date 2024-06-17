@@ -289,8 +289,8 @@ const MenuListVehicleLogin = () => {
       </div>
 
       <div className=" leading-[21px] items-center gap-4 md:flex hidden">
-        <div>
-          <ul className="flex gap-4 border-b-[1px] text-white text-[1.2vw] uppercase font-semibold">
+        <div className="lg:text-[16px] text-[15px]">
+          <ul className="flex gap-4 border-b-[1px] text-white uppercase font-semibold">
             <li className="tracking-tight cursor-pointer hover:text-[#c3c2c2] duration-300">
               <NavLink
                 to="/contactus"
@@ -324,7 +324,7 @@ const MenuListVehicleLogin = () => {
               </NavLink>
             </li>
           </ul>
-          <ul className="text-[1.2vw] text-center">
+          <ul className="text-center">
             <li className=" font-semibold">
               <span className=" text-[#86e852]">
                 Welcome:{" "}
@@ -345,9 +345,7 @@ const MenuListVehicleLogin = () => {
             </li>
           </ul>
         </div>
-        <div className="text-[1.2vw]">
-          <LogOut />
-        </div>
+        <LogOut />
       </div>
 
       {/* Slide bar or MenuList Vehicle Login Slide bar */}
@@ -442,8 +440,8 @@ const MenuListBusinessLogin = () => {
       </div>
 
       <div className=" leading-[21px] items-center gap-4 md:flex hidden">
-        <div>
-          <ul className="flex gap-4 border-b-[1px] text-white text-[1.2vw] uppercase font-semibold">
+        <div className="lg:text-[16px] text-[15px]">
+          <ul className="flex gap-4 border-b-[1px] text-white uppercase font-semibold">
             <li className="tracking-tight cursor-pointer hover:text-[#c3c2c2] duration-300">
               <NavLink
                 to="/contactus"
@@ -477,7 +475,7 @@ const MenuListBusinessLogin = () => {
               </NavLink>
             </li>
           </ul>
-          <ul className="text-[1.2vw] text-center">
+          <ul className="text-center">
             <li className=" font-semibold">
               <span className=" text-[#86e852]">Welcome:</span>{" "}
               {/* <span className="text-[#86e852]"> Name: </span>{" "} */}
@@ -495,9 +493,7 @@ const MenuListBusinessLogin = () => {
             </li>
           </ul>
         </div>
-        <div className="text-[1.2vw]">
-          <LogOut />
-        </div>
+        <LogOut />
       </div>
 
       {/* Slide bar or MenuList Vehicle Login Slide bar */}

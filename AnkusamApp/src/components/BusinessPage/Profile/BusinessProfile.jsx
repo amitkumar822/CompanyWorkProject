@@ -130,35 +130,31 @@ function BusinessProfile() {
       }));
     }
 
-    if(isNaN(files.phone)){
-      toast.warn("Invalid Phone Number!",
-        {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        }
-      )
+    if (isNaN(files.phone)) {
+      toast.warn("Invalid Phone Number!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       return;
     }
 
-    if(isNaN(files.alternativenumber)){
-      toast.warn("Invalid Alternative Number!",
-        {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        }
-      )
+    if (isNaN(files.alternativenumber)) {
+      toast.warn("Invalid Alternative Number!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       return;
     }
 
@@ -166,6 +162,7 @@ function BusinessProfile() {
 
     const formData = new FormData();
     formData.append("id", busiLogUser?.vendorId);
+    formData.append("vendorId", busiLogUser?.vendorId);
     formData.append("name", files.name);
     formData.append("phone", files.phone);
     formData.append("alternativenumber", files.alternativenumber);
@@ -185,7 +182,11 @@ function BusinessProfile() {
         }
       );
 
-      if (response.data) {
+      console.log('====================================');
+      console.log("Response: " + JSON.stringify(response, null, 2));
+      console.log('====================================');
+
+      if (response.data.success) {
         setIsLoading(false);
         toast.success("Successfully updated!", {
           position: "top-center",
@@ -230,9 +231,9 @@ function BusinessProfile() {
     }
   };
 
-  console.log('====================================');
-  console.log("All Details: ", busiLogUser);
-  console.log('====================================');
+  // console.log('====================================');
+  // console.log("All Details: ", busiLogUser);
+  // console.log('====================================');
 
   return (
     <>

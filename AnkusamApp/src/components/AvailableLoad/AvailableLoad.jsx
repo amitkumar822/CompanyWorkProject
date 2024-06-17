@@ -296,7 +296,7 @@ function AvailableLoad() {
                       >
                         <a
                           href={`tel:${item.ContactNumber}`}
-                          className="text-blue-500 underline"
+                          className="text-blue-500 hover:text-blue-800 duration-200 underline"
                         >
                           {item.ContactNumber}
                         </a>

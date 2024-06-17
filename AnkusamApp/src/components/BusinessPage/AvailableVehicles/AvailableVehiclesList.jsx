@@ -79,7 +79,7 @@ function AvailableVehiclesList() {
                     <td className="px-4 py-2 border-b">
                       <a
                         href={`tel:${details?.phone}`}
-                        className=" text-blue-500 underline"
+                        className="text-blue-500 hover:text-blue-800 underline"
                       >
                         {details?.phone}
                       </a>

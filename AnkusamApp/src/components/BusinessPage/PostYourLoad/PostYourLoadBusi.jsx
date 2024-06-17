@@ -169,19 +169,17 @@ function PostYourLoadBusi() {
       }));
     }
 
-    if(isNaN(formFiles.ContactNumber)){
-      toast.warn("Invalid Phone Number!",
-        {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        }
-      )
+    if (isNaN(formFiles.ContactNumber)) {
+      toast.warn("Invalid Phone Number!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       return;
     }
 
@@ -194,12 +192,13 @@ function PostYourLoadBusi() {
     formData.append("PackageWeight", formFiles.PackageWeight);
     formData.append("NumberOfWheels", formFiles.NumberOfWheels);
     formData.append("GoodsType", formFiles.GoodsType);
-    formData.append("VehicleLength", formFiles.VehicleLength);
+    formData.append("VehicleLength", formFiles.VehicleLength + " Feets");
     formData.append("ContactNumber", formFiles.ContactNumber);
     formData.append("FromState", fromStateName);
     formData.append("FromCity", fromCityName);
     formData.append("ToState", toStateName);
     formData.append("ToCity", toCityName);
+    formData.append("time", time.hour + ":" + time.minute + ":" + time.period);
 
     try {
       const response = await axios.post(
@@ -399,7 +398,7 @@ function PostYourLoadBusi() {
                     </h3>
                     <select
                       name="hour"
-                      className="w-1/3 p-2 border border-gray-300 rounded"
+                      className="w-1/3 p-2 border border-gray-300 rounded-md"
                       value={time.hour}
                       onChange={handleTimeChange}
                       required
@@ -421,7 +420,7 @@ function PostYourLoadBusi() {
 
                     <select
                       name="minute"
-                      className="w-1/3 p-2 border border-gray-300 rounded"
+                      className="w-1/3 p-2 border border-gray-300 rounded-md"
                       value={time.minute}
                       onChange={handleTimeChange}
                       required
@@ -441,7 +440,7 @@ function PostYourLoadBusi() {
 
                     <select
                       name="period"
-                      className="w-1/3 p-2 border border-gray-300 rounded"
+                      className="w-1/3 p-2 border border-gray-300 rounded-md"
                       value={time.period}
                       onChange={handleTimeChange}
                       required

@@ -90,9 +90,10 @@ function SignupBusinessPage() {
     formData.append("userPhone", phone);
     formData.append("vendorPassword", password);
 
-    // const businessProfileFormate = new FormData();
-    // businessProfileFormate.append("userName", username);
-    // businessProfileFormate.append("userPhone", phone);
+    //👉this field not related signup page
+    const businessProfileFormate = new FormData();
+    businessProfileFormate.append("userName", username);
+    businessProfileFormate.append("userPhone", phone);
 
     try {
       // Send POST request to backend
@@ -101,11 +102,11 @@ function SignupBusinessPage() {
         body: formData, // Send form data
       });
 
-      // const businessPfofileFormate = await fetch("/api/driver/business_profile_post.php", {
-      //   method: "POST",
-      //   body: businessProfileFormate, // Send form data
-      // });
-      // console.log("BusinessPost: " + businessPfofileFormate.json());
+      //👉this field not related signup page
+      const businessPfofileFormate = await fetch("/api/driver/business_profile_update_hi_url.php", {
+        method: "POST",
+        body: businessProfileFormate, // Send form data
+      });
 
       // Log the response status and headers
       // console.log("Response Status:", response.status);
