@@ -26,7 +26,7 @@ function BusinessProfile() {
   const typedRef = useRef(null);
   const typedRefPhone = useRef(null);
 
-  const percentage = 60; // Assuming user has completed 60% of their profile
+  // const percentage = 60; // Assuming user has completed 60% of their profile
 
   const getColor = (percentage) => {
     const red = Math.floor((100 - percentage) * 2.55);
@@ -230,12 +230,13 @@ function BusinessProfile() {
 
   //=============👇Start Fetch Data section👇===================
   const ids = 66;
+  const [percentage, setPercentage] = useState(10);
   const [busiProfileAllDetails, setBusiProfileAllDetails] = useState("");
 
   useEffect(() => {
     const fetchDetails = async () => {
       const formData = new FormData();
-      formData.append("id", ids);
+      formData.append("id", busiLogUser?.vendorId);
 
       try {
         const response = await axios.post(
@@ -243,9 +244,12 @@ function BusinessProfile() {
           formData
         );
 
-        console.log("Response: ", response.data[0]);
+        // console.log("Response: ", response.data[0]);
 
         setBusiProfileAllDetails(response.data[0]);
+        if(response.data.length > 0){
+          setPercentage(100);
+        }
         setFiles({
           name: response.data[0].userName || "",
           phone: response.data[0].userPhone || "",
@@ -259,6 +263,8 @@ function BusinessProfile() {
     };
     fetchDetails();
   }, []);
+
+  // console.log("All details: ", busiLogUser?.vendorId);
 
   return (
     <>
@@ -494,6 +500,7 @@ function BusinessProfile() {
               <CgProfile className="text-[green] text-2xl" />
               Profiles status
             </h1>
+            {/* Business profile perecentage */}
             <div className="md:w-48 md:h-48 w-40 h-40 mx-auto mt-4">
               <CircularProgressbar
                 value={percentage}
