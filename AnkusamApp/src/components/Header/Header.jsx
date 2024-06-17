@@ -160,7 +160,7 @@ function Header() {
 
       {/* 👉Main Slide or Sidebar menu section Before login*/}
       <div
-        className={`back-overlay w-full h-screen top-0 fixed z-10 cursor-pointer ${
+        className={`back-overlay w-full h-screen flex justify-end top-0 fixed z-10 cursor-pointer ${
           toggleSlide ? "" : "hidden"
         }`} // Slide menu visibility
         onClick={handleSlideMenu} // Hide slide menu on outside click
