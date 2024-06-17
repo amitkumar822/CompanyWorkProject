@@ -169,6 +169,22 @@ function PostYourLoadBusi() {
       }));
     }
 
+    if(isNaN(formFiles.ContactNumber)){
+      toast.warn("Invalid Phone Number!",
+        {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        }
+      )
+      return;
+    }
+
     setIsLoading(true);
 
     const formData = new FormData();
