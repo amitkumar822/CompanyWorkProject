@@ -88,6 +88,38 @@ function VehiProfile() {
     setIsLoading(true);
     e.preventDefault();
 
+    if(isNaN(driverVehiFormText.phone)){
+      toast.warn("Invalid Phone Number!",
+        {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        }
+      )
+      return;
+    }
+
+    if(isNaN(driverVehiFormText.aadhar_number)){
+      toast.warn("Invalid Aadhar Number!",
+        {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        }
+      )
+      return;
+    }
+
     const formData = new FormData();
     formData.append("driver_id", vehiLogUser?.driver_id);
     formData.append("driver_name", driverVehiFormText.driver_name);
@@ -727,7 +759,7 @@ function VehiProfile() {
           </div>
         </div>
 
-        {/* Account Form Section */}
+        {/* Account Form Section or Form Text section*/}
         <div className="w-[90%] mx-auto lg:mt-6 h-full flex justify-evenly lg:flex-row flex-col gap-4 pb-16">
           {/* Form section */}
           <div className="lg:w-[70%] w-[100%] mx-auto md:mt-0 mt-4 pb-8 bg-gray-300 border shadow-md shadow-gray-800 lg:order-1 order-2 rounded-lg">
@@ -811,7 +843,7 @@ function VehiProfile() {
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
                   <h1 className="text-[17px] pt-2 font-semibold flex items-center gap-1">
-                    Home Town 1{" "}
+                    Home Town
                     <span
                       className={`${
                         !driverVehiFormText.htown && "hidden"
@@ -832,7 +864,7 @@ function VehiProfile() {
                 </div>
               </div>
 
-              <div className="grid sm:grid-cols-2 md:mt-6">
+              {/* <div className="grid sm:grid-cols-2 md:mt-6">
                 <div>
                   <h1 className="text-[17px] pt-2 font-semibold">
                     Home Town2 (optional)
@@ -853,7 +885,7 @@ function VehiProfile() {
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
                 </div>
-              </div>
+              </div> */}
 
               <hr className="md:mt-12 mt-6 w-[94%]" />
               {/*👉 Vehicle and license details */}

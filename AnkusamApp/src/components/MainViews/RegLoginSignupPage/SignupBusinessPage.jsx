@@ -69,6 +69,20 @@ function SignupBusinessPage() {
       return;
     }
 
+    if (isNaN(phone)) {
+      toast.warn("Invalid Phone Number!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      return;
+    }
+
     setIsLoading(true);
 
     const formData = new FormData();
@@ -76,12 +90,22 @@ function SignupBusinessPage() {
     formData.append("userPhone", phone);
     formData.append("vendorPassword", password);
 
+    // const businessProfileFormate = new FormData();
+    // businessProfileFormate.append("userName", username);
+    // businessProfileFormate.append("userPhone", phone);
+
     try {
       // Send POST request to backend
       const response = await fetch("/api/driver/business_signup.php", {
         method: "POST",
         body: formData, // Send form data
       });
+
+      // const businessPfofileFormate = await fetch("/api/driver/business_profile_post.php", {
+      //   method: "POST",
+      //   body: businessProfileFormate, // Send form data
+      // });
+      // console.log("BusinessPost: " + businessPfofileFormate.json());
 
       // Log the response status and headers
       // console.log("Response Status:", response.status);
@@ -166,9 +190,7 @@ function SignupBusinessPage() {
             </h1>
           </div>
           <div className="md:min-w-[400px] lg:w-[40%] sm:w-[350px] w-[370px] mx-auto border p-4 bg-gradient-to-r from-cyan-500 to-blue-500 md:to-[#bbe0bb] rounded-lg shadow-lg shadow-[#c78c5c]">
-            <h1 className="text-3xl text-center font-semibold">
-              Sign Up
-            </h1>
+            <h1 className="text-3xl text-center font-semibold">Sign Up</h1>
             <form onSubmit={handleSubmit} className="w-full mx-auto">
               <div className="w-[90%] mx-auto mt-4 relative">
                 <input
@@ -190,6 +212,7 @@ function SignupBusinessPage() {
                   type="tel" // Change type to "tel" for phone number
                   placeholder="mobile number"
                   required
+                  minLength={10}
                   maxLength={10}
                   name="phone"
                   value={phone}

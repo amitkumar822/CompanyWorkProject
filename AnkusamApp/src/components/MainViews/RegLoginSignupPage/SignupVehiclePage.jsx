@@ -69,6 +69,20 @@ function SignupVehiclePage() {
       return;
     }
 
+    if (isNaN(phoneNumber)) {
+      toast.warn("Invalid Phone Number!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      return;
+    }
+
     setIsLoading(true);
 
     const formData = new FormData(); // Create FormData object
@@ -186,9 +200,7 @@ function SignupVehiclePage() {
             </h1>
           </div>
           <div className="md:min-w-[400px] lg:w-[40%] sm:w-[350px] w-[370px] mx-auto border p-4 bg-gradient-to-r from-cyan-500 to-blue-500 md:to-[#bbe0bb] rounded-lg shadow-lg shadow-[#c78c5c]">
-            <h1 className="text-3xl text-center font-semibold">
-              Sign Up
-            </h1>
+            <h1 className="text-3xl text-center font-semibold">Sign Up</h1>
             <form
               onSubmit={handleSubmit} // Form submit handler
               className="w-full mx-auto"
@@ -199,6 +211,7 @@ function SignupVehiclePage() {
                   type="text"
                   placeholder="mobile number"
                   required
+                  minLength={10}
                   maxLength={10}
                   value={phoneNumber}
                   onChange={(event) => setPhoneNumber(event.target.value)} // Update phone number state on change
