@@ -305,7 +305,7 @@ function LoadListBusi() {
           <h1 className="md:text-3xl text-xl text-center font-serif underline mb-8 uppercase">
             Load List
           </h1>
-          <div className="w-full max-h-[800px] mx-auto overflow-x-auto rounded-lg">
+          <div className="w-full max-h-[800px] mx-auto overflow-y-auto rounded-lg">
             <table className="w-full mx-auto text-center border-collapse whitespace-nowrap">
               <thead className="bg-[#893381] sticky top-0 z-10">
                 <tr>

@@ -479,7 +479,7 @@ const MenuListBusinessLogin = () => {
           </ul>
           <ul className="text-[1.2vw] text-center">
             <li className=" font-semibold">
-              <span className=" text-[#ede850]">Welcome,</span>{" "}
+              <span className=" text-[#86e852]">Welcome:</span>{" "}
               {/* <span className="text-[#86e852]"> Name: </span>{" "} */}
               <span className="text-white">{busiLogUser?.userName}</span>
               <span className="text-[#86e852]"> Number: </span>{" "}

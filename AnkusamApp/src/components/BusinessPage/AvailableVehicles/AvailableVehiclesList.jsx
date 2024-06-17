@@ -40,7 +40,7 @@ function AvailableVehiclesList() {
           <h1 className="md:text-3xl text-xl text-center font-serif underline mb-8">
             AVAILABLE VEHICLE LIST
           </h1>
-          <div className="w-full mx-auto max-h-[800px] overflow-x-auto rounded-lg">
+          <div className="w-full mx-auto max-h-[800px] overflow-y-auto rounded-lg">
             <table className="w-full mx-auto text-center border-collapse whitespace-nowrap">
               <thead className="bg-gray-700 sticky top-0 z-10">
                 <tr>

@@ -133,7 +133,7 @@ function BusinessProfile() {
     setIsLoading(true);
 
     const formData = new FormData();
-    formData.append("id", busiLogUser?.id);
+    formData.append("id", busiLogUser?.vendorId);
     formData.append("name", files.name);
     formData.append("phone", files.phone);
     formData.append("alternativenumber", files.alternativenumber);
@@ -197,6 +197,10 @@ function BusinessProfile() {
       console.log("Error: ", error);
     }
   };
+
+  console.log('====================================');
+  console.log("All Details: ", busiLogUser);
+  console.log('====================================');
 
   return (
     <>
