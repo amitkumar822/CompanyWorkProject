@@ -266,7 +266,7 @@ function LoadListBusi() {
         { headers: { "Content-Type": "multipart/form-data" } }
       );
 
-      // console.log("SaveEdit Response: ", response.data);
+      // console.log("SaveEdit Response: ", response);
 
       if (response.data === "Updated") {
         setVendorAllDetails((prevDetails) =>
@@ -292,9 +292,57 @@ function LoadListBusi() {
     }
   };
 
-  // console.log("====================================");
-  // console.log("All Details: ", vendorAllDetails);
-  // console.log("====================================");
+  // ========👇 Active InActive Status Section 👇==========
+
+  const [statusId, setStatusId] = useState(null);
+
+  const handleActiveInActiveStatus = async (LoadId) => {
+    setStatusId(LoadId);
+  };
+
+  const [statusField, setStatusField] = useState("Active");
+
+  const handleActiveInActiveStatusChange = (activeInactive) => {
+    setStatusField(activeInactive.target.value);
+  };
+
+  const handleActiveInActiveSubmit = async (e) => {
+    // alert(statusField)
+
+    try {
+      const formData = new FormData();
+      formData.append("LoadId", statusId);
+      formData.append("status", statusField);
+
+      const response = await axios.post(
+        "/api/driver/load_update.php",
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+
+      if (response.data === "Updated") {
+        setVendorAllDetails((prevDetails) =>
+          prevDetails.filter((item) => item.LoadId !== editLoadId)
+        );
+        setStatusId(null);
+        toast.success("Status Successful Update!", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        setStatusField("Active")
+      } else {
+        console.error("Failed to update data: ", response.data);
+      }
+    } catch (error) {
+      console.error("Error: ", error.message);
+    }
+  };
 
   return (
     <>
@@ -352,21 +400,34 @@ function LoadListBusi() {
                     <td className="px-4 py-2 border-b">
                       <a
                         href={`tel:${detail?.ContactNumber}`}
-                        className="text-blue-500 underline"
+                        className="text-blue-500 hover:text-blue-800 duration-200 underline"
                       >
                         {detail?.ContactNumber}
                       </a>
                     </td>
-                    <td className="px-4 py-2 border-b">Active</td>
                     <td className="px-4 py-2 border-b">
                       <span
-                        className="px-2 py-1 mx-1 bg-green-500 cursor-pointer rounded-md text-white text-lg font-semibold"
+                        onClick={() =>
+                          handleActiveInActiveStatus(detail?.LoadId)
+                        }
+                        className={`cursor-pointer font-semibold text-[18px] ${
+                          detail?.status === "Active"
+                            ? "text-green-500 hover:text-green-700 duration-300"
+                            : "text-red-500 hover:text-red-700 duration-300"
+                        }`}
+                      >
+                        {detail?.status}
+                      </span>
+                    </td>
+                    <td className="px-4 py-2 border-b">
+                      <span
+                        className="px-2 py-1 mx-1 bg-green-500 hover:bg-green-600 duration-300 cursor-pointer rounded-md text-white text-lg font-semibold"
                         onClick={() => handleEdit(detail?.LoadId)}
                       >
                         Edit
                       </span>
                       <span
-                        className="px-2 py-1 mx-1 bg-red-500 cursor-pointer rounded-md text-white text-lg font-semibold"
+                        className="px-2 py-1 mx-1 bg-red-500 hover:bg-red-600 duration-300 cursor-pointer rounded-md text-white text-lg font-semibold"
                         onClick={() => handleDelete(detail?.LoadId)}
                       >
                         Delete
@@ -378,7 +439,7 @@ function LoadListBusi() {
             </table>
           </div>
           <h1
-            className={`md:text-xl ${
+            className={`md:text-xl text-[14px] ${
               vendorAllDetails.length ? "hidden" : undefined
             }`}
           >
@@ -394,6 +455,40 @@ function LoadListBusi() {
           </div>
         </div>
       </div>
+
+      {/*=================👇 Active InActive Modal or Update Details 👇===================*/}
+      {statusId && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded shadow-lg w-11/12 md:w-1/3 shadow-zinc-700">
+            <h2 className="text-2xl font-bold mb-4 text-center text-green-600 underline italic">
+              Update your status
+            </h2>
+            <select
+              className="w-[80%] ml-[10%] text-2xl bg-gray-200 rounded-md px-4 cursor-pointer"
+              onChange={handleActiveInActiveStatusChange}
+            >
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+            <br />
+            <div className="flex justify-around mt-10">
+              <button
+                onClick={() => setStatusId(null)}
+                className="text-xl font-semibold bg-red-600 hover:bg-red-700 duration-300 text-white px-2 py-1 rounded-md shadow-md shadow-gray-500"
+              >
+                Cancle
+              </button>
+
+              <button
+                onClick={handleActiveInActiveSubmit}
+                className="text-xl font-semibold bg-green-600 hover:bg-green-700 duration-300 text-white px-2 py-1 rounded-md shadow-md shadow-gray-500"
+              >
+                Update
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/*=================👇 Edit Load Modal or Update Details 👇===================*/}
 
