@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import Select from "react-select";
 import { State, City } from "country-state-city";
-import { RiMapPinUserFill } from "react-icons/ri";
+import { RiMapPinUserFill, RiVerifiedBadgeFill } from "react-icons/ri";
 import { CgProfile } from "react-icons/cg";
 import Typed from "typed.js"; // Importing Typed.js for typing animation
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"; // status percentage complete animation show
@@ -92,6 +92,7 @@ function BusinessProfile() {
 
   // loading animation state handle
   const [isLoading, setIsLoading] = useState(false);
+
   const [isErrorsMessage, setIsErrorsMessage] = useState({
     stateName: "",
     cityName: "",
@@ -182,10 +183,6 @@ function BusinessProfile() {
         }
       );
 
-      console.log('====================================');
-      console.log("Response: " + JSON.stringify(response, null, 2));
-      console.log('====================================');
-
       if (response.data.success) {
         setIsLoading(false);
         toast.success("Successfully updated!", {
@@ -231,9 +228,37 @@ function BusinessProfile() {
     }
   };
 
-  // console.log('====================================');
-  // console.log("All Details: ", busiLogUser);
-  // console.log('====================================');
+  //=============👇Start Fetch Data section👇===================
+  const ids = 66;
+  const [busiProfileAllDetails, setBusiProfileAllDetails] = useState("");
+
+  useEffect(() => {
+    const fetchDetails = async () => {
+      const formData = new FormData();
+      formData.append("id", ids);
+
+      try {
+        const response = await axios.post(
+          "/api/driver/get_business_profile_id.php",
+          formData
+        );
+
+        console.log("Response: ", response.data[0]);
+
+        setBusiProfileAllDetails(response.data[0]);
+        setFiles({
+          name: response.data[0].userName || "",
+          phone: response.data[0].userPhone || "",
+          alternativenumber: response.data[0].alternativePhone || "",
+          email: response.data[0].email || "",
+          address: response.data[0].address || "",
+        });
+      } catch (error) {
+        console.log("Error: ", error);
+      }
+    };
+    fetchDetails();
+  }, []);
 
   return (
     <>
@@ -306,21 +331,39 @@ function BusinessProfile() {
               </h1> */}
               <div className="grid sm:grid-cols-2 md:mt-6">
                 <div>
-                  <h1 className="text-[17px] pt-2 font-semibold">Name</h1>
+                  <h1 className="text-[17px] pt-2 font-semibold flex items-center gap-1">
+                    Name
+                    <span
+                      className={`${
+                        !busiProfileAllDetails?.userName && "hidden"
+                      } text-blue-500`}
+                    >
+                      <RiVerifiedBadgeFill />
+                    </span>
+                  </h1>
                   <input
                     type="text"
                     name="name"
+                    value={files?.name || ""}
                     onChange={handleFileChange}
                     placeholder="Enter your name"
                     required
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
-                  <h1 className="text-[17px] pt-2 font-semibold">
+                  <h1 className="text-[17px] pt-2 font-semibold flex items-center gap-1">
                     Phone Number
+                    <span
+                      className={`${
+                        !busiProfileAllDetails?.userPhone && "hidden"
+                      } text-blue-500`}
+                    >
+                      <RiVerifiedBadgeFill />
+                    </span>
                   </h1>
                   <input
                     type="text"
                     name="phone"
+                    value={files?.phone || ""}
                     onChange={handleFileChange}
                     placeholder="Phone number"
                     minLength={10}
@@ -331,23 +374,39 @@ function BusinessProfile() {
                 </div>
 
                 <div>
-                  <h1 className="text-[17px] pt-2 font-semibold">
+                  <h1 className="text-[17px] pt-2 font-semibold flex items-center gap-1">
                     Email address
+                    <span
+                      className={`${
+                        !busiProfileAllDetails?.email && "hidden"
+                      } text-blue-500`}
+                    >
+                      <RiVerifiedBadgeFill />
+                    </span>
                   </h1>
                   <input
                     type="email"
                     name="email"
                     required
+                    value={files?.email || ""}
                     onChange={handleFileChange}
                     placeholder="Enter email address"
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
-                  <h1 className="text-[17px] pt-2 font-semibold">
+                  <h1 className="text-[17px] pt-2 font-semibold flex items-center gap-1">
                     Alternative Number
+                    <span
+                      className={`${
+                        !busiProfileAllDetails?.alternativePhone && "hidden"
+                      } text-blue-500`}
+                    >
+                      <RiVerifiedBadgeFill />
+                    </span>
                   </h1>
                   <input
                     type="text"
                     name="alternativenumber"
+                    value={files?.alternativenumber || ""}
                     onChange={handleFileChange}
                     minLength={10}
                     maxLength={10}
@@ -360,12 +419,22 @@ function BusinessProfile() {
               <hr className=" mt-16" />
               {/* Address section */}
               <div className="mt-6">
-                <h1 className="text-[17px] pt-2 font-semibold">Address</h1>
+                <h1 className="text-[17px] pt-2 font-semibold flex items-center gap-1">
+                  Address
+                  <span
+                      className={`${
+                        !busiProfileAllDetails?.address && "hidden"
+                      } text-blue-500`}
+                    >
+                      <RiVerifiedBadgeFill />
+                    </span>
+                </h1>
                 <input
                   type="text"
                   name="address"
                   onChange={handleFileChange}
                   required
+                  value={files?.address || ""}
                   placeholder="Enter your address.."
                   className="py-2 px-4 rounded-lg w-[90%]"
                 />
@@ -374,7 +443,7 @@ function BusinessProfile() {
               {/* State City Section */}
               <div className="grid md:grid-cols-2 mt-4">
                 <div className="md:w-[60%] w-[90%] min-w-[200px]">
-                  <h3 className="text-[17px] pt-2 font-semibold">
+                  <h3 className="text-[17px] pt-2 font-semibold flex items-center gap-1">
                     SELECT STATE
                   </h3>
                   <Select
@@ -382,13 +451,13 @@ function BusinessProfile() {
                     options={states}
                     required
                     className="mt-2"
-                    value={states.find((option) => option.value === state)}
+                    value={states.find((option) => option.value === state) || busiProfileAllDetails?.state}
                     onChange={handleStateChange}
                     isClearable
                   />
                 </div>
                 <div className="md:w-[60%] w-[90%] min-w-[200px]">
-                  <h3 className="text-[17px] pt-2 font-semibold">
+                  <h3 className="text-[17px] pt-2 font-semibold flex items-center gap-1">
                     SELECT CITY
                   </h3>
                   <Select
