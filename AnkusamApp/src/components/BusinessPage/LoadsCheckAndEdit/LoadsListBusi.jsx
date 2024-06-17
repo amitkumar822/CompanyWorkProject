@@ -439,7 +439,7 @@ function LoadListBusi() {
             </table>
           </div>
           <h1
-            className={`md:text-xl text-[14px] ${
+            className={`text-[17px] ${
               vendorAllDetails.length ? "hidden" : undefined
             }`}
           >

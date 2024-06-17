@@ -88,35 +88,31 @@ function VehiProfile() {
     setIsLoading(true);
     e.preventDefault();
 
-    if(isNaN(driverVehiFormText.phone)){
-      toast.warn("Invalid Phone Number!",
-        {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        }
-      )
+    if (isNaN(driverVehiFormText.phone)) {
+      toast.warn("Invalid Phone Number!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       return;
     }
 
-    if(isNaN(driverVehiFormText.aadhar_number)){
-      toast.warn("Invalid Aadhar Number!",
-        {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        }
-      )
+    if (isNaN(driverVehiFormText.aadhar_number)) {
+      toast.warn("Invalid Aadhar Number!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       return;
     }
 
