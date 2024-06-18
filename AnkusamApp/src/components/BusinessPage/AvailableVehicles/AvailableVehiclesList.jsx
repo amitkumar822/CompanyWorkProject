@@ -86,11 +86,16 @@ function AvailableVehiclesList() {
                     </td>
                   </tr>
                 ))}
-
-                {/* Add more rows as needed */}
               </tbody>
             </table>
           </div>
+          <h1
+            className={`text-[17px] ${
+              vehicleAllDetails.length ? "hidden" : undefined
+            }`}
+          >
+            Data is loading...
+          </h1>
           <div className="mt-4 w-full flex justify-center">
             <Link
               to="/loadslistbusi"

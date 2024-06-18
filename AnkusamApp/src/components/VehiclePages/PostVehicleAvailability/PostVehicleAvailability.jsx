@@ -179,7 +179,7 @@ function PostVehicleAvailability() {
     formData.append("phone", vehiLogUser?.phone);
     formData.append("typeOfVehicle", files.typeOfVehicle);
     formData.append("vehicle_capacity_in_tons", files.vehicle_capacity_in_tons);
-    formData.append("vehicleLength", files.vehicleLength);
+    formData.append("vehicleLength", (files.vehicleLength + " Feets"));
     formData.append("fromstate", fromStateName);
     formData.append("fromcity", fromCityName);
     formData.append("tostate", toStateName);

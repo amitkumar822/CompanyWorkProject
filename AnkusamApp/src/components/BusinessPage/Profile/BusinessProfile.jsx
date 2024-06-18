@@ -229,8 +229,8 @@ function BusinessProfile() {
   };
 
   //=============👇Start Fetch Data section👇===================
-  const ids = 66;
-  const [percentage, setPercentage] = useState(10);
+
+  const [percentage, setPercentage] = useState(25); // Assuming user has completed 0-100% of their profile
   const [busiProfileAllDetails, setBusiProfileAllDetails] = useState("");
 
   useEffect(() => {
@@ -244,10 +244,11 @@ function BusinessProfile() {
           formData
         );
 
-        // console.log("Response: ", response.data[0]);
+        console.log("Response: ", response.data[0]);
 
         setBusiProfileAllDetails(response.data[0]);
-        if(response.data.length > 0){
+        //👉 profile percentage setup
+        if (response.data[0]?.address) {
           setPercentage(100);
         }
         setFiles({
@@ -264,7 +265,11 @@ function BusinessProfile() {
     fetchDetails();
   }, []);
 
-  // console.log("All details: ", busiLogUser?.vendorId);
+  // console.log("VendorId: ", busiLogUser?.vendorId);
+
+  // console.log('====================================');
+  // console.log("Length: : ", busiProfileAllDetails.userName);
+  // console.log('====================================');
 
   return (
     <>
@@ -428,12 +433,12 @@ function BusinessProfile() {
                 <h1 className="text-[17px] pt-2 font-semibold flex items-center gap-1">
                   Address
                   <span
-                      className={`${
-                        !busiProfileAllDetails?.address && "hidden"
-                      } text-blue-500`}
-                    >
-                      <RiVerifiedBadgeFill />
-                    </span>
+                    className={`${
+                      !busiProfileAllDetails?.address && "hidden"
+                    } text-blue-500`}
+                  >
+                    <RiVerifiedBadgeFill />
+                  </span>
                 </h1>
                 <input
                   type="text"
@@ -451,20 +456,40 @@ function BusinessProfile() {
                 <div className="md:w-[60%] w-[90%] min-w-[200px]">
                   <h3 className="text-[17px] pt-2 font-semibold flex items-center gap-1">
                     SELECT STATE
+                    <span
+                      className={`${
+                        !busiProfileAllDetails?.state && "hidden"
+                      } text-blue-500`}
+                    >
+                      <RiVerifiedBadgeFill />
+                    </span>
                   </h3>
                   <Select
                     ref={stateInputRef}
                     options={states}
                     required
                     className="mt-2"
-                    value={states.find((option) => option.value === state) || busiProfileAllDetails?.state}
+                    value={
+                      states.find((option) => option.value === state) ||
+                      busiProfileAllDetails?.state
+                    }
                     onChange={handleStateChange}
                     isClearable
                   />
+                  <span className=" font-semibold text-blue-600">
+                    {busiProfileAllDetails?.state}
+                  </span>
                 </div>
                 <div className="md:w-[60%] w-[90%] min-w-[200px]">
                   <h3 className="text-[17px] pt-2 font-semibold flex items-center gap-1">
                     SELECT CITY
+                    <span
+                      className={`${
+                        !busiProfileAllDetails?.city && "hidden"
+                      } text-blue-500`}
+                    >
+                      <RiVerifiedBadgeFill />
+                    </span>
                   </h3>
                   <Select
                     ref={cityInputRef}
@@ -476,6 +501,10 @@ function BusinessProfile() {
                     isDisabled={!state}
                     isClearable
                   />
+
+                  <span className=" font-semibold text-blue-600">
+                    {busiProfileAllDetails?.city}
+                  </span>
                   {isErrorsMessage && (
                     <p className="text-red-500">{isErrorsMessage.cityName}</p>
                   )}
