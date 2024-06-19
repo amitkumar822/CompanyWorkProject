@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://ankusamlogistics.com', // URL of your PHP backend
+        target: 'https://ankusamlogistics.com/api', // URL of your PHP backend
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }
