@@ -61,17 +61,17 @@ function VehiProfile() {
   //=====================👇Start Form Text section👇==============================
 
   const [driverVehiFormText, setDriverVehiFormText] = useState({
-    driver_name: null,
-    aadhar_number: null,
-    phone: null,
-    htown: null,
-    driving_license_number: null,
+    driver_name: "",
+    aadhar_number: "",
+    phone: "",
+    htown: "",
+    driving_license_number: "",
     license_type: "",
-    vehicle_register_number: null,
-    vehicle_make_and_model: null,
+    vehicle_register_number: "",
+    vehicle_make_and_model: "",
     operator_type: "",
-    vehicle_name: null,
-    vehicle_length: null,
+    vehicle_name: "",
+    vehicle_length: "",
     vehicle_capacity_in_tons: "",
     vehicle_type: "",
   });
@@ -117,26 +117,26 @@ function VehiProfile() {
     }
 
     const formData = new FormData();
-    formData.append("driver_id", 84);
+    formData.append("driver_id", vehiLogUser?.driver_id);
     formData.append("driver_name", driverVehiFormText.driver_name);
     formData.append("aadhar_number", driverVehiFormText.aadhar_number);
     formData.append("driver_mobile_number", driverVehiFormText.phone);
     formData.append("htown", driverVehiFormText.htown);
     formData.append(
       "driving_license_number",
-      driverVehiFormText.driving_license_number
+      driverVehiFormText.driving_license_number.toUpperCase()
     );
     formData.append("license_type", driverVehiFormText.license_type);
     formData.append(
       "vehicle_register_number",
-      driverVehiFormText.vehicle_register_number
+      driverVehiFormText.vehicle_register_number.toUpperCase()
     );
     formData.append(
       "vehicle_make_and_model",
-      driverVehiFormText.vehicle_make_and_model
+      driverVehiFormText.vehicle_make_and_model.toUpperCase()
     );
     formData.append("operator_type", driverVehiFormText.operator_type);
-    formData.append("vehicle_name", driverVehiFormText.vehicle_name);
+    formData.append("vehicle_name", driverVehiFormText.vehicle_name.toUpperCase());
     formData.append("vehicle_length", driverVehiFormText.vehicle_length);
     formData.append(
       "vehicle_capacity_in_tons",
@@ -146,7 +146,7 @@ function VehiProfile() {
 
     try {
       const response = await axios.post(
-        "/api/driver/webapi/driver_vehicle_form.php",
+        "/api/drivers/profiles/driver_profile_text_field.php",
         formData,
         {
           headers: {
@@ -787,7 +787,6 @@ function VehiProfile() {
                   <input
                     type="text"
                     placeholder="Enter your name"
-                    required
                     name="driver_name"
                     value={driverVehiFormText?.driver_name || ""}
                     onChange={handleDriverVehiFormTextChange}
@@ -806,7 +805,6 @@ function VehiProfile() {
                   <input
                     type="tel"
                     placeholder="Phone number"
-                    required
                     minLength={10}
                     maxLength={10}
                     name="phone"
@@ -832,7 +830,6 @@ function VehiProfile() {
                     placeholder="Aadhar number"
                     minLength={12}
                     maxLength={12}
-                    required
                     name="aadhar_number"
                     value={driverVehiFormText?.aadhar_number || ""}
                     onChange={handleDriverVehiFormTextChange}
@@ -851,7 +848,6 @@ function VehiProfile() {
                   <input
                     type="text"
                     placeholder="Home Town"
-                    required
                     name="htown"
                     value={driverVehiFormText?.htown || ""}
                     onChange={handleDriverVehiFormTextChange}
@@ -898,7 +894,6 @@ function VehiProfile() {
               <input
                 type="text"
                 placeholder="Driving license number.."
-                required
                 name="driving_license_number"
                 value={driverVehiFormText?.driving_license_number || ""}
                 onChange={handleDriverVehiFormTextChange}
@@ -919,7 +914,6 @@ function VehiProfile() {
                   </h1>
                   <select
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%] cursor-pointer"
-                    required
                     name="license_type"
                     value={driverVehiFormText?.license_type || ""}
                     onChange={handleDriverVehiFormTextChange}
@@ -943,7 +937,6 @@ function VehiProfile() {
                   </h1>
                   <select
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%] cursor-pointer"
-                    required
                     name="operator_type"
                     value={driverVehiFormText?.operator_type || ""}
                     onChange={handleDriverVehiFormTextChange}
@@ -967,7 +960,6 @@ function VehiProfile() {
                   </h1>
                   <select
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%] cursor-pointer"
-                    required
                     name="vehicle_type"
                     value={driverVehiFormText?.vehicle_type || ""}
                     onChange={handleDriverVehiFormTextChange}
@@ -994,7 +986,6 @@ function VehiProfile() {
                   <input
                     type="text"
                     placeholder="Vehicle register Number"
-                    required
                     name="vehicle_register_number"
                     value={driverVehiFormText?.vehicle_register_number || ""}
                     onChange={handleDriverVehiFormTextChange}
@@ -1014,7 +1005,6 @@ function VehiProfile() {
                     type="text"
                     placeholder="Vehicle name"
                     value={driverVehiFormText?.vehicle_name || ""}
-                    required
                     name="vehicle_name"
                     onChange={handleDriverVehiFormTextChange}
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
@@ -1031,7 +1021,6 @@ function VehiProfile() {
                   </h1>
                   <select
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%] cursor-pointer"
-                    required
                     name="vehicle_capacity_in_tons"
                     value={driverVehiFormText?.vehicle_capacity_in_tons || ""}
                     onChange={handleDriverVehiFormTextChange}
@@ -1060,7 +1049,6 @@ function VehiProfile() {
                   </h1>
                   <input
                     type="text"
-                    required
                     name="vehicle_make_and_model"
                     value={driverVehiFormText?.vehicle_make_and_model || ""}
                     onChange={handleDriverVehiFormTextChange}
@@ -1079,7 +1067,6 @@ function VehiProfile() {
                   </h1>
                   <input
                     type="text"
-                    required
                     name="vehicle_length"
                     value={driverVehiFormText?.vehicle_length || ""}
                     onChange={handleDriverVehiFormTextChange}
@@ -1141,7 +1128,6 @@ function VehiProfile() {
                       </span>
                       <input
                         type="file"
-                        required
                         name="front"
                         onChange={handleVehicleFileChange}
                         className="w-[200px] cursor-pointer"
@@ -1178,7 +1164,6 @@ function VehiProfile() {
                       </span>
                       <input
                         type="file"
-                        required
                         name="back"
                         onChange={handleVehicleFileChange}
                         className="w-[200px] cursor-pointer"
@@ -1215,7 +1200,6 @@ function VehiProfile() {
                       </span>
                       <input
                         type="file"
-                        required
                         name="left"
                         onChange={handleVehicleFileChange}
                         className="w-[200px] cursor-pointer"
@@ -1252,7 +1236,6 @@ function VehiProfile() {
                       </span>
                       <input
                         type="file"
-                        required
                         name="right"
                         onChange={handleVehicleFileChange}
                         className="w-[200px] cursor-pointer"
@@ -1301,7 +1284,6 @@ function VehiProfile() {
                       </span>
                       <input
                         type="file"
-                        required
                         name="regFront"
                         onChange={handleRegistrationFileChange}
                         className="w-[200px] cursor-pointer"
@@ -1335,7 +1317,6 @@ function VehiProfile() {
                       </span>
                       <input
                         type="file"
-                        required
                         name="regBack"
                         onChange={handleRegistrationFileChange}
                         className="w-[200px] cursor-pointer"
@@ -1384,7 +1365,6 @@ function VehiProfile() {
                       </span>
                       <input
                         type="file"
-                        required
                         name="insurance"
                         onChange={handleInsuranceChange}
                         className="w-[200px] cursor-pointer"
@@ -1405,7 +1385,7 @@ function VehiProfile() {
                 {/* Adhar card and License section */}
                 <form
                   onSubmit={handleAdharLicenseSubmit}
-                  className="md:mt-0 mt-6"
+                  className="md:-mt-20"
                 >
                   <div>
                     <h1 className="md:text-[25px] text-[20px] pt-2 font-semibold text-yellow-600">
@@ -1441,7 +1421,6 @@ function VehiProfile() {
                       </span>
                       <input
                         type="file"
-                        required
                         name="adhar_front"
                         onChange={handleAdharLicenseFileChange}
                         className="w-[200px] cursor-pointer"
@@ -1478,7 +1457,6 @@ function VehiProfile() {
                       </span>
                       <input
                         type="file"
-                        required
                         name="adhar_back"
                         onChange={handleAdharLicenseFileChange}
                         className="w-[200px] cursor-pointer"
@@ -1521,7 +1499,6 @@ function VehiProfile() {
                       </span>
                       <input
                         type="file"
-                        required
                         name="driving_lic_front"
                         onChange={handleAdharLicenseFileChange}
                         className="w-[200px] cursor-pointer"
@@ -1557,7 +1534,6 @@ function VehiProfile() {
                       </span>
                       <input
                         type="file"
-                        required
                         name="driving_lic_back"
                         onChange={handleAdharLicenseFileChange}
                         className="w-[200px] cursor-pointer"
