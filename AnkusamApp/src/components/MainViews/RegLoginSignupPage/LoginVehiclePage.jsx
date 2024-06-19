@@ -66,15 +66,10 @@ function LoginVehiclePage() {
 
     try {
       // Send POST request to backend
-      const response = await fetch("/api/driver/driverlogin.php", {
+      const response = await fetch("/api/drivers/auth/login.php", {
         method: "POST",
         body: formData, // Send form data
       });
-
-      // Log the response status and headers
-      // console.log("Response Status:", response.status);
-      // console.log("Response Headers:", response.headers);
-      // Logging the response status and headers for debugging.
 
       if (!response.ok) {
         throw new Error("Network response was not ok " + response.statusText);

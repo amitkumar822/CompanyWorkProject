@@ -87,7 +87,7 @@ function SignupVehiclePage() {
 
     const formData = new FormData(); // Create FormData object
     formData.append("phoneNumber", phoneNumber); // Append phone number to form data
-    formData.append("vehicalNumber", vehicalNumber); // Append vehicle number to form data
+    formData.append("vehicalNumber", vehicalNumber.toUpperCase()); // Append vehicle number to form data
     formData.append("password", password); // Append password to form data
 
     try {
@@ -99,46 +99,22 @@ function SignupVehiclePage() {
 
       const data = await response.json();
 
-      console.log("====================================");
-      console.log("VResponse: ", data);
-      console.log("====================================");
-
-      if (!data.vehicalFound) {
-        // Send POST request to backend
-        const response = await fetch("/api/driver/signup.php", {
-          method: "POST",
-          body: formData, // Send form data
+      if (data.success) {
+        setIsLoading(false);
+        toast.success("Signup successful!", {
+          position: "top-center",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
         });
-
-        // Log the response status and headers
-        // console.log("Response Status:", response.status);
-        // console.log("Response Headers:", response.headers);
-
-        if (!response.ok) {
-          throw new Error("Network response was not ok " + response.statusText); // Throw error if response is not ok
-        }
-
-        // Parse JSON response
-        const data = await response.json();
-
-        // Handle the success or failure based on response
-        if (data.success) {
-          setIsLoading(false);
-          toast.success("Signup successful!", {
-            position: "top-center",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
-          // Redirect to a different page on successful login (uncomment below line when navigation is setup)
-          setTimeout(() => {
-            navigate("/vehiclelogin");
-          }, 1300);
-        }
+        // Redirect to a different page on successful login (uncomment below line when navigation is setup)
+        setTimeout(() => {
+          navigate("/vehiclelogin");
+        }, 1300);
       } else {
         setIsLoading(false);
         toast.error("Vehicle number already exists!", {
