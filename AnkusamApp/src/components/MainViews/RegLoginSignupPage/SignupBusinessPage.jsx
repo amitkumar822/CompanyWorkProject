@@ -86,26 +86,15 @@ function SignupBusinessPage() {
     setIsLoading(true);
 
     const formData = new FormData();
-    formData.append("userName", username);
-    formData.append("userPhone", phone);
-    formData.append("vendorPassword", password);
-
-    //👉this field not related signup page
-    const businessProfileFormate = new FormData();
-    businessProfileFormate.append("userName", username);
-    businessProfileFormate.append("userPhone", phone);
+    formData.append("clientsName", username);
+    formData.append("clientsPhone", phone);
+    formData.append("clientsPassword", password);
 
     try {
       // Send POST request to backend
-      const response = await fetch("/api/driver/business_signup.php", {
+      const response = await fetch("/api/clients/auth/signup.php", {
         method: "POST",
         body: formData, // Send form data
-      });
-
-      //👉this field not related signup page
-      const businessPfofileFormate = await fetch("/api/driver/business_profile_update_hi_url.php", {
-        method: "POST",
-        body: businessProfileFormate, // Send form data
       });
 
       // Log the response status and headers
@@ -117,12 +106,6 @@ function SignupBusinessPage() {
 
       //Parse JSON response
       const data = await response.json();
-
-      // Log the entire response for debugging
-      // console.log("====================================");
-      // console.log("Result:", data);
-      // console.log("Result Status:", data.success);
-      // console.log("====================================");
 
       // Handle the success or failure based on response
       if (data.success) {

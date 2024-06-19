@@ -80,6 +80,8 @@ function PostYourLoadBusi() {
   const toStateInputRef = useRef();
   const fromCityInputRef = useRef();
   const toCityInputRef = useRef();
+  const hoursInputRef = useRef();
+  const minutesInputRef = useRef();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -104,13 +106,14 @@ function PostYourLoadBusi() {
   });
 
   const [formFiles, setFormFiles] = useState({
-    PickUpDate: null,
+    PickUpDate: '',
     VehicleType: "Both",
-    PackageWeight: null,
+    PackageWeight: '',
     NumberOfWheels: 1,
-    GoodsType: null,
+    GoodsType: '',
     VehicleLength: 1,
-    ContactNumber: null,
+    ContactNumber: '',
+    AlternativeNumber: '',
   });
 
   const handleFormChange = (e) => {
@@ -186,7 +189,7 @@ function PostYourLoadBusi() {
     setIsLoading(true);
 
     const formData = new FormData();
-    formData.append("vendorId", busiLogUser?.vendorId);
+    formData.append("vendorId", busiLogUser?.clientsId);
     formData.append("PickUpDate", formFiles.PickUpDate);
     formData.append("VehicleType", formFiles.VehicleType);
     formData.append("PackageWeight", formFiles.PackageWeight);
@@ -194,15 +197,16 @@ function PostYourLoadBusi() {
     formData.append("GoodsType", formFiles.GoodsType);
     formData.append("VehicleLength", formFiles.VehicleLength + " Feets");
     formData.append("ContactNumber", formFiles.ContactNumber);
+    formData.append("alternativePhone", formFiles.AlternativeNumber); //this is not updated
     formData.append("FromState", fromStateName);
     formData.append("FromCity", fromCityName);
     formData.append("ToState", toStateName);
     formData.append("ToCity", toCityName);
-    formData.append("time", time.hour + ":" + time.minute + ":" + time.period);
+    formData.append("time", time.hour + ":" + time.minute + " " + time.period);
 
     try {
       const response = await axios.post(
-        "/api/driver/webapi/post_load.php",
+        "/api/clients/load/post_load.php",
         formData,
         {
           headers: {
@@ -211,7 +215,9 @@ function PostYourLoadBusi() {
         }
       );
 
-      if (response.data) {
+      console.log("response: " + JSON.stringify(response, null, 2));
+
+      if (response.data.success) {
         toast.success("Successfully post!", {
           position: "top-center",
           autoClose: 1700,
@@ -231,6 +237,17 @@ function PostYourLoadBusi() {
         if (toStateInputRef.current) toStateInputRef.current.clearValue();
         if (fromCityInputRef.current) fromCityInputRef.current.clearValue();
         if (toCityInputRef.current) toCityInputRef.current.clearValue();
+
+        // Reset the time state
+        setTime({
+          hour: "",
+          minute: "",
+          period: "AM",
+        });
+
+        // Clear the select elements
+        hoursInputRef.current.value = "";
+        minutesInputRef.current.value = "";
       } else {
         toast.error("Faild to post!", {
           position: "top-center",
@@ -391,12 +408,13 @@ function PostYourLoadBusi() {
                       onChange={handleFormChange}
                     />
                   </div>
-
+                  {/* pickup time */}
                   <div className="pr-2">
                     <h3 className="md:text-lg font-semibold text-black uppercase mb-2">
                       PICKUP TIME
                     </h3>
                     <select
+                      ref={hoursInputRef}
                       name="hour"
                       className="w-1/3 p-2 border border-gray-300 rounded-md"
                       value={time.hour}
@@ -419,6 +437,7 @@ function PostYourLoadBusi() {
                     </select>
 
                     <select
+                      ref={minutesInputRef}
                       name="minute"
                       className="w-1/3 p-2 border border-gray-300 rounded-md"
                       value={time.minute}
@@ -454,7 +473,7 @@ function PostYourLoadBusi() {
             </div>
             {/* How would you like to ship? */}
             <div className="grid lg:grid-cols-2">
-              <div className="lg:mt-0 mt-7">
+              <div className="lg:-mt-12 mt-7">
                 <h1 className="lg:text-4xl md:text-3xl md:font-normal font-semibold text-[20px]">
                   How would you like to ship?
                 </h1>
@@ -533,7 +552,7 @@ function PostYourLoadBusi() {
               </div>
             </div>
             {/* contact number and upload load section */}
-            <div className="grid lg:grid-cols-2 mt-10">
+            <div className="grid lg:grid-cols-2 md:mt-4 mt-10">
               {/* contact and goods type section */}
               <div>
                 {/* goods type */}
@@ -542,10 +561,11 @@ function PostYourLoadBusi() {
                 </h1>
                 <select
                   name="GoodsType"
+                  required
                   onChange={handleFormChange}
                   className="py-2 px-4 min-w-[180px] lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
                 >
-                  <option>Select one...</option>
+                  <option value=''>Select one...</option>
                   <option value="Personal Goods">Personal Goods</option>
                   <option value="Machine">Machine</option>
                   <option value="Industrial Equpiment">
@@ -567,22 +587,37 @@ function PostYourLoadBusi() {
                   placeholder="Enter your number"
                   className="py-2 px-4 min-w-[180px] lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
                 />
-              </div>
-              {/* upload load photos section */}
-              <div className="lg:mt-0 mt-4">
-                <h1 className="md:text-lg font-semibold text-black uppercase mb-2">
-                  Upload Load Photos
+                {/* Alternative contact number */}
+                <h1 className="md:text-lg mt-4 font-semibold text-black uppercase mb-2">
+                  Alternative Number (Optional)
                 </h1>
                 <input
-                  type="file"
-                  // required
-                  className="py-2 px-4 min-w-[180px] bg-gray-300 lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
+                  type="tel"
+                  minLength={10}
+                  maxLength={10}
+                  name="AlternativeNumber"
+                  onChange={handleFormChange}
+                  placeholder="Enter your number"
+                  className="py-2 px-4 min-w-[180px] lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
                 />
-                <input
-                  type="file"
-                  // required
-                  className="py-2 px-4 mt-2 min-w-[180px] bg-gray-300 lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
-                />
+              </div>
+              {/* upload load photos section */}
+              <div className="lg:mt-0 mt-4 flex items-center">
+                <div>
+                  <h1 className="md:text-lg font-semibold text-black uppercase mb-2">
+                    Upload Load Photos (Optional)
+                  </h1>
+                  <input
+                    type="file"
+                    // required
+                    className="py-2 px-4 min-w-[180px] bg-gray-300 lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
+                  />
+                  <input
+                    type="file"
+                    // required
+                    className="py-2 px-4 mt-2 min-w-[180px] bg-gray-300 lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
+                  />
+                </div>
               </div>
             </div>
             <div className="w-full mx-auto flex justify-center items-center">

@@ -162,19 +162,19 @@ function BusinessProfile() {
     setIsLoading(true);
 
     const formData = new FormData();
-    formData.append("id", busiLogUser?.vendorId);
-    formData.append("vendorId", busiLogUser?.vendorId);
-    formData.append("name", files.name);
-    formData.append("phone", files.phone);
-    formData.append("alternativenumber", files.alternativenumber);
-    formData.append("email", files.email);
-    formData.append("address", files.address);
-    formData.append("state", stateName);
-    formData.append("city", cityName);
+    formData.append("clientId", busiLogUser?.clientsId);
+    formData.append("vendorId", busiLogUser?.clientsId);
+    formData.append("clientsName", files.name);
+    formData.append("clientsPhone", files.phone);
+    formData.append("clientsEmail", files.email);
+    formData.append("clientsAlternativeNumber", files.alternativenumber);
+    formData.append("clientsAddress", files.address);
+    formData.append("clientsState", stateName);
+    formData.append("clientsCity", cityName);
 
     try {
       const response = await axios.post(
-        "/api/driver/webapi/business_profile_update1.php",
+        "/api/clients/auth/update_profile.php",
         formData,
         {
           headers: {
@@ -183,7 +183,7 @@ function BusinessProfile() {
         }
       );
 
-      if (response.data.success) {
+      if (response.data === "updated") {
         setIsLoading(false);
         toast.success("Successfully updated!", {
           position: "top-center",

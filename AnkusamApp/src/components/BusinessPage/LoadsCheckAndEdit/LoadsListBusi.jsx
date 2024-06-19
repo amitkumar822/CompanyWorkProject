@@ -29,18 +29,22 @@ function LoadListBusi() {
   useEffect(() => {
     const fetchData = async () => {
       const formData = new FormData();
-      formData.append("vendorId", busiLogUser?.vendorId);
+      formData.append("vendorId", busiLogUser?.clientsId);
 
       try {
         const response = await axios.post(
-          "/api/driver/get_business_data_th_vendorId.php",
+          "/api/clients/load/get_load_data_vendorid.php",
           formData,
           { headers: { "Content-Type": "multipart/form-data" } }
         );
+        console.log("All response: " + JSON.stringify(response, null, 2));
+        console.log(
+          "GetLoadData Response1: " + response.data.load[0].contactNumber
+        );
 
-        if (!response.data.success) {
-          if (Array.isArray(response.data)) {
-            setVendorAllDetails(response.data);
+        if (response.data.success) {
+          if (Array.isArray(response.data.load)) {
+            setVendorAllDetails(response.data.load);
           }
         }
       } catch (err) {
@@ -48,10 +52,10 @@ function LoadListBusi() {
       }
     };
 
-    if (busiLogUser?.vendorId) {
+    if (busiLogUser?.clientsId) {
       fetchData();
     }
-  }, [vendorAllDetails]);
+  }, []);
 
   //============👇 Delete Section 👇=================
   const deleteData = async (loadId) => {
@@ -60,7 +64,7 @@ function LoadListBusi() {
 
     try {
       const response = await axios.post(
-        "/api/driver/delete_load_th_vendor_id.php",
+        "/api/clients/load/delete_load_th_loadId.php",
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -95,7 +99,8 @@ function LoadListBusi() {
     setDeleteId(null);
   };
 
-  //=============👇 Edit functionality section 👇========================
+  //=============👇 Edit or Update functionality section 👇========================
+
   //---------------  State City Section --------------------
 
   // State management for shipping from and to locations
@@ -150,6 +155,7 @@ function LoadListBusi() {
   };
 
   //----- end State City Selection ------------
+  //==========👇 Edit all data and update section 👇 =========
 
   const [editCloseOpenBox, setEditCloseOpenBox] = useState(false);
 
@@ -160,13 +166,14 @@ function LoadListBusi() {
   });
 
   const [formFiles, setFormFiles] = useState({
-    PickUpDate: null,
+    PickUpDate: '',
     VehicleType: "Both",
-    PackageWeight: null,
-    NumberOfWheels: 1,
-    GoodsType: null,
-    VehicleLength: 1,
-    ContactNumber: null,
+    PackageWeight: '',
+    NumberOfWheels: "",
+    GoodsType: '',
+    VehicleLength: "",
+    ContactNumber: '',
+    alternativeNumber: '',
   });
 
   const handleFormChange = (e) => {
@@ -200,51 +207,6 @@ function LoadListBusi() {
   const handleEditFormSubmit = async (e) => {
     e.preventDefault();
 
-    if (!fromCityName) {
-      toast("From City is required!");
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        fromCityName: "Please select from city",
-      }));
-      return;
-    } else {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        fromCityName: "",
-      }));
-    }
-
-    if (!toCityName) {
-      toast("To City is required!");
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        toCityName: "Please select to city",
-      }));
-      return;
-    } else {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        toCityName: "",
-        fromCityName: "",
-      }));
-    }
-
-    if (!formFiles.PackageWeight) {
-      toast("PackageWeight is required!");
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        PackageWeight: "Please select PackageWeight",
-      }));
-      return;
-    } else {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        PackageWeight: "",
-        toCityName: "",
-        fromCityName: "",
-      }));
-    }
-
     try {
       const formData = new FormData();
       formData.append("LoadId", editLoadId);
@@ -255,13 +217,14 @@ function LoadListBusi() {
       formData.append("GoodsTypes", formFiles.GoodsType);
       formData.append("VehicleLength", formFiles.VehicleLength);
       formData.append("ContactNumber", formFiles.ContactNumber);
+      formData.append("alternativePhone", formFiles.alternativeNumber);
       formData.append("FromState", fromStateName);
       formData.append("FromCity", fromCityName);
       formData.append("ToState", toStateName);
       formData.append("ToCity", toCityName);
 
       const response = await axios.post(
-        "/api/driver/load_update.php",
+        "/api/clients/load/update_post_load.php",
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -315,7 +278,7 @@ function LoadListBusi() {
       formData.append("status", statusField);
 
       const response = await axios.post(
-        "/api/driver/load_update.php",
+        "/api/clients/load/update_post_load.php",
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -335,7 +298,7 @@ function LoadListBusi() {
           progress: undefined,
           theme: "colored",
         });
-        setStatusField("Active")
+        setStatusField("Active");
       } else {
         console.error("Failed to update data: ", response.data);
       }
@@ -369,6 +332,7 @@ function LoadListBusi() {
                   <th className="px-4 py-2 border-b">Goods Types</th>
                   <th className="px-4 py-2 border-b">PickUpDate</th>
                   <th className="px-4 py-2 border-b">Phone</th>
+                  <th className="px-4 py-2 border-b">Alternative Number</th>
                   <th className="px-4 py-2 border-b">Status</th>
                   <th className="px-4 py-2 border-b">Action</th>
                 </tr>
@@ -377,33 +341,36 @@ function LoadListBusi() {
                 {vendorAllDetails.map((detail, index) => (
                   <tr key={detail.LoadId} className="bg-white odd:bg-gray-200">
                     <td className="px-4 py-2 border-b">{index + 1}</td>
-                    <td className="px-4 py-2 border-b">{detail?.FromState}</td>
-                    <td className="px-4 py-2 border-b">{detail?.FromCity}</td>
-                    <td className="px-4 py-2 border-b">{detail?.ToState}</td>
-                    <td className="px-4 py-2 border-b">{detail?.ToCity}</td>
+                    <td className="px-4 py-2 border-b">{detail?.fromState}</td>
+                    <td className="px-4 py-2 border-b">{detail?.fromCity}</td>
+                    <td className="px-4 py-2 border-b">{detail?.toState}</td>
+                    <td className="px-4 py-2 border-b">{detail?.toCity}</td>
                     <td className="px-4 py-2 border-b">
-                      {detail?.TypeOfVehicle}
+                      {detail?.vehicleType}
                     </td>
                     <td className="px-4 py-2 border-b">
-                      {detail?.PackageWeight}
+                      {detail?.packageWeight}
                     </td>
                     <td className="px-4 py-2 border-b">
-                      {detail?.NumberOfWheels}
+                      {detail?.numberOfWheels}
                     </td>
                     <td className="px-4 py-2 border-b">
-                      {detail?.VehicleLength}
+                      {detail?.vehicleLength}
                     </td>
-                    <td className="px-4 py-2 border-b">{detail?.GoodsTypes}</td>
+                    <td className="px-4 py-2 border-b">{detail?.goodsType}</td>
                     <td className="px-4 py-2 border-b">
-                      {formatDate(detail?.PickUpDate)}
+                      {formatDate(detail?.pickUPDate)}
                     </td>
                     <td className="px-4 py-2 border-b">
                       <a
-                        href={`tel:${detail?.ContactNumber}`}
+                        href={`tel:${detail?.contactNumber}`}
                         className="text-blue-500 hover:text-blue-800 duration-200 underline"
                       >
-                        {detail?.ContactNumber}
+                        {detail?.contactNumber}
                       </a>
+                    </td>
+                    <td className="px-4 py-2 border-b">
+                      {detail?.alternativePhone}
                     </td>
                     <td className="px-4 py-2 border-b">
                       <span
@@ -424,7 +391,7 @@ function LoadListBusi() {
                         className="px-2 py-1 mx-1 bg-green-500 hover:bg-green-600 duration-300 cursor-pointer rounded-md text-white text-lg font-semibold"
                         onClick={() => handleEdit(detail?.LoadId)}
                       >
-                        Edit
+                        Edit {detail?.LoadId}
                       </span>
                       <span
                         className="px-2 py-1 mx-1 bg-red-500 hover:bg-red-600 duration-300 cursor-pointer rounded-md text-white text-lg font-semibold"
@@ -527,7 +494,6 @@ function LoadListBusi() {
                           // value={vendorAllDetails?.FromState || ''}
                           onChange={handleFromStateChange}
                           placeholder="Select State"
-                          required
                           className="min-w-[180px] lg:w-[70%] w-[95%]"
                         />
                       </div>
@@ -543,7 +509,6 @@ function LoadListBusi() {
                           }))}
                           onChange={handleFromCityChange}
                           placeholder="Select City"
-                          required
                           className="min-w-[180px] lg:w-[70%] w-[95%]"
                           isDisabled={!fromState}
                         />
@@ -571,7 +536,6 @@ function LoadListBusi() {
                           onChange={handleToStateChange}
                           placeholder="Select State"
                           isClearable
-                          required
                           className="min-w-[180px] lg:w-[70%] w-[95%]"
                         />
                       </div>
@@ -586,7 +550,6 @@ function LoadListBusi() {
                           }))}
                           onChange={handleToCityChange}
                           placeholder="Select City"
-                          required
                           isClearable
                           className="min-w-[180px] lg:w-[70%] w-[95%]"
                           isDisabled={!toState}
@@ -605,13 +568,12 @@ function LoadListBusi() {
                         <input
                           className="py-2 px-4 md:w-[60%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
                           type="date"
-                          required
                           name="PickUpDate"
                           onChange={handleFormChange}
                         />
                       </div>
 
-                      <div className="pr-2">
+                      {/* <div className="pr-2">
                         <h3 className="md:text-lg font-semibold text-black uppercase mb-2">
                           PICKUP TIME
                         </h3>
@@ -620,7 +582,7 @@ function LoadListBusi() {
                           className="w-1/3 p-2 border border-gray-300 rounded"
                           value={time.hour}
                           onChange={handleTimeChange}
-                          required
+                          
                         >
                           <option value="" disabled>
                             Hour
@@ -642,7 +604,7 @@ function LoadListBusi() {
                           className="w-1/3 p-2 border border-gray-300 rounded"
                           value={time.minute}
                           onChange={handleTimeChange}
-                          required
+                          
                         >
                           <option value="" disabled>
                             Minute
@@ -664,12 +626,12 @@ function LoadListBusi() {
                           className="w-1/3 p-2 border border-gray-300 rounded"
                           value={time.period}
                           onChange={handleTimeChange}
-                          required
+                          
                         >
                           <option value="AM">AM</option>
                           <option value="PM">PM</option>
                         </select>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>
@@ -686,7 +648,6 @@ function LoadListBusi() {
                           TYPE OF VEHICLE NEEDED
                         </h1>
                         <select
-                          required
                           name="VehicleType"
                           onChange={handleFormChange}
                           className="py-2 px-4 min-w-[180px] lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
@@ -725,11 +686,11 @@ function LoadListBusi() {
                   <div className="grid lg:grid-cols-2 mt-4">
                     <div>
                       <h1 className="md:text-lg font-semibold text-black uppercase mb-2">
-                        NO OF WHEELS REQUIRED
+                        NO OF WHEELS
                       </h1>
                       <input
                         type="number"
-                        defaultValue={1}
+                        // defaultValue={1}
                         min={1}
                         name="NumberOfWheels"
                         onChange={handleFormChange}
@@ -743,7 +704,7 @@ function LoadListBusi() {
                       </h1>
                       <input
                         type="number"
-                        defaultValue={1}
+                        // defaultValue={1}
                         min={1}
                         name="VehicleLength"
                         onChange={handleFormChange}
@@ -780,10 +741,21 @@ function LoadListBusi() {
                     </h1>
                     <input
                       type="tel"
-                      required
                       minLength={10}
                       maxLength={10}
                       name="ContactNumber"
+                      onChange={handleFormChange}
+                      placeholder="Enter your number"
+                      className="py-2 px-4 min-w-[180px] lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
+                    />
+                    <h1 className="md:text-lg mt-4 font-semibold text-black uppercase mb-2">
+                      Alternative Number
+                    </h1>
+                    <input
+                      type="tel"
+                      minLength={10}
+                      maxLength={10}
+                      name="alternativeNumber"
                       onChange={handleFormChange}
                       placeholder="Enter your number"
                       className="py-2 px-4 min-w-[180px] lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
