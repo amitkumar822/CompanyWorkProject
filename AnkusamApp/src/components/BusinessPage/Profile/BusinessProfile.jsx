@@ -236,27 +236,28 @@ function BusinessProfile() {
   useEffect(() => {
     const fetchDetails = async () => {
       const formData = new FormData();
-      formData.append("id", busiLogUser?.vendorId);
+      formData.append("clientId", busiLogUser?.clientsId);
 
       try {
         const response = await axios.post(
-          "/api/driver/get_business_profile_id.php",
+          "/api/clients/auth/get_profile_data_th_clientId.php",
           formData
         );
 
-        console.log("Response: ", response.data[0]);
+        console.log("Response: ", JSON.stringify(response, null, 2));
+        console.log("Response: ", response.data);
 
-        setBusiProfileAllDetails(response.data[0]);
+        setBusiProfileAllDetails(response.data);
         //👉 profile percentage setup
-        if (response.data[0]?.address) {
-          setPercentage(100);
+        if (response.data?.clientsAddress) {
+          setPercentage(95);
         }
         setFiles({
-          name: response.data[0].userName || "",
-          phone: response.data[0].userPhone || "",
-          alternativenumber: response.data[0].alternativePhone || "",
-          email: response.data[0].email || "",
-          address: response.data[0].address || "",
+          name: response.data.clientsName || "",
+          phone: response.data.clientsPhone || "",
+          alternativenumber: response.data.clientsAlternativeNumber || "",
+          email: response.data.clientsEmail || "",
+          address: response.data.clientsAddress || "",
         });
       } catch (error) {
         console.log("Error: ", error);
@@ -264,12 +265,6 @@ function BusinessProfile() {
     };
     fetchDetails();
   }, []);
-
-  // console.log("VendorId: ", busiLogUser?.vendorId);
-
-  // console.log('====================================');
-  // console.log("Length: : ", busiProfileAllDetails.userName);
-  // console.log('====================================');
 
   return (
     <>
@@ -346,7 +341,7 @@ function BusinessProfile() {
                     Name
                     <span
                       className={`${
-                        !busiProfileAllDetails?.userName && "hidden"
+                        !busiProfileAllDetails?.clientsName && "hidden"
                       } text-blue-500`}
                     >
                       <RiVerifiedBadgeFill />
@@ -365,7 +360,7 @@ function BusinessProfile() {
                     Phone Number
                     <span
                       className={`${
-                        !busiProfileAllDetails?.userPhone && "hidden"
+                        !busiProfileAllDetails?.clientsPhone && "hidden"
                       } text-blue-500`}
                     >
                       <RiVerifiedBadgeFill />
@@ -389,7 +384,7 @@ function BusinessProfile() {
                     Email address
                     <span
                       className={`${
-                        !busiProfileAllDetails?.email && "hidden"
+                        !busiProfileAllDetails?.clientsEmail && "hidden"
                       } text-blue-500`}
                     >
                       <RiVerifiedBadgeFill />
@@ -408,7 +403,7 @@ function BusinessProfile() {
                     Alternative Number
                     <span
                       className={`${
-                        !busiProfileAllDetails?.alternativePhone && "hidden"
+                        !busiProfileAllDetails?.clientsAlternativeNumber && "hidden"
                       } text-blue-500`}
                     >
                       <RiVerifiedBadgeFill />
@@ -434,7 +429,7 @@ function BusinessProfile() {
                   Address
                   <span
                     className={`${
-                      !busiProfileAllDetails?.address && "hidden"
+                      !busiProfileAllDetails?.clientsAddress && "hidden"
                     } text-blue-500`}
                   >
                     <RiVerifiedBadgeFill />
@@ -458,7 +453,7 @@ function BusinessProfile() {
                     SELECT STATE
                     <span
                       className={`${
-                        !busiProfileAllDetails?.state && "hidden"
+                        !busiProfileAllDetails?.clientsState && "hidden"
                       } text-blue-500`}
                     >
                       <RiVerifiedBadgeFill />
@@ -477,7 +472,7 @@ function BusinessProfile() {
                     isClearable
                   />
                   <span className=" font-semibold text-blue-600">
-                    {busiProfileAllDetails?.state}
+                    {busiProfileAllDetails?.clientsState}
                   </span>
                 </div>
                 <div className="md:w-[60%] w-[90%] min-w-[200px]">
@@ -485,7 +480,7 @@ function BusinessProfile() {
                     SELECT CITY
                     <span
                       className={`${
-                        !busiProfileAllDetails?.city && "hidden"
+                        !busiProfileAllDetails?.clientsCity && "hidden"
                       } text-blue-500`}
                     >
                       <RiVerifiedBadgeFill />
@@ -503,7 +498,7 @@ function BusinessProfile() {
                   />
 
                   <span className=" font-semibold text-blue-600">
-                    {busiProfileAllDetails?.city}
+                    {busiProfileAllDetails?.clientsCity}
                   </span>
                   {isErrorsMessage && (
                     <p className="text-red-500">{isErrorsMessage.cityName}</p>

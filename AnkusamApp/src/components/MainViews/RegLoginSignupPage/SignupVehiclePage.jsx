@@ -92,21 +92,18 @@ function SignupVehiclePage() {
 
     try {
       // Send POST request to backend
-      const vehical_validation = await fetch(
-        "/api/driver/vehical_validation.php",
-        {
-          method: "POST",
-          body: formData, // Send form data
-        }
-      );
+      const response = await fetch("/api/drivers/auth/signup.php", {
+        method: "POST",
+        body: formData, // Send form data
+      });
 
-      const vehicalFound = await vehical_validation.json();
+      const data = await response.json();
 
-      // console.log("====================================");
-      // console.log("VResponse: ", vehicalFound.vehicalFound);
-      // console.log("====================================");
+      console.log("====================================");
+      console.log("VResponse: ", data);
+      console.log("====================================");
 
-      if (!vehicalFound.vehicalFound) {
+      if (!data.vehicalFound) {
         // Send POST request to backend
         const response = await fetch("/api/driver/signup.php", {
           method: "POST",
@@ -123,12 +120,6 @@ function SignupVehiclePage() {
 
         // Parse JSON response
         const data = await response.json();
-
-        // Log the entire response for debugging
-        // console.log("Full Response:", data);
-        // console.log("====================================");
-        // console.log("Status-> :", data.success);
-        // console.log("====================================");
 
         // Handle the success or failure based on response
         if (data.success) {

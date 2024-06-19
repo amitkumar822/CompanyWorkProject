@@ -29,7 +29,7 @@ function AvailableVehiclesList() {
       }
     };
     fetchData();
-  }, [vehicleAllDetails]);
+  }, [setVehicleAllDetails]);
 
   return (
     <>

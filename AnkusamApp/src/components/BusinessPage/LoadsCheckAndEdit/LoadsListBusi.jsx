@@ -166,14 +166,14 @@ function LoadListBusi() {
   });
 
   const [formFiles, setFormFiles] = useState({
-    PickUpDate: '',
+    PickUpDate: "",
     VehicleType: "Both",
-    PackageWeight: '',
+    PackageWeight: "",
     NumberOfWheels: "",
-    GoodsType: '',
+    GoodsType: "",
     VehicleLength: "",
-    ContactNumber: '',
-    alternativeNumber: '',
+    ContactNumber: "",
+    alternativeNumber: "",
   });
 
   const handleFormChange = (e) => {
@@ -206,6 +206,26 @@ function LoadListBusi() {
 
   const handleEditFormSubmit = async (e) => {
     e.preventDefault();
+
+    if (fromStateName) {
+      if (!fromCityName) {
+        toast.warn("From City is required!")
+        setErrors({ ...errors, fromCityName: "From City is required!" });
+        setFromCityName('')
+        setToCityName("");
+        return;
+      }
+    }
+
+    if (toStateName) {
+      if (!toCityName) {
+        toast.warn("To City is required!")
+        setErrors({ ...errors, toCityName: "To City is required!" });
+        setFromCityName('')
+        setToCityName("");
+        return;
+      }
+    }
 
     try {
       const formData = new FormData();

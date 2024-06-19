@@ -479,15 +479,15 @@ const MenuListBusinessLogin = () => {
             <li className=" font-semibold">
               <span className=" text-[#86e852]">Welcome:</span>{" "}
               {/* <span className="text-[#86e852]"> Name: </span>{" "} */}
-              <span className="text-white">{busiLogUser?.userName}</span>
+              <span className="text-white">{busiLogUser?.clientsName}</span>
               <span className="text-[#86e852]"> Number: </span>{" "}
               <span className="text-white underline">
                 <a
                   href={`tel: ${
-                    busiLogUser?.driver_mobile_number || busiLogUser?.userPhone
+                    busiLogUser?.clientsPhone
                   }`}
                 >
-                  {busiLogUser?.driver_mobile_number || busiLogUser?.userPhone}
+                  {busiLogUser?.clientsPhone}
                 </a>
               </span>
             </li>
@@ -518,7 +518,7 @@ const MenuListBusinessLogin = () => {
             <span>
               Welcome,
               <span className="text-[#7b7b74] uppercase ml-1">
-                {busiLogUser?.userName}
+                {busiLogUser?.clientsName}
               </span>
             </span>
           </div>
@@ -529,7 +529,7 @@ const MenuListBusinessLogin = () => {
           <div className="ml-[28px] text-orange-600 font-semibold">
             Number:{" "}
             <span className="text-[#7b7b74] ml-1">
-              {busiLogUser?.userPhone}
+              {busiLogUser?.clientsPhone}
             </span>
           </div>
           <hr className=" border-dashed border-[1.3px] my-1" />
