@@ -60,8 +60,8 @@ function LoginVehiclePage() {
 
     // Create form data to match what the backend expects
     const formData = new FormData();
-    formData.append("vehical_number", vehical_number.toUpperCase());
-    formData.append("driver_password", driver_password);
+    formData.append("vehicleNumber", vehical_number.toUpperCase());
+    formData.append("password", driver_password);
     // Constructing a FormData object to send in the POST request.
 
     try {
@@ -82,9 +82,9 @@ function LoginVehiclePage() {
 
       // Log the entire response for debugging
 
-      // console.log("====================================");
-      // console.log("Full Response:", data.userData);
-      // console.log("====================================");
+      console.log("====================================");
+      console.log("Full Response:", data);
+      console.log("====================================");
 
       // Handle the success or failure based on response
       if (data.status === true || data.status === "true") {

@@ -6,7 +6,7 @@ import VehiLogUserContext from "../../../context/vehicleLoginUser/VehiLogUserCon
 import Typed from "typed.js"; // Importing Typed.js for typing animation
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"; // status percentage complete animation show
 import "react-circular-progressbar/dist/styles.css"; // styles status percentage complete animation show
-import { Link, useNavigate } from "react-router-dom";
+import { Link, json, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import loadingGfg from "../../../data/GfgLoding/loading.gif";
@@ -61,7 +61,7 @@ function VehiProfile() {
   //=====================👇Start Form Text section👇==============================
 
   const [driverVehiFormText, setDriverVehiFormText] = useState({
-    driver_name: "",
+    name: "",
     aadhar_number: "",
     phone: "",
     htown: "",
@@ -118,7 +118,7 @@ function VehiProfile() {
 
     const formData = new FormData();
     formData.append("driver_id", vehiLogUser?.driver_id);
-    formData.append("driver_name", driverVehiFormText.driver_name);
+    formData.append("driver_name", driverVehiFormText.name);
     formData.append("aadhar_number", driverVehiFormText.aadhar_number);
     formData.append("driver_mobile_number", driverVehiFormText.phone);
     formData.append("htown", driverVehiFormText.htown);
@@ -136,7 +136,10 @@ function VehiProfile() {
       driverVehiFormText.vehicle_make_and_model.toUpperCase()
     );
     formData.append("operator_type", driverVehiFormText.operator_type);
-    formData.append("vehicle_name", driverVehiFormText.vehicle_name.toUpperCase());
+    formData.append(
+      "vehicle_name",
+      driverVehiFormText.vehicle_name.toUpperCase()
+    );
     formData.append("vehicle_length", driverVehiFormText.vehicle_length);
     formData.append(
       "vehicle_capacity_in_tons",
@@ -154,6 +157,7 @@ function VehiProfile() {
           },
         }
       );
+
       if (response.data) {
         setIsLoading(false);
         toast.success("Success submit!", {
@@ -236,7 +240,7 @@ function VehiProfile() {
 
     try {
       const response = await axios.post(
-        "/api/driver/vehical_photo_upload.php",
+        "/api/drivers/profiles/upload_vehicle_photo_upload.php",
         formData,
         {
           headers: {
@@ -327,7 +331,7 @@ function VehiProfile() {
 
     try {
       const response = await axios.post(
-        "/api/driver/vehical_polution_certificate_upload.php",
+        "/api/drivers/profiles/upload_vehicle_polution_certificates.php",
         formData,
         {
           headers: {
@@ -417,7 +421,7 @@ function VehiProfile() {
 
     try {
       const response = await axios.post(
-        "/api/driver/vehical_registration_photo.php",
+        "/api/drivers/profiles/upload_vehicle_registration_certificates.php",
         formData,
         {
           headers: {
@@ -425,6 +429,7 @@ function VehiProfile() {
           },
         }
       );
+
       if (response.data) {
         setIsRegistrationImgUpload(true);
         setIsLoading(false);
@@ -505,7 +510,7 @@ function VehiProfile() {
 
     try {
       const response = await axios.post(
-        "/api/driver/vehical_insurence.php",
+        "/api/drivers/profiles/upload_vehicle_insurance_photo.php",
         formData,
         {
           headers: {
@@ -513,6 +518,11 @@ function VehiProfile() {
           },
         }
       );
+
+      // console.log('====================================');
+      // console.log("Response: " + JSON.stringify(response, null, 2));
+      // console.log('====================================');
+
       if (response.data) {
         setIsInsuranceImgUpload(true);
         setIsLoading(false);
@@ -602,7 +612,7 @@ function VehiProfile() {
 
     try {
       const response = await axios.post(
-        "/api/driver/driver_registration_updates.php",
+        "/api/drivers/profiles/upload_driver_certificates_aadhar.php",
         formData,
         {
           headers: {
@@ -664,7 +674,7 @@ function VehiProfile() {
 
   //=====================👆 End  Adhar Card And Driving license section 👆==============================
 
-  //=============👇Start After Upload Driver and Vehicel all detail available section👇===================
+  //=============👇Start Driver all text details featch section 👇===================
 
   const [driverVehiAllDetails, setDriverVehiAllDetails] = useState("");
 
@@ -675,12 +685,15 @@ function VehiProfile() {
 
       try {
         const response = await axios.post(
-          "/api/driver/webapi/driver_vehicle_all_detail.php",
+          "/api/drivers/profiles/get_driver_profile_text_field.php",
           formData
         );
 
-        setDriverVehiAllDetails(response.data);
-        setDriverVehiFormText(response.data); // text update in state
+        // console.log("Response: ", JSON.stringify(response, null, 2));
+        // console.log("Response2: ", response.data.data);
+
+        setDriverVehiAllDetails(response.data.data);
+        setDriverVehiFormText(response.data.data); // text update in state
       } catch (error) {
         console.log(error);
       }
@@ -688,7 +701,34 @@ function VehiProfile() {
     fetchDriverVehiAllDetails();
   }, []);
 
-  //=============👆End After Upload Driver and Vehicel all detail available section👆===================
+  //=============👆End Driver all text details featch section 👆===================
+
+  //=============👇Start Driver all Upload Photo featch section 👇===================
+
+  const [driverVehiAllPhoto, setDriverVehiAllPhoto] = useState("");
+
+  useEffect(() => {
+    const fetchDriverVehiAllPhoto = async () => {
+      const formData = new FormData();
+      formData.append("driver_id", vehiLogUser?.driver_id);
+
+      try {
+        const response = await axios.post(
+          "/api/drivers/profiles/get_all_photos.php",
+          formData
+        );
+
+        // console.log("Photo Response2: ", response.data.data.adhar_card_back_img);
+
+        setDriverVehiAllPhoto(response.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchDriverVehiAllPhoto();
+  }, []);
+
+  //=============👆End Driver all Upload Photo featch section 👆===================
 
   return (
     <>
@@ -744,7 +784,7 @@ function VehiProfile() {
               <div className="md:flex md:flex-col items-center">
                 <RiMapPinUserFill className="md:text-7xl text-4xl text-[#86f860]" />
                 <span className="uppercase text-[yellow] md:text-2xl font-bold">
-                  {vehiLogUser?.driver_name}
+                  {vehiLogUser?.name}
                 </span>
                 <h1 className="md:text-xl font-bold">{vehiLogUser?.userid}</h1>
               </div>
@@ -778,7 +818,7 @@ function VehiProfile() {
                     Name{" "}
                     <span
                       className={`${
-                        !driverVehiFormText.driver_name && "hidden"
+                        !driverVehiFormText.name && "hidden"
                       } text-blue-500`}
                     >
                       <RiVerifiedBadgeFill />
@@ -787,8 +827,8 @@ function VehiProfile() {
                   <input
                     type="text"
                     placeholder="Enter your name"
-                    name="driver_name"
-                    value={driverVehiFormText?.driver_name || ""}
+                    name="name"
+                    value={driverVehiFormText?.name || ""}
                     onChange={handleDriverVehiFormTextChange}
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
@@ -806,7 +846,7 @@ function VehiProfile() {
                     type="tel"
                     placeholder="Phone number"
                     minLength={10}
-                    maxLength={10}
+                    maxLength={15}
                     name="phone"
                     value={driverVehiFormText?.phone || ""}
                     onChange={handleDriverVehiFormTextChange}
@@ -1103,7 +1143,7 @@ function VehiProfile() {
                         Vehicle Front photo{" "}
                         <span
                           className={`${
-                            !driverVehiAllDetails.vehical_photos_front &&
+                            !driverVehiAllPhoto.vehical_photos_front &&
                             "hidden"
                           } text-blue-500`}
                         >
@@ -1120,10 +1160,10 @@ function VehiProfile() {
                       {/* if upload vehicle front photo show text in browser*/}
                       <span className="w-[250px] overflow-hidden text-green-600">
                         <a
-                          href={`https://ankusamlogistics.com/driver/${driverVehiAllDetails?.vehical_photos_front}`}
+                          href={`https://ankusamlogistics.com/api/drivers/profiles/${driverVehiAllPhoto?.vehical_photos_front}`}
                           target="_blank"
                         >
-                          {driverVehiAllDetails?.vehical_photos_front}
+                          {driverVehiAllPhoto?.vehical_photos_front}
                         </a>
                       </span>
                       <input
@@ -1139,7 +1179,7 @@ function VehiProfile() {
                         Vehicle Back photo{" "}
                         <span
                           className={`${
-                            !driverVehiAllDetails.vehical_photos_back &&
+                            !driverVehiAllPhoto.vehical_photos_back &&
                             "hidden"
                           } text-blue-500`}
                         >
@@ -1156,10 +1196,10 @@ function VehiProfile() {
                       {/* if upload vehicle back photo show text in browser*/}
                       <span className="w-[250px] overflow-hidden text-green-600">
                         <a
-                          href={`https://ankusamlogistics.com/driver/${driverVehiAllDetails?.vehical_photos_back}`}
+                          href={`https://ankusamlogistics.com/api/drivers/profiles/${driverVehiAllPhoto?.vehical_photos_back}`}
                           target="_blank"
                         >
-                          {driverVehiAllDetails?.vehical_photos_back}
+                          {driverVehiAllPhoto?.vehical_photos_back}
                         </a>
                       </span>
                       <input
@@ -1175,7 +1215,7 @@ function VehiProfile() {
                         Vehicle Left Side photo{" "}
                         <span
                           className={`${
-                            !driverVehiAllDetails.vehical_photos_left &&
+                            !driverVehiAllPhoto.vehical_photos_left &&
                             "hidden"
                           } text-blue-500`}
                         >
@@ -1192,10 +1232,10 @@ function VehiProfile() {
                       {/* if upload vehicle left photo show text in browser*/}
                       <span className="w-[250px] overflow-hidden text-green-600">
                         <a
-                          href={`https://ankusamlogistics.com/driver/${driverVehiAllDetails?.vehical_photos_left}`}
+                          href={`https://ankusamlogistics.com/api/drivers/profiles/${driverVehiAllPhoto?.vehical_photos_left}`}
                           target="_blank"
                         >
-                          {driverVehiAllDetails?.vehical_photos_left}
+                          {driverVehiAllPhoto?.vehical_photos_left}
                         </a>
                       </span>
                       <input
@@ -1211,7 +1251,7 @@ function VehiProfile() {
                         Vehicle Right Side photo{" "}
                         <span
                           className={`${
-                            !driverVehiAllDetails.vehical_photos_right &&
+                            !driverVehiAllPhoto.vehical_photos_right &&
                             "hidden"
                           } text-blue-500`}
                         >
@@ -1228,10 +1268,10 @@ function VehiProfile() {
                       {/* if upload vehicle right photo show text in browser*/}
                       <span className="w-[250px] overflow-hidden text-green-600">
                         <a
-                          href={`https://ankusamlogistics.com/driver/${driverVehiAllDetails?.vehical_photos_right}`}
+                          href={`https://ankusamlogistics.com/api/drivers/profiles/${driverVehiAllPhoto?.vehical_photos_right}`}
                           target="_blank"
                         >
-                          {driverVehiAllDetails?.vehical_photos_right}
+                          {driverVehiAllPhoto?.vehical_photos_right}
                         </a>
                       </span>
                       <input
@@ -1261,7 +1301,7 @@ function VehiProfile() {
                         Reg. Front photo{" "}
                         <span
                           className={`${
-                            !driverVehiAllDetails.book_rc_front && "hidden"
+                            !driverVehiAllPhoto.book_rc_front && "hidden"
                           } text-blue-500`}
                         >
                           <RiVerifiedBadgeFill />
@@ -1276,10 +1316,10 @@ function VehiProfile() {
                       </span>
                       <span className="w-[250px] overflow-hidden text-green-600">
                         <a
-                          href={`https://ankusamlogistics.com/driver/${driverVehiAllDetails?.book_rc_front}`}
+                          href={`https://ankusamlogistics.com/api/drivers/profiles/${driverVehiAllPhoto?.book_rc_front}`}
                           target="_blank"
                         >
-                          {driverVehiAllDetails?.vehical_photos_front}
+                          {driverVehiAllPhoto?.vehical_photos_front}
                         </a>
                       </span>
                       <input
@@ -1294,7 +1334,7 @@ function VehiProfile() {
                         Reg. Back photo{" "}
                         <span
                           className={`${
-                            !driverVehiAllDetails.book_rc_back && "hidden"
+                            !driverVehiAllPhoto.book_rc_back && "hidden"
                           } text-blue-500`}
                         >
                           <RiVerifiedBadgeFill />
@@ -1309,10 +1349,10 @@ function VehiProfile() {
                       </span>
                       <span className="w-[250px] overflow-hidden text-green-600">
                         <a
-                          href={`https://ankusamlogistics.com/driver/${driverVehiAllDetails?.book_rc_back}`}
+                          href={`https://ankusamlogistics.com/api/drivers/profiles/${driverVehiAllPhoto?.book_rc_back}`}
                           target="_blank"
                         >
-                          {driverVehiAllDetails?.vehical_photos_back}
+                          {driverVehiAllPhoto?.vehical_photos_back}
                         </a>
                       </span>
                       <input
@@ -1341,7 +1381,7 @@ function VehiProfile() {
                         Vehicle Insurance photo{" "}
                         <span
                           className={`${
-                            !driverVehiAllDetails.insurance && "hidden"
+                            !driverVehiAllPhoto.insurance && "hidden"
                           } text-blue-500`}
                         >
                           <RiVerifiedBadgeFill />
@@ -1357,10 +1397,10 @@ function VehiProfile() {
                       {/* if upload insurance show text in browser */}
                       <span className="w-[250px] overflow-hidden text-green-600">
                         <a
-                          href={`https://ankusamlogistics.com/driver/${driverVehiAllDetails?.insurance}`}
+                          href={`https://ankusamlogistics.com/api/drivers/profiles/${driverVehiAllPhoto?.insurance}`}
                           target="_blank"
                         >
-                          {driverVehiAllDetails?.insurance}
+                          {driverVehiAllPhoto?.insurance}
                         </a>
                       </span>
                       <input
@@ -1385,7 +1425,7 @@ function VehiProfile() {
                 {/* Adhar card and License section */}
                 <form
                   onSubmit={handleAdharLicenseSubmit}
-                  className="md:-mt-20"
+                  className="md:mt-0 mt-6"
                 >
                   <div>
                     <h1 className="md:text-[25px] text-[20px] pt-2 font-semibold text-yellow-600">
@@ -1397,7 +1437,7 @@ function VehiProfile() {
                         Aadhar Front photo{" "}
                         <span
                           className={`${
-                            !driverVehiAllDetails.adhar_card_img && "hidden"
+                            !driverVehiAllPhoto.adhar_card_img && "hidden"
                           } text-blue-500`}
                         >
                           <RiVerifiedBadgeFill />
@@ -1413,10 +1453,10 @@ function VehiProfile() {
                       {/* if upload Adhar front photo show text in browser */}
                       <span className="w-[250px] overflow-hidden text-green-600">
                         <a
-                          href={`https://ankusamlogistics.com/driver/${driverVehiAllDetails?.adhar_card_img}`}
+                          href={`https://ankusamlogistics.com/api/drivers/profiles/${driverVehiAllPhoto?.adhar_card_img}`}
                           target="_blank"
                         >
-                          {driverVehiAllDetails?.adhar_card_img}
+                          {driverVehiAllPhoto?.adhar_card_img}
                         </a>
                       </span>
                       <input
@@ -1432,7 +1472,7 @@ function VehiProfile() {
                         Aadhar Back photo{" "}
                         <span
                           className={`${
-                            !driverVehiAllDetails.adhar_card_back_img &&
+                            !driverVehiAllPhoto.adhar_card_back_img &&
                             "hidden"
                           } text-blue-500`}
                         >
@@ -1449,10 +1489,10 @@ function VehiProfile() {
                       {/* if upload Adhar back photo show text in browser */}
                       <span className="w-[250px] overflow-hidden text-green-600">
                         <a
-                          href={`https://ankusamlogistics.com/driver/${driverVehiAllDetails?.adhar_card_back_img}`}
+                          href={`https://ankusamlogistics.com/api/drivers/profiles/${driverVehiAllPhoto?.adhar_card_back_img}`}
                           target="_blank"
                         >
-                          {driverVehiAllDetails?.adhar_card_back_img}
+                          {driverVehiAllPhoto?.adhar_card_back_img}
                         </a>
                       </span>
                       <input
@@ -1474,7 +1514,7 @@ function VehiProfile() {
                         license Front photo{" "}
                         <span
                           className={`${
-                            !driverVehiAllDetails.driving_lic_front_img &&
+                            !driverVehiAllPhoto.driving_lic_front_img &&
                             "hidden"
                           } text-blue-500`}
                         >
@@ -1491,10 +1531,10 @@ function VehiProfile() {
                       {/* if upload driver license front photo show text in browser */}
                       <span className="w-[250px] overflow-hidden text-green-600">
                         <a
-                          href={`https://ankusamlogistics.com/driver/${driverVehiAllDetails?.driving_lic_front_img}`}
+                          href={`https://ankusamlogistics.com/api/drivers/profiles/${driverVehiAllPhoto?.driving_lic_front_img}`}
                           target="_blank"
                         >
-                          {driverVehiAllDetails?.driving_lic_front_img}
+                          {driverVehiAllPhoto?.driving_lic_front_img}
                         </a>
                       </span>
                       <input
@@ -1509,7 +1549,7 @@ function VehiProfile() {
                         license Back photo{" "}
                         <span
                           className={`${
-                            !driverVehiAllDetails.driving_lic_back_img &&
+                            !driverVehiAllPhoto.driving_lic_back_img &&
                             "hidden"
                           } text-blue-500`}
                         >
@@ -1526,10 +1566,10 @@ function VehiProfile() {
                       {/* if upload driver license back photo show text in browser */}
                       <span className="w-[250px] overflow-hidden text-green-600">
                         <a
-                          href={`https://ankusamlogistics.com/driver/${driverVehiAllDetails?.driving_lic_back_img}`}
+                          href={`https://ankusamlogistics.com/api/drivers/profiles/${driverVehiAllPhoto?.driving_lic_back_img}`}
                           target="_blank"
                         >
-                          {driverVehiAllDetails?.driving_lic_back_img}
+                          {driverVehiAllPhoto?.driving_lic_back_img}
                         </a>
                       </span>
                       <input
@@ -1560,7 +1600,7 @@ function VehiProfile() {
                       <span className="text-[green]">Optional</span>){" "}
                       <span
                         className={`${
-                          !driverVehiAllDetails.driving_lic_back_img && "hidden"
+                          !driverVehiAllPhoto.pollution_certification && "hidden"
                         } text-blue-500`}
                       >
                         <RiVerifiedBadgeFill />
@@ -1576,10 +1616,10 @@ function VehiProfile() {
                     {/* if upload vehicle pollution photo show text in browser */}
                     <span className="w-[250px] overflow-hidden text-green-600">
                       <a
-                        href={`https://ankusamlogistics.com/driver/${driverVehiAllDetails?.pollution_certification}`}
+                        href={`https://ankusamlogistics.com/api/drivers/profiles/${driverVehiAllPhoto?.pollution_certification}`}
                         target="_blank"
                       >
-                        {driverVehiAllDetails?.pollution_certification}
+                        {driverVehiAllPhoto?.pollution_certification}
                       </a>
                     </span>
                     <input
@@ -1607,7 +1647,7 @@ function VehiProfile() {
               <CgProfile className="text-[green] text-2xl" />
               Profiles status
             </h1>
-            <div className="md:w-48 md:h-48 w-40 h-40 mx-auto mt-4">
+            {/* <div className="md:w-48 md:h-48 w-40 h-40 mx-auto mt-4">
               <CircularProgressbar
                 value={percentage}
                 text={`${percentage}%`}
@@ -1620,7 +1660,7 @@ function VehiProfile() {
               <h1 className="text-lg text-center font-semibold mt-2 text-[#4961e9]">
                 Profile completion
               </h1>
-            </div>
+            </div> */}
 
             {/* Profile Text part */}
             <div className="w-full md:mt-20 mt-14 lg:block hidden">

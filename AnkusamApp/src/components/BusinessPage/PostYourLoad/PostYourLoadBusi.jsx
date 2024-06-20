@@ -581,7 +581,7 @@ function PostYourLoadBusi() {
                   type="tel"
                   required
                   minLength={10}
-                  maxLength={10}
+                  maxLength={15}
                   name="ContactNumber"
                   onChange={handleFormChange}
                   placeholder="Enter your number"
@@ -594,7 +594,7 @@ function PostYourLoadBusi() {
                 <input
                   type="tel"
                   minLength={10}
-                  maxLength={10}
+                  maxLength={15}
                   name="AlternativeNumber"
                   onChange={handleFormChange}
                   placeholder="Enter your number"

@@ -89,11 +89,15 @@ function AvailableLoad() {
       try {
         const response = await axios.get(
           // "/api/driver/webapi/filtter_by_city.php"
-          "/api/driver/webapi/get_load_data.php"
+          "/api/load/get_load.php"
         );
-        setCurrentData(response.data);
-        if (Array.isArray(response.data)) {
-          setFilteredData(response.data);
+
+        // console.log("Response All1: ", JSON.stringify(response, null, 2));
+
+        if (Array.isArray(response.data.load)) {
+          // console.log("Response All2: ", response.data.load);
+          setCurrentData(response.data.load);
+          setFilteredData(response.data.load);
           // console.error("filteredData is not an array:", filteredData);
           return null; // Or handle the error appropriately
         }
@@ -113,22 +117,34 @@ function AvailableLoad() {
     }
 
     const filteredData = currentData.filter((item) => {
-      const matchState = state === "" || item.FromState === stateName;
-      const matchCity = city === "" || item.FromCity === cityName;
-      const matchWeight = weight === "" || item.PackageWeight === weight;
+      const matchState = state === "" || item.fromState === stateName;
+      const matchCity = city === "" || item.fromCity === cityName;
+      const matchWeight = weight === "" || item.packageWeight === weight;
 
       const matchSearch =
         searchInput === "" ||
-        item.FromState.toString()
+        item.fromState
+          .toString()
           .toLowerCase()
           .includes(searchInput.toString().trim().toLowerCase()) ||
-        item.FromCity.toString()
+        item.fromCity
+          .toString()
           .toLowerCase()
           .includes(searchInput.toString().trim().toLowerCase()) ||
-        item.PackageWeight.toString()
+        item.packageWeight
+          .toString()
           .toLowerCase()
           .includes(searchInput.toString().trim().toLowerCase()) ||
-        item.ContactNumber.toString()
+        item.contactNumber
+          .toString()
+          .toLowerCase()
+          .includes(searchInput.toString().trim().toLowerCase()) ||
+        item.toCity
+          .toString()
+          .toLowerCase()
+          .includes(searchInput.toString().trim().toLowerCase()) ||
+        item.toState
+          .toString()
           .toLowerCase()
           .includes(searchInput.toString().trim().toLowerCase());
 
@@ -140,6 +156,8 @@ function AvailableLoad() {
   useEffect(() => {
     filterData();
   }, [state, city, weight, searchInput, currentData]);
+
+  console.log("filteredData: ", filteredData);
 
   return (
     <>
@@ -242,20 +260,27 @@ function AvailableLoad() {
                 <thead className="bg-white border-b border-gray-300 sticky top-0 z-[1]">
                   <tr className="whitespace-nowrap text-[14px] md:text-[16px]">
                     <th className="px-4 py-2 border-b">SI Nb</th>
-                    <th className={`px-4 py-2 border-b ${(!stateName && !searchInput.trim())  && 'hidden'}`}>From State</th>
+                    <th
+                      className={`px-4 py-2 border-b ${
+                        !stateName && !searchInput.trim() && "hidden"
+                      }`}
+                    >
+                      From State
+                    </th>
                     <th className="px-4 py-2 border-b">From City</th>
-                    <th className={`px-4 py-2 border-b ${(!stateName && !searchInput.trim())  && 'hidden'}`}>To State</th>
+                    <th
+                      className={`px-4 py-2 border-b ${
+                        !stateName && !searchInput.trim() && "hidden"
+                      }`}
+                    >
+                      To State
+                    </th>
                     <th className="px-4 py-2 border-b">To City</th>
                     <th className="px-4 py-2 border-b">Pickup Time</th>
                     <th className="px-4 py-2 border-b">Vehicle Type</th>
                     <th className="px-4 py-2 border-b">Weight</th>
                     <th
-                      className={`px-4 py-2 border-b ${
-                        localStorage.getItem("TokeLoginVehiPage") ||
-                        localStorage.getItem("TokenLoginBusinpage")
-                          ? ""
-                          : "hidden"
-                      }`}
+                      className={`px-4 py-2 border-b`}
                     >
                       Contact Number
                     </th>
@@ -270,35 +295,36 @@ function AvailableLoad() {
                       } whitespace-nowrap`}
                     >
                       <td className="px-4 py-2 border-b">{index + 1}</td>
-                      <td className={`px-4 py-2 border-b ${(!stateName && !searchInput.trim()) && 'hidden'}`}>
-                        {item.FromState}
-                      </td>
-                      <td className="px-4 py-2 border-b">{item.FromCity}</td>
-                      <td className={`px-4 py-2 border-b ${(!stateName && !searchInput.trim())  && 'hidden'}`}>{item.ToState}</td>
-                      <td className="px-4 py-2 border-b">{item.ToCity}</td>
-                      <td className="px-4 py-2 border-b">
-                        {formatDate(item.PickUpDate)}{" "}
-                        {/* Format date for display */}
-                      </td>
-                      <td className="px-4 py-2 border-b">
-                        {item.TypeOfVehicle}
-                      </td>
-                      <td className="px-4 py-2 border-b">
-                        {item.PackageWeight}
-                      </td>
                       <td
                         className={`px-4 py-2 border-b ${
-                          localStorage.getItem("TokeLoginVehiPage") ||
-                          localStorage.getItem("TokenLoginBusinpage")
-                            ? ""
-                            : "hidden"
+                          !stateName && !searchInput.trim() && "hidden"
                         }`}
                       >
+                        {item.fromState}
+                      </td>
+                      <td className="px-4 py-2 border-b">{item.fromCity}</td>
+                      <td
+                        className={`px-4 py-2 border-b ${
+                          !stateName && !searchInput.trim() && "hidden"
+                        }`}
+                      >
+                        {item.toState}
+                      </td>
+                      <td className="px-4 py-2 border-b">{item.toCity}</td>
+                      <td className="px-4 py-2 border-b">
+                        {formatDate(item.pickUPDate)}{" "}
+                        {/* Format date for display */}
+                      </td>
+                      <td className="px-4 py-2 border-b">{item.vehicleType}</td>
+                      <td className="px-4 py-2 border-b">
+                        {item.packageWeight}
+                      </td>
+                      <td className={`px-4 py-2 border-b `}>
                         <a
-                          href={`tel:${item.ContactNumber}`}
+                          href={`tel:${item.contactNumber}`}
                           className="text-blue-500 hover:text-blue-800 duration-200 underline"
                         >
-                          {item.ContactNumber}
+                          {item.contactNumber}
                         </a>
                       </td>
                     </tr>

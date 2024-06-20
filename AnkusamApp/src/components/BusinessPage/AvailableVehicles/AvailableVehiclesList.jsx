@@ -18,11 +18,12 @@ function AvailableVehiclesList() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "/api/driver/webapi/get_vehicle_availity_for_driver_detail.php"
+          "/api/load/get_upload_vehicle_available_by_driver.php"
         );
-        // console.log("Response: " + JSON.stringify(response.data, null, 2));
-        if(Array.isArray(response.data)){
-          setVehicleAllDetails(response.data);
+        console.log("Responses: " + JSON.stringify(response.data, null, 2));
+        if(Array.isArray(response.data.driverload)){
+          console.log("Response2: " + response.data.driverload);
+          setVehicleAllDetails(response.data.driverload);
         }
       } catch (error) {
         console.log("Eroor: ", error);
@@ -30,6 +31,7 @@ function AvailableVehiclesList() {
     };
     fetchData();
   }, [setVehicleAllDetails]);
+
 
   return (
     <>
@@ -63,18 +65,18 @@ function AvailableVehiclesList() {
                   <tr key={index} className="bg-white odd:bg-gray-200">
                     <td className="px-4 py-2 border-b">{index + 1}</td>
                     <td className="px-4 py-2 border-b">{details?.driver_id}</td>
-                    <td className="px-4 py-2 border-b">{details?.FromState}</td>
-                    <td className="px-4 py-2 border-b">{details?.FromCity}</td>
-                    <td className="px-4 py-2 border-b">{details?.ToState}</td>
-                    <td className="px-4 py-2 border-b">{details?.ToCity}</td>
+                    <td className="px-4 py-2 border-b">{details?.fromState}</td>
+                    <td className="px-4 py-2 border-b">{details?.fromCity}</td>
+                    <td className="px-4 py-2 border-b">{details?.toState}</td>
+                    <td className="px-4 py-2 border-b">{details?.toCity}</td>
                     <td className="px-4 py-2 border-b">
-                      {details?.TypeOfVehicle}
+                      {details?.vship} 
                     </td>
                     <td className="px-4 py-2 border-b">
-                      {details?.VehicleLength}
+                      {details?.vehicle_length}
                     </td>
                     <td className="px-4 py-2 border-b">
-                      {details?.VehicleCapacity}
+                      {details?.vehicle_capacity_in_tons}
                     </td>
                     <td className="px-4 py-2 border-b">
                       <a

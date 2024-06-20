@@ -267,6 +267,7 @@ function LoadListBusi() {
           progress: undefined,
           theme: "colored",
         });
+        window.location.reload();
       } else {
         console.error("Failed to update data: ", response.data);
       }
@@ -319,6 +320,7 @@ function LoadListBusi() {
           theme: "colored",
         });
         setStatusField("Active");
+        window.location.reload();
       } else {
         console.error("Failed to update data: ", response.data);
       }
@@ -411,7 +413,7 @@ function LoadListBusi() {
                         className="px-2 py-1 mx-1 bg-green-500 hover:bg-green-600 duration-300 cursor-pointer rounded-md text-white text-lg font-semibold"
                         onClick={() => handleEdit(detail?.LoadId)}
                       >
-                        Edit {detail?.LoadId}
+                        Edit
                       </span>
                       <span
                         className="px-2 py-1 mx-1 bg-red-500 hover:bg-red-600 duration-300 cursor-pointer rounded-md text-white text-lg font-semibold"

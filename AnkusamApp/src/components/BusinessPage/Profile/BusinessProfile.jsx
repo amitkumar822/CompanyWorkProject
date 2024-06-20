@@ -373,7 +373,7 @@ function BusinessProfile() {
                     onChange={handleFileChange}
                     placeholder="Phone number"
                     minLength={10}
-                    maxLength={10}
+                    maxLength={15}
                     required
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
@@ -415,7 +415,7 @@ function BusinessProfile() {
                     value={files?.alternativenumber || ""}
                     onChange={handleFileChange}
                     minLength={10}
-                    maxLength={10}
+                    maxLength={15}
                     placeholder="Enter Your Alternative Number"
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />

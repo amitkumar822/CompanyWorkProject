@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 const MobileNumberPopup = () => {
@@ -16,9 +17,24 @@ const MobileNumberPopup = () => {
     setShowPopup(false);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Mobile Number Submitted:", mobileNumber);
+
+    const formData = new FormData();
+    formData.append("phone", mobileNumber);
+
+    try {
+      const response = await axios.post("/api/phone/phone.php", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      console.log("response: " + JSON.stringify(response, null, 2));
+      
+    } catch (error) {
+      console.log(error);
+    }
     setShowPopup(false);
   };
 
@@ -32,6 +48,8 @@ const MobileNumberPopup = () => {
               type="tel"
               className="w-full p-2 mb-4 border border-gray-300 rounded"
               placeholder="Mobile Number"
+              minLength={10}
+              maxLength={15}
               value={mobileNumber}
               onChange={(e) => setMobileNumber(e.target.value)}
               required

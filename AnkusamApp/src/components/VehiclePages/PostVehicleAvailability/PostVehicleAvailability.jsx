@@ -107,7 +107,7 @@ function PostVehicleAvailability() {
   }));
 
   // ==============👇 Form submit control Section 👇=================
-  
+
   //👉Reset form Or form fields submit after clear all fields
   const formResetUseingRef = useRef();
   const fromStateInputRef = useRef();
@@ -179,7 +179,7 @@ function PostVehicleAvailability() {
     formData.append("phone", vehiLogUser?.phone);
     formData.append("typeOfVehicle", files.typeOfVehicle);
     formData.append("vehicle_capacity_in_tons", files.vehicle_capacity_in_tons);
-    formData.append("vehicleLength", (files.vehicleLength + " Feets"));
+    formData.append("vehicleLength", files.vehicleLength + " Feets");
     formData.append("fromstate", fromStateName);
     formData.append("fromcity", fromCityName);
     formData.append("tostate", toStateName);
@@ -187,7 +187,7 @@ function PostVehicleAvailability() {
 
     try {
       const response = await axios.post(
-        "/api/driver/webapi/post_vehicle_availity_for_driver.php",
+        "/api/load/upload_vehicle_available_by_driver.php",
         formData,
         {
           headers: {
@@ -195,7 +195,8 @@ function PostVehicleAvailability() {
           },
         }
       );
-      if (response.data) {
+
+      if (response.data.success) {
         setIsLoading(false);
         toast.success("Successfully post!", {
           position: "top-center",
@@ -214,7 +215,6 @@ function PostVehicleAvailability() {
         fromCityInputRef.current.clearValue();
         toStateInputRef.current.clearValue();
         toCityInputRef.current.clearValue();
-
       } else {
         setIsLoading(false);
         toast.error("Failed to post vehicle!", {
@@ -243,10 +243,6 @@ function PostVehicleAvailability() {
     }
   };
 
-  // console.log('====================================');
-  // console.log("Vehicle number: ", vehiLogUser.phone);
-  // console.log('====================================');
-
   return (
     <div className="mt-16 relative">
       {/* Loading image section */}
@@ -261,7 +257,7 @@ function PostVehicleAvailability() {
       </div>
 
       {/* Shipping Post form */}
-      <div className="md:mt-36 mt-24 py-6 pt-10 px-6 border md:w-[80%] w-[95%] mx-auto bg-[#f4f4f4] rounded-lg shadow-md shadow-gray-700">
+      <div className="md:mt-24 mt-24 py-6 pt-10 px-6 border md:w-[80%] w-[95%] mx-auto bg-[#f4f4f4] rounded-lg shadow-md shadow-gray-700">
         <form onSubmit={handleSubmit} ref={formResetUseingRef}>
           {/* Current Location or from state part */}
           <div className="w-full mx-auto grid lg:grid-cols-2">
