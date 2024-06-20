@@ -112,7 +112,7 @@ function AvailableLoad() {
   // Filter state and city and weight wise
   const filterData = () => {
     if (!Array.isArray(currentData)) {
-      console.error("currentData is not an array:", currentData);
+      // console.error("currentData is not an array:", currentData);
       return null; // Or handle the error appropriately
     }
 
@@ -156,8 +156,6 @@ function AvailableLoad() {
   useEffect(() => {
     filterData();
   }, [state, city, weight, searchInput, currentData]);
-
-  console.log("filteredData: ", filteredData);
 
   return (
     <>

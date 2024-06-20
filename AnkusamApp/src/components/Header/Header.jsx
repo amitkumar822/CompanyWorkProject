@@ -5,10 +5,15 @@ import { FcGlobe } from "react-icons/fc"; // Import globe icon
 import { Link, NavLink } from "react-router-dom"; // Import Link component for navigation
 import { MdAppRegistration, MdOutlineEventAvailable } from "react-icons/md";
 import { TbTruckLoading } from "react-icons/tb";
-import { AiFillSound, AiOutlineCluster } from "react-icons/ai";
+import {
+  AiFillFastForward,
+  AiFillFire,
+  AiFillSound,
+  AiOutlineCluster,
+} from "react-icons/ai";
 import { FaTruckMoving } from "react-icons/fa";
 import { RiContactsBook3Line } from "react-icons/ri";
-import { FaTruckFast } from "react-icons/fa6";
+import { FaScrewdriverWrench, FaTruckFast } from "react-icons/fa6";
 import { LuUserCircle2 } from "react-icons/lu";
 import logo from "../../data/Photo/Logo/AnkusamLogo.png";
 import LogOut from "../MainViews/RegLoginSignupPage/LogOut";
@@ -362,27 +367,29 @@ const MenuListVehicleLogin = () => {
         </div>
         <div className="flex items-center text-xl font-bold mt-5">
           <FcGlobe className="text-[35px] mr-2" />
-          <h1>EXPLORE Menu</h1>
+          <h1>EXPLORE MENU</h1>
         </div>
         <div className="mt-2 px-4 text-lg ">
+          <span className="w-full flex justify-center font-semibold text-2xl text-purple-500 -mt-1">Welcome</span>
           <div className="flex items-center gap-1 text-orange-600 font-semibold flex-wrap">
             <AiFillSound className="text-[green] mr-1" />
-            <span>
-              Welcome,
               <span className="text-[#7b7b74] uppercase ml-1">
                 {vehiLogUser?.name}
               </span>
-            </span>
           </div>
-          <div className="ml-[28px] text-orange-600 font-semibold">
-            DriverId:{" "}
-            <span className="text-[#7b7b74] ml-1">{vehiLogUser?.driver_id}</span>
+          <div className="flex items-center gap-1 text-orange-600 font-semibold flex-wrap">
+            <FaScrewdriverWrench className="text-[green] mr-1" />
+            
+              <span className="text-[#7b7b74] uppercase ml-1">
+              D202400{vehiLogUser?.driver_id}
+              </span>
           </div>
-          <div className="ml-[28px] text-orange-600 font-semibold">
-            Veh_Number:{" "}
-            <span className="text-[#7b7b74] ml-1">
-              {vehiLogUser?.vehicle_register_number}
-            </span>
+          <div className="flex items-center gap-1 text-orange-600 font-semibold flex-wrap">
+            <AiFillFire className="text-[green] mr-1" />
+            
+              <span className="text-[#7b7b74] uppercase ml-1">
+              {vehiLogUser?.vehicle_number}
+              </span>
           </div>
           <hr className=" border-dashed border-[1.3px] my-1" />
           <div className="flex items-center gap-2 font-semibold hover:text-[#6b6a6a] duration-200">
@@ -482,11 +489,7 @@ const MenuListBusinessLogin = () => {
               <span className="text-white">{busiLogUser?.clientsName}</span>
               <span className="text-[#86e852]"> Number: </span>{" "}
               <span className="text-white underline">
-                <a
-                  href={`tel: ${
-                    busiLogUser?.clientsPhone
-                  }`}
-                >
+                <a href={`tel: ${busiLogUser?.clientsPhone}`}>
                   {busiLogUser?.clientsPhone}
                 </a>
               </span>
