@@ -103,17 +103,33 @@ function PostYourLoadBusi() {
     fromCityName: "",
     toCityName: "",
     PackageWeight: "",
+    PickUpDate: "",
+    ContactNumber: "",
+    AlternativeNumber: "",
   });
 
+  //👉 Auto Current Data Pick Up
+  const getCurrentDate = () => {
+    const date = new Date();
+    let month = (date.getMonth() + 1).toString();
+    let day = date.getDate().toString();
+    const year = date.getFullYear();
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    return `${year}-${month}-${day}`;
+  };
+
   const [formFiles, setFormFiles] = useState({
-    PickUpDate: '',
+    // PickUpDate: getCurrentDate(),
+    PickUpDate: "",
     VehicleType: "Both",
-    PackageWeight: '',
+    PackageWeight: "",
     NumberOfWheels: 1,
-    GoodsType: '',
+    GoodsType: "",
     VehicleLength: 1,
-    ContactNumber: '',
-    AlternativeNumber: '',
+    ContactNumber: "",
   });
 
   const handleFormChange = (e) => {
@@ -123,6 +139,8 @@ function PostYourLoadBusi() {
       [name]: value,
     }));
   };
+
+  console.log("PickUpDate: " + formFiles.PickUpDate);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -186,6 +204,42 @@ function PostYourLoadBusi() {
       return;
     }
 
+    if (!formFiles.ContactNumber) {
+      toast.warn("Contact Number must be required!");
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        ContactNumber: "Please Enter ContactNumber",
+      }));
+      return;
+    } else {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        ContactNumber: "",
+        toCityName: "",
+        fromCityName: "",
+      }));
+    }
+
+    if (!formFiles.AlternativeNumber) {
+      toast.warn("Alternative Number is not field!");
+    }
+
+    if (!formFiles.PickUpDate) {
+      toast.warn("PickUpDate must be required!");
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        PickUpDate: "Please Enter PickUpData",
+      }));
+      return;
+    } else {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        PickUpDate: "",
+        toCityName: "",
+        fromCityName: "",
+      }));
+    }
+
     setIsLoading(true);
 
     const formData = new FormData();
@@ -245,9 +299,26 @@ function PostYourLoadBusi() {
           period: "AM",
         });
 
+        setFormFiles({
+          PickUpDate: "",
+          VehicleType: "Both",
+          PackageWeight: "",
+          NumberOfWheels: 1,
+          GoodsType: "",
+          VehicleLength: 1,
+          ContactNumber: "",
+          AlternativeNumber: "",
+        });
+
         // Clear the select elements
         hoursInputRef.current.value = "";
         minutesInputRef.current.value = "";
+
+        // Page refreace
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       } else {
         toast.error("Faild to post!", {
           position: "top-center",
@@ -407,6 +478,9 @@ function PostYourLoadBusi() {
                       name="PickUpDate"
                       onChange={handleFormChange}
                     />
+                    {errors.PickUpDate && (
+                      <p className="text-red-500">{errors.PickUpDate}</p>
+                    )}
                   </div>
                   {/* pickup time */}
                   <div className="pr-2">
@@ -565,7 +639,7 @@ function PostYourLoadBusi() {
                   onChange={handleFormChange}
                   className="py-2 px-4 min-w-[180px] lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
                 >
-                  <option value=''>Select one...</option>
+                  <option value="">Select one...</option>
                   <option value="Personal Goods">Personal Goods</option>
                   <option value="Machine">Machine</option>
                   <option value="Industrial Equpiment">
@@ -587,6 +661,9 @@ function PostYourLoadBusi() {
                   placeholder="Enter your number"
                   className="py-2 px-4 min-w-[180px] lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
                 />
+                {errors.ContactNumber && (
+                  <p className="text-red-500">{errors.ContactNumber}</p>
+                )}
                 {/* Alternative contact number */}
                 <h1 className="md:text-lg mt-4 font-semibold text-black uppercase mb-2">
                   Alternative Number (Optional)

@@ -60,8 +60,8 @@ function LoginVehiclePage() {
 
     // Create form data to match what the backend expects
     const formData = new FormData();
-    formData.append("vehicleNumber", vehical_number.toUpperCase());
-    formData.append("password", driver_password);
+    formData.append("vehicleNumber", vehical_number.toUpperCase().trim());
+    formData.append("password", driver_password.toString().trim());
     // Constructing a FormData object to send in the POST request.
 
     try {

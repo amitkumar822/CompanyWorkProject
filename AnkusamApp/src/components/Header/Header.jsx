@@ -13,7 +13,7 @@ import {
 } from "react-icons/ai";
 import { FaTruckMoving } from "react-icons/fa";
 import { RiContactsBook3Line } from "react-icons/ri";
-import { FaScrewdriverWrench, FaTruckFast } from "react-icons/fa6";
+import { FaMobileRetro, FaScrewdriverWrench, FaTruckFast } from "react-icons/fa6";
 import { LuUserCircle2 } from "react-icons/lu";
 import logo from "../../data/Photo/Logo/AnkusamLogo.png";
 import LogOut from "../MainViews/RegLoginSignupPage/LogOut";
@@ -519,20 +519,19 @@ const MenuListBusinessLogin = () => {
           <div className="flex items-center gap-1 text-orange-600 font-semibold flex-wrap">
             <AiFillSound className="text-[green] mr-1" />
             <span>
-              Welcome,
+              Welcome:
               <span className="text-[#7b7b74] uppercase ml-1">
                 {busiLogUser?.clientsName}
               </span>
             </span>
           </div>
-          {/* <div className="ml-[28px] text-orange-600 font-semibold">
-            userId:{" "}
-            <span className="text-[#7b7b74] ml-1">{busiLogUser?.userid}</span>
-          </div> */}
-          <div className="ml-[28px] text-orange-600 font-semibold">
-            Number:{" "}
-            <span className="text-[#7b7b74] ml-1">
+          <div className="flex items-center gap-1 text-orange-600 font-semibold flex-wrap">
+            <FaMobileRetro className="text-[green] mr-1" />
+            <span>
+            Number:
+              <span className="text-[#7b7b74] uppercase ml-1">
               {busiLogUser?.clientsPhone}
+              </span>
             </span>
           </div>
           <hr className=" border-dashed border-[1.3px] my-1" />

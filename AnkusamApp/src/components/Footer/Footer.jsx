@@ -39,7 +39,9 @@ function Footer() {
               <li className="text-lg pt-2 cursor-pointer hover:text-orange-700 font-semibold text-orange-900">
                 <NavLink
                   to="/about"
-                  className={({ isActive }) => isActive ? "text-[#3c61ab]" : undefined}
+                  className={({ isActive }) =>
+                    isActive ? "text-[#3c61ab]" : undefined
+                  }
                 >
                   About
                 </NavLink>
@@ -47,7 +49,9 @@ function Footer() {
               <li className="text-lg pt-2 cursor-pointer hover:text-orange-700 font-semibold text-orange-900">
                 <NavLink
                   to="/businesssignup"
-                  className={({ isActive }) => isActive ? "text-[#3c61ab]" : undefined}
+                  className={({ isActive }) =>
+                    isActive ? "text-[#3c61ab]" : undefined
+                  }
                 >
                   Business People
                 </NavLink>
@@ -55,7 +59,9 @@ function Footer() {
               <li className="text-lg pt-2 cursor-pointer hover:text-orange-700 font-semibold text-orange-900">
                 <NavLink
                   to="/contactus"
-                  className={({ isActive }) => isActive ? "text-[#3c61ab]" : undefined}
+                  className={({ isActive }) =>
+                    isActive ? "text-[#3c61ab]" : undefined
+                  }
                 >
                   Contact Us
                 </NavLink>
@@ -92,6 +98,7 @@ function Footer() {
         >
           © Designed and maintained by Ankusam Engineering Services
         </h1>
+        
         <a
           href="https://www.freevisitorcounters.com/en/home/stats/id/1162081"
           target="_blank"

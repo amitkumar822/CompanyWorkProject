@@ -87,8 +87,8 @@ function SignupVehiclePage() {
 
     const formData = new FormData(); // Create FormData object
     formData.append("phoneNumber", phoneNumber); // Append phone number to form data
-    formData.append("vehicalNumber", vehicalNumber.toUpperCase()); // Append vehicle number to form data
-    formData.append("password", password); // Append password to form data
+    formData.append("vehicalNumber", vehicalNumber.toUpperCase().trim()); // Append vehicle number to form data
+    formData.append("password", password.toString().trim()); // Append password to form data
 
     try {
       // Send POST request to backend

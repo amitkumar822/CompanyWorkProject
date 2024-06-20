@@ -46,7 +46,7 @@ function LoginBusinessPage() {
     // Create form data to match what the backend expects
     const formData = new FormData();
     formData.append("clientsPhone", phoneNumber);
-    formData.append("clientsPassword", password);
+    formData.append("clientsPassword", password.toString().trim());
     // Constructing a FormData object to send in the POST request.
 
     try {

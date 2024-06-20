@@ -88,7 +88,7 @@ function SignupBusinessPage() {
     const formData = new FormData();
     formData.append("clientsName", username);
     formData.append("clientsPhone", phone);
-    formData.append("clientsPassword", password);
+    formData.append("clientsPassword", password.toString().trim());
 
     try {
       // Send POST request to backend
