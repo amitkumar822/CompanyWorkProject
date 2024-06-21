@@ -9,13 +9,12 @@ const MobileNumberPopup = () => {
     const firstVisit = localStorage.getItem("firstVisit");
     if (!firstVisit) {
       setShowPopup(true);
-      localStorage.setItem("firstVisit", "true");
     }
   }, []);
 
-  const handleClose = () => {
-    setShowPopup(false);
-  };
+  // const handleClose = () => {
+  //   setShowPopup(false);
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,11 +30,13 @@ const MobileNumberPopup = () => {
       });
 
       console.log("response: " + JSON.stringify(response, null, 2));
-      
     } catch (error) {
       console.log(error);
     }
-    setShowPopup(false);
+    if (mobileNumber.length >= 10) {
+      setShowPopup(false);
+      localStorage.setItem("firstVisit", "true");
+    }
   };
 
   return (
@@ -61,12 +62,12 @@ const MobileNumberPopup = () => {
               Submit
             </button>
           </form>
-          <button
+          {/* <button
             onClick={handleClose}
             className="mt-4 w-full bg-red-500 text-white p-2 rounded hover:bg-red-600"
           >
             Close
-          </button>
+          </button> */}
         </div>
       </div>
     )

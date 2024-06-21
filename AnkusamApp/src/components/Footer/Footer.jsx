@@ -26,6 +26,8 @@ function Footer() {
                 Tamilnadu, India - 641062.
               </h2>
               <h3 className="mt-4 text-[#634f63] cursor-pointer">
+                <a href={`tel:${94873889705}`}>+91 94873889705</a>
+                <br />
                 <a href={`tel:${94873889706}`}>+91 94873889706</a>
               </h3>
             </div>
@@ -98,7 +100,7 @@ function Footer() {
         >
           © Designed and maintained by Ankusam Engineering Services
         </h1>
-        
+
         {/* <a
           href="https://www.freevisitorcounters.com/en/home/stats/id/1162081"
           target="_blank"
