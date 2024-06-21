@@ -735,7 +735,7 @@ function VehiProfile() {
       <div className="mt-16 w-full h-full relative">
         {/* Loading image section */}
         <div
-          className={`w-full h-full z-10 bg-[rgba(0,0,0,0.5)] absolute ${
+          className={`w-full -mt-16 md:h-[125%] h-[128%] z-50 bg-[rgba(0,0,0,0.5)] absolute ${
             isLoading ? "" : "hidden"
           }`}
         >

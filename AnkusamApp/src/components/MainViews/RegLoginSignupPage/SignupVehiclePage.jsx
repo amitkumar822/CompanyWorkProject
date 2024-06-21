@@ -150,7 +150,7 @@ function SignupVehiclePage() {
     <div className="relative">
       {/* Loading image section */}
       <div
-        className={`w-full h-full z-10 bg-[rgba(0,0,0,0.5)] absolute ${
+        className={`w-full md:h-[151%] h-[209%] z-50 bg-[rgba(0,0,0,0.5)] absolute ${
           isLoading ? "" : "hidden"
         }`}
       >

@@ -5,15 +5,11 @@ import { FcGlobe } from "react-icons/fc"; // Import globe icon
 import { Link, NavLink } from "react-router-dom"; // Import Link component for navigation
 import { MdAppRegistration, MdOutlineEventAvailable } from "react-icons/md";
 import { TbTruckLoading } from "react-icons/tb";
-import {
-  AiFillFastForward,
-  AiFillFire,
-  AiFillSound,
-  AiOutlineCluster,
-} from "react-icons/ai";
-import { FaTruckMoving } from "react-icons/fa";
+import { AiFillSound, AiOutlineCluster } from "react-icons/ai";
+import { GiMineTruck } from "react-icons/gi";
+import { FaTruckMoving, FaUserCog } from "react-icons/fa";
 import { RiContactsBook3Line } from "react-icons/ri";
-import { FaMobileRetro, FaScrewdriverWrench, FaTruckFast } from "react-icons/fa6";
+import { FaMobileRetro, FaTruckFast } from "react-icons/fa6";
 import { LuUserCircle2 } from "react-icons/lu";
 import logo from "../../data/Photo/Logo/AnkusamLogo.png";
 import LogOut from "../MainViews/RegLoginSignupPage/LogOut";
@@ -182,7 +178,7 @@ function Header() {
           </div>
           <div className="flex items-center gap-2 text-xl font-bold">
             <FcGlobe />
-            <h1>EXPLORE Menu</h1>
+            <h1>EXPLORE MENU</h1>
           </div>
           <ul className="pl-6">
             <li
@@ -370,28 +366,28 @@ const MenuListVehicleLogin = () => {
           <h1>EXPLORE MENU</h1>
         </div>
         <div className="mt-2 px-4 text-lg ">
-          <span className="w-full flex justify-center font-semibold text-2xl text-purple-500 -mt-1">Welcome</span>
+          {/* <span className="w-full flex justify-center font-semibold text-2xl text-purple-500 -mt-2 mb-1">Welcome</span> */}
           <div className="flex items-center gap-1 text-orange-600 font-semibold flex-wrap">
             <AiFillSound className="text-[green] mr-1" />
-              <span className="text-[#7b7b74] uppercase ml-1">
-                {vehiLogUser?.name}
-              </span>
+            <span className="text-[#7b7b74] uppercase ml-1">
+              {vehiLogUser?.name}
+            </span>
           </div>
           <div className="flex items-center gap-1 text-orange-600 font-semibold flex-wrap">
-            <FaScrewdriverWrench className="text-[green] mr-1" />
-            
-              <span className="text-[#7b7b74] uppercase ml-1">
+            <FaUserCog className="text-[green] mr-1" />
+
+            <span className="text-[#7b7b74] uppercase ml-1">
               D202400{vehiLogUser?.driver_id}
-              </span>
+            </span>
           </div>
           <div className="flex items-center gap-1 text-orange-600 font-semibold flex-wrap">
-            <AiFillFire className="text-[green] mr-1" />
-            
-              <span className="text-[#7b7b74] uppercase ml-1">
+            <GiMineTruck className="text-[green] mr-1" />
+
+            <span className="text-[#7b7b74] uppercase ml-1">
               {vehiLogUser?.vehicle_number}
-              </span>
+            </span>
           </div>
-          <hr className=" border-dashed border-[1.3px] my-1" />
+          <hr className=" border-dashed border-[2.3px] my-1" />
           <div className="flex items-center gap-2 font-semibold hover:text-[#6b6a6a] duration-200">
             <LuUserCircle2 className="text-[green]" />
             <Link to="/vehiprofile" onClick={() => setToggleSlide(false)}>
@@ -513,28 +509,22 @@ const MenuListBusinessLogin = () => {
         </div>
         <div className="flex items-center text-xl font-bold mt-5">
           <FcGlobe className="text-[35px] mr-2" />
-          <h1>EXPLORE Menu</h1>
+          <h1>EXPLORE MENU</h1>
         </div>
         <div className="mt-2 px-4 text-lg ">
           <div className="flex items-center gap-1 text-orange-600 font-semibold flex-wrap">
             <AiFillSound className="text-[green] mr-1" />
-            <span>
-              Welcome:
-              <span className="text-[#7b7b74] uppercase ml-1">
-                {busiLogUser?.clientsName}
-              </span>
+            <span className="text-[#7b7b74] uppercase ml-1">
+              {busiLogUser?.clientsName}
             </span>
           </div>
           <div className="flex items-center gap-1 text-orange-600 font-semibold flex-wrap">
             <FaMobileRetro className="text-[green] mr-1" />
-            <span>
-            Number:
               <span className="text-[#7b7b74] uppercase ml-1">
-              {busiLogUser?.clientsPhone}
+                {busiLogUser?.clientsPhone}
               </span>
-            </span>
           </div>
-          <hr className=" border-dashed border-[1.3px] my-1" />
+          <hr className=" border-dashed border-[2.3px] my-1" />
           <div className="flex items-center gap-2 font-semibold hover:text-[#6b6a6a] duration-200">
             <LuUserCircle2 className="text-[green]" />
             <Link to="/businessprofile" onClick={() => setToggleSlide(false)}>

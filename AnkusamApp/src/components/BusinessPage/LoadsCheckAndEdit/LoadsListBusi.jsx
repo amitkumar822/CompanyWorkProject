@@ -8,6 +8,7 @@ import { weightdata } from "../../../data/WeightData";
 import { RiCloseCircleLine } from "react-icons/ri";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import loadingGfg from "../../../data/GfgLoding/loading.gif";
 
 function LoadListBusi() {
   const navigate = useNavigate();
@@ -159,6 +160,7 @@ function LoadListBusi() {
   //==========👇 Edit all data and update section 👇 =========
 
   const [editCloseOpenBox, setEditCloseOpenBox] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [errors, setErrors] = useState({
     fromCityName: "",
@@ -210,9 +212,9 @@ function LoadListBusi() {
 
     if (fromStateName) {
       if (!fromCityName) {
-        toast.warn("From City is required!")
+        toast.warn("From City is required!");
         setErrors({ ...errors, fromCityName: "From City is required!" });
-        setFromCityName('')
+        setFromCityName("");
         setToCityName("");
         return;
       }
@@ -220,13 +222,15 @@ function LoadListBusi() {
 
     if (toStateName) {
       if (!toCityName) {
-        toast.warn("To City is required!")
+        toast.warn("To City is required!");
         setErrors({ ...errors, toCityName: "To City is required!" });
-        setFromCityName('')
+        setFromCityName("");
         setToCityName("");
         return;
       }
     }
+
+    setIsLoading(true);
 
     try {
       const formData = new FormData();
@@ -268,11 +272,14 @@ function LoadListBusi() {
           progress: undefined,
           theme: "colored",
         });
+        setIsLoading(false);
         window.location.reload();
       } else {
+        setIsLoading(false);
         console.error("Failed to update data: ", response.data);
       }
     } catch (err) {
+      setIsLoading(false);
       console.error("Error: ", err.message);
     }
   };
@@ -292,7 +299,7 @@ function LoadListBusi() {
   };
 
   const handleActiveInActiveSubmit = async (e) => {
-    // alert(statusField)
+    setIsLoading(true);
 
     try {
       const formData = new FormData();
@@ -321,11 +328,14 @@ function LoadListBusi() {
           theme: "colored",
         });
         setStatusField("Active");
+        setIsLoading(false);
         window.location.reload();
       } else {
+        setIsLoading(false);
         console.error("Failed to update data: ", response.data);
       }
     } catch (error) {
+      setIsLoading(false);
       console.error("Error: ", error.message);
     }
   };
@@ -333,6 +343,20 @@ function LoadListBusi() {
   return (
     <>
       <div className="mt-16">
+        {/* Loading image section */}
+        <div
+          className={`w-full -mt-36 md:h-[151%] h-[172%] z-[51] bg-[rgba(0,0,0,0.5)] absolute ${
+            isLoading ? "" : "hidden"
+          }`}
+        >
+          <div className=" absolute w-full h-screen flex justify-center items-center">
+            <img
+              className="w-[100px] h-[100px] fixed"
+              src={loadingGfg}
+              alt=""
+            />
+          </div>
+        </div>
         {/*==================👇 Available Vehicle List Section 👇====================*/}
 
         <div className="w-[90%] mx-auto md:mt-36 mt-24 bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-500 text-white px-2 py-8 rounded-lg shadow-lg">

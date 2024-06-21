@@ -120,7 +120,7 @@ function PostYourLoadBusi() {
 
     return `${year}-${month}-${day}`;
   };
-  
+
   const [formFiles, setFormFiles] = useState({
     // PickUpDate: "" || getCurrentDate(),
     PickUpDate: "",
@@ -132,7 +132,6 @@ function PostYourLoadBusi() {
     ContactNumber: "",
     AlternativeNumber: "",
   });
-
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
@@ -320,9 +319,9 @@ function PostYourLoadBusi() {
 
         // Page refreace
 
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
+        // setTimeout(() => {
+        //   window.location.reload();
+        // }, 1000);
       } else {
         toast.error("Faild to post!", {
           position: "top-center",
@@ -358,7 +357,7 @@ function PostYourLoadBusi() {
       <div className="mt-16 relative">
         {/* Loading image section */}
         <div
-          className={`w-full h-full z-10 bg-[rgba(0,0,0,0.5)] absolute ${
+          className={`w-full -mt-24 md:h-[175%] h-[162%] z-50 bg-[rgba(0,0,0,0.5)] absolute ${
             isLoading ? "" : "hidden"
           }`}
         >

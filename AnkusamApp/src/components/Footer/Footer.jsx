@@ -92,14 +92,14 @@ function Footer() {
       <div className="w-[70%] mx-auto mt-6 pb-10 mb-10">
         <hr />
         <h1
-          className="font-semibold text-xl"
+          className="font-semibold md:text-xl"
           data-aos="fade-up"
           data-aos-anchor-placement="bottom-bottom"
         >
           © Designed and maintained by Ankusam Engineering Services
         </h1>
         
-        <a
+        {/* <a
           href="https://www.freevisitorcounters.com/en/home/stats/id/1162081"
           target="_blank"
           className="w-full mx-auto flex flex-col items-center mt-6"
@@ -109,7 +109,7 @@ function Footer() {
             src="https://www.freevisitorcounters.com/en/counter/render/1162081/t/5"
             alt=""
           />
-        </a>
+        </a> */}
       </div>
     </div>
   );

@@ -82,10 +82,6 @@ function LoginVehiclePage() {
 
       // Log the entire response for debugging
 
-      console.log("====================================");
-      console.log("Full Response:", data);
-      console.log("====================================");
-
       // Handle the success or failure based on response
       if (data.status === true || data.status === "true") {
         setVehiLogUser(data.userData);
@@ -141,7 +137,7 @@ function LoginVehiclePage() {
     <div className=" relative">
       {/* Loading image section */}
       <div
-        className={`w-full h-full z-10 bg-[rgba(0,0,0,0.5)] absolute ${
+        className={`w-full md:h-[158%] h-[232%] z-50 bg-[rgba(0,0,0,0.5)] absolute ${
           isLoading ? "" : "hidden"
         }`}
       >
