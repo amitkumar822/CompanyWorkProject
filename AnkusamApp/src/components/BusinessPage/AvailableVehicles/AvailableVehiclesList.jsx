@@ -20,9 +20,12 @@ function AvailableVehiclesList() {
         const response = await axios.get(
           "/api/load/get_upload_vehicle_available_by_driver.php"
         );
-        console.log("Responses: " + JSON.stringify(response.data, null, 2));
-        if(Array.isArray(response.data.driverload)){
-          console.log("Response2: " + response.data.driverload);
+
+        // console.log("Responses: " + JSON.stringify(response.data, null, 2));
+
+        if (Array.isArray(response.data.driverload)) {
+          // console.log("Response2: " + response.data.driverload);
+
           setVehicleAllDetails(response.data.driverload);
         }
       } catch (error) {
@@ -31,7 +34,6 @@ function AvailableVehiclesList() {
     };
     fetchData();
   }, [setVehicleAllDetails]);
-
 
   return (
     <>
@@ -69,9 +71,7 @@ function AvailableVehiclesList() {
                     <td className="px-4 py-2 border-b">{details?.fromCity}</td>
                     <td className="px-4 py-2 border-b">{details?.toState}</td>
                     <td className="px-4 py-2 border-b">{details?.toCity}</td>
-                    <td className="px-4 py-2 border-b">
-                      {details?.vship} 
-                    </td>
+                    <td className="px-4 py-2 border-b">{details?.vship}</td>
                     <td className="px-4 py-2 border-b">
                       {details?.vehicle_length}
                     </td>

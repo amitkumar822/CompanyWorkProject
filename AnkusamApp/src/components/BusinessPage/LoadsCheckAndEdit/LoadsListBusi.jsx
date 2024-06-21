@@ -37,10 +37,11 @@ function LoadListBusi() {
           formData,
           { headers: { "Content-Type": "multipart/form-data" } }
         );
-        console.log("All response: " + JSON.stringify(response, null, 2));
-        console.log(
-          "GetLoadData Response1: " + response.data.load[0].contactNumber
-        );
+
+        // console.log("All response: " + JSON.stringify(response, null, 2));
+        // console.log(
+        //   "GetLoadData Response1: " + response.data.load[0].contactNumber
+        // );
 
         if (response.data.success) {
           if (Array.isArray(response.data.load)) {

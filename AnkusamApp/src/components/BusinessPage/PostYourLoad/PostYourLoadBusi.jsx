@@ -120,9 +120,9 @@ function PostYourLoadBusi() {
 
     return `${year}-${month}-${day}`;
   };
-
+  
   const [formFiles, setFormFiles] = useState({
-    // PickUpDate: getCurrentDate(),
+    // PickUpDate: "" || getCurrentDate(),
     PickUpDate: "",
     VehicleType: "Both",
     PackageWeight: "",
@@ -130,7 +130,9 @@ function PostYourLoadBusi() {
     GoodsType: "",
     VehicleLength: 1,
     ContactNumber: "",
+    AlternativeNumber: "",
   });
+
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
@@ -140,7 +142,9 @@ function PostYourLoadBusi() {
     }));
   };
 
-  console.log("PickUpDate: " + formFiles.PickUpDate);
+  // console.log("PickUpDate: " + formFiles.PickUpDate);
+  // console.log("ContactNumber: " + formFiles.ContactNumber)
+  // console.log("AlternativeNumber: " + formFiles.AlternativeNumber)
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -476,6 +480,7 @@ function PostYourLoadBusi() {
                       type="date"
                       required
                       name="PickUpDate"
+                      value={formFiles.PickUpDate} // here add value
                       onChange={handleFormChange}
                     />
                     {errors.PickUpDate && (
@@ -657,6 +662,7 @@ function PostYourLoadBusi() {
                   minLength={10}
                   maxLength={15}
                   name="ContactNumber"
+                  value={formFiles.ContactNumber} // here add this line
                   onChange={handleFormChange}
                   placeholder="Enter your number"
                   className="py-2 px-4 min-w-[180px] lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"
@@ -673,6 +679,7 @@ function PostYourLoadBusi() {
                   minLength={10}
                   maxLength={15}
                   name="AlternativeNumber"
+                  value={formFiles.AlternativeNumber} // here add this line}
                   onChange={handleFormChange}
                   placeholder="Enter your number"
                   className="py-2 px-4 min-w-[180px] lg:w-[70%] w-[95%] border outline-none rounded-lg shadow-md cursor-pointer"

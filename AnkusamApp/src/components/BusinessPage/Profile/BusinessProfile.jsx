@@ -244,8 +244,8 @@ function BusinessProfile() {
           formData
         );
 
-        console.log("Response: ", JSON.stringify(response, null, 2));
-        console.log("Response: ", response.data);
+        // console.log("Response: ", JSON.stringify(response, null, 2));
+        // console.log("Response: ", response.data);
 
         setBusiProfileAllDetails(response.data);
         //👉 profile percentage setup
@@ -311,7 +311,7 @@ function BusinessProfile() {
               <div className="md:flex md:flex-col items-center">
                 <RiMapPinUserFill className="md:text-7xl text-4xl w-full text-[#86f860]" />
                 <span className="uppercase text-[yellow] md:text-2xl text-[14px] whitespace-nowrap font-bold">
-                  {busiLogUser?.userName}
+                  {busiLogUser?.clientsName}
                 </span>
                 <h1 className="md:text-xl font-bold">{busiLogUser?.userid}</h1>
               </div>
