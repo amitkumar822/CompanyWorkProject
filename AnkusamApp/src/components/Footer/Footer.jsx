@@ -98,20 +98,15 @@ function Footer() {
           data-aos="fade-up"
           data-aos-anchor-placement="bottom-bottom"
         >
-          © Designed and maintained by Ankusam Engineering Services
+          © Designed and maintained by{" "}
+          <a
+            href="https://ankusamenggservices.com/"
+            target="_blank"
+            className="text-blue-500"
+          >
+            Ankusam Engineering Services
+          </a>
         </h1>
-
-        {/* <a
-          href="https://www.freevisitorcounters.com/en/home/stats/id/1162081"
-          target="_blank"
-          className="w-full mx-auto flex flex-col items-center mt-6"
-        >
-          <span className="text-blue-600 font-semibold">Free Counters</span>
-          <img
-            src="https://www.freevisitorcounters.com/en/counter/render/1162081/t/5"
-            alt=""
-          />
-        </a> */}
       </div>
     </div>
   );
