@@ -1,9 +1,12 @@
-import React from 'react'
+import React from "react";
+import InvoiceForm from "./components/InvoiceForm";
 
 function App() {
   return (
-    <div>App</div>
-  )
+    <>
+      <InvoiceForm />
+    </>
+  );
 }
 
-export default App
+export default App;

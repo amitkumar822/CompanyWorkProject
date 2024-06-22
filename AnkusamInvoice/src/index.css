@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* custom.css */
+@media print {
+  @page {
+    margin: 0; /* Remove default margins */
+  }
+
+  body {
+    margin: 0; /* Remove default margins */
+  }
+
+  .no-print {
+    display: none !important; /* Hide elements with class 'no-print' */
+  }
+
+  .print-border {
+    border: 1px solid black !important; /* Ensure borders are printed */
+  }
+}
