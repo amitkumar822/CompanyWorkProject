@@ -99,11 +99,11 @@ function BusinessProfile() {
   });
 
   const [files, setFiles] = useState({
-    name: null,
-    phone: null,
-    alternativenumber: null,
-    email: null,
-    address: null,
+    name: "",
+    phone: "",
+    alternativenumber: "",
+    email: "",
+    address: "",
   });
 
   const handleFileChange = (e) => {
@@ -117,46 +117,18 @@ function BusinessProfile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!cityName) {
-      toast("City is required!");
-      setIsErrorsMessage((prevState) => ({
-        ...prevState,
-        cityName: "City is required!",
-      }));
-      return;
+    if (stateName) {
+      if (!cityName) {
+        toast.warn("City is required!");
+        setIsErrorsMessage({
+          cityName: "Please enter a city name!",
+        });
+        return;
+      }
     } else {
-      setIsErrorsMessage((prevState) => ({
-        ...prevState,
+      setIsErrorsMessage({
         cityName: "",
-      }));
-    }
-
-    if (isNaN(files.phone)) {
-      toast.warn("Invalid Phone Number!", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
       });
-      return;
-    }
-
-    if (isNaN(files.alternativenumber)) {
-      toast.warn("Invalid Alternative Number!", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-      return;
     }
 
     setIsLoading(true);
@@ -199,6 +171,7 @@ function BusinessProfile() {
         formRef.current.reset();
         stateInputRef.current.clearValue();
         cityInputRef.current.clearValue();
+        // window.location.reload();
       } else {
         setIsLoading(false);
         toast.error("Something went wrong!", {
@@ -249,9 +222,8 @@ function BusinessProfile() {
 
         setBusiProfileAllDetails(response.data);
         //👉 profile percentage setup
-        if (response.data?.clientsAddress) {
-          setPercentage(95);
-        }
+        setPercentage(response.data.profilePercentage);
+
         setFiles({
           name: response.data.clientsName || "",
           phone: response.data.clientsPhone || "",
@@ -259,12 +231,15 @@ function BusinessProfile() {
           email: response.data.clientsEmail || "",
           address: response.data.clientsAddress || "",
         });
+
+        setStateName(response.data.clientsState || "");
+        setCityName(response.data.clientsCity || "");
       } catch (error) {
         console.log("Error: ", error);
       }
     };
     fetchDetails();
-  }, []);
+  }, [setBusiProfileAllDetails]);
 
   return (
     <>
@@ -283,6 +258,7 @@ function BusinessProfile() {
             />
           </div>
         </div>
+
         {/* First Banner Part */}
         <div className="bg-vehicleTruckImgProfile w-full bg-no-repeat bg-cover ">
           <div className="w-full md:h-[560px] h-[400px] mx-auto bg-[rgba(0,0,0,0.5)] text-white">
@@ -353,7 +329,6 @@ function BusinessProfile() {
                     value={files?.name || ""}
                     onChange={handleFileChange}
                     placeholder="Enter your name"
-                    required
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
                   <h1 className="text-[17px] pt-2 font-semibold flex items-center gap-1">
@@ -374,7 +349,6 @@ function BusinessProfile() {
                     placeholder="Phone number"
                     minLength={10}
                     maxLength={15}
-                    required
                     className="py-2 px-4 rounded-lg md:w-[80%] w-[90%]"
                   />
                 </div>
@@ -393,7 +367,6 @@ function BusinessProfile() {
                   <input
                     type="email"
                     name="email"
-                    required
                     value={files?.email || ""}
                     onChange={handleFileChange}
                     placeholder="Enter email address"
@@ -403,7 +376,8 @@ function BusinessProfile() {
                     Alternative Number
                     <span
                       className={`${
-                        !busiProfileAllDetails?.clientsAlternativeNumber && "hidden"
+                        !busiProfileAllDetails?.clientsAlternativeNumber &&
+                        "hidden"
                       } text-blue-500`}
                     >
                       <RiVerifiedBadgeFill />
@@ -439,7 +413,6 @@ function BusinessProfile() {
                   type="text"
                   name="address"
                   onChange={handleFileChange}
-                  required
                   value={files?.address || ""}
                   placeholder="Enter your address.."
                   className="py-2 px-4 rounded-lg w-[90%]"
@@ -462,7 +435,6 @@ function BusinessProfile() {
                   <Select
                     ref={stateInputRef}
                     options={states}
-                    required
                     className="mt-2"
                     value={
                       states.find((option) => option.value === state) ||
@@ -489,7 +461,6 @@ function BusinessProfile() {
                   <Select
                     ref={cityInputRef}
                     options={cities}
-                    required
                     className="mt-2"
                     value={cities.find((option) => option.value === city)}
                     onChange={handleCityChange}
@@ -541,11 +512,11 @@ function BusinessProfile() {
             </div>
 
             <div className="w-full md:mt-20 mt-14 lg:block hidden">
-              <h1 className="text-[20px] font-semibold">
+              <h1 className="text-[19px] font-semibold">
                 🍁Welcome to Ankusam Logistics🍁
               </h1>
               <div className="text-lg mt-2">
-                <h1 className=" font-semibold pt-3">
+                <h1 className=" font-semibold pt-3 text-[17.5px]">
                   Your Trusted Partner in Indian Logistics Solutions
                 </h1>
                 <h1 className="mt-2 text-[19px]">

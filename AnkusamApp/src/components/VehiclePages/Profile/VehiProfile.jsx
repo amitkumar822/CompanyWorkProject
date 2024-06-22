@@ -818,7 +818,7 @@ function VehiProfile() {
                     Name{" "}
                     <span
                       className={`${
-                        !driverVehiFormText.name && "hidden"
+                        !driverVehiAllDetails.name && "hidden"
                       } text-blue-500`}
                     >
                       <RiVerifiedBadgeFill />
@@ -836,7 +836,7 @@ function VehiProfile() {
                     Phone Number{" "}
                     <span
                       className={`${
-                        !driverVehiFormText.phone && "hidden"
+                        !driverVehiAllDetails.phone && "hidden"
                       } text-blue-500`}
                     >
                       <RiVerifiedBadgeFill />
@@ -859,7 +859,7 @@ function VehiProfile() {
                     Aadhar Numbar{" "}
                     <span
                       className={`${
-                        !driverVehiFormText.aadhar_number && "hidden"
+                        !driverVehiAllDetails.aadhar_number && "hidden"
                       } text-blue-500`}
                     >
                       <RiVerifiedBadgeFill />
@@ -879,7 +879,7 @@ function VehiProfile() {
                     Home Town
                     <span
                       className={`${
-                        !driverVehiFormText.htown && "hidden"
+                        !driverVehiAllDetails.htown && "hidden"
                       } text-blue-500`}
                     >
                       <RiVerifiedBadgeFill />
@@ -925,7 +925,7 @@ function VehiProfile() {
                 Driving license Number{" "}
                 <span
                   className={`${
-                    !driverVehiFormText.driving_license_number && "hidden"
+                    !driverVehiAllDetails.driving_license_number && "hidden"
                   } text-blue-500`}
                 >
                   <RiVerifiedBadgeFill />
@@ -946,7 +946,7 @@ function VehiProfile() {
                     License Type{" "}
                     <span
                       className={`${
-                        !driverVehiFormText.license_type && "hidden"
+                        !driverVehiAllDetails.license_type && "hidden"
                       } text-blue-500`}
                     >
                       <RiVerifiedBadgeFill />
@@ -969,7 +969,7 @@ function VehiProfile() {
                     Operator Type{" "}
                     <span
                       className={`${
-                        !driverVehiFormText.operator_type && "hidden"
+                        !driverVehiAllDetails.operator_type && "hidden"
                       } text-blue-500`}
                     >
                       <RiVerifiedBadgeFill />
@@ -992,7 +992,7 @@ function VehiProfile() {
                     Vehicle Type{" "}
                     <span
                       className={`${
-                        !driverVehiFormText.vehicle_type && "hidden"
+                        !driverVehiAllDetails.vehicle_type && "hidden"
                       } text-blue-500`}
                     >
                       <RiVerifiedBadgeFill />
@@ -1017,7 +1017,7 @@ function VehiProfile() {
                     Vehicle register Number{" "}
                     <span
                       className={`${
-                        !driverVehiFormText.vehicle_register_number && "hidden"
+                        !driverVehiAllDetails.vehicle_register_number && "hidden"
                       } text-blue-500`}
                     >
                       <RiVerifiedBadgeFill />
@@ -1035,7 +1035,7 @@ function VehiProfile() {
                     Vehicle Name{" "}
                     <span
                       className={`${
-                        !driverVehiFormText.vehicle_name && "hidden"
+                        !driverVehiAllDetails.vehicle_name && "hidden"
                       } text-blue-500`}
                     >
                       <RiVerifiedBadgeFill />
@@ -1053,7 +1053,7 @@ function VehiProfile() {
                     Vehicle Capacity(tons){" "}
                     <span
                       className={`${
-                        !driverVehiFormText.vehicle_capacity_in_tons && "hidden"
+                        !driverVehiAllDetails.vehicle_capacity_in_tons && "hidden"
                       } text-blue-500`}
                     >
                       <RiVerifiedBadgeFill />
@@ -1081,7 +1081,7 @@ function VehiProfile() {
                     Vehicle make/model{" "}
                     <span
                       className={`${
-                        !driverVehiFormText.vehicle_make_and_model && "hidden"
+                        !driverVehiAllDetails.vehicle_make_and_model && "hidden"
                       } text-blue-500`}
                     >
                       <RiVerifiedBadgeFill />
@@ -1099,7 +1099,7 @@ function VehiProfile() {
                     Vehicle Length{" "}
                     <span
                       className={`${
-                        !driverVehiFormText.vehicle_length && "hidden"
+                        !driverVehiAllDetails.vehicle_length && "hidden"
                       } text-blue-500`}
                     >
                       <RiVerifiedBadgeFill />
