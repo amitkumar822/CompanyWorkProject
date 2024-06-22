@@ -1,4 +1,5 @@
 const weightdata = [
+    "Bellow 1 Ton",
     "1 Ton",
     "2 Ton",
     "3 Ton",
