@@ -125,7 +125,7 @@ function PostVehicleAvailability() {
   });
 
   const [files, setFiles] = useState({
-    typeOfVehicle: "Both",
+    typeOfVehicle: "Open Body",
     vehicle_capacity_in_tons: null,
     vehicleLength: null,
   });
@@ -356,7 +356,7 @@ function PostVehicleAvailability() {
           </div>
 
           {/* Vehicle Details part */}
-          <div className="md:mt-20 mt-5 text-[#66451C]">
+          <div className="md:mt-20 mt-5 text-[#66451C] grid md:grid-cols-2">
             <div>
               <h2 className="md:text-4xl text-2xl">Vehicle Details</h2>
               <div className="mt-4">
@@ -393,20 +393,26 @@ function PostVehicleAvailability() {
             </div>
 
             <div>
-              <h3 className="md:text-lg font-semibold text-black md:mt-0 mt-3">
-                Type of Vehicle
-              </h3>
-              <select
-                name="typeOfVehicle"
-                id="typeOfVehicle"
-                className="py-2 px-4 md:w-[60%] w-[90%] text-black min-w-[210px] border outline-none rounded-lg shadow-md cursor-pointer"
-                onChange={handleChange}
-                required
-              >
-                <option value="Both">Both</option>
-                <option value="Close Body">Close Body</option>
-                <option value="Open Body">Open Body</option>
-              </select>
+              <div>
+                <h1 className="md:text-lg font-semibold text-black md:mt-0 mt-3">Date of Availability</h1>
+                <input type="date"  className="py-2 px-4 md:w-[60%] w-[90%] text-black min-w-[210px] border outline-none rounded-lg shadow-md cursor-pointer" />
+              </div>
+              <div>
+                <h3 className="md:text-lg font-semibold text-black md:mt-0 mt-3">
+                  Type of Vehicle
+                </h3>
+                <select
+                  name="typeOfVehicle"
+                  id="typeOfVehicle"
+                  className="py-2 px-4 md:w-[60%] w-[90%] text-black min-w-[210px] border outline-none rounded-lg shadow-md cursor-pointer"
+                  onChange={handleChange}
+                  required
+                >
+                  {/* <option value="Both">Both</option> */}
+                  <option value="Open Body">Open Body</option>
+                  <option value="Close Body">Closed Body</option>
+                </select>
+              </div>
             </div>
           </div>
           <div className="w-[80%] mx-auto text-center">

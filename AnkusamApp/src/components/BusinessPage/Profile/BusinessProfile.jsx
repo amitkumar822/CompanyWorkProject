@@ -303,9 +303,9 @@ function BusinessProfile() {
           <div className="lg:w-[70%] w-[100%] mx-auto md:mt-0 mt-4 bg-gray-300 border shadow-md shadow-gray-800 lg:order-1 order-2 rounded-lg">
             <div className="flex justify-between px-2 py-4 bg-white">
               <h1 className="md:text-2xl text-xl font-semibold">My Account</h1>
-              <h1 className="md:text-2xl text-xl font-semibold bg-blue-500 hover:bg-blue-600 duration-300 px-2 py-1 rounded-lg text-white cursor-pointer">
+              {/* <h1 className="md:text-2xl text-xl font-semibold bg-blue-500 hover:bg-blue-600 duration-300 px-2 py-1 rounded-lg text-white cursor-pointer">
                 <Link to="/loaddatalist">Home</Link>
-              </h1>
+              </h1> */}
             </div>
             <form onSubmit={handleSubmit} ref={formRef} className="px-4 py-2">
               {/* <h1 className="text-3xl">
@@ -481,9 +481,9 @@ function BusinessProfile() {
               <div className="w-full mx-auto text-center mt-10">
                 <button
                   type="submit"
-                  className="w-[120px] my-10 text-white py-3 ml-auto rounded-lg text-2xl shadow-md shadow-[yellow] font-bold bg-gradient-to-r from-fuchsia-400 to-red-500 hover:from-pink-500 hover:to-yellow-500"
+                  className="w-[120px] my-10 text-white py-3 ml-auto rounded-lg text-2xl uppercase shadow-md shadow-[yellow] font-bold bg-gradient-to-r from-fuchsia-400 to-red-500 hover:from-pink-500 hover:to-yellow-500"
                 >
-                  Upload
+                  Update
                 </button>
               </div>
             </form>

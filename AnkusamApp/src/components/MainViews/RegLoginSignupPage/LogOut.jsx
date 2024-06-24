@@ -1,12 +1,15 @@
 import React from "react";
+import { useNavigate } from "react-router";
 
 function LogOut() {
+  const navigate = useNavigate();
   const handleLogOut = () => {
     localStorage.removeItem("TokeLoginVehiPage");
     localStorage.removeItem("vehiLogUser");
     localStorage.removeItem("busiLogUser")
     localStorage.removeItem("TokenLoginBusinpage")
     // Refresh the page
+    navigate('');
     window.location.reload();
   };
 

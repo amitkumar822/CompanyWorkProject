@@ -16,7 +16,12 @@ function AvailableLoad() {
   const navigate = useNavigate();
 
   // Check if user is logged in
-  useEffect(() => {
+  useEffect(() => {    
+    if(localStorage.getItem("TokenLoginBusinpage")) {
+      navigate("/loadslistbusi");
+      return;
+    }
+
     if (!localStorage.getItem("TokeLoginVehiPage")) {
       navigate("/");
       return;

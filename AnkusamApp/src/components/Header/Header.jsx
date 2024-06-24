@@ -292,14 +292,14 @@ const MenuListVehicleLogin = () => {
       <div className=" leading-[21px] items-center gap-4 md:flex hidden">
         <div className="lg:text-[16px] text-[15px]">
           <ul className="flex gap-4 border-b-[1px] text-white uppercase font-semibold">
-            <li className="tracking-tight cursor-pointer hover:text-[#c3c2c2] duration-300">
+            {/* <li className="tracking-tight cursor-pointer hover:text-[#c3c2c2] duration-300">
               <NavLink
                 to="/contactus"
                 className={({ isActive }) => (isActive ? "text-[yellow]" : "")}
               >
                 CONTACT US
               </NavLink>
-            </li>
+            </li> */}
             <li className="tracking-tight cursor-pointer hover:text-[#c3c2c2] duration-300">
               <NavLink
                 to="/loaddatalist"
@@ -447,10 +447,10 @@ const MenuListBusinessLogin = () => {
           <ul className="flex gap-4 border-b-[1px] text-white uppercase font-semibold">
             <li className="tracking-tight cursor-pointer hover:text-[#c3c2c2] duration-300">
               <NavLink
-                to="/contactus"
+                to="/postyourloadbusi"
                 className={({ isActive }) => (isActive ? "text-[yellow]" : "")}
               >
-                CONTACT US
+                Post Load
               </NavLink>
             </li>
             <li className="tracking-tight cursor-pointer hover:text-[#c3c2c2] duration-300">
