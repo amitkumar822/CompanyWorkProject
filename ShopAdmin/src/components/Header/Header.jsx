@@ -1,7 +1,8 @@
 import React from "react";
-import AnkusamLogo from "../../data/Photos/AnkusamLogo.png";
+import AnkusamLogo from "../../data/Photos/Logo/AnkusamLogo.png";
 import { PiUserPlusBold } from "react-icons/pi";
-import {Link} from 'react-router-dom'
+import { NavLink } from "react-router-dom";
+import LogOut from "../LoginPage/LogOut";
 
 function Header() {
   return (
@@ -14,16 +15,35 @@ function Header() {
           </div>
           {/* content box */}
           <div className=" flex items-center justify-center text-xl font-semibold gap-4 uppercase italic">
-            <span className=" cursor-pointer hover:text-gray-700 duration-200"><PiUserPlusBold /></span>
             <span className=" cursor-pointer hover:text-gray-700 duration-200">
-              <Link to='/dashboard'>Dashboard</Link></span>
+              <NavLink
+                to="/addnewshaopkeepersdetails"
+                className={({ isActive }) => (isActive ? "text-[yellow]" : "")}
+              >
+                <PiUserPlusBold />
+              </NavLink>
+            </span>
             <span className=" cursor-pointer hover:text-gray-700 duration-200">
-              <Link to=''>Login</Link>
+              <NavLink
+                to="/dashboard"
+                className={({ isActive }) => (isActive ? "text-[yellow]" : "")}
+              >
+                Dashboard
+              </NavLink>
+            </span>
+            <span className=" cursor-pointer hover:text-gray-700 duration-200">
+              <NavLink
+                to=""
+                className={({ isActive }) => (isActive ? "text-[yellow]" : "")}
+              >
+                {localStorage.getItem('LoginToken') ? <LogOut /> : 'Login'}
+                {/* Login */}
+              </NavLink>
             </span>
           </div>
         </div>
       </div>
-      <div className="w-full mt-16"></div>
+      {/* <div className="w-full mt-16  "></div> */}
     </>
   );
 }

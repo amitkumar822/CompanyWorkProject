@@ -11,13 +11,18 @@ import {
 } from "react-router-dom";
 import Dashboard from "./components/DashboardPage/Dashboard.jsx";
 import Login from "./components/LoginPage/Login.jsx";
+import AddNewShopkeepers from "./components/AddShopkeeperDetails/AddNewShopkeepers.jsx";
+import AddGoodsLiist from "./components/AddGoodsListByShopkeeper/AddGoodsLiist.jsx";
+import LogOut from "./components/LoginPage/LogOut.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route path="" element={<Login />} />
-      {/* <Route path="/addshopkeeperlist" /> */}
-      <Route path="/dashboard" element={ <Dashboard />} />
+      <Route path="/logout" element={<LogOut />} />
+      <Route path="/addnewshaopkeepersdetails" element={<AddNewShopkeepers />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/addgoodslist" element={<AddGoodsLiist />} />
     </Route>
   )
 );

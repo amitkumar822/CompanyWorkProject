@@ -3,8 +3,18 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { FaCirclePlus } from "react-icons/fa6";
 import { IoIosSearch } from "react-icons/io";
+import { Link, useNavigate } from "react-router-dom";
 
 function Dashboard() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if(!localStorage.getItem('LoginToken')) {
+      navigate('/');
+      return;
+    }
+  }, [])
+
   //==============👇Goods Search functionality 👇=============
   const [searchInput, setSearchInput] = useState("");
 
@@ -50,7 +60,7 @@ function Dashboard() {
 
   return (
     <>
-      <div className="w-full h-screen mx-auto bg-[#f2d7d7]">
+      <div className="w-full h-screen mx-auto bg-[#f2d7d7] pt-16">
         <h1 className="text-center py-2 text-[26px] font-bold italic font-serif underline">
           Welcome to Dashboard
         </h1>
@@ -88,6 +98,13 @@ function Dashboard() {
                   </li>
                 ))}
               </ul>
+              <span
+                className={`ml-2 text-red-500 font-semibold ${
+                  filteredShopkeeperName.length && "hidden"
+                }`}
+              >
+                No record found..
+              </span>
             </div>
           </div>
 
@@ -110,7 +127,9 @@ function Dashboard() {
                   <IoIosSearch className="text-2xl absolute right-12 top-1" />
                 </span>
                 <span className="ml-12">
-                  <FaCirclePlus className="text-3xl text-green-700 hover:text-green-900 duration-200 cursor-pointer" />
+                  <Link to="/addgoodslist">
+                    <FaCirclePlus className="text-3xl text-green-700 hover:text-green-900 duration-200 cursor-pointer" />
+                  </Link>
                 </span>
               </div>
             </div>
@@ -120,19 +139,33 @@ function Dashboard() {
               <table className="w-full text-center">
                 <thead className=" whitespace-nowrap text-[18px] sticky top-0 left-0 right-0 bg-[#82f5c7]">
                   <tr>
-                    <th className=" py-1">SI No</th>
-                    <th className=" py-1">Description of Goods</th>
-                    <th className=" py-1">Rate</th>
-                    <th className=" py-1">Action</th>
+                    <th className="py-2 px-2 border-b-2 border-black border-r-2 ">
+                      SI No
+                    </th>
+                    <th className="py-2 px-2 border-b-2 border-black  border-r-2 w-[68%]">
+                      Description of Goods
+                    </th>
+                    <th className="py-2 px-2 border-b-2 border-black border-r-2 ">
+                      Rate
+                    </th>
+                    <th className="py-2 px-2 border-b-2 border-black border-r-2 ">
+                      Action
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredData.map((items, index) => (
                     <tr key={index} className=" odd:bg-gray-200 text-[17px]">
-                      <td className="py-2 px-2 border-b-2">{index + 1}</td>
-                      <td className="py-2 px-2 border-b-2">{items.goods}</td>
-                      <td className="py-2 px-2 border-b-2">₹ {items.rate}</td>
-                      <td className="py-2 px-2 border-b-2">
+                      <td className="py-2 px-2 border-b-2 border-r-2 border-black">
+                        {index + 1}
+                      </td>
+                      <td className="py-2 px-2 border-b-2 border-r-2 border-black w-[68%]">
+                        {items.goods}
+                      </td>
+                      <td className="py-2 px-2 border-b-2 border-r-2 border-black">
+                        ₹ {items.rate}
+                      </td>
+                      <td className="py-2 px-2 border-b-2 border-r-2 border-black">
                         <span className="bg-green-500 hover:bg-green-600 duration-200 font-semibold italic py-1 px-2 text-white hover:text-[#d3d1d1] rounded-md shadow-md shadow-gray-800 cursor-pointer mr-2">
                           Edit
                         </span>
@@ -144,6 +177,13 @@ function Dashboard() {
                   ))}
                 </tbody>
               </table>
+              <span
+                className={`ml-2 text-red-500 font-semibold ${
+                  filteredData.length && "hidden"
+                }`}
+              >
+                No record found..
+              </span>
             </div>
           </div>
         </div>
@@ -156,31 +196,31 @@ export default Dashboard;
 
 const goodsList = [
   {
-    goods: "1 40x40x1.6 mm Thinkness MS & Sq Tube",
+    goods: "40x40x1.6 mm Thinkness MS & Sq Tube 40x40x1.6 mm",
     rate: 200,
   },
   {
-    goods: "2 40x40x1.6 mm Thinkness MS & Sq Tube",
+    goods: "40x40x1.6 mm Thinkness MS & Sq Tube",
     rate: 100,
   },
   {
-    goods: "3 40x40x1.6 mm Thinkness MS & Sq Tube",
+    goods: "40x40x1.6 mm Thinkness MS & Sq Tube",
     rate: 300,
   },
   {
-    goods: "4 40x40x1.6 mm Thinkness MS & Sq Tube",
+    goods: "40x40x1.6 mm Thinkness MS & Sq Tube",
     rate: 180,
   },
   {
-    goods: "5 40x40x1.6 mm Thinkness MS & Sq Tube Akash",
+    goods: "40x40x1.6 mm Thinkness MS & Sq Tube Akash",
     rate: 500,
   },
   {
-    goods: "6 40x40x1.6 mm Thinkness MS & Sq Tube",
+    goods: "40x40x1.6 mm Thinkness MS & Sq Tube",
     rate: 147,
   },
   {
-    goods: "7 40x40x1.6 mm Thinkness MS & Sq Tube",
+    goods: "40x40x1.6 mm Thinkness MS & Sq Tube",
     rate: 135,
   },
   {
