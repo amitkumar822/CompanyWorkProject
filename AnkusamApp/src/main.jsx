@@ -23,6 +23,8 @@ import AvailableVehiclesList from "./components/BusinessPage/AvailableVehicles/A
 import About from "./components/About/About.jsx";
 import PostYourLoadBusi from "./components/BusinessPage/PostYourLoad/PostYourLoadBusi.jsx";
 import LoadListBusi from "./components/BusinessPage/LoadsCheckAndEdit/LoadsListBusi.jsx";
+import Policy from "./components/PolicyTermAndConditions/PrivacyPolicy.jsx";
+import TermsAndCondition from "./components/PolicyTermAndConditions/TermsAndCondition.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -41,6 +43,8 @@ const router = createBrowserRouter(
       <Route path="/postyourloadbusi" element={<PostYourLoadBusi />} />
       <Route path="/availablevehiclelist" element={<AvailableVehiclesList />} />
       <Route path="/loadslistbusi" element={<LoadListBusi />} />
+      <Route path="/privacypolicy" element={ <Policy /> } />
+      <Route path="/termsandconditions" element={<TermsAndCondition />} />
     </Route>
   )
 );
