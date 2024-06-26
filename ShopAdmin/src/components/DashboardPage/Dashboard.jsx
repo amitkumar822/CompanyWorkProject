@@ -67,9 +67,9 @@ function Dashboard() {
 
   const handleShopkeeperNameId = (data) => {
     setShopkeeperNameId(data);
+    setGoodsData([]);
     localStorage.setItem("ShopkeeperNameAndIdDetails", JSON.stringify(data));
   };
-
 
   //==============👆 End get shopkeeper name and id when clicking on shopkeeper name 👆=============
 
@@ -85,20 +85,22 @@ function Dashboard() {
       formData.append("shopkeeper_id", shopkeeperNameId.id);
 
       try {
-        const response = await axios.get(
+        const response = await axios.post(
           "/api/get_goods_details.php",
-          formData
+          formData,
+          { headers: { "Content-Type": "multipart/form-data" } }
         );
 
-        // console.log("====================================");
-        // console.log("Response: " + JSON.stringify(response, null, 2));
-        // console.log("====================================");
+        // setGoodsData(response.data)
+        if (Array.isArray(response.data.data)) {
+          setGoodsData(response.data.data);
+        }
       } catch (error) {
         console.error("Error: " + error);
       }
     };
     fetchData();
-  }, [setSearchInput]);
+  }, [shopkeeperNameId]);
 
   const [filteredData, setFilteredData] = useState([]);
 
@@ -217,7 +219,7 @@ function Dashboard() {
                         {index + 1}
                       </td>
                       <td className="py-2 px-2 border-b-2 border-r-2 border-black w-[68%]">
-                        {items.goods}
+                        {items.descriptions}
                       </td>
                       <td className="py-2 px-2 border-b-2 border-r-2 border-black">
                         ₹ {items.rate}
