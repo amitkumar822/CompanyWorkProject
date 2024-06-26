@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import BgImage from "../../data/Photos/Login/halftone-background-with-circles/5172658.jpg";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function AddGoodsLiist() {
   const navigate = useNavigate();
@@ -14,7 +17,73 @@ function AddGoodsLiist() {
 
   const [goodsName, setGoodsName] = useState("");
   const [goodsRate, setGoodsRate] = useState(0);
-  
+
+  const [shopkeeperId, setShopkeeperIt] = useState([]);
+  useEffect(() => {
+    const savedData = localStorage.getItem("ShopkeeperNameAndIdDetails");
+    if (savedData) {
+      setShopkeeperIt(JSON.parse(savedData));
+    }
+  }, [setShopkeeperIt]);
+
+  console.log("ID: " + shopkeeperId.id);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("shopkeeper_id", shopkeeperId.id);
+    formData.append("descriptions", goodsName);
+    formData.append("rate", goodsRate);
+
+    try {
+      const response = await axios.post(
+        "/api/insert_new_goods_th_shopker_id.php",
+        formData
+      );
+
+      console.log("====================================");
+      console.log("Response: " + JSON.stringify(response, null, 2));
+      console.log("====================================");
+
+      if (response.data.success) {
+        toast.success("Successful add your items!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      }else {
+        toast.error("Failed to add your items!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      }
+    } catch (error) {
+      console.error("Error: ", error);
+      toast.error("Network or Server error!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
+  };
+
   return (
     <>
       <div
@@ -30,7 +99,7 @@ function AddGoodsLiist() {
         </h1>
         {/* Shopkeepers Form Details */}
         <div className="w-[500px] mx-auto bg-gray-300 italic px-4 py-4 rounded-md shadow-md shadow-yellow-600 mt-10 tece">
-          <form action="">
+          <form onSubmit={handleSubmit}>
             <label htmlFor="goodsname" className="text-xl font-semibold">
               Goods Name
             </label>
@@ -71,6 +140,7 @@ function AddGoodsLiist() {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 }
