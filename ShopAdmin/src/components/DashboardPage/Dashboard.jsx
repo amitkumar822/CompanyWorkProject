@@ -1,24 +1,106 @@
-import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { FaCirclePlus } from "react-icons/fa6";
 import { IoIosSearch } from "react-icons/io";
-import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Dashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(!localStorage.getItem('LoginToken')) {
-      navigate('/');
+    if (!localStorage.getItem("LoginToken")) {
+      navigate("/");
       return;
     }
-  }, [])
+  }, []);
+
+  //==============👇Start Fetch Shopkeeper Name Using API 👇=============
+  const [shopkeeperName, setShopkeeperName] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/api/get_shopkeeper_detail.php");
+
+        if (Array.isArray(response.data)) {
+          setShopkeeperName(response.data);
+        }
+      } catch (error) {
+        console.error("Error: " + error);
+      }
+    };
+    fetchData();
+  }, [setShopkeeperName]);
+
+  const [searchInputShopKeeper, setSearchInputShopKeeper] = useState("");
+  const [filteredShopkeeperName, setFilteredShopkeeperName] = useState([]);
+
+  // console.log("====================================");
+  // console.log("ShopkeeperResponse: " + JSON.stringify(shopkeeperName, null, 2));
+  // console.log("====================================");
+
+  //👉 shopkeeper search functionality
+  useEffect(() => {
+    const filterData = shopkeeperName.filter((items) =>
+      items.name
+        .toLowerCase()
+        .trim()
+        .includes(searchInputShopKeeper.toLowerCase().trim())
+    );
+    setFilteredShopkeeperName(filterData);
+  }, [searchInputShopKeeper, shopkeeperName]);
+
+  //==============👆 End Fetch Shopkeeper Name Using API 👆=============
+
+  //===========👇 get shopkeeper name and id when clicking on shopkeeper name 👇=============
+  const [shopkeeperNameId, setShopkeeperNameId] = useState({
+    name: "",
+    id: "",
+  });
+
+  // const generateToken = (name, byId) => {
+  //   const token = btoa(`${name}:${byId}:${new Date()}`);
+  //   return token;
+  // };
+
+  const handleShopkeeperNameId = (data) => {
+    // const ShopkeeperNameAndIdToken = generateToken(data.name, data.id);
+    setShopkeeperNameId(data);
+    console.log('====================================');
+    console.log("Data: " + data.json());
+    console.log('====================================');
+    localStorage.setItem("ShopkeeperNameAndIdToken", data);
+  };
+
+  //==============👆 End get shopkeeper name and id when clicking on shopkeeper name 👆=============
+
+  //==============👇Start Fetch Goods List By Id 👇=============
+  const [goodsData, setGoodsData] = useState([]);
 
   //==============👇Goods Search functionality 👇=============
   const [searchInput, setSearchInput] = useState("");
 
-  const [goodsData, setGoodsData] = useState(goodsList);
+  useEffect(() => {
+    const fetchData = async () => {
+      const formData = new FormData();
+      formData.append("shopkeeper_id", shopkeeperNameId.id);
+
+      try {
+        const response = await axios.get(
+          "/api/get_goods_details.php",
+          formData
+        );
+
+        // console.log("====================================");
+        // console.log("Response: " + JSON.stringify(response, null, 2));
+        // console.log("====================================");
+      } catch (error) {
+        console.error("Error: " + error);
+      }
+    };
+    fetchData();
+  }, [setSearchInput]);
+
   const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
@@ -35,28 +117,6 @@ function Dashboard() {
     );
     setFilteredData(filterData);
   }, [searchInput, goodsData]);
-
-  // ==============👇 Shopkeeper Name Search functionality 👇============
-  const [searchInputShopKeeper, setSearchInputShopKeeper] = useState("");
-
-  const [shopkeeperName, setShopkeeperName] = useState(ShopkeeperName);
-  const [filteredShopkeeperName, setFilteredShopkeeperName] = useState([]);
-
-  // console.log("Shopkeeper: "+ JSON.stringify(shopkeeperName[0].allDetails, null, 2));
-
-  useEffect(() => {
-    const filterData = shopkeeperName.filter((items) =>
-      items.name
-        .toLowerCase()
-        .trim()
-        .includes(searchInputShopKeeper.toLowerCase().trim())
-    );
-    setFilteredShopkeeperName(filterData);
-  }, [searchInputShopKeeper, shopkeeperName]);
-
-  // const handleShopkeeperNameClick = (e) => {
-  //   console.log("Shopkeeper: "+ JSON.stringify(e.target.value, null, 2));
-  // }
 
   return (
     <>
@@ -86,12 +146,9 @@ function Dashboard() {
                 {filteredShopkeeperName.map((data, index) => (
                   <li
                     key={index}
-                    // onClick={() => {
-                    //   return(
-                    //     console.log("Shopkeeper: "+ JSON.stringify(data.allDetails[0], null, 2))
-                    //     // setShopkeeperName(data.allDetails)
-                    //   )
-                    // }}
+                    onClick={() =>
+                      handleShopkeeperNameId({ name: data.name, id: data.id })
+                    }
                     className="hover:bg-gray-400 hover:text-white duration-200 my-2 cursor-pointer rounded-md px-2 py-2 shadow-md shadow-gray-700"
                   >
                     {data.name}
@@ -113,7 +170,8 @@ function Dashboard() {
             {/* Search and Name Section */}
             <div className="bg-[#a8ff3e] pl-3 flex justify-between py-2 px-2">
               <span className="text-xl font-semibold italic">
-                Sri Kumaran Steels
+                {/* Sri Kumaran Steels */}
+                {shopkeeperNameId.name} {shopkeeperNameId.id}
               </span>
               <div className="flex items-center justify-center gap-3 relative">
                 <span>
