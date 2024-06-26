@@ -58,19 +58,18 @@ function Dashboard() {
     id: "",
   });
 
-  // const generateToken = (name, byId) => {
-  //   const token = btoa(`${name}:${byId}:${new Date()}`);
-  //   return token;
-  // };
+  useEffect(() => {
+    const savedData = localStorage.getItem("ShopkeeperNameAndIdDetails");
+    if (savedData) {
+      setShopkeeperNameId(JSON.parse(savedData));
+    }
+  }, []);
 
   const handleShopkeeperNameId = (data) => {
-    // const ShopkeeperNameAndIdToken = generateToken(data.name, data.id);
     setShopkeeperNameId(data);
-    console.log('====================================');
-    console.log("Data: " + data.json());
-    console.log('====================================');
-    localStorage.setItem("ShopkeeperNameAndIdToken", data);
+    localStorage.setItem("ShopkeeperNameAndIdDetails", JSON.stringify(data));
   };
+
 
   //==============👆 End get shopkeeper name and id when clicking on shopkeeper name 👆=============
 
@@ -171,7 +170,7 @@ function Dashboard() {
             <div className="bg-[#a8ff3e] pl-3 flex justify-between py-2 px-2">
               <span className="text-xl font-semibold italic">
                 {/* Sri Kumaran Steels */}
-                {shopkeeperNameId.name} {shopkeeperNameId.id}
+                {shopkeeperNameId.name}
               </span>
               <div className="flex items-center justify-center gap-3 relative">
                 <span>

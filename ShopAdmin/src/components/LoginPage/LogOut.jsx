@@ -3,6 +3,7 @@ import React from 'react'
 function LogOut() {
     const handleLogOut = () => {
         localStorage.removeItem("LoginToken")
+        localStorage.removeItem("ShopkeeperNameAndIdDetails")
         window.location.reload()
     }
   return (
