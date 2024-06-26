@@ -223,9 +223,20 @@ function PostYourLoadBusi() {
       }));
     }
 
-    // if (!formFiles.AlternativeNumber) {
-    //   toast.warn("Alternative Number is not field!");
-    // }
+    if (formFiles.AlternativeNumber) {
+      if (isNaN(formFiles.AlternativeNumber)) {
+        toast.warn("Invalid Alternative Number!", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      }
+    }
 
     if (!formFiles.PickUpDate) {
       toast.warn("PickUpDate must be required!");
@@ -470,7 +481,7 @@ function PostYourLoadBusi() {
                         label: city.name,
                       }))}
                       onChange={handleToCityChange}
-                      placeholder="Select City" 
+                      placeholder="Select City"
                       isClearable
                       className="min-w-[180px] lg:w-[70%] w-[95%]"
                       isDisabled={!toState}
