@@ -68,6 +68,26 @@ function Footer() {
                   Contact Us
                 </NavLink>
               </li>
+              <li className="text-lg pt-2 cursor-pointer hover:text-orange-700 font-semibold text-orange-900">
+                <NavLink
+                  to="/privacypolicy"
+                  className={({ isActive }) =>
+                    isActive ? "text-[#3c61ab]" : undefined
+                  }
+                >
+                  Privacy Policy
+                </NavLink>
+              </li>
+              <li className="text-lg pt-2 cursor-pointer hover:text-orange-700 font-semibold text-orange-900">
+                <NavLink
+                  to="/termsandconditions"
+                  className={({ isActive }) =>
+                    isActive ? "text-[#3c61ab]" : undefined
+                  }
+                >
+                  Terms And Conditions
+                </NavLink>
+              </li>
             </ul>
           </div>
         </div>
