@@ -55,9 +55,9 @@ function ContactUsPage() {
                 enquire@ankusamlogistics.com
               </h1>
               <h1 className="text-md font-semibold cursor-pointer">
-                <a href={`tel:${94873889705}`}>+91 94873889705</a>
+              <a href={`tel:${9487389706}`}>+91 94873 89706</a>
                 <br />
-                <a href={`tel:${94873889706}`}>+91 94873889706</a>
+                <a href={`tel:${9487389705}`}>+91 94873 89705</a>
               </h1>
               <h1 className="text-md mt-4 font-semibold cursor-pointer">
                 Client work with us
