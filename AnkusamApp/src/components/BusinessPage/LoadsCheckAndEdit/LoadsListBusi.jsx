@@ -559,6 +559,16 @@ function LoadListBusi() {
                           className="min-w-[180px] lg:w-[70%] w-[95%]"
                           isDisabled={!fromState}
                         />
+                        {/* if city is missing input field */}
+                        <input
+                          type="text"
+                          value={fromCityName}
+                          onChange={(e) => setFromCityName(e.target.value)}
+                          placeholder="Enter Missing city?"
+                          className={`min-w-[180px] lg:w-[70%] w-[95%] py-1 px-2 rounded-md ${
+                            fromStateName.length > 0 ? "" : "hidden"
+                          }`}
+                        />
                         {errors.fromCityName && (
                           <p className="text-red-500">{errors.fromCityName}</p>
                         )}
@@ -600,6 +610,16 @@ function LoadListBusi() {
                           isClearable
                           className="min-w-[180px] lg:w-[70%] w-[95%]"
                           isDisabled={!toState}
+                        />
+                        {/* if city is missing input field */}
+                        <input
+                          type="text"
+                          value={toCityName}
+                          onChange={(e) => setToCityName(e.target.value)}
+                          placeholder="Enter Missing city?"
+                          className={`min-w-[180px] lg:w-[70%] w-[95%] py-1 px-2 rounded-md ${
+                            toStateName.length > 0 ? "" : "hidden"
+                          }`}
                         />
                         {errors.toCityName && (
                           <p className="text-red-500">{errors.toCityName}</p>
