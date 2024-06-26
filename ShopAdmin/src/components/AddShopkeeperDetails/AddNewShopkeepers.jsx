@@ -48,15 +48,15 @@ function AddNewShopkeepers() {
     formData.append("phone", formField.phone);
     formData.append("state", formField.state);
     formData.append("address", formField.address);
-    formData.append("gstno", formField.gstno);
+    formData.append("gst", formField.gstno);
 
     try {
       const response = await axios.post(
-        // "/api/insert_new_shopkeeper.php",
+        "/api/insert_new_shopkeeper.php",
         formData
       );
 
-      // console.log("Response: " + JSON.stringify(response, null, 2));
+      console.log("Response: " + JSON.stringify(response, null, 2));
 
       if (response.data.success) {
         setIsLoading(false);
