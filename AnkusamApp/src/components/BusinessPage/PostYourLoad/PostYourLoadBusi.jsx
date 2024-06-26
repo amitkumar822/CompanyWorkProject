@@ -235,6 +235,7 @@ function PostYourLoadBusi() {
           progress: undefined,
           theme: "colored",
         });
+        return;
       }
     }
 

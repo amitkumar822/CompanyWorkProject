@@ -26,9 +26,9 @@ function Footer() {
                 Tamilnadu, India - 641062.
               </h2>
               <h3 className="mt-4 text-[#634f63] cursor-pointer">
-                <a href={`tel:${94873889705}`}>+91 94873889705</a>
+                <a href={`tel:${9487389706}`}>+91 94873 89706</a>
                 <br />
-                <a href={`tel:${94873889706}`}>+91 94873889706</a>
+                <a href={`tel:${9487389705}`}>+91 94873 89705</a>
               </h3>
             </div>
           </div>
