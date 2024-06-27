@@ -856,7 +856,7 @@ function VehiProfile() {
 
                 <div>
                   <h1 className="text-[17px] pt-2 font-semibold flex items-center gap-1">
-                    Aadhar Numbar{" "}
+                    Aadhar Number{" "}
                     <span
                       className={`${
                         !driverVehiAllDetails.aadhar_number && "hidden"
