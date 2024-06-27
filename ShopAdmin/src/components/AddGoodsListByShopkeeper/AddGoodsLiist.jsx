@@ -4,6 +4,7 @@ import axios from "axios";
 import BgImage from "../../data/Photos/Login/halftone-background-with-circles/5172658.jpg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import loadingGfg from "../../data/GfgLoding/loading.gif";
 
 function AddGoodsLiist() {
   const navigate = useNavigate();
@@ -15,8 +16,10 @@ function AddGoodsLiist() {
     }
   }, []);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const [goodsName, setGoodsName] = useState("");
-  const [goodsRate, setGoodsRate] = useState(0);
+  const [goodsRate, setGoodsRate] = useState("");
 
   const [shopkeeperId, setShopkeeperIt] = useState([]);
   useEffect(() => {
@@ -31,6 +34,8 @@ function AddGoodsLiist() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setIsLoading(true);
+
     const formData = new FormData();
     formData.append("shopkeeper_id", shopkeeperId.id);
     formData.append("descriptions", goodsName);
@@ -41,10 +46,6 @@ function AddGoodsLiist() {
         "/api/insert_new_goods_th_shopker_id.php",
         formData
       );
-
-      console.log("====================================");
-      console.log("Response: " + JSON.stringify(response, null, 2));
-      console.log("====================================");
 
       if (response.data.success) {
         toast.success("Successful add your items!", {
@@ -57,7 +58,11 @@ function AddGoodsLiist() {
           progress: undefined,
           theme: "colored",
         });
-      }else {
+        setIsLoading(false);
+        setGoodsName("");
+        setGoodsRate("");
+      } else {
+        setIsLoading(false);
         toast.error("Failed to add your items!", {
           position: "top-right",
           autoClose: 2000,
@@ -71,6 +76,7 @@ function AddGoodsLiist() {
       }
     } catch (error) {
       console.error("Error: ", error);
+      setIsLoading(false);
       toast.error("Network or Server error!", {
         position: "top-right",
         autoClose: 2000,
@@ -94,6 +100,20 @@ function AddGoodsLiist() {
           backgroundPosition: "center",
         }}
       >
+        {/* Loading image section */}
+        <div
+          className={`w-full md:h-[158%] h-[232%] z-50 bg-[rgba(0,0,0,0.5)] absolute ${
+            isLoading ? "" : "hidden"
+          }`}
+        >
+          <div className=" absolute w-full h-screen flex justify-center items-center">
+            <img
+              className="w-[100px] h-[100px] fixed"
+              src={loadingGfg}
+              alt=""
+            />
+          </div>
+        </div>
         <h1 className="text-2xl italic font-semibold text-white text-center pt-16 underline">
           Welcome to goods page
         </h1>
