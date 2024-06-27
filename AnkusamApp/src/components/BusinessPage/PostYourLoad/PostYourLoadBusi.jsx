@@ -284,7 +284,7 @@ function PostYourLoadBusi() {
         }
       );
 
-      console.log("response: " + JSON.stringify(response, null, 2));
+      // console.log("response: " + JSON.stringify(response, null, 2));
 
       if (response.data.success) {
         toast.success("Successfully post!", {
