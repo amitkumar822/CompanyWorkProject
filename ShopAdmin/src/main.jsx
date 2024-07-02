@@ -14,6 +14,7 @@ import Login from "./components/LoginPage/Login.jsx";
 import AddNewShopkeepers from "./components/AddShopkeeperDetails/AddNewShopkeepers.jsx";
 import AddGoodsLiist from "./components/AddGoodsListByShopkeeper/AddGoodsLiist.jsx";
 import LogOut from "./components/LoginPage/LogOut.jsx";
+import CreatedPoInvoice from "./components/PO_Pages/CreatedPO/CreatedPoInvoice.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -23,6 +24,7 @@ const router = createBrowserRouter(
       <Route path="/addnewshaopkeepersdetails" element={<AddNewShopkeepers />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/addgoodslist" element={<AddGoodsLiist />} />
+      <Route path="/createdpoinvoice" element={<CreatedPoInvoice />} />
     </Route>
   )
 );

@@ -16,7 +16,11 @@ function Header() {
           {/* content box */}
           <div className=" flex items-center justify-center text-xl font-semibold gap-4 uppercase italic">
             <span className=" cursor-pointer hover:text-gray-700 duration-200">
+              <NavLink to="/createdpoinvoice"
+              className={({ isActive}) =>  (isActive ? "text-[yellow]" : "")}
+              >
               CreatedPo
+              </NavLink>
             </span>
             <span className=" cursor-pointer hover:text-gray-700 duration-200">
               OpenPo
