@@ -16,6 +16,15 @@ function Header() {
           {/* content box */}
           <div className=" flex items-center justify-center text-xl font-semibold gap-4 uppercase italic">
             <span className=" cursor-pointer hover:text-gray-700 duration-200">
+              CreatedPo
+            </span>
+            <span className=" cursor-pointer hover:text-gray-700 duration-200">
+              OpenPo
+            </span>
+            <span className=" cursor-pointer hover:text-gray-700 duration-200">
+              ClosedPo
+            </span>
+            <span className=" cursor-pointer hover:text-gray-700 duration-200">
               <NavLink
                 to="/addnewshaopkeepersdetails"
                 className={({ isActive }) => (isActive ? "text-[yellow]" : "")}

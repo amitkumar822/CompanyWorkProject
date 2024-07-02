@@ -5,6 +5,7 @@ import BgImage from "../../data/Photos/Login/halftone-background-with-circles/51
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import loadingGfg from "../../data/GfgLoding/loading.gif";
+import { weightData } from "../../data/weight/weight";
 
 function AddGoodsLiist() {
   const navigate = useNavigate();
@@ -19,7 +20,10 @@ function AddGoodsLiist() {
   const [isLoading, setIsLoading] = useState(false);
 
   const [goodsName, setGoodsName] = useState("");
+  const [partNumber, setPartNumber] = useState("");
   const [goodsRate, setGoodsRate] = useState("");
+  const [weight, setWeight] = useState("");
+  const [weightUnit, setWeightUnit] = useState("");
 
   const [shopkeeperId, setShopkeeperIt] = useState([]);
   useEffect(() => {
@@ -29,16 +33,28 @@ function AddGoodsLiist() {
     }
   }, [setShopkeeperIt]);
 
-  console.log("ID: " + shopkeeperId.id);
+  // console.log("ID: " + shopkeeperId.id);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if(!weight) {
+      toast.warn("Weight is required")
+      return;
+    }
+
+    if(!weightUnit){
+      toast.warn("Weight Unit is required")
+      return;
+    }
 
     setIsLoading(true);
 
     const formData = new FormData();
     formData.append("shopkeeper_id", shopkeeperId.id);
     formData.append("descriptions", goodsName);
+    formData.append("goods_measure_units", (weight+" "+weightUnit));
+    formData.append("part_no", partNumber);
     formData.append("rate", goodsRate);
 
     try {
@@ -61,9 +77,12 @@ function AddGoodsLiist() {
         setIsLoading(false);
         setGoodsName("");
         setGoodsRate("");
+        setPartNumber("");
+        setWeight("");
+        setWeightUnit("");
       } else {
         setIsLoading(false);
-        toast.error("Failed to add your items!", {
+        toast.error("Part number already exist!", {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -89,6 +108,9 @@ function AddGoodsLiist() {
       });
     }
   };
+
+  // console.log("Weight: " + weightUnit +" "+ weight);
+  console.log("shopkeeperId.id: "+ shopkeeperId.id);
 
   return (
     <>
@@ -134,6 +156,46 @@ function AddGoodsLiist() {
               className="w-[90%] py-1 px-2 rounded-md shadow-md shadow-stone-500"
             />
             <br />
+            <label htmlFor="partnumber" className="text-xl font-semibold">
+              Part Number
+            </label>
+            <br />
+            <input
+              type="text"
+              id="partnumber"
+              value={partNumber}
+              onChange={(e) => setPartNumber(e.target.value)}
+              required
+              placeholder="Enter your unique part number"
+              className="w-[90%] py-1 px-2 rounded-md shadow-md shadow-stone-500"
+            />
+            <br />
+            <label htmlFor="" className="text-xl font-semibold">
+              Measurement
+            </label>
+            <br />
+            <div className="max-w-[90%]">
+              <select className="w-[48%] mr-3 py-1 px-2 rounded-md shadow-md shadow-stone-500 cursor-pointer"
+              onChange={(e) => setWeight(e.target.value)}
+              required
+              >
+                <option value="">Select Measurement</option>
+                <option value="KG">KG</option>
+                <option value="Ton">Ton</option>
+                <option value="HP">HP</option>
+                <option value="mm">mm</option>
+              </select>
+
+              <input
+                disabled={!weight}
+                onChange={(e) => setWeightUnit(e.target.value)}
+                placeholder="Enter your measurement details"
+                required
+                className="w-[48%] py-1 px-2 rounded-md shadow-md shadow-stone-500 cursor-pointer"
+              >
+               
+              </input>
+            </div>
             <label htmlFor="rate" className="text-xl font-semibold">
               Rate
             </label>

@@ -39,9 +39,8 @@ function Login() {
     formData.append("password", password.toString().trim());
 
     try {
+      
       const response = await axios.post("/api/login.php", formData);
-
-      console.log("Response: " + JSON.stringify(response, null, 2));
 
       if (response.data.success) {
         setIsLoading(false);
