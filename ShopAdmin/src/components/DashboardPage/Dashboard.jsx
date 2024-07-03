@@ -89,8 +89,6 @@ function Dashboard() {
 
   //==============👇Start Fetch Goods List By Id 👇=============
   const [goodsData, setGoodsData] = useState([]);
-
-  //==============👇Goods Search functionality 👇=============
   const [searchInput, setSearchInput] = useState("");
 
   useEffect(() => {
@@ -119,6 +117,8 @@ function Dashboard() {
     fetchData();
   }, [shopkeeperNameId]);
 
+  
+  //==============👇Goods Search functionality 👇=============
   const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
