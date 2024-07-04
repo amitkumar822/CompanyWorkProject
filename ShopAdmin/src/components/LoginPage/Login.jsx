@@ -94,7 +94,7 @@ function Login() {
   return (
     <>
       <div
-        className="w-full h-screen mx-auto no-underline sticky"
+        className="w-full h-screen mx-auto no-underline fixed"
         style={{
           backgroundImage: `url(${LoginBackground})`,
           backgroundSize: "cover",

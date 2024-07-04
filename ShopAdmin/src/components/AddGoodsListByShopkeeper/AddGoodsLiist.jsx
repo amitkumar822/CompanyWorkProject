@@ -109,13 +109,10 @@ function AddGoodsLiist() {
     }
   };
 
-  // console.log("Weight: " + weightUnit +" "+ weight);
-  console.log("shopkeeperId.id: "+ shopkeeperId.id);
-
   return (
     <>
       <div
-        className="w-full h-screen mx-auto pt-16"
+        className="w-full h-screen mx-auto pt-16 fixed"
         style={{
           backgroundImage: `url(${BgImage})`,
           backgroundSize: "cover",
@@ -181,9 +178,8 @@ function AddGoodsLiist() {
               >
                 <option value="">Select Measurement</option>
                 <option value="KG">KG</option>
-                <option value="Ton">Ton</option>
-                <option value="HP">HP</option>
-                <option value="mm">mm</option>
+                <option value="NOS">NOS</option>
+                <option value="ITEMS">ITEMS</option>
               </select>
 
               <input

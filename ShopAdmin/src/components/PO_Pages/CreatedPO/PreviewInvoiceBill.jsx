@@ -46,7 +46,10 @@ const PreviewInvoiceBill = () => {
 
   // Calculate Total Amount
   const totalGSTAmount = (amount, quantity) => {
-    return (amount * quantity + parseFloat(calculateGST(amount, quantity))).toFixed(2);
+    return (
+      amount * quantity +
+      parseFloat(calculateGST(amount, quantity))
+    ).toFixed(2);
   };
 
   return (
@@ -239,9 +242,9 @@ const PreviewInvoiceBill = () => {
 
             {/* Grand Total */}
             <div className=" border-b-[1px] border-black flex">
-              <div className="w-[91px] lg:w-[152px] border-r-[1px] border-black"></div>
-              <div className="w-[380px] lg:w-[553.5px] border-r-[1px] border-black"></div>
-              <div className="w-[68px] lg:w-[94.5px] border-r-[1px] border-black"></div>
+              <div className="w-[91px] lg:w-[152px] border-black"></div>
+              <div className="w-[380px] lg:w-[553.5px] border-black"></div>
+              <div className="w-[68px] lg:w-[94.5px] border-black"></div>
               <div className="w-[151px] lg:w-[218px] border-r-[1px] border-black text-center font-semibold">
                 Total Amounts
               </div>

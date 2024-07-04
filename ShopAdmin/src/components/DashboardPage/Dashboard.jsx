@@ -214,7 +214,7 @@ function Dashboard() {
 
   return (
     <>
-      <div className="w-full h-screen mx-auto bg-[#f2d7d7] pt-16">
+      <div className="w-full h-screen mx-auto bg-[#f2d7d7] pt-16 fixed">
         {/* Loading image section */}
         <div
           className={`w-full md:h-[158%] h-[232%] z-50 bg-[rgba(0,0,0,0.5)] absolute ${

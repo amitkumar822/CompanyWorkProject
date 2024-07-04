@@ -237,7 +237,7 @@ function CreatedPoInvoice() {
         </h1>
         <form
           onSubmit={handleSubmit}
-          className="w-[80%] mx-auto border border-black px-4 py-4 mt-6 rounded-md"
+          className="w-[90%] mx-auto border border-black px-4 py-4 mt-6 rounded-md"
         >
           <label htmlFor="shopkeepername" className="text-xl italic">
             Shopkeeper Name
@@ -322,7 +322,7 @@ function CreatedPoInvoice() {
               </thead>
               <tbody className="bg-gray-200">
                 {listGoods.map((goods, index) => (
-                  <tr key={index}>
+                  <tr key={index} className=" odd:bg-gray-100">
                     <td className="py-2 text-center">{index + 1}</td>
                     <td className="py-2 text-center">
                       {goods.label} ({goods.goodsId})
@@ -362,8 +362,13 @@ function CreatedPoInvoice() {
               </tbody>
             </table>
           </div>
+
           {/* Preview Created PO */}
-          <div className={`w-[96%] flex justify-end ${listGoods.length === 0 ? 'hidden' : ''}`}>
+          <div
+            className={`w-[96%] flex justify-end ${
+              listGoods.length === 0 ? "hidden" : ""
+            }`}
+          >
             <Link
               to="/previewinvoicebill"
               className="bg-green-500 hover:bg-green-600 text-xl text-white hover:text-[#e7e6e6] duration-200 py-2 px-3 rounded-md font-semibold cursor-pointer"
@@ -389,7 +394,11 @@ function CreatedPoInvoice() {
             </div>
           )}
 
-          <div className={`flex justify-center mt-4 ${listGoods.length === 0 ? 'hidden' : ''}`}>
+          <div
+            className={`flex justify-center mt-4 ${
+              listGoods.length === 0 ? "hidden" : ""
+            }`}
+          >
             <button
               type="submit"
               disabled={disableButtons}
@@ -404,13 +413,14 @@ function CreatedPoInvoice() {
           </div>
         </form>
       </div>
+
       {/* Delete Confirmation Dilog Box */}
       <div
         className={`w-full h-[130%] mt-16 bg-[rgba(0,0,0,0.5)] absolute top-0 left-0 flex justify-center items-center ${
           !showDeleteConfirmation ? "hidden" : ""
         }`}
       >
-        <div className={`w-[500px] bg-gray-600 p-4 rounded-md z-50`}>
+        <div className={`w-[500px] bg-gray-600 p-4 rounded-md z-50 -mt-60`}>
           <h1 className="text-xl text-white font-semibold">
             Delete Confirmation
           </h1>

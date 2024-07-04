@@ -113,7 +113,7 @@ function AddNewShopkeepers() {
   return (
     <>
       <div
-        className="w-full h-screen mx-auto pt-16"
+        className="w-full h-screen mx-auto pt-16 fixed"
         style={{
           backgroundImage: `url(${ShopkeeperBgPhoto})`,
           backgroundSize: "cover",
