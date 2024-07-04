@@ -18,6 +18,7 @@ import CreatedPoInvoice from "./components/PO_Pages/CreatedPO/CreatedPoInvoice.j
 import OpenPo from "./components/PO_Pages/OpenPO/OpenPo.jsx";
 import ClosePo from "./components/PO_Pages/ClosePOPage/ClosePo.jsx";
 import InvoiceForm from "./components/PO_Pages/InvoiceBill/InvoiceForm.jsx";
+import PreviewInvoiceBill from "./components/PO_Pages/CreatedPO/PreviewInvoiceBill.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,6 +31,7 @@ const router = createBrowserRouter(
       <Route path="/createdpoinvoice" element={<CreatedPoInvoice />} />
       <Route path="/openpo" element={<OpenPo />} />
       <Route path="/closepo" element={<ClosePo />} />
+      <Route path="/previewinvoicebill" element={<PreviewInvoiceBill />} />
       <Route path="/invoicebill" element={<InvoiceForm />} />
     </Route>
   )

@@ -3,8 +3,12 @@ import axios from "axios";
 import Select from "react-select";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Link } from "react-router-dom";
 
 function CreatedPoInvoice() {
+  //submited succesfully disable buttons
+  const [disableButtons, setDisableButtons] = useState(false);
+
   // Fetch Shopkeeper name using API
   const [shopkeeperName, setShopkeeperName] = useState([]);
 
@@ -57,11 +61,14 @@ function CreatedPoInvoice() {
       mobile: selectedOption.mobile,
       gst: selectedOption.gst,
       shopkeeperId: selectedOption.shopkeeperId,
+      ShopkeeperName: selectedOption.label,
     };
     setShopkeeperAllDetailsWhenSelected(details);
     localStorage.setItem("selectedShopkeeper", JSON.stringify(selectedOption));
     localStorage.setItem("shopkeeperDetails", JSON.stringify(details));
     setListGoods([]); // Clear goods details
+    localStorage.removeItem("listGoods"); // Clear goods details when shopkeeper changes
+    setDisableButtons(false); // Disable
   };
 
   // Fetch Goods by ID
@@ -109,7 +116,7 @@ function CreatedPoInvoice() {
       if (!prevListGoods.find((item) => item.label === selectedGoods.label)) {
         const updatedGoods = [
           ...prevListGoods,
-          { ...selectedGoods, quantity: 1, uploadStatus: false },
+          { ...selectedGoods, quantity: 1 },
         ];
         localStorage.setItem("listGoods", JSON.stringify(updatedGoods));
         return updatedGoods;
@@ -125,6 +132,7 @@ function CreatedPoInvoice() {
     localStorage.setItem("listGoods", JSON.stringify(updatedGoods));
   };
 
+  //==========👇 Total And GST Calculate 👇=================
   const calculateTotal = () => {
     return listGoods.reduce((acc, item) => acc + item.rate * item.quantity, 0);
   };
@@ -134,40 +142,30 @@ function CreatedPoInvoice() {
   const sgst = totalAmount * 0.09;
   const finalAmount = totalAmount + cgst + sgst;
 
-  const handleDelete = async (index, itemsID) => {
-    const updatedGoods = [...listGoods];
-    updatedGoods.splice(index, 1);
-    setListGoods(updatedGoods);
-    localStorage.setItem("listGoods", JSON.stringify(updatedGoods));
+  // finalAmount save in localStorage for preview purposes
+  useEffect(() => {
+    localStorage.setItem("FinalAmount", finalAmount);
+  }, [finalAmount]);
 
-    // const formData = new FormData();
-    // formData.append("goods_id", itemsID);
+  //===========👇�� Delete Goods Section ��👇=================
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [deleteIndex, setDeleteIndex] = useState(null);
 
-    // try {
-    //   const response = await axios.post(
-    //     "/api/created_po/delete_created_po.php",
-    //     formData
-    //   );
-
-    //   console.log(
-    //     "DeleteResponse",
-    //     JSON.stringify(response.data.deleted, null, 2)
-    //   );
-
-    //   if (response.data.deleted) {
-    //     toast.success("Goods items deleted successfully!");
-    //     const updatedGoods = [...listGoods];
-    //     updatedGoods.splice(index, 1);
-    //     setListGoods(updatedGoods);
-    //     localStorage.setItem("listGoods", JSON.stringify(updatedGoods));
-    //   } else {
-    //     toast.error("Failed to delete goods items!");
-    //   }
-    // } catch (error) {
-    //   console.log("Delete Error: " + error);
-    // }
+  const handleDelete = (index) => {
+    setShowDeleteConfirmation(true);
+    setDeleteIndex(index);
   };
 
+  const handleDeleteConfirmation = () => {
+    const updatedGoods = [...listGoods];
+    updatedGoods.splice(deleteIndex, 1);
+    setListGoods(updatedGoods);
+    localStorage.setItem("listGoods", JSON.stringify(updatedGoods));
+    toast.success("Successful remove goods!");
+    setShowDeleteConfirmation(false);
+  };
+
+  //===========👇 Form Submitions Section 👇=================
   const handleSubmit = async (e) => {
     e.preventDefault();
     const dataToSend = listGoods.map((item) => ({
@@ -185,13 +183,7 @@ function CreatedPoInvoice() {
       shopkeeperAllDetailsWhenSelected.shopkeeperId
     ); // Add shopkeeper ID to form data for POST request
     formData.append("item_all_detail", JSON.stringify(dataToSend)); // Add payload to form data for POST request
-    formData.append("final_total_amout", finalAmount); // Add final amount to form data for POST
-
-    console.log("Payload: ", JSON.stringify(dataToSend)); // Add logging here for debugging
-    console.log(
-      "shopkeeper_id: ",
-      shopkeeperAllDetailsWhenSelected.shopkeeperId
-    ); // Add logging here for debugging
+    formData.append("final_total_amout", finalAmount.toFixed(2)); // Add final amount to form data for POST
 
     try {
       const response = await axios.post(
@@ -199,10 +191,11 @@ function CreatedPoInvoice() {
         formData
       );
 
-      console.log("Response: ", JSON.stringify(response.data, null, 2)); // Add logging here for debugging
+      // console.log("Response: ", JSON.stringify(response.data, null, 2)); // Add logging here for debugging
 
       if (response.data.success) {
-        toast.success("Data submitted successfully");
+        toast.success("Submitted successfully");
+        setDisableButtons(true);
       } else {
         toast.error("Submission failed: " + response.data.error);
       }
@@ -211,31 +204,7 @@ function CreatedPoInvoice() {
     }
   };
 
-  // const [goodsAllPurchaseDetails, setGoodsAllPurchaseDetails] = useState([]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get("/api/created_po/get_created_po.php");
-  //       console.log(
-  //         "Fetch Response: ",
-  //         JSON.stringify(response.data.data, null, 2)
-  //       );
-
-  //       // const parsedData = response.data.data.map(item => ({
-  //       //   ...item,
-  //       //   item_all_detail: JSON.parse(item.item_all_detail)
-  //       // }));
-
-  //       // setGoodsAllPurchaseDetails(parsedData);
-  //     } catch (error) {
-  //       console.log("Fetching data failed: ", error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
-
+  //===========👇 Custom Styles for Select Box 👇============
   const customStyles = {
     control: (provided) => ({
       ...provided,
@@ -366,7 +335,7 @@ function CreatedPoInvoice() {
                           handleQuantityChange(index, Number(e.target.value))
                         }
                         min="1"
-                        className="w-[70%] mx-auto"
+                        className="w-[32%] mx-auto rounded-md pl-1 border border-black"
                       />
                     </td>
                     <td className="py-2 text-center">{goods.rate}</td>
@@ -379,11 +348,11 @@ function CreatedPoInvoice() {
                     <td className="py-2 text-center">
                       {(goods.rate * goods.quantity * 1.18).toFixed(2)}
                     </td>
-                    
+
                     <td className="py-2 text-center">
                       <span
-                        className="bg-red-500 text-white px-2 py-1 rounded-md cursor-pointer mx-1"
-                        onClick={() => handleDelete(index, goods.goodsId)}
+                        className="bg-red-500 hover:bg-red-600 text-white hover:text-[#e7e6e6] duration-200 px-2 py-1 rounded-md cursor-pointer mx-1"
+                        onClick={() => handleDelete(index)}
                       >
                         Remove
                       </span>
@@ -392,6 +361,15 @@ function CreatedPoInvoice() {
                 ))}
               </tbody>
             </table>
+          </div>
+          {/* Preview Created PO */}
+          <div className={`w-[96%] flex justify-end ${listGoods.length === 0 ? 'hidden' : ''}`}>
+            <Link
+              to="/previewinvoicebill"
+              className="bg-green-500 hover:bg-green-600 text-xl text-white hover:text-[#e7e6e6] duration-200 py-2 px-3 rounded-md font-semibold cursor-pointer"
+            >
+              Preview
+            </Link>
           </div>
           {/* Total Amount */}
           {listGoods.length > 0 && (
@@ -411,15 +389,49 @@ function CreatedPoInvoice() {
             </div>
           )}
 
-          <div className="flex justify-center mt-4">
+          <div className={`flex justify-center mt-4 ${listGoods.length === 0 ? 'hidden' : ''}`}>
             <button
               type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded-md"
+              disabled={disableButtons}
+              className={`${
+                disableButtons
+                  ? "bg-gray-400 text-gray-700"
+                  : "bg-blue-600 hover:bg-blue-700 text-white hover:text-[#e7e6e6]"
+              } duration-200 text-xl px-4 py-2 rounded-md font-semibold`}
             >
-              Submit
+              Submit For Approval
             </button>
           </div>
         </form>
+      </div>
+      {/* Delete Confirmation Dilog Box */}
+      <div
+        className={`w-full h-[130%] mt-16 bg-[rgba(0,0,0,0.5)] absolute top-0 left-0 flex justify-center items-center ${
+          !showDeleteConfirmation ? "hidden" : ""
+        }`}
+      >
+        <div className={`w-[500px] bg-gray-600 p-4 rounded-md z-50`}>
+          <h1 className="text-xl text-white font-semibold">
+            Delete Confirmation
+          </h1>
+          <p className="text-sm text-white">
+            Are you sure you want to delete the selected goods?
+          </p>
+          <div className="flex justify-end gap-2 mt-4">
+            <button
+              className="bg-green-500 text-white px-4 py-2 rounded-md font-semibold"
+              onClick={() => setShowDeleteConfirmation(false)}
+            >
+              No
+            </button>
+            <button
+              className="bg-red-500 text-white px-4 py-2 rounded-md font-semibold"
+              onClick={handleDeleteConfirmation}
+            >
+              Yes
+            </button>
+          </div>
+        </div>
       </div>
       <ToastContainer />
     </div>
