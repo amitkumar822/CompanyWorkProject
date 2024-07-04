@@ -15,6 +15,9 @@ import AddNewShopkeepers from "./components/AddShopkeeperDetails/AddNewShopkeepe
 import AddGoodsLiist from "./components/AddGoodsListByShopkeeper/AddGoodsLiist.jsx";
 import LogOut from "./components/LoginPage/LogOut.jsx";
 import CreatedPoInvoice from "./components/PO_Pages/CreatedPO/CreatedPoInvoice.jsx";
+import OpenPo from "./components/PO_Pages/OpenPO/OpenPo.jsx";
+import ClosePo from "./components/PO_Pages/ClosePOPage/ClosePo.jsx";
+import InvoiceForm from "./components/PO_Pages/InvoiceBill/InvoiceForm.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -25,6 +28,9 @@ const router = createBrowserRouter(
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/addgoodslist" element={<AddGoodsLiist />} />
       <Route path="/createdpoinvoice" element={<CreatedPoInvoice />} />
+      <Route path="/openpo" element={<OpenPo />} />
+      <Route path="/closepo" element={<ClosePo />} />
+      <Route path="/invoicebill" element={<InvoiceForm />} />
     </Route>
   )
 );

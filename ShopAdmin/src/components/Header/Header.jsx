@@ -16,17 +16,28 @@ function Header() {
           {/* content box */}
           <div className=" flex items-center justify-center text-xl font-semibold gap-4 uppercase italic">
             <span className=" cursor-pointer hover:text-gray-700 duration-200">
-              <NavLink to="/createdpoinvoice"
-              className={({ isActive}) =>  (isActive ? "text-[yellow]" : "")}
+              <NavLink
+                to="/createdpoinvoice"
+                className={({ isActive }) => (isActive ? "text-[yellow]" : "")}
               >
-              CreatedPo
+                CreatedPo
               </NavLink>
             </span>
             <span className=" cursor-pointer hover:text-gray-700 duration-200">
-              OpenPo
+              <NavLink
+                to="/openpo"
+                className={({ isActive }) => (isActive ? "text-[yellow]" : "")}
+              >
+                OpenPo
+              </NavLink>
             </span>
             <span className=" cursor-pointer hover:text-gray-700 duration-200">
-              ClosedPo
+              <NavLink
+                to="/closepo"
+                className={({ isActive }) => (isActive ? "text-[yellow]" : "")}
+              >
+                ClosedPo
+              </NavLink>
             </span>
             <span className=" cursor-pointer hover:text-gray-700 duration-200">
               <NavLink
@@ -49,7 +60,7 @@ function Header() {
                 to=""
                 className={({ isActive }) => (isActive ? "text-[yellow]" : "")}
               >
-                {localStorage.getItem('LoginToken') ? <LogOut /> : 'Login'}
+                {localStorage.getItem("LoginToken") ? <LogOut /> : "Login"}
                 {/* Login */}
               </NavLink>
             </span>

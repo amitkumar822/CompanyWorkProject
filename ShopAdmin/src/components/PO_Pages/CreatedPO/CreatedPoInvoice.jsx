@@ -109,7 +109,7 @@ function CreatedPoInvoice() {
       if (!prevListGoods.find((item) => item.label === selectedGoods.label)) {
         const updatedGoods = [
           ...prevListGoods,
-          { ...selectedGoods, quantity: 1 },
+          { ...selectedGoods, quantity: 1, uploadStatus: false },
         ];
         localStorage.setItem("listGoods", JSON.stringify(updatedGoods));
         return updatedGoods;
@@ -134,44 +134,107 @@ function CreatedPoInvoice() {
   const sgst = totalAmount * 0.09;
   const finalAmount = totalAmount + cgst + sgst;
 
-  const handleDelete = (index) => {
-    const updatedGoods = listGoods.filter((_, i) => i !== index);
+  const handleDelete = async (index, itemsID) => {
+    const updatedGoods = [...listGoods];
+    updatedGoods.splice(index, 1);
     setListGoods(updatedGoods);
     localStorage.setItem("listGoods", JSON.stringify(updatedGoods));
+
+    // const formData = new FormData();
+    // formData.append("goods_id", itemsID);
+
+    // try {
+    //   const response = await axios.post(
+    //     "/api/created_po/delete_created_po.php",
+    //     formData
+    //   );
+
+    //   console.log(
+    //     "DeleteResponse",
+    //     JSON.stringify(response.data.deleted, null, 2)
+    //   );
+
+    //   if (response.data.deleted) {
+    //     toast.success("Goods items deleted successfully!");
+    //     const updatedGoods = [...listGoods];
+    //     updatedGoods.splice(index, 1);
+    //     setListGoods(updatedGoods);
+    //     localStorage.setItem("listGoods", JSON.stringify(updatedGoods));
+    //   } else {
+    //     toast.error("Failed to delete goods items!");
+    //   }
+    // } catch (error) {
+    //   console.log("Delete Error: " + error);
+    // }
   };
 
-  const AddGoodsItemsHandleButton = async (index) => {
-    const goods = listGoods[index];
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const dataToSend = listGoods.map((item) => ({
+      goods_id: item.goodsId,
+      quantity: item.quantity,
+      rate: item.rate,
+      cgst: (item.rate * item.quantity * 0.09).toFixed(2),
+      sgst: (item.rate * item.quantity * 0.09).toFixed(2),
+      total: (item.rate * item.quantity * 1.18).toFixed(2),
+    }));
 
     const formData = new FormData();
-    formData.append("goods_id", goods.goodsId);
-    formData.append("quantity", goods.quantity);
-    formData.append("rate", goods.rate);
-    formData.append("cgst", (goods.rate * goods.quantity * 0.09).toFixed(2));
-    formData.append("sgst", (goods.rate * goods.quantity * 0.09).toFixed(2));
-    formData.append("total", (goods.rate * goods.quantity * 1.18).toFixed(2));
     formData.append(
       "shopkeeper_id",
-      shopkeeperAllDetailsWhenSelected?.shopkeeperId
-    );
+      shopkeeperAllDetailsWhenSelected.shopkeeperId
+    ); // Add shopkeeper ID to form data for POST request
+    formData.append("item_all_detail", JSON.stringify(dataToSend)); // Add payload to form data for POST request
+    formData.append("final_total_amout", finalAmount); // Add final amount to form data for POST
+
+    console.log("Payload: ", JSON.stringify(dataToSend)); // Add logging here for debugging
+    console.log(
+      "shopkeeper_id: ",
+      shopkeeperAllDetailsWhenSelected.shopkeeperId
+    ); // Add logging here for debugging
 
     try {
       const response = await axios.post(
-        "/api/created_po/created_po.php",
+        "/api/created_po/upload_all_created_po_at_one_time.php",
         formData
       );
 
+      console.log("Response: ", JSON.stringify(response.data, null, 2)); // Add logging here for debugging
+
       if (response.data.success) {
-        // handleDelete(index);
-        toast.success("Goods items uploaded successfully!");
+        toast.success("Data submitted successfully");
       } else {
-        toast.error("Error uploading goods items!");
+        toast.error("Submission failed: " + response.data.error);
       }
     } catch (error) {
-      console.error("Error uploading: ", error);
-      toast.error("Error uploading goods items!");
+      toast.error("Network or server error: " + error.message);
     }
   };
+
+  // const [goodsAllPurchaseDetails, setGoodsAllPurchaseDetails] = useState([]);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get("/api/created_po/get_created_po.php");
+  //       console.log(
+  //         "Fetch Response: ",
+  //         JSON.stringify(response.data.data, null, 2)
+  //       );
+
+  //       // const parsedData = response.data.data.map(item => ({
+  //       //   ...item,
+  //       //   item_all_detail: JSON.parse(item.item_all_detail)
+  //       // }));
+
+  //       // setGoodsAllPurchaseDetails(parsedData);
+  //     } catch (error) {
+  //       console.log("Fetching data failed: ", error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
 
   const customStyles = {
     control: (provided) => ({
@@ -203,7 +266,10 @@ function CreatedPoInvoice() {
         <h1 className="text-center text-3xl italic pt-4 font-semibold font-serif underline text-green-600">
           Welcome to Created PO Page
         </h1>
-        <div className="w-[80%] mx-auto border border-black px-4 py-4 mt-6 rounded-md">
+        <form
+          onSubmit={handleSubmit}
+          className="w-[80%] mx-auto border border-black px-4 py-4 mt-6 rounded-md"
+        >
           <label htmlFor="shopkeepername" className="text-xl italic">
             Shopkeeper Name
           </label>
@@ -275,19 +341,20 @@ function CreatedPoInvoice() {
             <table className="w-[99%] mx-auto mb-4 border border-black rounded-md">
               <thead className="bg-black text-white">
                 <tr>
+                  <th>SI NO</th>
                   <th className="py-2">Goods</th>
                   <th>Quantity</th>
                   <th>Rate</th>
-                  <th>CGST(9%)</th>
-                  <th>SGST(9%)</th>
+                  <th>CGST (9%)</th>
+                  <th>SGST (9%)</th>
                   <th>Total</th>
-                  <th>Add Items</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody className="bg-gray-200">
                 {listGoods.map((goods, index) => (
                   <tr key={index}>
+                    <td className="py-2 text-center">{index + 1}</td>
                     <td className="py-2 text-center">
                       {goods.label} ({goods.goodsId})
                     </td>
@@ -312,21 +379,14 @@ function CreatedPoInvoice() {
                     <td className="py-2 text-center">
                       {(goods.rate * goods.quantity * 1.18).toFixed(2)}
                     </td>
+                    
                     <td className="py-2 text-center">
-                      <button
-                        className="bg-blue-500 text-white px-2 py-1 rounded-md"
-                        onClick={() => AddGoodsItemsHandleButton(index)}
+                      <span
+                        className="bg-red-500 text-white px-2 py-1 rounded-md cursor-pointer mx-1"
+                        onClick={() => handleDelete(index, goods.goodsId)}
                       >
-                        Upload
-                      </button>
-                    </td>
-                    <td className="py-2 text-center">
-                      <button
-                        className="bg-red-500 text-white px-2 py-1 rounded-md"
-                        onClick={() => handleDelete(index)}
-                      >
-                        Delete
-                      </button>
+                        Remove
+                      </span>
                     </td>
                   </tr>
                 ))}
@@ -350,7 +410,16 @@ function CreatedPoInvoice() {
               </p>
             </div>
           )}
-        </div>
+
+          <div className="flex justify-center mt-4">
+            <button
+              type="submit"
+              className="bg-blue-500 text-white px-4 py-2 rounded-md"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
       </div>
       <ToastContainer />
     </div>
