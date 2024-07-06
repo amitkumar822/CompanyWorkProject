@@ -170,12 +170,15 @@ function CreatedPoInvoice() {
     e.preventDefault();
     const dataToSend = listGoods.map((item) => ({
       goods_id: item.goodsId,
+      descriptions: item.label,
       quantity: item.quantity,
       rate: item.rate,
       cgst: (item.rate * item.quantity * 0.09).toFixed(2),
       sgst: (item.rate * item.quantity * 0.09).toFixed(2),
       total: (item.rate * item.quantity * 1.18).toFixed(2),
     }));
+
+    console.log("AllDAta: "+ JSON.stringify(dataToSend, null, 2));
 
     const formData = new FormData();
     formData.append(
