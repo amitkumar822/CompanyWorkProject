@@ -21,6 +21,7 @@ import InvoiceForm from "./components/PO_Pages/InvoiceBill/InvoiceForm.jsx";
 import PreviewInvoiceBill from "./components/PO_Pages/CreatedPO/PreviewInvoiceBill.jsx";
 import CheckYourCreatedPoList from "./components/PO_Pages/CheckYourCreatedPO/CheckYourCreatedPoList.jsx";
 import RejectedPo from "./components/PO_Pages/RejectedPOPages/RejectedPo.jsx";
+import WatingForAprovalList from "./components/PO_Pages/WatingForAprovalPOPage/WatingForAprovalList.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -36,6 +37,7 @@ const router = createBrowserRouter(
       <Route path="/previewinvoicebill" element={<PreviewInvoiceBill />} />
       <Route path="/checkyourcreatedpolist" element={<CheckYourCreatedPoList />} />
       <Route path="/rejectedpolist" element={<RejectedPo />} />
+      <Route path="/watingfroaprovallist" element={<WatingForAprovalList />} />
       <Route path="/invoicebill" element={<InvoiceForm />} />
     </Route>
   )
