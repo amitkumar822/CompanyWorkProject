@@ -17,6 +17,22 @@ function Header() {
           <div className=" flex items-center justify-center text-xl font-semibold gap-4 uppercase italic">
             <span className=" cursor-pointer hover:text-gray-700 duration-200">
               <NavLink
+                to="/checkyourcreatedpolist"
+                className={({ isActive }) => (isActive ? "text-[yellow]" : "")}
+              >
+                CYPL
+              </NavLink>
+            </span>
+            <span className=" cursor-pointer hover:text-gray-700 duration-200">
+              <NavLink
+                to="/rejectedpolist"
+                className={({ isActive }) => (isActive ? "text-[yellow]" : "")}
+              >
+                RPOL
+              </NavLink>
+            </span>
+            <span className=" cursor-pointer hover:text-gray-700 duration-200">
+              <NavLink
                 to="/createdpoinvoice"
                 className={({ isActive }) => (isActive ? "text-[yellow]" : "")}
               >
