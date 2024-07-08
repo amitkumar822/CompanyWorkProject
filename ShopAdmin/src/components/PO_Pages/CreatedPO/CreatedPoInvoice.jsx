@@ -178,7 +178,7 @@ function CreatedPoInvoice() {
       total: (item.rate * item.quantity * 1.18).toFixed(2),
     }));
 
-    console.log("AllDAta: "+ JSON.stringify(dataToSend, null, 2));
+    console.log("AllDAta: " + JSON.stringify(dataToSend, null, 2));
 
     const formData = new FormData();
     formData.append(
@@ -413,6 +413,15 @@ function CreatedPoInvoice() {
             >
               Submit For Approval
             </button>
+          </div>
+
+          <div className={`flex justify-center mt-4`}>
+            <Link to='/checkyourcreatedpolist'
+              className={`bg-gradient-to-r from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500 text-white
+               duration-200 text-xl px-4 py-2 rounded-md font-semibold cursor-pointer`}
+            >
+              Check Your Created PO List
+            </Link>
           </div>
         </form>
       </div>

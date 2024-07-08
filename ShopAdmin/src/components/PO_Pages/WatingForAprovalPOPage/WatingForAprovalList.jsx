@@ -33,12 +33,16 @@ function WatingForAprovalList() {
   const [spName, setSpName] = useState(
     () => localStorage.getItem("WFAspName") || ""
   );
+  const [shopkeeperDetailsWhenClickSpName, setShopkeeperDetails] = useState(
+    () => localStorage.getItem("WFASpId") || ""
+  );
   const [createdPoListID, setCreatedPoListID] = useState([]);
 
   const handleShopkeeperId = async ({ name, id }) => {
     localStorage.setItem("WFAspName", name);
     localStorage.setItem("WFASpId", id);
     setSpName(name);
+    setShopkeeper_id(id);
 
     const formData = new FormData();
     formData.append("shopkeeper_id", id);
@@ -48,6 +52,10 @@ function WatingForAprovalList() {
         "/api/created_po/get_created_po_th_shop_id.php",
         formData
       );
+
+      // console.log('====================================');
+      // console.log("Created poList: " + JSON.stringify(response, null, 2));
+      // console.log('====================================');
 
       if (Array.isArray(response.data)) {
         setCreatedPoListID(response.data);
@@ -60,22 +68,33 @@ function WatingForAprovalList() {
 
   // ===========👇 Click goods id fetch goods details list 👇=============
   const [modelGoodsListID, setGoodsListID] = useState(false);
+  const [createdPoGoodsId, setCreatedPoGoodsId] = useState(
+    () => localStorage.getItem("WFACreatedPoGoodsId") || ""
+  ); // Edit
+
   const [createdPoList, setCreatedPoList] = useState(
     () => JSON?.parse(localStorage.getItem("WFACreatedPoList")) || []
   );
+
   const [finalAmount, setFinalAmount] = useState(
     () => localStorage.getItem("WFAFinalTotalAmout") || ""
-  );
+  ); // Edit right now
 
   const handleGoodsListId = async (id) => {
     const formData = new FormData();
     formData.append("id", id);
+    setCreatedPoGoodsId(id);
+    localStorage.setItem("WFACreatedPoGoodsId", id);
+
+    console.log("GoodsID: " + id);
 
     try {
       const response = await axios.post(
         "/api/created_po/get_create_po_th_created_id.php",
         formData
       );
+
+      console.log("Response2: " + JSON.stringify(response.data[0], null, 2));
 
       if (Array.isArray(response.data[0].item_all_detail)) {
         setCreatedPoList(response.data[0].item_all_detail);
@@ -95,41 +114,34 @@ function WatingForAprovalList() {
     }
   };
 
-  //=======👇 Updating Created Po and saved Po Details 👇=======
-  const [updatedPoNewList, setUpdatedPoNewList] = useState({
-    id: "",
-    shopkeeper_id: "",
-    ShopkeeperName: "",
-    final_total_amout: 0,
-    item_all_detail: [],
-  });
+  //========👇 Rejected Po Response handle 👇=============
+  const [modelRejectedPoResponse, setModelRejectedPoResponse] = useState(false);
 
-  const shopkeeper_id = localStorage.getItem("WFASpId");
-  const ShopkeeperName = localStorage.getItem("WFAspName");
-  const final_total_amout = localStorage.getItem("WFAFinalTotalAmout");
-  const item_all_detail = JSON.parse(localStorage.getItem("WFACreatedPoList"));
+  // ==========👇 Accepted Po Response handle 👇=================
+  const handleAcceptedPoResponse = async () => {
+    const formData = new FormData();
+    formData.append("shopkeeper_id", shopkeeper_id); //this ID received by handleGoodsListId (Goods ID)
+    formData.append("descriptions", createdPoList);
+    formData.append("created_po_id", createdPoGoodsId);
 
-  useEffect(() => {
-    setUpdatedPoNewList({
-      shopkeeper_id: shopkeeper_id,
-      ShopkeeperName: ShopkeeperName,
-      final_total_amout: final_total_amout,
-      item_all_detail: item_all_detail,
-    });
-  }, [setUpdatedPoNewList]);
+    console.log("CreatedPOID: " + shopkeeper_id);
+    console.log("created_po_id: " + createdPoGoodsId);
+    console.log("descriptions: " + JSON.stringify(createdPoList, null, 2));
 
-  const handleUpdate = () => {
-    console.log('====================================');
-    console.log("updatedPoNewList: " + JSON.stringify(item_all_detail, null, 2));
-    console.log('====================================');
-    console.log("FinalTotalAmount: "+ final_total_amout)
-    console.log("ShopkeeperName: "+ ShopkeeperName)
-    console.log("shopkeeper_id: "+ shopkeeper_id)
-  }
+    // try {
+    //   const response = await axios.post('/api/open_po/open_po.php', formData);
+    //   console.log("ID: "+ createdPoGoodsId)
+
+    //   console.log("Accepted Po Response: " + JSON.stringify(response, null, 2));
+
+    // } catch (error) {
+    //   console.log("Error Accepted Po Response: " + error.message);
+    // }
+  };
 
   return (
     <>
-      <div className="w-full h-screen mx-auto bg-[#efe7cb] pt-16">
+      <div className="w-full h-screen mx-auto bg-[#efe7cb] pt-16 relative">
         <h1 className="text-center py-2 text-[26px] font-bold italic font-serif underline capitalize">
           Wating for Aproval Purchase Order (PO)
         </h1>
@@ -151,7 +163,7 @@ function WatingForAprovalList() {
                     }
                     className="hover:bg-pink-400 hover:text-white duration-200 my-2 cursor-pointer rounded-md px-2 py-2 shadow-md shadow-yellow-700"
                   >
-                    {data.name}
+                    {data.name}, {data.id}
                   </li>
                 ))}
               </ul>
@@ -172,13 +184,11 @@ function WatingForAprovalList() {
               </span>
               {/* Aproval Button */}
               <div className="flex gap-4 mr-4 text-xl font-semibold italic">
-                <span className="bg-green-500 text-white px-2 py-1 rounded-md cursor-pointer shadow-md shadow-gray-600">
+                <span
+                  onClick={handleAcceptedPoResponse}
+                  className="bg-green-500 text-white px-2 py-1 rounded-md cursor-pointer shadow-md shadow-gray-600"
+                >
                   Aproval
-                </span>
-                <span 
-                onClick={handleUpdate}
-                className="bg-yellow-600 text-white px-2 py-1 rounded-md cursor-pointer shadow-md shadow-gray-600">
-                  Update
                 </span>
                 <span className="bg-red-500 text-white px-2 py-1 rounded-md cursor-pointer shadow-md shadow-gray-600">
                   Reject
@@ -305,6 +315,27 @@ function WatingForAprovalList() {
                     ))}
                   </tbody>
                 </table>
+              </div>
+            </div>
+          )}
+
+          {/* =============👇 Rejected Po Model Message or Re-mark 👇=============*/}
+          {modelRejectedPoResponse && (
+            <div className="absolute w-full h-screen mx-auto z-50 bg-[rgba(0,0,0,0.5)] left-0 top-0">
+              <div className="mt-16 flex justify-center items-center">
+                <div className="w-96 mx-auto bg-green-500 mt-20 rounded-md overflow-hidden shadow-md shadow-pink-600">
+                  <h1 className="text-center text-xl bg-orange-400 font-serif font-semibold text-white py-2 underline">
+                    Reason for Reject PO{" "}
+                  </h1>
+                  <div className="py-4 px-4">
+                    <textarea
+                      name=""
+                      id=""
+                      placeholder="Can you write resons.."
+                      className="py-2 px-2 rounded-md text-xl italic w-full min-h-[200px] max-h-[300px]"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           )}
