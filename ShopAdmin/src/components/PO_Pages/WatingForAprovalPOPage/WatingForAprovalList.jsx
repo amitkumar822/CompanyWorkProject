@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { IoIosSearch, IoMdCloseCircle } from "react-icons/io";
+import { FaWindowClose } from "react-icons/fa";
+import loadingGfg from "../../../data/GfgLoding/loading.gif";
 
 function WatingForAprovalList() {
+  const [isLoading, setIsloading] = useState(false);
+
   // =========👇 Fetch Shopkeeper Name and id 👇==========
   const [shopkeepersNameId, setShopkeepersNameId] = useState(
     () => JSON.parse(localStorage.getItem("WFASpNameID")) || []
@@ -22,6 +28,13 @@ function WatingForAprovalList() {
             JSON.stringify(response.data.data)
           );
         }
+
+        if (response.data.status === "error") {
+          localStorage.removeItem("WFASpNameID");
+          localStorage.removeItem("WFAspName");
+          localStorage.removeItem("WFACreatedPoList");
+          localStorage.removeItem("WFAGoodsAndShopkeeperDetails");
+        }
       } catch (error) {
         console.error("ShopkeeperName Error: " + error);
       }
@@ -33,16 +46,16 @@ function WatingForAprovalList() {
   const [spName, setSpName] = useState(
     () => localStorage.getItem("WFAspName") || ""
   );
-  const [shopkeeperDetailsWhenClickSpName, setShopkeeperDetails] = useState(
-    () => localStorage.getItem("WFASpId") || ""
-  );
+
   const [createdPoListID, setCreatedPoListID] = useState([]);
 
   const handleShopkeeperId = async ({ name, id }) => {
     localStorage.setItem("WFAspName", name);
-    localStorage.setItem("WFASpId", id);
     setSpName(name);
-    setShopkeeper_id(id);
+    setIsloading(true);
+
+    localStorage.removeItem("WFACreatedPoList");
+    setCreatedPoList([]);
 
     const formData = new FormData();
     formData.append("shopkeeper_id", id);
@@ -53,40 +66,34 @@ function WatingForAprovalList() {
         formData
       );
 
-      // console.log('====================================');
-      // console.log("Created poList: " + JSON.stringify(response, null, 2));
-      // console.log('====================================');
-
       if (Array.isArray(response.data)) {
         setCreatedPoListID(response.data);
         setGoodsListID(true);
+        setIsloading(false);
       }
     } catch (error) {
       console.log("Created Po get List Faild: " + error.message);
+      setIsloading(false);
     }
   };
 
   // ===========👇 Click goods id fetch goods details list 👇=============
   const [modelGoodsListID, setGoodsListID] = useState(false);
-  const [createdPoGoodsId, setCreatedPoGoodsId] = useState(
-    () => localStorage.getItem("WFACreatedPoGoodsId") || ""
-  ); // Edit
 
   const [createdPoList, setCreatedPoList] = useState(
     () => JSON?.parse(localStorage.getItem("WFACreatedPoList")) || []
   );
 
-  const [finalAmount, setFinalAmount] = useState(
-    () => localStorage.getItem("WFAFinalTotalAmout") || ""
-  ); // Edit right now
+  // console.log("createdPoList: "+ createdPoList.length);
+
+  //=====👇 goods and shopkeeper all details 👇======
+  const [goodsAndShopkeeperDetails, setGoodsAndShopkeeperDetails] = useState(
+    () => JSON.parse(localStorage.getItem("WFAGoodsAndShopkeeperDetails")) || ""
+  );
 
   const handleGoodsListId = async (id) => {
     const formData = new FormData();
     formData.append("id", id);
-    setCreatedPoGoodsId(id);
-    localStorage.setItem("WFACreatedPoGoodsId", id);
-
-    console.log("GoodsID: " + id);
 
     try {
       const response = await axios.post(
@@ -94,18 +101,22 @@ function WatingForAprovalList() {
         formData
       );
 
-      console.log("Response2: " + JSON.stringify(response.data[0], null, 2));
+      setGoodsAndShopkeeperDetails(response.data[0]); // Goods and shopkeeper all details
+      localStorage.setItem(
+        "WFAGoodsAndShopkeeperDetails",
+        JSON.stringify(response.data[0])
+      );
+
+      if (Array.isArray(goodsAndShopkeeperDetails.item_all_detail)) {
+        setCreatedPoList(goodsAndShopkeeperDetails.item_all_detail);
+      }
 
       if (Array.isArray(response.data[0].item_all_detail)) {
         setCreatedPoList(response.data[0].item_all_detail);
-        setFinalAmount(response.data[0].final_total_amout);
+
         localStorage.setItem(
           "WFACreatedPoList",
           JSON.stringify(response.data[0].item_all_detail)
-        );
-        localStorage.setItem(
-          "WFAFinalTotalAmout",
-          response.data[0].final_total_amout
         );
         setGoodsListID(false);
       }
@@ -114,34 +125,132 @@ function WatingForAprovalList() {
     }
   };
 
+  // ==========👇 Accepted Po Response handle 👇=================
+
+  const handleAcceptedPoResponse = async (e) => {
+    e.preventDefault();
+    setIsloading(true);
+
+    const formData = new FormData();
+    formData.append("shopkeeper_id", goodsAndShopkeeperDetails?.shopkeeper_id);
+    formData.append("created_po_id", goodsAndShopkeeperDetails?.id);
+    formData.append(
+      "descriptions",
+      JSON.stringify(goodsAndShopkeeperDetails?.item_all_detail)
+    );
+    formData.append("time_of_created_new_po", goodsAndShopkeeperDetails?.time);
+    formData.append(
+      "total_amount",
+      goodsAndShopkeeperDetails?.final_total_amout
+    );
+
+    const formDataDeleteWhenAprovalCreatedPO = new FormData();
+    formDataDeleteWhenAprovalCreatedPO.append(
+      "id",
+      goodsAndShopkeeperDetails?.id
+    );
+
+    try {
+      const response = await axios.post("/api/open_po/open_po.php", formData);
+
+      if (response.data.success) {
+        toast.success("Purchase Order Accepted Successfully!");
+
+        localStorage.removeItem("WFACreatedPoList");
+        localStorage.removeItem("WFAGoodsAndShopkeeperDetails");
+        localStorage.removeItem("WFAspName");
+
+        await axios.post(
+          "/api/created_po/delete_created_po.php",
+          formDataDeleteWhenAprovalCreatedPO
+        );
+
+        setTimeout(() => {
+          window.location.reload();
+          setIsloading(false);
+        }, 1500);
+      } else {
+        setIsloading(false);
+        toast.error("Purchase Order Acceptance Failed: " + response.data.error);
+      }
+    } catch (error) {
+      setIsloading(false);
+      console.log("Error Aproval Upload or Open Po(WFA): " + error.message);
+    }
+  };
+
   //========👇 Rejected Po Response handle 👇=============
   const [modelRejectedPoResponse, setModelRejectedPoResponse] = useState(false);
+  const [rejectedPoMessage, setRejectedPoMessage] = useState("");
 
-  // ==========👇 Accepted Po Response handle 👇=================
-  const handleAcceptedPoResponse = async () => {
+  const handleSubmitRejectPo = async () => {
+    setModelRejectedPoResponse(false);
+    setIsloading(true);
+
     const formData = new FormData();
-    formData.append("shopkeeper_id", shopkeeper_id); //this ID received by handleGoodsListId (Goods ID)
-    formData.append("descriptions", createdPoList);
-    formData.append("created_po_id", createdPoGoodsId);
+    formData.append("shopkeeper_id", goodsAndShopkeeperDetails?.shopkeeper_id);
+    formData.append("created_po_id", goodsAndShopkeeperDetails?.id);
+    formData.append(
+      "rejected_item_description",
+      JSON.stringify(goodsAndShopkeeperDetails?.item_all_detail)
+    );
+    formData.append("total", goodsAndShopkeeperDetails?.final_total_amout);
+    formData.append("remarks", rejectedPoMessage);
+    formData.append("time_of_created_new_po", goodsAndShopkeeperDetails?.time);
 
-    console.log("CreatedPOID: " + shopkeeper_id);
-    console.log("created_po_id: " + createdPoGoodsId);
-    console.log("descriptions: " + JSON.stringify(createdPoList, null, 2));
+    const formDataDeleteWhenAprovalCreatedPO = new FormData();
+    formDataDeleteWhenAprovalCreatedPO.append(
+      "id",
+      goodsAndShopkeeperDetails?.id
+    );
 
-    // try {
-    //   const response = await axios.post('/api/open_po/open_po.php', formData);
-    //   console.log("ID: "+ createdPoGoodsId)
+    try {
+      const response = await axios.post(
+        "/api/rejected_po/rejected_po.php",
+        formData
+      );
 
-    //   console.log("Accepted Po Response: " + JSON.stringify(response, null, 2));
+      if (response.data.success) {
+        toast.success("Purchase Order Rejected Successfully!");
+        setRejectedPoMessage("");
 
-    // } catch (error) {
-    //   console.log("Error Accepted Po Response: " + error.message);
-    // }
+        localStorage.removeItem("WFACreatedPoList");
+        localStorage.removeItem("WFAGoodsAndShopkeeperDetails");
+        localStorage.removeItem("WFAspName");
+
+        await axios.post(
+          "/api/created_po/delete_created_po.php",
+          formDataDeleteWhenAprovalCreatedPO
+        );
+
+        setTimeout(() => {
+          window.location.reload();
+          setIsloading(false);
+        }, 1500);
+      }
+    } catch (error) {
+      console.log("Error Rejected Po Upload: " + error.message);
+      setIsloading(false);
+    }
   };
 
   return (
     <>
       <div className="w-full h-screen mx-auto bg-[#efe7cb] pt-16 relative">
+        {/* Loading image section */}
+        <div
+          className={`w-full md:h-screen -mt-16 z-50 bg-[rgba(0,0,0,0.5)] absolute ${
+            isLoading ? "" : "hidden"
+          }`}
+        >
+          <div className=" absolute w-full h-screen flex justify-center items-center">
+            <img
+              className="w-[100px] h-[100px] fixed"
+              src={loadingGfg}
+              alt=""
+            />
+          </div>
+        </div>
         <h1 className="text-center py-2 text-[26px] font-bold italic font-serif underline capitalize">
           Wating for Aproval Purchase Order (PO)
         </h1>
@@ -184,15 +293,30 @@ function WatingForAprovalList() {
               </span>
               {/* Aproval Button */}
               <div className="flex gap-4 mr-4 text-xl font-semibold italic">
-                <span
+                <button
+                  disabled={createdPoList.length === 0 ? true : false}
                   onClick={handleAcceptedPoResponse}
-                  className="bg-green-500 text-white px-2 py-1 rounded-md cursor-pointer shadow-md shadow-gray-600"
+                  className={` text-white px-2 py-1 rounded-md shadow-md shadow-gray-600
+                    ${
+                      createdPoList.length === 0
+                        ? "bg-gray-400"
+                        : "bg-green-500 cursor-pointer"
+                    }`}
                 >
                   Aproval
-                </span>
-                <span className="bg-red-500 text-white px-2 py-1 rounded-md cursor-pointer shadow-md shadow-gray-600">
-                  Reject
-                </span>
+                </button>
+                <button
+                  disabled={createdPoList.length === 0 ? true : false}
+                  onClick={() => setModelRejectedPoResponse(true)}
+                  className={` text-white px-2 py-1 rounded-md shadow-md shadow-gray-600
+                    ${
+                      createdPoList.length === 0
+                        ? "bg-gray-400"
+                        : "bg-red-500 cursor-pointer"
+                    }`}
+                >
+                  Rmark
+                </button>
               </div>
             </div>
             <hr className="border border-[#c0d69c]" />
@@ -258,7 +382,7 @@ function WatingForAprovalList() {
                 <span className=" border-r-2 border-black pr-6">
                   Final Total Amount
                 </span>
-                {finalAmount}
+                {goodsAndShopkeeperDetails?.final_total_amout}
               </div>
               {createdPoList.length === 0 ? (
                 <span className="text-red-500 ml-4 text-xl font-semibold">
@@ -302,7 +426,7 @@ function WatingForAprovalList() {
                         className=" bg-yellow-300 border-b-2 font-semibold font-serif"
                       >
                         <td>{index + 1}</td>
-                        <td>Recent Created Po</td>
+                        <td>Recent Created Po {index + 1}</td>
                         <td>{formatDate(data.time)}</td>
                         <td>{data.final_total_amout}</td>
                         <td
@@ -323,23 +447,36 @@ function WatingForAprovalList() {
           {modelRejectedPoResponse && (
             <div className="absolute w-full h-screen mx-auto z-50 bg-[rgba(0,0,0,0.5)] left-0 top-0">
               <div className="mt-16 flex justify-center items-center">
-                <div className="w-96 mx-auto bg-green-500 mt-20 rounded-md overflow-hidden shadow-md shadow-pink-600">
-                  <h1 className="text-center text-xl bg-orange-400 font-serif font-semibold text-white py-2 underline">
+                <div className="w-[30rem] mx-auto bg-green-500 mt-20 rounded-md overflow-hidden shadow-md shadow-pink-600">
+                  <h1 className="text-center text-xl bg-[#3696d1] flex justify-around font-serif font-semibold text-white py-2 underline">
                     Reason for Reject PO{" "}
+                    <FaWindowClose
+                      onClick={() => setModelRejectedPoResponse(false)}
+                      className="text-3xl text-red-600 hover:text-red-700 duration-200 cursor-pointer shadow-md shadow-[yellow]"
+                    />
                   </h1>
                   <div className="py-4 px-4">
                     <textarea
-                      name=""
-                      id=""
+                      value={rejectedPoMessage}
+                      onChange={(e) => setRejectedPoMessage(e.target.value)}
                       placeholder="Can you write resons.."
                       className="py-2 px-2 rounded-md text-xl italic w-full min-h-[200px] max-h-[300px]"
                     />
+                    <div className="flex justify-center">
+                      <button
+                        onClick={handleSubmitRejectPo}
+                        className="text-xl bg-red-600 hover:bg-red-700 px-2 py-1 font-semibold duration-200 rounded-md mt-3 text-white hover:text-[#e2e0e0] cursor-pointer"
+                      >
+                        Reject
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           )}
         </div>
+        <ToastContainer />
       </div>
     </>
   );
