@@ -236,7 +236,7 @@ function WatingForAprovalList() {
 
   return (
     <>
-      <div className="w-full h-screen mx-auto bg-[#efe7cb] pt-16 relative">
+      <div className="w-full h-screen mx-auto bg-[#d7f8f7] pt-16 relative">
         {/* Loading image section */}
         <div
           className={`w-full md:h-screen -mt-16 z-50 bg-[rgba(0,0,0,0.5)] absolute ${
