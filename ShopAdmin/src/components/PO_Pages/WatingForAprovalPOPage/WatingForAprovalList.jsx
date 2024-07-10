@@ -5,8 +5,19 @@ import "react-toastify/dist/ReactToastify.css";
 import { IoIosSearch, IoMdCloseCircle } from "react-icons/io";
 import { FaWindowClose } from "react-icons/fa";
 import loadingGfg from "../../../data/GfgLoding/loading.gif";
+import { useNavigate } from "react-router";
 
 function WatingForAprovalList() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!localStorage.getItem("LoginToken")) {
+      navigate("/");
+      return;
+    }
+  }, []);
+
+
   const [isLoading, setIsloading] = useState(false);
 
   // =========👇 Fetch Shopkeeper Name and id 👇==========
@@ -339,10 +350,10 @@ function WatingForAprovalList() {
                       Qty
                     </th>
                     <th className="py-2 px-2 border-b-2 border-black border-r-2 ">
-                      CGST
+                      CGST(9%)
                     </th>
                     <th className="py-2 px-2 border-b-2 border-black border-r-2 ">
-                      SGST
+                      SGST(9%)
                     </th>
                     <th className="py-2 px-2 border-b-2 border-black border-r-2 w-[18%]">
                       Total

@@ -1,12 +1,21 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoMdCloseCircle } from "react-icons/io";
 import loadingGfg from "../../../data/GfgLoding/loading.gif";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function RejectedPo() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!localStorage.getItem("LoginToken")) {
+      navigate("/");
+      return;
+    }
+  }, []);
+
   const [isLoading, setIsLoading] = useState(false);
 
   // ========👇 Fetch Shopkeeper Name and Id 👇============
@@ -95,10 +104,10 @@ function RejectedPo() {
   // ===========👇 Delete Rejected Po 👇==========
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
-  const handleDeleteRejectedPo = () => {
-    alert("Button deleted");
-    setShowDeleteConfirmation(true);
-  };
+  // const handleDeleteRejectedPo = () => {
+  //   alert("Button deleted");
+  //   setShowDeleteConfirmation(true);
+  // };
 
   const handleDeleteConfirmation = async () => {
     setIsLoading(true);
@@ -220,10 +229,10 @@ function RejectedPo() {
                       Quantity
                     </th>
                     <th className="py-2 px-2 border-b-2 border-black border-r-2 ">
-                      cgst
+                      cgst (9%)
                     </th>
                     <th className="py-2 px-2 border-b-2 border-black border-r-2 ">
-                      sgst
+                      sgst (9%)
                     </th>
                     <th className="py-2 px-2 border-b-2 border-black border-r-2 ">
                       Total

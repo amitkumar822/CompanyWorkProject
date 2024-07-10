@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import loadingGfg from "../../../data/GfgLoding/loading.gif";
 import { ToastContainer, toast } from "react-toastify";
@@ -7,8 +6,18 @@ import "react-toastify/dist/ReactToastify.css";
 import { IoMdCloseCircle } from "react-icons/io";
 import AnkusamLogo from "../../../data/Photos/CreatedPOInvoice/AnkusamLogo.png";
 import TUVLogo from "../../../data/Photos/CreatedPOInvoice/TUVLogo.png";
+import { useNavigate } from "react-router";
 
 function OpenPo() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!localStorage.getItem("LoginToken")) {
+      navigate("/");
+      return;
+    }
+  }, []);
+
   //============👇 Open PO Print And Download Functionality 👇====================
   const handlePrintOpenPO = () => {
     window.print();
@@ -141,17 +150,103 @@ function OpenPo() {
     }
   };
 
-  // ===========👇 Delete Rejected Po 👇==========
-  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-
-  const handleDeleteConfirmation = () => {
-    setShowDeleteConfirmation(false);
-  };
-
   // ==========👇 Preview Open PO 👇===========
   const [showPreview, setShowPreview] = useState(false);
   const handlePreviewInvoice = () => {
     setShowPreview(true);
+  };
+
+  // =============👇 Handle Close PO 👇============
+  const [showClosePoConfirmation, setShowClosePoConfirmation] = useState(false);
+
+  const handleClosePo = async () => {
+    if (
+      !(
+        shopkeeperAdressAllDetails[0]?.id ||
+        aprovalPoList[0]?.id ||
+        aprovalPoList[0]?.time ||
+        aprovalPoList[0]?.time_of_created_new_po ||
+        aprovalPoList[0]?.total_amount
+      ) ||
+      aprovalGoodsDescriptions.length === 0
+    ) {
+      alert("All Fields not full");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("shopkeeper_id", shopkeeperAdressAllDetails[0]?.id);
+    formData.append("item_id", aprovalPoList[0]?.id);
+    formData.append("time", aprovalPoList[0]?.time);
+    formData.append(
+      "time_of_created_new_po",
+      aprovalPoList[0]?.time_of_created_new_po
+    );
+    formData.append("total_amount", aprovalPoList[0]?.total_amount);
+    formData.append("descriptions", JSON.stringify(aprovalGoodsDescriptions));
+
+    // =========Delete FormData ========
+    const deleteFormData = new FormData();
+    deleteFormData.append("id", aprovalPoList[0]?.id);
+
+    try {
+      const response = await axios.post(
+        "/api/closed_po/closed_po.php",
+        formData
+      );
+
+      if (response.data.success) {
+        toast.success("PO Closed Successfully!");
+        setShowClosePoConfirmation(false);
+        // delete the open po from the database
+        const deleteResponse = await axios.post(
+          "/api/open_po/delete_open_po.php",
+          deleteFormData
+        );
+
+        if (deleteResponse.data.deleted) {
+          // clear all local storage items after successful deletion
+          localStorage.removeItem("openPoNameID");
+          localStorage.removeItem("openPoShopkeeperName");
+          localStorage.removeItem("openPoShopkeeperAdressAllDetails");
+          localStorage.removeItem("openPoAprovalPoList");
+          localStorage.removeItem("openPoAprovalGoodsDescriptions");
+
+          setTimeout(() => {
+            window.location.reload();
+          }, 800);
+        }
+      }
+    } catch (error) {
+      console.log("Error to Close Po: " + error.message);
+      setShowClosePoConfirmation(false);
+    }
+  };
+
+  // ===========👇 Delete Rejected Po 👇==========
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+
+  const handleDeleteConfirmation = async () => {
+    const formData = new FormData();
+    formData.append("id", aprovalPoList[0]?.id);
+
+    try {
+      const response = await axios.post(
+        "/api/open_po/delete_open_po.php",
+        formData
+      );
+      if (response.data.deleted) {
+        toast.success("PO Deleted Successfully!");
+        setShowClosePoConfirmation(false);
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 800);
+      }
+    } catch (error) {
+      console.log("Error Faild to Delete: " + error);
+      setShowClosePoConfirmation(false);
+    }
   };
 
   return (
@@ -173,10 +268,11 @@ function OpenPo() {
         </div>
 
         {/* ========👇 Shopkeeper And Open PO Goods All Details 👇=========== */}
-        <div className={`${showPreview ? "hidden" : ""} bg-[#d4e75b]`}>
+        <div className={`${showPreview ? "hidden" : ""} bg-[#d4e75b] h-screen`}>
           <h1 className="text-center py-2 text-[26px] font-bold italic font-serif underline capitalize">
             Welcome to Open PO (Purchase Order)
           </h1>
+          {/* =========👇 Goods and Shopkeeper All Details */}
           <div className="w-[98%] grid lg:grid-cols-[22%_auto] mx-auto rounded-lg shadow-md shadow-red-500 overflow-hidden">
             {/*========👇 Shopkeeper name list section 👇============*/}
             <div className="pt-3 bg-[#ff98da] rounded-md shadow-md shadow-red-500 mr-1">
@@ -195,7 +291,8 @@ function OpenPo() {
                       }
                       className="hover:bg-pink-400 hover:text-white duration-200 my-2 cursor-pointer rounded-md px-2 py-2 shadow-md shadow-yellow-700"
                     >
-                      {data.name}, {data.id}
+                      {data.name}
+                      {/* , {data.id} */}
                     </li>
                   ))}
                 </ul>
@@ -216,6 +313,12 @@ function OpenPo() {
                 </span>
                 {/* Aproval Button */}
                 <div className="flex gap-4 mr-4 text-xl font-semibold italic">
+                  <button
+                    onClick={() => setShowClosePoConfirmation(true)}
+                    className="bg-[#34b79b] text-white hover:bg-[#49dcbc] duration-200 py-1 px-2 rounded-md shadow-md shadow-[yellow] font-serif"
+                  >
+                    Close PO
+                  </button>
                   <button
                     onClick={handlePreviewInvoice}
                     className="bg-green-500 hover:bg-green-600 duration-200 py-1 px-2 rounded-md shadow-md shadow-[yellow] text-white font-serif"
@@ -250,10 +353,10 @@ function OpenPo() {
                         Qty
                       </th>
                       <th className="py-2 px-2 border-b-2 border-black border-r-2 ">
-                        CGST
+                        CGST(9%)
                       </th>
                       <th className="py-2 px-2 border-b-2 border-black border-r-2 ">
-                        SGST
+                        SGST(9%)
                       </th>
                       <th className="py-2 px-2 border-b-2 border-black border-r-2 w-[18%]">
                         Total
@@ -339,7 +442,7 @@ function OpenPo() {
                         >
                           <td>{index + 1}</td>
                           <td>{formatDate(data.time)}</td>
-                          <td>{formatDate(data.time)}</td>
+                          <td>{formatDate(data.time_of_created_new_po)}</td>
                           <td>{formatTime(data.time)}</td>
                           <td>{data.total_amount}</td>
                           <td
@@ -357,9 +460,9 @@ function OpenPo() {
             )}
           </div>
 
-          {/* Delete Confirmation Dilog Box */}
+          {/* =============👇 Delete Confirmation Dilog Box 👇============= */}
           <div
-            className={`w-full h-full z-50 bg-[rgba(0,0,0,0.5)] absolute top-0 left-0 flex justify-center items-center ${
+            className={`w-full h-full z-50 bg-[rgba(0,0,0,0.5)]  top-0 left-0 flex justify-center items-center fixed ${
               !showDeleteConfirmation ? "hidden" : ""
             }`}
           >
@@ -372,14 +475,44 @@ function OpenPo() {
               </p>
               <div className="flex justify-end gap-2 mt-4">
                 <button
-                  className="bg-green-500 text-white px-4 py-2 rounded-md font-semibold shadow-md shadow-yellow-400"
+                  className="bg-green-500 hover:bg-green-600 duration-200 text-white px-4 py-2 rounded-md font-semibold shadow-md shadow-yellow-400"
                   onClick={() => setShowDeleteConfirmation(false)}
                 >
                   No
                 </button>
                 <button
-                  className="bg-red-500 text-white px-4 py-2 rounded-md font-semibold shadow-md shadow-yellow-400"
+                  className="bg-red-500 hover:bg-red-600 duration-200 text-white px-4 py-2 rounded-md font-semibold shadow-md shadow-yellow-400"
                   onClick={handleDeleteConfirmation}
+                >
+                  Yes
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* =============👇 Close PO Confirmation Dilog Box 👇============= */}
+          <div
+            className={`w-full h-full z-50 bg-[rgba(0,0,0,0.5)] fixed top-0 left-0 flex justify-center items-center ${
+              !showClosePoConfirmation ? "hidden" : ""
+            }`}
+          >
+            <div className={`w-[500px] bg-[#678ed5] p-4 rounded-md z-50`}>
+              <h1 className="text-xl text-white font-semibold">
+                Close PO Confirmation
+              </h1>
+              <p className="text-sm text-white">
+                Are you sure you want to colose PO?
+              </p>
+              <div className="flex justify-end gap-2 mt-4">
+                <button
+                  className="bg-green-500 hover:bg-green-600 duration-200 text-white px-4 py-2 rounded-md font-semibold shadow-md shadow-yellow-400"
+                  onClick={() => setShowClosePoConfirmation(false)}
+                >
+                  No
+                </button>
+                <button
+                  className="bg-red-500 hover:bg-red-600 duration-200 text-white px-4 py-2 rounded-md font-semibold shadow-md shadow-yellow-400"
+                  onClick={handleClosePo}
                 >
                   Yes
                 </button>
@@ -391,11 +524,11 @@ function OpenPo() {
         {/* ======================👇 Print Open PO 👇========================= */}
 
         <div
-          className={`w-full flex justify-center absolute -top-10 bg-white z-[99] mx-auto mt-4 ${
+          className={`w-full flex justify-center absolute -top-20 bg-white z-[99] mx-auto mt-4 ${
             showPreview ? "" : "hidden"
           } `}
         >
-          <div className="lg:w-[80%] w-[710px] my-16 pb-32">
+          <div className="lg:w-[80%] w-[710px] md:my-20 my-16 pb-32">
             <div
               className="w-full mx-auto py-2 print-border border-black border-[1px]"
               id="invoice"
@@ -514,7 +647,7 @@ function OpenPo() {
                     {shopkeeperAdressAllDetails[0]?.gst}
                   </div>
                   <div className="w-[91px] lg:w-[138px] pl-1 border-r-[1px] border-black flex items-center font-semibold"></div>
-                  <div className="w-[113px] lg:w-[166px] pl-1 flex items-center"></div> 
+                  <div className="w-[113px] lg:w-[166px] pl-1 flex items-center"></div>
                 </div>
 
                 {/*========👇 Description of Goods Table Section 👇===========*/}
@@ -534,13 +667,13 @@ function OpenPo() {
                         Quantity
                       </th>
                       <th className="border-r-[1px] border-black py-2 w-[60px]">
-                        CGST
+                        CGST (9%)
                       </th>
                       <th className="border-r-[1px] border-black py-2 w-[60px]">
-                        SGST
+                        SGST (9%)
                       </th>
                       <th className="border-black py-2 w-[108.3px]">
-                        Taxable Value
+                        Total Amounts
                       </th>
                     </tr>
                   </thead>
@@ -578,10 +711,10 @@ function OpenPo() {
                   <div className="w-[91px] lg:w-[152px] border-black"></div>
                   <div className="w-[380px] lg:w-[553.5px] border-black"></div>
                   <div className="w-[68px] lg:w-[94.5px] border-black"></div>
-                  <div className="w-[151px] lg:w-[218px] border-r-[1px] border-black text-center font-semibold">
+                  <div className="w-[151px] lg:w-[218px] border-r-[1px] border-black text-center font-semibold md:text-xl text-[13px]">
                     Total Amounts
                   </div>
-                  <div className="w-[107px] lg:w-[158.4px] border-black text-center">
+                  <div className="w-[107px] lg:w-[158.4px] border-black text-center font-semibold md:text-xl text-[13px]">
                     {aprovalPoList[0]?.total_amount}
                   </div>
                 </div>
@@ -605,8 +738,8 @@ function OpenPo() {
                 <h1 className=" font-semibold">
                   For Ankusam Engineering Private Limited,
                 </h1>
-                <h3 className="mt-6">Manikanndan P</h3>
-                <h2 className="font-semibold">Managing Director</h2>
+                <h3 className="mt-6"></h3>
+                <h2 className="font-semibold">Purchase Department.</h2>
               </div>
             </div>
 
@@ -675,6 +808,7 @@ function formatTime(dateString) {
 
 // ===========👇 Only Date Formatting Functions 👇 =================
 const formatOnlyDate = (dateTimeString) => {
+  if (!dateTimeString) return "";
   // Split the date and time parts
   const [datePart] = dateTimeString.split(" ");
 

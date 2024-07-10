@@ -122,7 +122,7 @@ function Login() {
           </div>
         </div>
         <div className="w-[80%] h-full mx-auto flex justify-center items-center">
-          <div className="w-[500px] mx-auto bg-gray-300 rounded-lg shadow-md shadow-orange-700 py-4 px-2">
+          <div className="w-[500px] mx-auto bg-gradient-to-r from-fuchsia-500 to-cyan-500 text-white rounded-lg shadow-md shadow-[yellow] py-4 px-2">
             <h1 className="text-center text-3xl font-bold italic font-serif underline">
               Login Page
             </h1>
