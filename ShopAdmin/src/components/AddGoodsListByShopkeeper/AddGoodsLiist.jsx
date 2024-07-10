@@ -24,6 +24,9 @@ function AddGoodsLiist() {
   const [goodsRate, setGoodsRate] = useState("");
   const [weight, setWeight] = useState("");
   const [weightUnit, setWeightUnit] = useState("");
+  const [igst, setIGst] = useState("");
+  const [cgst, setCgst] = useState("");
+  const [sgst, setSgst] = useState("");
 
   const [shopkeeperId, setShopkeeperIt] = useState([]);
   useEffect(() => {
@@ -33,18 +36,18 @@ function AddGoodsLiist() {
     }
   }, [setShopkeeperIt]);
 
-  // console.log("ID: " + shopkeeperId.id);
+  console.log("ID: " + shopkeeperId.id);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if(!weight) {
-      toast.warn("Weight is required")
+    if (!weight) {
+      toast.warn("Weight is required");
       return;
     }
 
-    if(!weightUnit){
-      toast.warn("Weight Unit is required")
+    if (!weightUnit) {
+      toast.warn("Weight Unit is required");
       return;
     }
 
@@ -53,9 +56,12 @@ function AddGoodsLiist() {
     const formData = new FormData();
     formData.append("shopkeeper_id", shopkeeperId.id);
     formData.append("descriptions", goodsName);
-    formData.append("goods_measure_units", (weight+" "+weightUnit));
+    formData.append("goods_measure_units", weight + " " + weightUnit);
     formData.append("part_no", partNumber);
     formData.append("rate", goodsRate);
+    formData.append("isgst", igst);
+    formData.append("cgst", cgst);
+    formData.append("sgst", sgst);
 
     try {
       const response = await axios.post(
@@ -80,6 +86,14 @@ function AddGoodsLiist() {
         setPartNumber("");
         setWeight("");
         setWeightUnit("");
+        setIGst("");
+        setCgst("");
+        setSgst("");
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
+
       } else {
         setIsLoading(false);
         toast.error("Part number already exist!", {
@@ -172,9 +186,10 @@ function AddGoodsLiist() {
             </label>
             <br />
             <div className="max-w-[90%]">
-              <select className="w-[48%] mr-3 py-1 px-2 rounded-md shadow-md shadow-stone-500 cursor-pointer"
-              onChange={(e) => setWeight(e.target.value)}
-              required
+              <select
+                className="w-[48%] mr-3 py-1 px-2 rounded-md shadow-md shadow-stone-500 cursor-pointer"
+                onChange={(e) => setWeight(e.target.value)}
+                required
               >
                 <option value="">Select Measurement</option>
                 <option value="KG">KG</option>
@@ -188,9 +203,7 @@ function AddGoodsLiist() {
                 placeholder="Enter your measurement details"
                 required
                 className="w-[48%] py-1 px-2 rounded-md shadow-md shadow-stone-500 cursor-pointer"
-              >
-               
-              </input>
+              ></input>
             </div>
             <label htmlFor="rate" className="text-xl font-semibold">
               Rate
@@ -205,6 +218,54 @@ function AddGoodsLiist() {
               className="w-[90%] py-1 px-2 rounded-md shadow-md shadow-stone-500"
             />
             <br />
+
+            <div className="pt-1 flex  gap-1">
+              <span className="flex gap-1">
+              <span>
+                <label htmlFor="cgst" className="text-xl font-semibold">
+                  CGST
+                </label>
+                <br />
+                <input
+                  type="text"
+                  id="cgst"
+                  value={cgst}
+                  onChange={(e) => setCgst(e.target.value)}
+                  placeholder="Enter your CGST"
+                  className="w-[140px] py-1 px-2 rounded-md shadow-md shadow-stone-500"
+                />
+              </span>
+              <span>
+                <label htmlFor="sgst" className="text-xl font-semibold">
+                  SGST
+                </label>
+                <br />
+                <input
+                  type="text"
+                  id="sgst"
+                  value={sgst}
+                  onChange={(e) => setSgst(e.target.value)}
+                  placeholder="Enter your SGST"
+                  className="w-[140px] py-1 px-2 rounded-md shadow-md shadow-stone-500"
+                />
+              </span>
+              </span>
+              <span>
+                <label htmlFor="igst" className="text-xl font-semibold">
+                  IGST
+                </label>
+                <br />
+                <input
+                  type="text"
+                  id="igst"
+                  value={igst}
+                  onChange={(e) => setIGst(e.target.value)}
+                  placeholder="Enter your IGST"
+                  className="w-[140px] py-1 px-2 rounded-md shadow-md shadow-stone-500"
+                />
+              </span>
+              
+            </div>
             <span className="w-full mx-auto flex items-center justify-center">
               <button className="text-xl italic uppercase font-semibold bg-blue-600 hover:bg-blue-700  hover:text-[#e2dcdc] duration-200 text-white px-2 py-1 rounded-lg shadow-md shadow-black mt-6">
                 Add

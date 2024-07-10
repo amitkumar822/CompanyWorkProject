@@ -81,6 +81,7 @@ function Dashboard() {
 
   const handleShopkeeperNameId = (data) => {
     setShopkeeperNameId(data);
+    console.log("handleShopkeeperNameId: " + JSON.stringify(data, null, 2));
     setGoodsData([]);
     localStorage.setItem("ShopkeeperNameAndIdDetails", JSON.stringify(data));
   };

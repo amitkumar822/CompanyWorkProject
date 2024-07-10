@@ -85,7 +85,9 @@ function CreatedPoInvoice() {
   const [listGoods, setListGoods] = useState(
     JSON.parse(localStorage.getItem("listGoods")) || []
   );
-  const [selectedGoods, setSelectedGoods] = useState(null);
+  const [selectedGoods, setSelectedGoods] = useState(() =>
+    JSON.parse(localStorage.getItem("CreatedPoSelectedGoods"))
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -111,21 +113,35 @@ function CreatedPoInvoice() {
       }
     };
     fetchData();
-  }, [setGoodsData, shopkeeperAllDetailsWhenSelected]);
+  }, [setGoodsData]);
+  // shopkeeperAllDetailsWhenSelected
 
   const goodsOptions = goodsData.map((data) => ({
     label: data.descriptions,
     rate: data.rate,
     goodsId: data.id,
+    cgst: data.cgst,
+    sgst: data.sgst,
+    igst: data.isgst,
   }));
 
   const handleGoodsChange = (selectedGoods) => {
     setSelectedGoods(selectedGoods);
+    localStorage.setItem(
+      "CreatedPoSelectedGoods",
+      JSON.stringify(selectedGoods)
+    );
     setListGoods((prevListGoods) => {
       if (!prevListGoods.find((item) => item.label === selectedGoods.label)) {
         const updatedGoods = [
           ...prevListGoods,
-          { ...selectedGoods, quantity: 1 },
+          {
+            ...selectedGoods,
+            quantity: 1,
+            cgst: selectedGoods.cgst,
+            sgst: selectedGoods.sgst,
+            igst: selectedGoods.igst,
+          },
         ];
         localStorage.setItem("listGoods", JSON.stringify(updatedGoods));
         return updatedGoods;
@@ -142,14 +158,19 @@ function CreatedPoInvoice() {
   };
 
   //==========👇 Total And GST Calculate 👇=================
+  const cgstInput = selectedGoods?.cgst / 100;
+  const sgstInput = selectedGoods?.sgst / 100;
+  const igstInput = selectedGoods?.igst / 100;
+
   const calculateTotal = () => {
     return listGoods.reduce((acc, item) => acc + item.rate * item.quantity, 0);
   };
 
   const totalAmount = calculateTotal();
-  const cgst = totalAmount * 0.09;
-  const sgst = totalAmount * 0.09;
-  const finalAmount = totalAmount + cgst + sgst;
+  const cgst = totalAmount * cgstInput;
+  const sgst = totalAmount * sgstInput;
+  const igst = totalAmount * igstInput;
+  const finalAmount = totalAmount + cgst + sgst + igst;
 
   // finalAmount save in localStorage for preview purposes
   useEffect(() => {
@@ -182,9 +203,13 @@ function CreatedPoInvoice() {
       descriptions: item.label,
       quantity: item.quantity,
       rate: item.rate,
-      cgst: (item.rate * item.quantity * 0.09).toFixed(2),
-      sgst: (item.rate * item.quantity * 0.09).toFixed(2),
-      total: (item.rate * item.quantity * 1.18).toFixed(2),
+      cgst: (item.rate * item.quantity * cgstInput).toFixed(2),
+      sgst: (item.rate * item.quantity * sgstInput).toFixed(2),
+      igst: (item.rate * item.quantity * igstInput).toFixed(2),
+      total: (
+        item.rate * item.quantity +
+        item.rate * item.quantity * (cgstInput + sgstInput + igstInput)
+      ).toFixed(2),
     }));
 
     console.log("AllDAta: " + JSON.stringify(dataToSend, null, 2));
@@ -326,8 +351,9 @@ function CreatedPoInvoice() {
                   <th className="py-2">Goods</th>
                   <th>Quantity</th>
                   <th>Rate</th>
-                  <th>CGST (9%)</th>
-                  <th>SGST (9%)</th>
+                  <th>CGST ({cgstInput * 100})</th>
+                  <th>SGST ({sgstInput * 100})</th>
+                  <th>IGST ({igstInput * 100})</th>
                   <th>Total</th>
                   <th>Action</th>
                 </tr>
@@ -352,13 +378,33 @@ function CreatedPoInvoice() {
                     </td>
                     <td className="py-2 text-center">{goods.rate}</td>
                     <td className="py-2 text-center">
-                      {(goods.rate * goods.quantity * 0.09).toFixed(2)}
+                      {(
+                        goods.rate *
+                        goods.quantity *
+                        (goods.cgst / 100)
+                      ).toFixed(2)}
                     </td>
                     <td className="py-2 text-center">
-                      {(goods.rate * goods.quantity * 0.09).toFixed(2)}
+                      {(
+                        goods.rate *
+                        goods.quantity *
+                        (goods.sgst / 100)
+                      ).toFixed(2)}
                     </td>
                     <td className="py-2 text-center">
-                      {(goods.rate * goods.quantity * 1.18).toFixed(2)}
+                      {(
+                        goods.rate *
+                        goods.quantity *
+                        (goods.igst / 100)
+                      ).toFixed(2)}
+                    </td>
+                    <td className="py-2 text-center">
+                      {(
+                        goods.rate * goods.quantity +
+                        goods.rate *
+                          goods.quantity *
+                          (cgstInput + sgstInput + igstInput)
+                      ).toFixed(2)}
                     </td>
 
                     <td className="py-2 text-center">
@@ -375,8 +421,8 @@ function CreatedPoInvoice() {
             </table>
           </div>
 
-          {/* Preview Created PO */}
-          <div
+          {/*======👇 Preview Created PO 👇====*/}
+          {/* <div
             className={`w-[96%] flex justify-end ${
               listGoods.length === 0 ? "hidden" : ""
             }`}
@@ -387,7 +433,8 @@ function CreatedPoInvoice() {
             >
               Preview
             </Link>
-          </div>
+          </div> */}
+
           {/* Total Amount */}
           {listGoods.length > 0 && (
             <div className="w-[50%] mx-auto mt-4 border border-black rounded-md py-2 px-2">
@@ -395,10 +442,13 @@ function CreatedPoInvoice() {
                 Total Amount: ₹ {totalAmount.toFixed(2)}
               </p>
               <p className="text-xl italic text-center">
-                CGST (9%): ₹ {cgst.toFixed(2)}
+                CGST ({cgstInput * 100}): ₹ {cgst.toFixed(2)}
               </p>
               <p className="text-xl italic text-center">
-                SGST (9%): ₹ {sgst.toFixed(2)}
+                SGST ({sgstInput * 100}): ₹ {sgst.toFixed(2)}
+              </p>
+              <p className="text-xl italic text-center">
+                IGST ({igstInput * 100}): ₹ {igst.toFixed(2)}
               </p>
               <p className="text-xl italic text-center">
                 Final Amount: ₹ {finalAmount.toFixed(2)}
@@ -423,6 +473,8 @@ function CreatedPoInvoice() {
               Submit For Approval
             </button>
           </div>
+          
+          {/* =====👇 Check Your Created PO List 👇====*/}
 
           <div className={`flex justify-center mt-4`}>
             <Link

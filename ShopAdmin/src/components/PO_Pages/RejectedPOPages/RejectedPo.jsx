@@ -228,11 +228,14 @@ function RejectedPo() {
                     <th className="py-2 px-2 border-b-2 border-black border-r-2 ">
                       Quantity
                     </th>
-                    <th className="py-2 px-2 border-b-2 border-black border-r-2 ">
+                    <th className="py-2 px-2 border-b-2 border-black border-r-2 uppercase">
                       cgst (9%)
                     </th>
-                    <th className="py-2 px-2 border-b-2 border-black border-r-2 ">
+                    <th className="py-2 px-2 border-b-2 border-black border-r-2 uppercase">
                       sgst (9%)
+                    </th>
+                    <th className="py-2 px-2 border-b-2 border-black border-r-2 uppercase">
+                      igst (18%)
                     </th>
                     <th className="py-2 px-2 border-b-2 border-black border-r-2 ">
                       Total
@@ -262,6 +265,9 @@ function RejectedPo() {
                       </td>
                       <td className="py-2 px-2 border-b-2 border-r-2 border-black">
                         {items.sgst}
+                      </td>
+                      <td className="py-2 px-2 border-b-2 border-r-2 border-black">
+                        {items.igst}
                       </td>
                       <td className="py-2 px-2 border-b-2 border-r-2 border-black">
                         {items.total}

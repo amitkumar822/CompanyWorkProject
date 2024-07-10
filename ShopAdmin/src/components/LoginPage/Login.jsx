@@ -144,7 +144,7 @@ function Login() {
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
                 placeholder="Enter your mobile number"
-                className="rounded-md px-4 py-2 w-[90%] shadow-md shadow-stone-500 relative"
+                className="rounded-md px-4 py-2 w-[90%] text-black shadow-md shadow-stone-500 relative"
               />
               <br />
               <label htmlFor="password" className="text-xl font-semibold">
@@ -158,7 +158,7 @@ function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
-                className="rounded-md px-4 py-2 w-[90%] shadow-md shadow-stone-500 relative"
+                className="rounded-md px-4 py-2 text-black w-[90%] shadow-md shadow-stone-500 relative"
               />
               <br />
               <br />

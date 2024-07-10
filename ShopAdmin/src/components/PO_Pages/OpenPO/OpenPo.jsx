@@ -358,6 +358,9 @@ function OpenPo() {
                       <th className="py-2 px-2 border-b-2 border-black border-r-2 ">
                         SGST(9%)
                       </th>
+                      <th className="py-2 px-2 border-b-2 border-black border-r-2 ">
+                        IGST(18%)
+                      </th>
                       <th className="py-2 px-2 border-b-2 border-black border-r-2 w-[18%]">
                         Total
                       </th>
@@ -383,6 +386,9 @@ function OpenPo() {
                         </td>
                         <td className="py-2 px-2 border-b-2 border-r-2 border-black">
                           {items.sgst}
+                        </td>
+                        <td className="py-2 px-2 border-b-2 border-r-2 border-black">
+                          {items.igst}
                         </td>
                         <td className="py-2 px-2 border-b-2 border-r-2 border-black w-[18%]">
                           {items.total}
@@ -672,6 +678,9 @@ function OpenPo() {
                       <th className="border-r-[1px] border-black py-2 w-[60px]">
                         SGST (9%)
                       </th>
+                      <th className="border-r-[1px] border-black py-2 w-[60px]">
+                        IGST (18%)
+                      </th>
                       <th className="border-black py-2 w-[108.3px]">
                         Total Amounts
                       </th>
@@ -697,6 +706,9 @@ function OpenPo() {
                         </td>
                         <td className="border-r-[1px] border-black py-2 w-[60px]">
                           {data.sgst}
+                        </td>
+                        <td className="border-r-[1px] border-black py-2 w-[60px]">
+                          {data.igst}
                         </td>
                         <td className="border-black py-2 w-[109.1px]">
                           {data.total}
