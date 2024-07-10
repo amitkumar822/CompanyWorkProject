@@ -1,6 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function ClosePo() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!localStorage.getItem("LoginToken")) {
+      navigate("/");
+      return;
+    }
+  }, []);
+
   return (
     <>
       <div className="mt-16 w-full mx-auto">

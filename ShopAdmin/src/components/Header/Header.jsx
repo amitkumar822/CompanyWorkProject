@@ -65,14 +65,14 @@ function Header() {
                 OpenPo
               </NavLink>
             </span>
-            <span className=" cursor-pointer hover:text-gray-700 duration-200">
+            {/* <span className=" cursor-pointer hover:text-gray-700 duration-200">
               <NavLink
                 to="/closepo"
                 className={({ isActive }) => (isActive ? "text-[yellow]" : "")}
               >
                 CloPo
               </NavLink>
-            </span>
+            </span> */}
             <span className=" cursor-pointer hover:text-gray-700 duration-200">
               <NavLink
                 to="/addnewshaopkeepersdetails"

@@ -163,7 +163,7 @@ function Login() {
               <br />
               <br />
               <span className="w-full mx-auto flex items-center justify-center text-center">
-                <button className="px-4 py-2 z-10 bg-blue-600 rounded-lg text-xl italic font-semibold text-white uppercase hover:bg-blue-700 duration-200 hover:text-[#e2dcdc] shadow-md shadow-stone-500">
+                <button className="px-4 py-2 z-10 bg-blue-500 rounded-lg text-xl italic font-semibold text-white uppercase hover:bg-blue-700 duration-200 hover:text-[#e2dcdc] shadow-md shadow-[yellow]">
                   Login
                 </button>
               </span>
