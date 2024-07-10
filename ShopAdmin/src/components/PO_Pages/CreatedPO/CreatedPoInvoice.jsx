@@ -428,7 +428,7 @@ function CreatedPoInvoice() {
 
       {/* Delete Confirmation Dilog Box */}
       <div
-        className={`w-full h-[130%] mt-16 bg-[rgba(0,0,0,0.5)] absolute top-0 left-0 flex justify-center items-center ${
+        className={`w-full h-[130%] mt-16 fixed bg-[rgba(0,0,0,0.5)]  top-0 left-0 flex justify-center items-center ${
           !showDeleteConfirmation ? "hidden" : ""
         }`}
       >

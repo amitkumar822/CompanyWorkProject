@@ -20,8 +20,6 @@ const PreviewInvoiceBill = () => {
     }
   }, [setShopkeeperDetails, setFinalAmount]);
 
-  // console.log("Name: " + JSON.stringify(shopkeeperDetails, null, 2));
-
   //===========👇 Get Goods All Details 👇=================
   const [goodsDetails, setGoodsDetails] = useState([]);
   useEffect(() => {
@@ -30,10 +28,6 @@ const PreviewInvoiceBill = () => {
       setGoodsDetails(JSON.parse(response));
     }
   }, [setGoodsDetails]);
-
-  //   console.log("====================================");
-  //   console.log("GoodsDetails: " + JSON.stringify(goodsDetails, null, 2));
-  //   console.log("====================================");
 
   // Current Date
   const currentDate = new Date();
