@@ -4,6 +4,7 @@ import Select from "react-select";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
+import loadingGfg from "../../../data/GfgLoding/loading.gif";
 
 function CreatedPoInvoice() {
   const navigate = useNavigate();
@@ -14,6 +15,8 @@ function CreatedPoInvoice() {
       return;
     }
   }, []);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   //submited succesfully disable buttons
   const [disableButtons, setDisableButtons] = useState(false);
@@ -39,6 +42,7 @@ function CreatedPoInvoice() {
   const [selectedShopkeeper, setSelectedShopkeeper] = useState(
     JSON.parse(localStorage.getItem("selectedShopkeeper")) || null
   );
+
   const [
     shopkeeperAllDetailsWhenSelected,
     setShopkeeperAllDetailsWhenSelected,
@@ -77,6 +81,11 @@ function CreatedPoInvoice() {
     localStorage.setItem("shopkeeperDetails", JSON.stringify(details));
     setListGoods([]); // Clear goods details
     localStorage.removeItem("listGoods"); // Clear goods details when shopkeeper changes
+    setSelectedGoods([]); // Clear selected goods
+    localStorage.removeItem("CreatedPoSelectedGoods");
+    
+    setGoodsData([]); // Clear
+
     setDisableButtons(false); // Disable
   };
 
@@ -198,6 +207,7 @@ function CreatedPoInvoice() {
   //===========👇 Form Submitions Section 👇=================
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     const dataToSend = listGoods.map((item) => ({
       goods_id: item.goodsId,
       descriptions: item.label,
@@ -212,7 +222,7 @@ function CreatedPoInvoice() {
       ).toFixed(2),
     }));
 
-    console.log("AllDAta: " + JSON.stringify(dataToSend, null, 2));
+    // console.log("AllDAta: " + JSON.stringify(dataToSend, null, 2));
 
     const formData = new FormData();
     formData.append(
@@ -233,11 +243,16 @@ function CreatedPoInvoice() {
       if (response.data.success) {
         toast.success("Submitted successfully");
         setDisableButtons(true);
+        setListGoods([]); // Clear goods details
+        localStorage.removeItem("listGoods"); // Clear goods details when submission
+        setIsLoading(false);
       } else {
         toast.error("Submission failed: " + response.data.error);
+        setIsLoading(false);
       }
     } catch (error) {
       toast.error("Network or server error: " + error.message);
+      setIsLoading(false);
     }
   };
 
@@ -268,6 +283,16 @@ function CreatedPoInvoice() {
 
   return (
     <div className="mt-16">
+      {/* Loading image section */}
+      <div
+        className={`w-full h-[110%] -mt-16 z-[52] bg-[rgba(0,0,0,0.5)] absolute ${
+          isLoading ? "" : "hidden"
+        }`}
+      >
+        <div className=" absolute w-full h-screen flex justify-center items-center">
+          <img className="w-[100px] h-[100px] fixed" src={loadingGfg} alt="" />
+        </div>
+      </div>
       <div className="w-[80%] mx-auto mb-6">
         <h1 className="text-center text-3xl italic pt-4 font-semibold font-serif underline text-green-600">
           Welcome to Created PO Page
@@ -362,9 +387,7 @@ function CreatedPoInvoice() {
                 {listGoods.map((goods, index) => (
                   <tr key={index} className=" odd:bg-gray-100">
                     <td className="py-2 text-center">{index + 1}</td>
-                    <td className="py-2 text-center">
-                      {goods.label} ({goods.goodsId})
-                    </td>
+                    <td className="py-2 text-center">{goods.label}</td>
                     <td className="py-2 text-center w-[20%]">
                       <input
                         type="number"
@@ -473,7 +496,7 @@ function CreatedPoInvoice() {
               Submit For Approval
             </button>
           </div>
-          
+
           {/* =====👇 Check Your Created PO List 👇====*/}
 
           <div className={`flex justify-center mt-4`}>

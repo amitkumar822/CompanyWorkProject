@@ -36,7 +36,7 @@ function AddGoodsLiist() {
     }
   }, [setShopkeeperIt]);
 
-  console.log("ID: " + shopkeeperId.id);
+  // console.log("ID: " + shopkeeperId.id);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -92,8 +92,7 @@ function AddGoodsLiist() {
 
         setTimeout(() => {
           window.location.reload();
-        }, 500);
-
+        }, 200);
       } else {
         setIsLoading(false);
         toast.error("Part number already exist!", {
@@ -221,34 +220,34 @@ function AddGoodsLiist() {
 
             <div className="pt-1 flex  gap-1">
               <span className="flex gap-1">
-              <span>
-                <label htmlFor="cgst" className="text-xl font-semibold">
-                  CGST
-                </label>
-                <br />
-                <input
-                  type="text"
-                  id="cgst"
-                  value={cgst}
-                  onChange={(e) => setCgst(e.target.value)}
-                  placeholder="Enter your CGST"
-                  className="w-[140px] py-1 px-2 rounded-md shadow-md shadow-stone-500"
-                />
-              </span>
-              <span>
-                <label htmlFor="sgst" className="text-xl font-semibold">
-                  SGST
-                </label>
-                <br />
-                <input
-                  type="text"
-                  id="sgst"
-                  value={sgst}
-                  onChange={(e) => setSgst(e.target.value)}
-                  placeholder="Enter your SGST"
-                  className="w-[140px] py-1 px-2 rounded-md shadow-md shadow-stone-500"
-                />
-              </span>
+                <span>
+                  <label htmlFor="cgst" className="text-xl font-semibold">
+                    CGST
+                  </label>
+                  <br />
+                  <input
+                    type="text"
+                    id="cgst"
+                    value={cgst}
+                    onChange={(e) => setCgst(e.target.value)}
+                    placeholder="Enter your CGST"
+                    className="w-[140px] py-1 px-2 rounded-md shadow-md shadow-stone-500"
+                  />
+                </span>
+                <span>
+                  <label htmlFor="sgst" className="text-xl font-semibold">
+                    SGST
+                  </label>
+                  <br />
+                  <input
+                    type="text"
+                    id="sgst"
+                    value={sgst}
+                    onChange={(e) => setSgst(e.target.value)}
+                    placeholder="Enter your SGST"
+                    className="w-[140px] py-1 px-2 rounded-md shadow-md shadow-stone-500"
+                  />
+                </span>
               </span>
               <span>
                 <label htmlFor="igst" className="text-xl font-semibold">
@@ -264,7 +263,6 @@ function AddGoodsLiist() {
                   className="w-[140px] py-1 px-2 rounded-md shadow-md shadow-stone-500"
                 />
               </span>
-              
             </div>
             <span className="w-full mx-auto flex items-center justify-center">
               <button className="text-xl italic uppercase font-semibold bg-blue-600 hover:bg-blue-700  hover:text-[#e2dcdc] duration-200 text-white px-2 py-1 rounded-lg shadow-md shadow-black mt-6">
