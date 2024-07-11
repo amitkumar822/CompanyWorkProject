@@ -53,7 +53,7 @@ function AddNewShopkeepers() {
 
     try {
       const response = await axios.post(
-        // "/api/insert_new_shopkeeper.php",
+        "/api/insert_new_shopkeeper.php",
         formData
       );
 

@@ -95,8 +95,6 @@ function WatingForAprovalList() {
     () => JSON?.parse(localStorage.getItem("WFACreatedPoList")) || []
   );
 
-  // console.log("createdPoList: "+ createdPoList.length);
-
   //=====👇 goods and shopkeeper all details 👇======
   const [goodsAndShopkeeperDetails, setGoodsAndShopkeeperDetails] = useState(
     () => JSON.parse(localStorage.getItem("WFAGoodsAndShopkeeperDetails")) || ""
@@ -283,7 +281,7 @@ function WatingForAprovalList() {
                     }
                     className="hover:bg-pink-400 hover:text-white duration-200 my-2 cursor-pointer rounded-md px-2 py-2 shadow-md shadow-yellow-700"
                   >
-                    {data.name}, {data.id}
+                    {data.name}
                   </li>
                 ))}
               </ul>
