@@ -92,7 +92,7 @@ function AddGoodsLiist() {
 
         setTimeout(() => {
           window.location.reload();
-        }, 200);
+        }, 800);
       } else {
         setIsLoading(false);
         toast.error("Part number already exist!", {

@@ -28,6 +28,7 @@ function AddNewShopkeepers() {
     address: "",
     phone: "",
     gstno: "",
+    // email: "",
   });
 
   const handleChange = (e) => {
@@ -52,7 +53,7 @@ function AddNewShopkeepers() {
 
     try {
       const response = await axios.post(
-        "/api/insert_new_shopkeeper.php",
+        // "/api/insert_new_shopkeeper.php",
         formData
       );
 
@@ -217,6 +218,21 @@ function AddNewShopkeepers() {
               placeholder="Enter your GST number"
               className="w-[90%] py-1 px-2 rounded-md shadow-md shadow-stone-500"
             />
+            <br />
+            {/* <label htmlFor="email" className="text-xl font-semibold">
+              Email
+            </label>
+            <br />
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              value={formField.email}
+              onChange={handleChange}
+              placeholder="Enter your GST number"
+              className="w-[90%] py-1 px-2 rounded-md shadow-md shadow-stone-500"
+            /> */}
             <br />
             <span className="w-full mx-auto flex items-center justify-center">
               <button className="text-xl italic uppercase font-semibold bg-blue-600 hover:bg-blue-700  hover:text-[#e2dcdc] duration-200 text-white px-2 py-1 rounded-lg shadow-md shadow-black mt-6">

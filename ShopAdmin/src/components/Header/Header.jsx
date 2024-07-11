@@ -25,7 +25,11 @@ function Header() {
           </div>
           {/* content box */}
           <div className=" flex items-center justify-center text-[18px] font-semibold gap-4 uppercase italic">
-            <span className={`cursor-pointer hover:text-gray-700 duration-200 underline ${userValidation === "admin" ? '' : 'hidden'}`}>
+            <span
+              className={`cursor-pointer hover:text-gray-700 duration-200 underline ${
+                userValidation === "admin" ? "" : "hidden"
+              }`}
+            >
               <NavLink
                 to="/watingfroaprovallist"
                 className={({ isActive }) => (isActive ? "text-[yellow]" : "")}
@@ -49,7 +53,11 @@ function Header() {
                 RPOL
               </NavLink>
             </span>
-            <span className=" cursor-pointer hover:text-gray-700 duration-200">
+            <span
+              className={`cursor-pointer hover:text-gray-700 duration-200 ${
+                userValidation !== "accountant" ? "hidden" : ""
+              }`}
+            >
               <NavLink
                 to="/createdpoinvoice"
                 className={({ isActive }) => (isActive ? "text-[yellow]" : "")}
@@ -65,14 +73,14 @@ function Header() {
                 OpenPo
               </NavLink>
             </span>
-            {/* <span className=" cursor-pointer hover:text-gray-700 duration-200">
+            <span className=" cursor-pointer hover:text-gray-700 duration-200">
               <NavLink
                 to="/closepo"
                 className={({ isActive }) => (isActive ? "text-[yellow]" : "")}
               >
                 CloPo
               </NavLink>
-            </span> */}
+            </span>
             <span className=" cursor-pointer hover:text-gray-700 duration-200">
               <NavLink
                 to="/addnewshaopkeepersdetails"
