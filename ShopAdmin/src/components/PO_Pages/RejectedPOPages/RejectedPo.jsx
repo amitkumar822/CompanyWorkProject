@@ -37,7 +37,7 @@ function RejectedPo() {
       }
     };
     fetchData();
-  }, [setShopkeeperNameId]);
+  }, [shopkeeperNameId]);
 
   // ===========👇 fetch Rejected Po Name and Id 👇============
   const [rejectedPoList, setRejectedPoList] = useState([]);

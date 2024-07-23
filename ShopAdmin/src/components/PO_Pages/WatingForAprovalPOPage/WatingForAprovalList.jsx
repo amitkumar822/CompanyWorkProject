@@ -51,7 +51,7 @@ function WatingForAprovalList() {
       }
     };
     fetchData();
-  }, [setShopkeepersNameId]);
+  }, [shopkeepersNameId]);
 
   //=========👇 get shopkeeper Id when clicked on shopkeeper Name 👇======
   const [spName, setSpName] = useState(

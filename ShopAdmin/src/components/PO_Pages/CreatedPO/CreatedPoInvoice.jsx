@@ -36,7 +36,7 @@ function CreatedPoInvoice() {
       }
     };
     fetchData();
-  }, [setShopkeeperName]);
+  }, [shopkeeperName]);
 
   // Shopkeeper Select dropdown
   const [selectedShopkeeper, setSelectedShopkeeper] = useState(
@@ -122,7 +122,7 @@ function CreatedPoInvoice() {
       }
     };
     fetchData();
-  }, [setGoodsData]);
+  }, [goodsData]);
   // shopkeeperAllDetailsWhenSelected
 
   const goodsOptions = goodsData.map((data) => ({

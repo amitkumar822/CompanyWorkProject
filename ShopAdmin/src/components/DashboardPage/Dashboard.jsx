@@ -48,7 +48,7 @@ function Dashboard() {
       }
     };
     fetchData();
-  }, [setShopkeeperName, isInitialLoad]); // Update dependency array
+  }, [setShopkeeperName, isInitialLoad, shopkeeperName]); // Update dependency array
 
   const [searchInputShopKeeper, setSearchInputShopKeeper] = useState("");
   const [filteredShopkeeperName, setFilteredShopkeeperName] = useState([]);
@@ -116,9 +116,8 @@ function Dashboard() {
       }
     };
     fetchData();
-  }, [shopkeeperNameId]);
+  }, [shopkeeperNameId, goodsData]);
 
-  
   //==============👇Goods Search functionality 👇=============
   const [filteredData, setFilteredData] = useState([]);
 
@@ -135,7 +134,7 @@ function Dashboard() {
           .includes(searchInput.toLowerCase().trim())
     );
     setFilteredData(filterData);
-  }, [searchInput, goodsData]);
+  }, [searchInput, goodsData, goodsData]);
 
   // ================👇 Edit functionality section 👇=================
   const [goodsName, setGoodsName] = useState("");

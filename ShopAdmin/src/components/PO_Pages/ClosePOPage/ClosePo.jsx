@@ -37,7 +37,7 @@ function ClosePo() {
       }
     };
     fetchData();
-  }, [setShopkeepersNameId]);
+  }, [shopkeepersNameId]);
 
   //=========👇 get shopkeeper Id when clicked on shopkeeper Name 👇======
   const [spName, setSpName] = useState(
@@ -107,17 +107,10 @@ function ClosePo() {
         );
         setGoodsListID(false);
       }
-
-      // if (Array.isArray(response.data.data)) {
-      //   setCreatedPoList(response.data.data);
-      //   setGoodsListID(false);
-      // }
     } catch (error) {
       console.log("Error fetch goods list: " + error);
     }
   };
-
-  console.log("goodsAndShopkeeperDetails: " + JSON.stringify(goodsAndShopkeeperDetails))
 
   return (
     <>

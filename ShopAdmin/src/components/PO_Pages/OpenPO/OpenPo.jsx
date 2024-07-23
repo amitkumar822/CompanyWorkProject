@@ -47,7 +47,7 @@ function OpenPo() {
       }
     };
     fetchData();
-  }, [setShopkeepersNameId]);
+  }, [shopkeepersNameId]);
 
   //==============👇 get shopkeeper Id when clicked on shopkeeper Name 👇==========
   const [modelGoodsListID, setModelGoodsListID] = useState(false);
