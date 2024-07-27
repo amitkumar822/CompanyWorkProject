@@ -7,6 +7,8 @@ import { IoMdCloseCircle } from "react-icons/io";
 import AnkusamLogo from "../../../data/Photos/CreatedPOInvoice/AnkusamLogo.png";
 import TUVLogo from "../../../data/Photos/CreatedPOInvoice/TUVLogo.png";
 import { useNavigate } from "react-router";
+// import convertToWords from "../../../utils/ConvertToWords";
+import { convertToWords } from '../../../utils/ConvertToWords'
 
 function OpenPo() {
   const navigate = useNavigate();
@@ -720,11 +722,13 @@ function OpenPo() {
 
                 {/* Grand Total */}
                 <div className=" border-b-[1px] border-black flex">
-                  <div className="w-[91px] lg:w-[152px] border-black"></div>
-                  <div className="w-[380px] lg:w-[553.5px] border-black"></div>
-                  <div className="w-[68px] lg:w-[94.5px] border-black"></div>
-                  <div className="w-[151px] lg:w-[218px] border-r-[1px] border-black text-center font-semibold md:text-xl text-[13px]">
+                  <div className="w-[120px] lg:w-[152px] border-black border-r-[1px] text-center font-semibold md:text-xl text-[13px]">
                     Total Amounts
+                  </div>
+                  {/* <div className="w-[380px] lg:w-[553.5px] border-black"></div> */}
+                  {/* <div className="w-[68px] lg:w-[94.5px] border-black"></div> */}
+                  <div className="w-[599px] lg:w-[866px] border-r-[1px] border-black text-center font-semibold md:text-xl text-[13px]">
+                    {convertToWords(aprovalPoList[0]?.total_amount)}
                   </div>
                   <div className="w-[107px] lg:w-[158.4px] border-black text-center font-semibold md:text-xl text-[13px]">
                     {aprovalPoList[0]?.total_amount}
