@@ -86,6 +86,7 @@ function CheckYourCreatedPoList() {
             <h1 className="text-2xl font-semibold uppercase text-center italic underline">
               Created Po List
             </h1>
+            
             {/* Search functionality */}
             {/* <div className="relative">
               <IoIosSearch className="text-2xl absolute right-6 top-4" />
