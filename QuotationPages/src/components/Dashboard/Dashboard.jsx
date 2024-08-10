@@ -1,16 +1,152 @@
-import React, { useState } from "react";
-import loadingGfg from '../../data/GfgLoding/loading.gif'
+import React, { useEffect, useState } from "react";
+import loadingGfg from "../../data/GfgLoding/loading.gif";
 import { IoIosSearch } from "react-icons/io";
 import { FaCirclePlus } from "react-icons/fa6";
 import { IoCloseSharp } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Dashboard() {
   const [isLoading, setIsLoading] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  // ==========👇 Featch Goods Details Using API 👇===============
+
+  const [goodsDetails, setGoodsDetails] = useState(() => {
+    return JSON.parse(localStorage.getItem("Dash_Goods_details")) || [];
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      // setIsLoading(true);
+      try {
+        const response = await axios.get("/api/get_item_descriptions.php");
+
+        if (Array.isArray(response.data.description)) {
+          setGoodsDetails(response.data.description);
+          localStorage.setItem(
+            "Dash_Goods_details",
+            JSON.stringify(response.data.description)
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching data", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, [setGoodsDetails]);
+
+  // console.log("Data: " + JSON.stringify(goodsDetails, null, 2));
+
+  // ==========👇 Search Functions 👇===============
+  const [searchInput, setSearchInput] = useState("");
+
+  const filteredGoods = goodsDetails.filter(
+    (items) =>
+      items.goods_name
+        .toLowerCase()
+        .includes(searchInput.toString().trim().toLocaleLowerCase()) ||
+      items.part_number
+        .toLowerCase()
+        .includes(searchInput.toString().trim().toLowerCase())
+  );
+
+  // ==========👇 Edit Functions 👇===============
+  const [editGoodsId, setEditGoodsId] = useState("");
+  const [fileData, setFileData] = useState({
+    goods_name: "",
+    part_number: "",
+    rate: "",
+    specifications: "",
+  });
+
+  const handleEditChange = (e) => {
+    const { name, value } = e.target;
+    setFileData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  // const [fetchGoodsDetails, setFetchGoodsDetails] = useState([]);
+
+  const handleEdit = async (id) => {
+    setIsLoading(true);
+    const formData = new FormData();
+    formData.append("id", id);
+
+    try {
+      const response = await axios.post(
+        "/api/get_item_discriptions_th_id.php",
+        formData
+      );
+
+      if (Array.isArray(response.data.description)) {
+        setEditGoodsId(id);
+        console.log("Edit: " + response.data.description[0].goods_name);
+        // setFetchGoodsDetails(response.data.description);
+        setFileData({
+          goods_name: response.data.description[0].goods_name,
+          part_number: response.data.description[0].part_number,
+          rate: response.data.description[0].rate,
+          specifications:
+            response.data.description[0].specifications.join("\n"),
+        });
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.log("Error: " + error);
+      setIsLoading(false);
+    }
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    const formData = new FormData();
+    formData.append("id", editGoodsId);
+    formData.append("goods_name", fileData.goods_name);
+    formData.append("part_number", fileData.part_number);
+    formData.append("rate", fileData.rate);
+    formData.append("specifications", fileData.specifications);
+
+    try {
+      const response = await axios.post(
+        "/api/update_items_discriptions_th_id.php",
+        formData
+      );
+
+      console.log("UpdatedResponse: \n" + JSON.stringify(response, null, 2));
+
+      if (response.data === "Updated successfully.") {
+        toast.success("Item updated successfully", {
+          position: "top-center",
+          autoClose: 1700,
+        });
+        setIsLoading(false);
+        setEditGoodsId("");
+        setFileData({
+          goods_name: "",
+          part_number: "",
+          rate: "",
+          specifications: "",
+        });
+        window.location.reload();
+      }
+    } catch (error) {
+      console.log("Error: " + error);
+      setIsLoading(false);
+    }
+  };
 
   return (
     <>
-      <div className="w-full h-screen mx-auto bg-[#f2d7d7] fixed">
+      <div className="w-full h-[91.3vh] mx-auto bg-[#f2d7d7] relative">
         {/* Loading image section */}
         <div
           className={`w-full md:h-[158%] h-[232%] z-50 bg-[rgba(0,0,0,0.5)] absolute ${
@@ -28,87 +164,57 @@ function Dashboard() {
         <h1 className="text-center py-2 text-[26px] font-bold italic font-serif underline">
           Welcome to Dashboard
         </h1>
-        <div className="w-[98%] grid lg:grid-cols-[22%_auto] mx-auto bg-gray-300 rounded-lg shadow-md shadow-red-500 overflow-hidden">
-          {/*========👇 Shopkeeper name list section 👇============*/}
-          <div className="pt-3 bg-[#eae7e7] rounded-md shadow-md shadow-red-500 mr-1">
-            <h1 className="text-2xl font-semibold uppercase text-center italic underline">
-              Shopkeeper Name
-            </h1>
-            {/* Search functionality */}
-            <div className="relative">
-              <IoIosSearch className="text-2xl absolute right-6 top-4" />
-              <input
-                type="text"
-                // value={searchInputShopKeeper}
-                // onChange={(e) => setSearchInputShopKeeper(e.target.value)}
-                placeholder="Search shopkeeper by name"
-                className="px-2 py-2 ml-2 lg:w-[94%] w-[96%] rounded-md mt-2 shadow-md shadow-gray-700 cursor-pointer"
-              />
-            </div>
-            <div className="h-[470px] overflow-y-auto overflow-x-auto mt-2 no-scrollbar">
-              <ul className="mx-2 text-xl italic mt-3">
-                <li>Madan Kumar</li>
-                {/* {filteredShopkeeperName.map((data, index) => (
-                  <li
-                    key={index}
-                    onClick={() =>
-                      handleShopkeeperNameId({ name: data.name, id: data.id })
-                    }
-                    className="hover:bg-gray-400 hover:text-white duration-200 my-2 cursor-pointer rounded-md px-2 py-2 shadow-md shadow-gray-700"
-                  >
-                    {data.name}
-                  </li>
-                ))} */}
-              </ul>
-              {/* <span
-                className={`ml-2 text-red-500 font-semibold ${
-                  filteredShopkeeperName.length && "hidden"
-                }`}
-              >
-                No record found..
-              </span> */}
-            </div>
-          </div>
-
+        <div className="w-[98%] h-[80%] grid lg:grid-cols-[100%] mx-auto bg-gray-300 rounded-lg shadow-md shadow-red-500 overflow-hidden">
           {/*==================👇 Goods Description list 👇===================*/}
-          <div className="bg-[#a8ff3e] rounded-md shadow-md shadow-red-500 ml-1 overflow-hidden">
+          <div className="bg-[#a8ff3e] rounded-md shadow-md shadow-red-500 overflow-hidden">
             {/* Search and Name Section */}
-            <div className="bg-[#a8ff3e] pl-3 flex justify-between py-2 px-2">
-              <span className="text-xl font-semibold italic">
-                Sri Kumaran Steels
-                {/* {shopkeeperNameId.name} */}
-              </span>
-              <div className="flex items-center justify-center gap-3 relative">
-                <span>
-                  <input
-                    type="text"
-                    // value={searchInput}
-                    // onChange={(e) => setSearchInput(e.target.value)}
-                    placeholder="Search your goods"
-                    className=" py-1 px-2 mr-11 rounded-md w-[120%]"
-                  />
-                  <IoIosSearch className="text-2xl absolute right-12 top-1" />
-                </span>
-                <span className="ml-12">
-                  <Link 
-                  // to="/addgoodslist"
-                  >
-                    <FaCirclePlus className="text-3xl text-green-700 hover:text-green-900 duration-200 cursor-pointer" />
+            <div className="w-full bg-[#a8ff3e] pl-3 flex justify-between py-2 px-2">
+              <div className="w-full flex justify-end gap-3 relative">
+                <input
+                  type="text"
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
+                  placeholder="Search your goods..."
+                  title="This is a search button, You can search by goods name or Part No"
+                  className=" py-1 px-2 rounded-md w-[40%]"
+                />
+                <IoIosSearch
+                  className="text-2xl absolute right-24 top-1"
+                  title="This is a search icon"
+                />
+                <span className="mr-12">
+                  <Link to="/addgoodsitems">
+                    <FaCirclePlus
+                      className="text-3xl text-green-700 hover:text-green-900 duration-200 cursor-pointer"
+                      onMouseEnter={() => setShowTooltip(true)}
+                      onMouseLeave={() => setShowTooltip(false)}
+                    />
+                    {showTooltip && (
+                      <div className="absolute right-0 top-6 px-2 py-1 bg-gray-200 text-sm text-gray-700 rounded-md shadow-lg z-10">
+                        You can add goods items.
+                      </div>
+                    )}
                   </Link>
                 </span>
               </div>
             </div>
             <hr className="border border-[#c0d69c]" />
             {/* Goods list or Goods table */}
-            <div className="w-full max-h-[530px] bg-pink-200 overflow-x-auto overflow-y-auto no-scrollbar">
+            <div className="w-full max-h-[530px] bg-pink-200 overflow-x-auto overflow-y-auto no-scrollbar pb-12">
               <table className="w-full text-center">
                 <thead className=" whitespace-nowrap text-[18px] sticky top-0 left-0 right-0 bg-[#82f5c7]">
                   <tr>
                     <th className="py-2 px-2 border-b-2 border-black border-r-2 ">
                       SI No
                     </th>
-                    <th className="py-2 px-2 border-b-2 border-black  border-r-2 w-[68%]">
-                      Description of Goods
+                    <th className="py-2 px-2 border-b-2 border-black  border-r-2">
+                      Goods Name
+                    </th>
+                    <th className="py-2 px-2 border-b-2 border-black border-r-2 ">
+                      Specifications
+                    </th>
+                    <th className="py-2 px-2 border-b-2 border-black border-r-2 ">
+                      Part No
                     </th>
                     <th className="py-2 px-2 border-b-2 border-black border-r-2 ">
                       Rate
@@ -119,23 +225,30 @@ function Dashboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {/* {filteredData.map((items, index) => ( */}
-                    <tr className=" odd:bg-gray-200 text-[17px]">
+                  {filteredGoods?.map((items, index) => (
+                    <tr key={index} className=" odd:bg-gray-200 text-[17px]">
                       <td className="py-2 px-2 border-b-2 border-r-2 border-black">
-                        {/* {index + 1} */}
-                        1
-                      </td>
-                      <td className="py-2 px-2 border-b-2 border-r-2 border-black w-[68%]">
-                        {/* {items.descriptions} */}
-                        item1
+                        {index + 1}
                       </td>
                       <td className="py-2 px-2 border-b-2 border-r-2 border-black">
-                        {/* ₹ {items.rate} */}
-                        123
+                        {items.goods_name}
+                      </td>
+                      <td className="py-2 px-2 pl-10 border-b-2 border-r-2 border-black text-justify">
+                        {items.specifications.map((items, index) => (
+                          <div key={index}>
+                           {"👉"} {items}
+                          </div>
+                        ))}
+                      </td>
+                      <td className="py-2 px-2 border-b-2 border-r-2 border-black">
+                        {items.part_number}
+                      </td>
+                      <td className="py-2 px-2 border-b-2 border-r-2 border-black">
+                        ₹ {items.rate}
                       </td>
                       <td className="py-2 px-2 border-b-2 border-r-2 border-black">
                         <span
-                          // onClick={() => handleEdit(items.id)}
+                          onClick={() => handleEdit(items.id)}
                           className="bg-green-500 hover:bg-green-600 duration-200 font-semibold italic py-1 px-2 text-white hover:text-[#d3d1d1] rounded-md shadow-md shadow-gray-800 cursor-pointer mr-2"
                         >
                           Edit
@@ -148,33 +261,31 @@ function Dashboard() {
                         </span>
                       </td>
                     </tr>
-                  {/* ))} */}
+                  ))}
                 </tbody>
               </table>
-              {/* <span
+              <span
                 className={`ml-2 text-red-500 font-semibold ${
-                  filteredData.length && "hidden"
+                  filteredGoods.length && "hidden"
                 }`}
               >
                 No record found..
-              </span> */}
+              </span>
             </div>
           </div>
         </div>
 
         {/*=====================👇 Shopkeepers Form Details 👇=======================*/}
-        {/* {goodsId && (
-          <div className="w-full h-screen absolute top-0 left-0 z-51 bg-[rgba(0,0,0,0.5)]">
+        {editGoodsId && (
+          <div className="w-full h-screen absolute top-0 -mt-16 left-0 z-[999] bg-[rgba(0,0,0,0.5)]">
             <div className="w-[500px] mx-auto relative top-40 bg-gray-300 italic px-4 py-4 rounded-md shadow-md shadow-yellow-600 mt-10 tece">
               <span
-                // onClick={() => setGoodsId("")}
+                onClick={() => setEditGoodsId("")}
                 className="w-[95%] flex justify-end items-center right-7"
               >
                 <IoCloseSharp className="text-3xl text-red-500 cursor-pointer" />
               </span>
-              <form 
-              // onSubmit={handleSubmitEdit}
-              >
+              <form onSubmit={handleEditSubmit}>
                 <label htmlFor="goodsname" className="text-xl font-semibold">
                   Goods Name
                 </label>
@@ -182,10 +293,27 @@ function Dashboard() {
                 <input
                   type="text"
                   id="goodsname"
-                  // value={goodsName}
-                  // onChange={(e) => setGoodsName(e.target.value)}
+                  name="goods_name"
+                  value={fileData.goods_name}
+                  onChange={handleEditChange}
                   placeholder="Enter your goods name"
                   className="w-[90%] py-1 px-2 rounded-md shadow-md shadow-stone-500"
+                />
+                <br />
+                <label
+                  htmlFor="specifications"
+                  className="text-xl font-semibold"
+                >
+                  Specifications
+                </label>
+                <br />
+                <textarea
+                  id="specifications"
+                  name="specifications"
+                  value={fileData.specifications}
+                  onChange={handleEditChange}
+                  placeholder="Enter your goods specifications"
+                  className="w-[90%] min-h-20 max-h-20 py-1 px-2 rounded-md shadow-md shadow-stone-500"
                 />
                 <br />
                 <label htmlFor="rate" className="text-xl font-semibold">
@@ -195,9 +323,24 @@ function Dashboard() {
                 <input
                   type="text"
                   id="rate"
-                  // value={goodsRate}
-                  // onChange={(e) => setGoodsRate(e.target.value)}
+                  name="rate"
+                  value={fileData.rate}
+                  onChange={handleEditChange}
                   placeholder="Enter your goods rate"
+                  className="w-[90%] py-1 px-2 rounded-md shadow-md shadow-stone-500"
+                />
+                <br />
+                <label htmlFor="partnumber" className="text-xl font-semibold">
+                  Part No
+                </label>
+                <br />
+                <input
+                  type="text"
+                  id="partnumber"
+                  name="part_number"
+                  value={fileData.part_number}
+                  onChange={handleEditChange}
+                  placeholder="Enter your goods part number"
                   className="w-[90%] py-1 px-2 rounded-md shadow-md shadow-stone-500"
                 />
                 <br />
@@ -209,7 +352,7 @@ function Dashboard() {
               </form>
             </div>
           </div>
-        )}  */}
+        )}
       </div>
 
       {/*======================👇 Confirmation Asking when delete 👇=====================*/}
@@ -236,6 +379,8 @@ function Dashboard() {
           </div>
         </div>
       )} */}
+
+      <ToastContainer />
     </>
   );
 }

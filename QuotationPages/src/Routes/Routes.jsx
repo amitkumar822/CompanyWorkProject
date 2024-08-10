@@ -12,6 +12,7 @@ import {
   Quotation,
   Dashboard,
   AddShopkeeper,
+  AddGoodsItems,
 } from "../components/Exports/AllComponentsExport";
 
 const router = createBrowserRouter(
@@ -21,6 +22,7 @@ const router = createBrowserRouter(
       <Route path="/createquotation" element={<Quotation />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/addshopkeeper" element={<AddShopkeeper />} />
+      <Route path="/addgoodsitems" element={<AddGoodsItems />} />
     </Route>
   )
 );
