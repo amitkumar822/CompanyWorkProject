@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Select from "react-select";
 import loadingGfg from "../../data/GfgLoding/loading.gif";
 import { ToastContainer, toast } from "react-toastify";
@@ -6,6 +7,145 @@ import "react-toastify/dist/ReactToastify.css";
 
 function Quotation() {
   const [isLoading, setIsLoading] = useState(false);
+
+  // ==========👇 Total Amount And GST Calculate here 👇=================
+  const [selectedGoods, setSelectedGoods] = useState([]);
+
+  // const [totalAmount, setTotalAmount] = useState(0);
+  const [cgst, setCgst] = useState(0);
+  const [sgst, setSgst] = useState(0);
+  const [igst, setIGst] = useState(0);
+
+  // const [quantityInput, setQuantityInput] = useState(1);
+
+  // const cgstCalculated = (totalAmount * parseInt(cgst)) / 100 * quantityInput;
+  // const sgstCalculated = (totalAmount * parseInt(sgst)) / 100 * quantityInput;
+  // const igstCalculated = (totalAmount * parseInt(igst)) / 100 * quantityInput;
+
+  // const handleQuantityChange = (index, quantity) => {
+  //   const updatedGoods = [...selectedGoods];
+  //   updatedGoods[index].measurement_number = quantity;
+  //   setQuantityInput(updatedGoods[index].measurement_number)
+  //   setTotalAmount(
+  //     updatedGoods.reduce((acc, curr) => acc + curr.rate * curr.measurement_number, 0)
+  //   );
+  // };
+
+  const [quantityInput, setQuantityInput] = useState(1);
+  const [totalAmount, setTotalAmount] = useState(() => {
+    return selectedGoods.reduce(
+      (acc, curr) => acc + curr.rate * (curr.measurement_number || 1),
+      0
+    );
+  });
+
+  useEffect(() => {
+    // Calculate total amount based on updated goods
+    const newTotalAmount = selectedGoods.reduce(
+      (acc, curr) => acc + curr.rate * (curr.measurement_number || 1),
+      0
+    );
+    setTotalAmount(newTotalAmount);
+  }, [selectedGoods, quantityInput]); // Recalculate whenever selectedGoods or quantityInput changes
+
+  const handleQuantityChange = (index, quantity) => {
+    const updatedGoods = [...selectedGoods];
+    updatedGoods[index].measurement_number = quantity;
+    setQuantityInput(quantity);
+  };
+
+  const cgstCalculated = ((totalAmount * parseInt(cgst)) / 100) * quantityInput;
+  const sgstCalculated = ((totalAmount * parseInt(sgst)) / 100) * quantityInput;
+  const igstCalculated = ((totalAmount * parseInt(igst)) / 100) * quantityInput;
+
+  // ==========👇 Featch Shopkeeper Details 👇=================
+  const [shopkeeperDetails, setShopkeeperDetails] = useState(
+    () => JSON.parse(localStorage.getItem("QuoShopkeeperDetails")) || []
+  );
+  const [shopkeeperAdress, setShopkeeperAdress] = useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/api/get_customer_detail.php");
+
+        if (Array.isArray(response.data)) {
+          setShopkeeperDetails(response.data);
+          localStorage.setItem(
+            "QuoShopkeeperDetails",
+            JSON.stringify(response.data)
+          );
+        }
+      } catch (error) {
+        console.log("Shopkeeper API Featch Error: \n " + error);
+      }
+    };
+    fetchData();
+  }, [setShopkeeperDetails]);
+
+  const handleShopkeeperChange = (selectedOption) => {
+    setSelectedGoods([]);
+    setTotalAmount(0);
+    const selectedShopkeeperDetails = shopkeeperDetails.find(
+      (details) => details.id === selectedOption.id
+    );
+
+    if (selectedShopkeeperDetails.state === "Tamil Nadu - 33") {
+      setCgst(9);
+      setSgst(9);
+      setIGst(0);
+    } else {
+      setCgst(0);
+      setSgst(0);
+      setIGst(18);
+    }
+
+    setShopkeeperAdress(selectedShopkeeperDetails);
+  };
+
+  // ==========👇 Featch Goods Details in Dashboard Section 👇===============
+
+  const [goodsDetails, setGoodsDetails] = useState([]);
+
+  useEffect(() => {
+    if (localStorage.getItem("Dash_Goods_details")) {
+      setGoodsDetails(JSON.parse(localStorage.getItem("Dash_Goods_details")));
+      return;
+    }
+  }, [setGoodsDetails]);
+
+  // ============👇 Handling Goods Changes 👇============
+  // const [selectedGoods, setSelectedGoods] = useState([]);
+
+  console.log("selectedGoods: \n" + JSON.stringify(selectedGoods, null, 2));
+
+  const handleGoodsChange = (selectedOption) => {
+    const selectedGoodsDetail = goodsDetails.find(
+      (goods) => goods.id === selectedOption.id
+    );
+    // Check if the selected goods are already in the array
+    setSelectedGoods((prevSelectedGoods) => {
+      // If the selected item is already in the array, return the previous array unchanged
+      if (
+        prevSelectedGoods.some((goods) => goods.id === selectedGoodsDetail.id)
+      ) {
+        return prevSelectedGoods;
+      }
+      setTotalAmount(totalAmount + parseInt(selectedOption.rate));
+
+      // Otherwise, add the new item to the array
+      return [...prevSelectedGoods, selectedGoodsDetail];
+    });
+  };
+
+  // ============👇 Remove Selected Goods 👇==============
+  const handleRemoveGoods = (selectedId, rate) => {
+    const updatedGoodsDetails = selectedGoods.filter(
+      (goodsId) => goodsId.id !== selectedId
+    );
+    setTotalAmount(totalAmount - parseInt(rate));
+    setSelectedGoods(updatedGoodsDetails);
+  };
 
   return (
     <>
@@ -19,7 +159,7 @@ function Quotation() {
           <img className="w-[100px] h-[100px] fixed" src={loadingGfg} alt="" />
         </div>
       </div>
-      <div className="w-[80%] mx-auto mb-6">
+      <div className="w-[100%] mx-auto mb-6">
         <h1 className="text-center text-3xl italic pt-4 font-semibold font-serif underline text-green-600">
           Welcome to Quotation Page
         </h1>
@@ -32,9 +172,13 @@ function Quotation() {
           </label>
           <Select
             id="shopkeepername"
-            // options={shopkeeperOptions}
+            options={shopkeeperDetails.map((details) => ({
+              label: details.username,
+              value: details.username,
+              id: details.id,
+            }))}
             // value={selectedShopkeeper}
-            // onChange={handleShopkeeperChange}
+            onChange={handleShopkeeperChange}
           />
 
           <br />
@@ -43,7 +187,7 @@ function Quotation() {
           </label>
           <input
             type="text"
-            // value={shopkeeperAllDetailsWhenSelected.address || ""}
+            value={shopkeeperAdress.address || ""}
             placeholder="Your address"
             className="w-[40%] border border-black rounded-md px-4 py-1 mr-4"
             readOnly
@@ -54,7 +198,7 @@ function Quotation() {
           </label>
           <input
             type="text"
-            // value={shopkeeperAllDetailsWhenSelected.state || ""}
+            value={shopkeeperAdress.state || ""}
             placeholder="Your state"
             className="border border-black rounded-md px-4 py-1 w-[40%]"
             readOnly
@@ -66,7 +210,7 @@ function Quotation() {
           </label>
           <input
             type="text"
-            // value={shopkeeperAllDetailsWhenSelected.mobile || ""}
+            value={shopkeeperAdress.phone || ""}
             placeholder="Your mobile number"
             className="border border-black rounded-md px-4 py-1 w-[40%] mr-4"
             readOnly
@@ -76,7 +220,7 @@ function Quotation() {
           </label>
           <input
             type="text"
-            // value={shopkeeperAllDetailsWhenSelected.gst || ""}
+            value={shopkeeperAdress.gst || ""}
             placeholder="Your GST number"
             className="border border-black rounded-md px-4 py-1 w-[40%]"
             readOnly
@@ -85,10 +229,14 @@ function Quotation() {
           <br />
           <h1 className="text-xl italic">Goods Details</h1>
           <Select
-          // isDisabled={!selectedShopkeeper}
-          // options={goodsOptions}
-          // value={selectedGoods}
-          // onChange={handleGoodsChange}
+            isDisabled={!shopkeeperAdress.state}
+            options={goodsDetails.map((goods) => ({
+              label: goods.goods_name,
+              value: goods.goods_name,
+              id: goods.id,
+              rate: goods.rate,
+            }))}
+            onChange={handleGoodsChange}
           />
           <br />
           {/* Goods List  */}
@@ -96,111 +244,99 @@ function Quotation() {
           <table className="w-[99%] mx-auto mb-4 border border-black rounded-md">
             <thead className="bg-black text-white">
               <tr>
-                <th>SI NO</th>
-                <th className="py-2">Goods</th>
-                <th>Quantity</th>
-                <th>Rate</th>
-                <th>CGST</th>
-                <th>SGST</th>
-                <th>IGST</th>
-                <th>Total</th>
-                <th>Action</th>
+                <th className="py-2 px-2 border-b-2 border-black border-r-2 ">
+                  SI No
+                </th>
+                <th className="py-2 px-2 border-b-2 border-black border-r-2 ">
+                  Part No
+                </th>
+                <th className="py-2 px-2 border-b-2 border-black  border-r-2">
+                  Goods Name
+                </th>
+                <th className="py-2 px-2 border-b-2 border-black border-r-2 ">
+                  Specifications
+                </th>
+                <th className="py-2 px-2 border-b-2 border-black border-r-2 w-[50px]">
+                  Quantity
+                </th>
+
+                <th className="py-2 px-2 border-b-2 border-black border-r-2 ">
+                  Rate
+                </th>
+                <th className="py-2 px-2 border-b-2 border-black border-r-2 ">
+                  Action
+                </th>
               </tr>
             </thead>
             <tbody className="bg-gray-200">
-              {/* {listGoods.map((goods, index) => ( */}
-              <tr className=" odd:bg-gray-100">
-                <td className="py-2 text-center">
-                  {/* {index + 1} */}
-                  12
-                </td>
-                <td className="py-2 text-center">
-                  {/* {goods.label} */}
-                  item1
-                </td>
-                <td className="py-2 text-center w-[20%]">
-                  <input
-                    type="number"
-                    // value={goods.quantity}
-                    // onChange={(e) =>
-                    //   handleQuantityChange(index, Number(e.target.value))
-                    // }
-                    min="1"
-                    className="w-[32%] mx-auto rounded-md pl-1 border border-black"
-                  />
-                </td>
-                <td className="py-2 text-center">
-                  {/* {goods.rate} */}
-                  100
-                </td>
-                <td className="py-2 text-center">
-                  {/* {(
-                        goods.rate *
-                        goods.quantity *
-                        (goods.cgst / 100)
-                      ).toFixed(0)} */}
-                  30
-                </td>
-                <td className="py-2 text-center">
-                  {/* {(
-                        goods.rate *
-                        goods.quantity *
-                        (goods.sgst / 100)
-                      ).toFixed(0)} */}
-                  63
-                </td>
-                <td className="py-2 text-center">
-                  {/* {(
-                        goods.rate *
-                        goods.quantity *
-                        (goods.igst / 100)
-                      ).toFixed(0)} */}
-                  25
-                </td>
-                <td className="py-2 text-center">
-                  {/* {(
-                        goods.rate * goods.quantity +
-                        goods.rate *
-                          goods.quantity *
-                          (cgstInput + sgstInput + igstInput)
-                      ).toFixed(0)} */}
-                  226
-                </td>
+              {selectedGoods?.map((items, index) => (
+                <tr key={index} className=" odd:bg-pink-200 text-[17px]">
+                  <td className="py-2 px-2 border-b-2 border-r-2 border-black">
+                    {index + 1}
+                  </td>
+                  <td className="py-2 px-2 border-b-2 border-r-2 border-black">
+                    {items.part_number}
+                  </td>
+                  <td className="py-2 px-2 border-b-2 border-r-2 border-black">
+                    {items.goods_name}
+                  </td>
+                  <td className="py-2 px-2 pl-10 border-b-2 border-r-2 border-black text-justify">
+                    {items.specifications.map((items, index) => (
+                      <div key={index}>
+                        {"👉"} {items}
+                      </div>
+                    ))}
+                  </td>
 
-                <td className="py-2 text-center">
-                  <span
-                    className="bg-red-500 hover:bg-red-600 text-white hover:text-[#e7e6e6] duration-200 px-2 py-1 rounded-md cursor-pointer mx-1"
-                    // onClick={() => handleDelete(index)}
-                  >
-                    Remove
-                  </span>
-                </td>
-              </tr>
-              {/* ))} */}
+                  <td className="py-2 px-2 border-b-2 border-r-2 border-black w-[50px]">
+                    <input
+                      type="number"
+                      value={items.measurement_number || 1}
+                      onChange={(e) =>
+                        handleQuantityChange(index, Number(e.target.value))
+                      }
+                      min="1"
+                      className="w-[80%] mx-auto rounded-md pl-1 border border-black"
+                    />
+                  </td>
+                  <td className="py-2 px-2 border-b-2 border-r-2 border-black">
+                    ₹ {items.rate}
+                  </td>
+                  <td className="py-2 px-2 border-b-2 border-r-2 border-black">
+                    <span
+                      onClick={() => handleRemoveGoods(items.id, items.rate)}
+                      className="bg-red-500 hover:bg-red-600 duration-200 font-semibold italic py-1 px-2 text-white hover:text-[#d3d1d1] rounded-md shadow-md shadow-gray-800 cursor-pointer"
+                    >
+                      Remove
+                    </span>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
           {/* </div> */}
 
           {/* Total Amount */}
-          {/* {listGoods.length > 0 && (
+          {selectedGoods.length > 0 && (
             <div className="w-[50%] mx-auto mt-4 border border-black rounded-md py-2 px-2">
               <p className="text-xl italic text-center">
                 Total Amount: ₹ {totalAmount.toFixed(0)}
               </p>
               <p className="text-xl italic text-center">
-                CGST ({cgstInput * 100}): ₹ {cgst.toFixed(0)}
+                CGST ({cgst}%): ₹ {cgstCalculated.toFixed(2)}
+                {/* CGST {cgst} */}
               </p>
               <p className="text-xl italic text-center">
-                SGST ({sgstInput * 100}): ₹ {sgst.toFixed(0)}
+                SGST ({sgst}%): ₹ {sgstCalculated.toFixed(2)}
               </p>
               <p className="text-xl italic text-center">
-                IGST ({igstInput * 100}): ₹ {igst.toFixed(0)}
+                IGST ({igst}%): ₹ {igstCalculated.toFixed(2)}
               </p>
               <p className="text-xl italic text-center">
-                Final Amount: ₹ {finalAmount.toFixed(0)}
+                {/* Final Amount: ₹ {finalAmount.toFixed(0)} */}
               </p>
             </div>
-          )} */}
+          )}
 
           {/*======👇 Preview Created PO 👇====*/}
           {/* <div

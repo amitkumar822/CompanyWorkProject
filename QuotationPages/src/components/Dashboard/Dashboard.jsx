@@ -20,7 +20,6 @@ function Dashboard() {
 
   useEffect(() => {
     const fetchData = async () => {
-      // setIsLoading(true);
       try {
         const response = await axios.get("/api/get_item_descriptions.php");
 
@@ -71,8 +70,6 @@ function Dashboard() {
       [name]: value,
     }));
   };
-
-  // const [fetchGoodsDetails, setFetchGoodsDetails] = useState([]);
 
   const handleEdit = async (id) => {
     setIsLoading(true);
@@ -236,7 +233,7 @@ function Dashboard() {
                       <td className="py-2 px-2 pl-10 border-b-2 border-r-2 border-black text-justify">
                         {items.specifications.map((items, index) => (
                           <div key={index}>
-                           {"👉"} {items}
+                            {"👉"} {items}
                           </div>
                         ))}
                       </td>
