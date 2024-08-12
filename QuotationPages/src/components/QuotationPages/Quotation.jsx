@@ -10,27 +10,20 @@ function Quotation() {
   const [isLoading, setIsLoading] = useState(false);
 
   // ==========👇 Total Amount And GST Calculate here 👇=================
-  const [selectedGoods, setSelectedGoods] = useState([]);
+  const [selectedGoods, setSelectedGoods] = useState(
+    () => JSON.parse(localStorage.getItem("Quo_SelectedGoods")) || []
+  );
 
   // const [totalAmount, setTotalAmount] = useState(0);
-  const [cgst, setCgst] = useState(0);
-  const [sgst, setSgst] = useState(0);
-  const [igst, setIGst] = useState(0);
-
-  // const [quantityInput, setQuantityInput] = useState(1);
-
-  // const cgstCalculated = (totalAmount * parseInt(cgst)) / 100 * quantityInput;
-  // const sgstCalculated = (totalAmount * parseInt(sgst)) / 100 * quantityInput;
-  // const igstCalculated = (totalAmount * parseInt(igst)) / 100 * quantityInput;
-
-  // const handleQuantityChange = (index, quantity) => {
-  //   const updatedGoods = [...selectedGoods];
-  //   updatedGoods[index].measurement_number = quantity;
-  //   setQuantityInput(updatedGoods[index].measurement_number)
-  //   setTotalAmount(
-  //     updatedGoods.reduce((acc, curr) => acc + curr.rate * curr.measurement_number, 0)
-  //   );
-  // };
+  const [cgst, setCgst] = useState(
+    () => parseInt(localStorage.getItem("Quo_CgstSgst")) || 0
+  );
+  const [sgst, setSgst] = useState(
+    () => parseInt(localStorage.getItem("Quo_CgstSgst")) || 0
+  );
+  const [igst, setIGst] = useState(
+    () => parseInt(localStorage.getItem("Quo_Igst")) || 0
+  );
 
   const [quantityInput, setQuantityInput] = useState(1);
   const [totalAmount, setTotalAmount] = useState(0);
@@ -57,16 +50,18 @@ function Quotation() {
   const finalAmount =
     cgstCalculated + sgstCalculated + igstCalculated + totalAmount;
 
+  // Store the calculated values in local storage
+  localStorage.setItem("Quo_CgstSgst", cgst);
+  localStorage.setItem("Quo_Igst", igst);
+  localStorage.setItem("Quo_TotalAmount", totalAmount);
+  localStorage.setItem("Quo_FinalAmount", finalAmount);
+
   // ==========👇 Featch Shopkeeper Details 👇=================
   const [shopkeeperDetails, setShopkeeperDetails] = useState(
     () => JSON.parse(localStorage.getItem("QuoShopkeeperDetails")) || []
   );
   const [shopkeeperAdress, setShopkeeperAdress] = useState(
     () => JSON.parse(localStorage.getItem("Quo_ShopkeeperDetails")) || {}
-  );
-
-  console.log(
-    "shopkeeperAdress: \n" + JSON.stringify(shopkeeperAdress?.username, null, 2)
   );
 
   useEffect(() => {
@@ -87,7 +82,6 @@ function Quotation() {
     };
     fetchData();
   }, [setShopkeeperDetails]);
-  
 
   const handleShopkeeperChange = (selectedOption) => {
     setSelectedGoods([]);
@@ -100,10 +94,12 @@ function Quotation() {
       setCgst(9);
       setSgst(9);
       setIGst(0);
+      localStorage.setItem("Quo_CgstSgst", JSON.stringify(9));
     } else {
       setCgst(0);
       setSgst(0);
       setIGst(18);
+      localStorage.setItem("Quo_Igst", JSON.stringify(18));
     }
 
     setShopkeeperAdress(selectedShopkeeperDetails);
@@ -126,12 +122,16 @@ function Quotation() {
 
   // ============👇 Handling Goods Changes 👇============
 
-  // console.log("selectedGoods: \n" + JSON.stringify(selectedGoods, null, 2));
+  const [selectedGoodsNameOnly, setSelectedGoodsNameOnly] = useState(
+    () => localStorage.getItem("Quo_SelectedGoodsNameOnly") || ""
+  );
 
   const handleGoodsChange = (selectedOption) => {
     const selectedGoodsDetail = goodsDetails.find(
       (goods) => goods.id === selectedOption.id
     );
+    setSelectedGoodsNameOnly(selectedOption.value);
+    localStorage.setItem("Quo_SelectedGoodsNameOnly", selectedOption.value);
     // Check if the selected goods are already in the array
     setSelectedGoods((prevSelectedGoods) => {
       // If the selected item is already in the array, return the previous array unchanged
@@ -146,6 +146,7 @@ function Quotation() {
       return [...prevSelectedGoods, selectedGoodsDetail];
     });
   };
+  localStorage.setItem("Quo_SelectedGoods", JSON.stringify(selectedGoods));
 
   // ============👇 Remove Selected Goods 👇==============
   const [showRemoveConfirmation, setShowRemoveConfirmation] = useState(false);
@@ -170,8 +171,26 @@ function Quotation() {
 
   // ============👇 Generate Quotations 👇==============
 
-  const handleGenerateQuatationsId = (e) => {
+  const handleGenerateQuatationsId = async (e) => {
     e.preventDefault();
+
+    const amoutGSTDetails = {
+      cgst: cgstCalculated,
+      sgst: sgstCalculated,
+      igst: igstCalculated,
+      total_amount: totalAmount,
+    };
+
+    const formData = new FormData();
+    formData.append("customer_details", shopkeeperAdress);
+    formData.append("selected_goods", selectedGoods);
+    formData.append("amount_gst_details", JSON.stringify(amoutGSTDetails));
+
+    try {
+      const response = await axios.post("", formData);
+    } catch (error) {
+      console.log("Error Generate Quotation: \n" + error);
+    }
   };
 
   return (
@@ -204,7 +223,10 @@ function Quotation() {
               value: details.username,
               id: details.id,
             }))}
-            value={shopkeeperAdress?.username || ''}
+            value={{
+              label: shopkeeperAdress?.username,
+              value: shopkeeperAdress?.username,
+            }}
             onChange={handleShopkeeperChange}
           />
 
@@ -263,11 +285,14 @@ function Quotation() {
               id: goods.id,
               rate: goods.rate,
             }))}
+            value={{
+              label: selectedGoodsNameOnly,
+              value: selectedGoodsNameOnly,
+            }}
             onChange={handleGoodsChange}
           />
           <br />
           {/* Goods List  */}
-          {/* <div className={listGoods.length === 0 ? "hidden" : "block"}> */}
           <table className="w-[99%] mx-auto mb-4 border border-black rounded-md">
             <thead className="bg-black text-white">
               <tr>
@@ -341,7 +366,6 @@ function Quotation() {
               ))}
             </tbody>
           </table>
-          {/* </div> */}
 
           {/* Total Amount */}
           {selectedGoods.length > 0 && (
@@ -351,7 +375,7 @@ function Quotation() {
               </p>
               <p
                 className={`text-xl italic text-center ${
-                  igstCalculated !== 0 ? "hidden" : ""
+                  cgst === 0 ? "hidden" : ""
                 }`}
               >
                 CGST ({cgst}%): ₹ {cgstCalculated.toFixed(2)}
@@ -359,7 +383,7 @@ function Quotation() {
               </p>
               <p
                 className={`text-xl italic text-center ${
-                  igstCalculated !== 0 ? "hidden" : ""
+                  sgst === 0 ? "hidden" : ""
                 }`}
               >
                 SGST ({sgst}%): ₹ {sgstCalculated.toFixed(2)}
