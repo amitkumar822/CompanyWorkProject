@@ -4,6 +4,7 @@ import Select from "react-select";
 import loadingGfg from "../../data/GfgLoding/loading.gif";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Link } from "react-router-dom";
 
 function Quotation() {
   const [isLoading, setIsLoading] = useState(false);
@@ -60,7 +61,13 @@ function Quotation() {
   const [shopkeeperDetails, setShopkeeperDetails] = useState(
     () => JSON.parse(localStorage.getItem("QuoShopkeeperDetails")) || []
   );
-  const [shopkeeperAdress, setShopkeeperAdress] = useState({});
+  const [shopkeeperAdress, setShopkeeperAdress] = useState(
+    () => JSON.parse(localStorage.getItem("Quo_ShopkeeperDetails")) || {}
+  );
+
+  console.log(
+    "shopkeeperAdress: \n" + JSON.stringify(shopkeeperAdress?.username, null, 2)
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -80,6 +87,7 @@ function Quotation() {
     };
     fetchData();
   }, [setShopkeeperDetails]);
+  
 
   const handleShopkeeperChange = (selectedOption) => {
     setSelectedGoods([]);
@@ -99,6 +107,10 @@ function Quotation() {
     }
 
     setShopkeeperAdress(selectedShopkeeperDetails);
+    localStorage.setItem(
+      "Quo_ShopkeeperDetails",
+      JSON.stringify(selectedShopkeeperDetails)
+    );
   };
 
   // ==========👇 Featch Goods Details in Dashboard Section 👇===============
@@ -113,9 +125,8 @@ function Quotation() {
   }, [setGoodsDetails]);
 
   // ============👇 Handling Goods Changes 👇============
-  // const [selectedGoods, setSelectedGoods] = useState([]);
 
-  console.log("selectedGoods: \n" + JSON.stringify(selectedGoods, null, 2));
+  // console.log("selectedGoods: \n" + JSON.stringify(selectedGoods, null, 2));
 
   const handleGoodsChange = (selectedOption) => {
     const selectedGoodsDetail = goodsDetails.find(
@@ -193,7 +204,7 @@ function Quotation() {
               value: details.username,
               id: details.id,
             }))}
-            // value={selectedShopkeeper}
+            value={shopkeeperAdress?.username || ''}
             onChange={handleShopkeeperChange}
           />
 
@@ -372,13 +383,13 @@ function Quotation() {
               selectedGoods.length === 0 ? "hidden" : ""
             }`}
           >
-            <button
-              onClick={handleGenerateQuatationsId}
-              // to="/previewinvoicebill"
+            <Link
+              // onClick={handleGenerateQuatationsId}
+              to="/previewinvoicebill"
               className="bg-green-500 hover:bg-green-600 text-xl text-white hover:text-[#e7e6e6] duration-200 py-2 px-3 rounded-md font-semibold cursor-pointer"
             >
               Generate Quotation
-            </button>
+            </Link>
           </div>
         </form>
       </div>

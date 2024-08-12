@@ -13,6 +13,7 @@ import {
   Dashboard,
   AddShopkeeper,
   AddGoodsItems,
+  PreviewInvoiceBill
 } from "../components/Exports/AllComponentsExport";
 
 const router = createBrowserRouter(
@@ -23,6 +24,7 @@ const router = createBrowserRouter(
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/addshopkeeper" element={<AddShopkeeper />} />
       <Route path="/addgoodsitems" element={<AddGoodsItems />} />
+      <Route path="/previewinvoicebill" element={<PreviewInvoiceBill />} />
     </Route>
   )
 );
