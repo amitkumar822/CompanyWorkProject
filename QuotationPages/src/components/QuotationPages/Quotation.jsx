@@ -32,12 +32,7 @@ function Quotation() {
   // };
 
   const [quantityInput, setQuantityInput] = useState(1);
-  const [totalAmount, setTotalAmount] = useState(() => {
-    return selectedGoods.reduce(
-      (acc, curr) => acc + curr.rate * (curr.measurement_number || 1),
-      0
-    );
-  });
+  const [totalAmount, setTotalAmount] = useState(0);
 
   useEffect(() => {
     // Calculate total amount based on updated goods
@@ -54,9 +49,12 @@ function Quotation() {
     setQuantityInput(quantity);
   };
 
-  const cgstCalculated = ((totalAmount * parseInt(cgst)) / 100) * quantityInput;
-  const sgstCalculated = ((totalAmount * parseInt(sgst)) / 100) * quantityInput;
-  const igstCalculated = ((totalAmount * parseInt(igst)) / 100) * quantityInput;
+  const cgstCalculated = (totalAmount * parseInt(cgst)) / 100;
+  const sgstCalculated = (totalAmount * parseInt(sgst)) / 100;
+  const igstCalculated = (totalAmount * parseInt(igst)) / 100;
+
+  const finalAmount =
+    cgstCalculated + sgstCalculated + igstCalculated + totalAmount;
 
   // ==========👇 Featch Shopkeeper Details 👇=================
   const [shopkeeperDetails, setShopkeeperDetails] = useState(
@@ -139,12 +137,30 @@ function Quotation() {
   };
 
   // ============👇 Remove Selected Goods 👇==============
+  const [showRemoveConfirmation, setShowRemoveConfirmation] = useState(false);
+  const [removeDetails, setRemoveDetails] = useState({
+    selectedId: "",
+    rate: 1,
+  });
+
   const handleRemoveGoods = (selectedId, rate) => {
+    setShowRemoveConfirmation(true);
+    setRemoveDetails({ selectedId, rate });
+  };
+
+  const handleRemoveConfirmation = () => {
     const updatedGoodsDetails = selectedGoods.filter(
-      (goodsId) => goodsId.id !== selectedId
+      (goodsId) => goodsId.id !== removeDetails.selectedId
     );
-    setTotalAmount(totalAmount - parseInt(rate));
+    setTotalAmount(totalAmount - parseInt(removeDetails.rate));
     setSelectedGoods(updatedGoodsDetails);
+    setShowRemoveConfirmation(false);
+  };
+
+  // ============👇 Generate Quotations 👇==============
+
+  const handleGenerateQuatationsId = (e) => {
+    e.preventDefault();
   };
 
   return (
@@ -319,49 +335,61 @@ function Quotation() {
           {/* Total Amount */}
           {selectedGoods.length > 0 && (
             <div className="w-[50%] mx-auto mt-4 border border-black rounded-md py-2 px-2">
-              <p className="text-xl italic text-center">
+              <p className="text-xl italic text-center ">
                 Total Amount: ₹ {totalAmount.toFixed(0)}
               </p>
-              <p className="text-xl italic text-center">
+              <p
+                className={`text-xl italic text-center ${
+                  igstCalculated !== 0 ? "hidden" : ""
+                }`}
+              >
                 CGST ({cgst}%): ₹ {cgstCalculated.toFixed(2)}
                 {/* CGST {cgst} */}
               </p>
-              <p className="text-xl italic text-center">
+              <p
+                className={`text-xl italic text-center ${
+                  igstCalculated !== 0 ? "hidden" : ""
+                }`}
+              >
                 SGST ({sgst}%): ₹ {sgstCalculated.toFixed(2)}
               </p>
-              <p className="text-xl italic text-center">
+              <p
+                className={`text-xl italic text-center ${
+                  cgstCalculated || sgstCalculated !== 0 ? "hidden" : ""
+                }`}
+              >
                 IGST ({igst}%): ₹ {igstCalculated.toFixed(2)}
               </p>
               <p className="text-xl italic text-center">
-                {/* Final Amount: ₹ {finalAmount.toFixed(0)} */}
+                Final Amount: ₹ {finalAmount.toFixed(2)}
               </p>
             </div>
           )}
 
           {/*======👇 Preview Created PO 👇====*/}
-          {/* <div
+          <div
             className={`w-[96%] flex justify-center mt-6 ${
-              listGoods.length === 0 ? "hidden" : ""
+              selectedGoods.length === 0 ? "hidden" : ""
             }`}
           >
             <button
               onClick={handleGenerateQuatationsId}
-              to="/previewinvoicebill"
+              // to="/previewinvoicebill"
               className="bg-green-500 hover:bg-green-600 text-xl text-white hover:text-[#e7e6e6] duration-200 py-2 px-3 rounded-md font-semibold cursor-pointer"
             >
               Generate Quotation
             </button>
-          </div> */}
+          </div>
         </form>
       </div>
 
       {/* Delete Confirmation Dilog Box */}
-      {/* <div
-        className={`w-full h-[130%] mt-16 fixed bg-[rgba(0,0,0,0.5)]  top-0 left-0 flex justify-center items-center ${
-          !showDeleteConfirmation ? "hidden" : ""
+      <div
+        className={`w-full h-[130%] -mt-20 z-[50] fixed bg-[rgba(0,0,0,0.5)]  top-0 left-0 flex justify-center items-center fixed ${
+          !showRemoveConfirmation ? "hidden" : ""
         }`}
       >
-        <div className={`w-[500px] bg-gray-600 p-4 rounded-md z-50 -mt-60`}>
+        <div className={`w-[500px] bg-gray-600 p-4 rounded-md z-50 `}>
           <h1 className="text-xl text-white font-semibold">
             Delete Confirmation
           </h1>
@@ -371,19 +399,19 @@ function Quotation() {
           <div className="flex justify-end gap-2 mt-4">
             <button
               className="bg-green-500 text-white px-4 py-2 rounded-md font-semibold"
-              onClick={() => setShowDeleteConfirmation(false)}
+              onClick={() => setShowRemoveConfirmation(false)}
             >
               No
             </button>
             <button
               className="bg-red-500 text-white px-4 py-2 rounded-md font-semibold"
-              onClick={handleDeleteConfirmation}
+              onClick={handleRemoveConfirmation}
             >
               Yes
             </button>
           </div>
         </div>
-      </div> */}
+      </div>
       <ToastContainer />
     </>
   );
