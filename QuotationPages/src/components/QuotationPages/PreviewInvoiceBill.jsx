@@ -6,10 +6,76 @@ import { convertToWords } from "../../utils/ConvertToWords";
 
 const PreviewInvoiceBill = () => {
   // ==============👇 Print Functionlaity 👇====================
+  //⏩ Function to handle the print action
   const handlePrint = () => {
     window.print();
   };
 
+  //⏩ Function to disable Ctrl+P
+  const disableCtrlP = (event) => {
+    if (event.ctrlKey && event.key === "p") {
+      event.preventDefault();
+      alert("Please use the Print button to print.");
+    }
+  };
+
+  //⏩ Add event listener to disable Ctrl+P when the component mounts
+  useEffect(() => {
+    window.addEventListener("keydown", disableCtrlP);
+
+    // Cleanup the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("keydown", disableCtrlP);
+    };
+  }, []);
+
+  // ==============��👇 Shopkeeper and Goods All Detail Get in LocalStorage 👇��====================
+  const [shopkeeperDetails, setShopkeeperDetails] = useState("");
+  const [goodsDetails, setGoodsDetails] = useState([]);
+
+  useEffect(() => {
+    if (localStorage.getItem("Quo_ShopkeeperDetails")) {
+      setShopkeeperDetails(
+        JSON.parse(localStorage.getItem("Quo_ShopkeeperDetails"))
+      );
+    }
+    if (localStorage.getItem("Quo_SelectedGoods")) {
+      setGoodsDetails(JSON.parse(localStorage.getItem("Quo_SelectedGoods")));
+    }
+  }, [setShopkeeperDetails, setGoodsDetails]);
+
+  // ============= 👇 IGST, CGST, SGST, TotalAmount, FinalAmount Get in LocalStorage  👇================
+  const [CgstSgst, setCgstSgst] = useState(0);
+  const [igst, setIGST] = useState(0);
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [finalAmount, setFinalAmount] = useState(0);
+
+  // console.log('====================================');
+  // console.log("CSGST: " + CgstSgst);
+  // console.log("IGST: " + igst);
+  // console.log('====================================');
+
+  useEffect(() => {
+    if (localStorage.getItem("Quo_CgstSgst")) {
+      setCgstSgst(parseInt(JSON.parse(localStorage.getItem("Quo_CgstSgst"))));
+    }
+
+    if (localStorage.getItem("Quo_Igst")) {
+      setIGST(parseInt(JSON.parse(localStorage.getItem("Quo_Igst"))));
+    }
+
+    if (localStorage.getItem("Quo_TotalAmount")) {
+      setTotalAmount(
+        parseInt(JSON.parse(localStorage.getItem("Quo_TotalAmount")))
+      );
+    }
+
+    if (localStorage.getItem("Quo_FinalAmount")) {
+      setFinalAmount(
+        parseInt(JSON.parse(localStorage.getItem("Quo_FinalAmount")))
+      );
+    }
+  }, [setCgstSgst, setIGST, setTotalAmount, setFinalAmount]);
 
   return (
     <div className="w-full flex justify-center absolute -top-20 bg-white z-[99] mx-auto mt-4">
@@ -66,15 +132,14 @@ const PreviewInvoiceBill = () => {
                 Name
               </div>
               <div className="w-[448px] lg:w-[650px] pl-1 border-r-[1px] border-black">
-                Sri Kumaran Steels
-                {/* {shopkeeperDetails?.ShopkeeperName} */}
+                {/* Sri Kumaran Steels */}
+                {shopkeeperDetails?.username}
               </div>
               <div className="w-[91px] lg:w-[150px] pl-1 border-r-[1px] border-black flex items-center font-semibold">
                 Date:
               </div>
               <div className="w-[148px] lg:w-[226px] pl-1 flex items-center">
-                20.11.2024
-                {/* {formattedDate} */}
+                {/* {currentDate} */}
               </div>
             </div>
 
@@ -84,8 +149,7 @@ const PreviewInvoiceBill = () => {
                 Address
               </div>
               <div className="w-[448px] lg:w-[650px] pl-1 border-r-[1px] border-black">
-                {/* {shopkeeperDetails.address} */}
-                Erode Tamil Nadu
+                {shopkeeperDetails?.address}
               </div>
               <div className="w-[91px] lg:w-[150px] pl-1 border-r-[1px] border-black flex items-center font-semibold">
                 Quotation NO:
@@ -102,8 +166,7 @@ const PreviewInvoiceBill = () => {
                 State
               </div>
               <div className="w-[448px] lg:w-[650px] pl-1 border-r-[1px] border-black">
-                {/* {shopkeeperDetails.state} */}
-                Tamil Nadu
+                {shopkeeperDetails?.state}
               </div>
               <div className="w-[91px] lg:w-[150px] pl-1 border-r-[1px] border-black flex items-center font-semibold">
                 Supplier code:
@@ -117,14 +180,13 @@ const PreviewInvoiceBill = () => {
                 Mobile
               </div>
               <div className="w-[448px] lg:w-[650px] pl-1 border-r-[1px] border-black">
-                {/* {shopkeeperDetails.mobile} */}
-                65325645
+                {shopkeeperDetails?.phone}
               </div>
               <div className="w-[91px] lg:w-[150px] pl-1 border-r-[1px] border-black flex items-center font-semibold">
                 Date of delivery:
               </div>
               <div className="w-[148px] lg:w-[226px] pl-1 flex items-center">
-                15.12.2024
+                {/* 15.12.2024 */}
               </div>
             </div>
 
@@ -134,8 +196,7 @@ const PreviewInvoiceBill = () => {
                 GST no:
               </div>
               <div className="w-[448px] lg:w-[650px] pl-1 border-r-[1px] border-black">
-                {/* {shopkeeperDetails.gst} */}
-                QXP324EP4
+                {shopkeeperDetails?.gst}
               </div>
               <div className="w-[91px] lg:w-[150px] pl-1 border-r-[1px] border-black flex items-center font-semibold"></div>
               <div className="w-[148px] lg:w-[226px] pl-1 flex items-center"></div>
@@ -145,8 +206,11 @@ const PreviewInvoiceBill = () => {
             <table className="lg:w-full">
               <thead className="bg-gray-300">
                 <tr className="border-b-[1px] border-black lg:text-[18px]">
-                  <th className="border-r-[1px] border-black py-2 w-[91px] lg:w-[104px]">
+                  <th className="border-r-[1px] border-black py-2 w-[91px] lg:w-[40px]">
                     S.No.
+                  </th>
+                  <th className="border-r-[1px] border-black py-2 w-[90.5px]">
+                    Part Number
                   </th>
                   <th className="border-r-[1px] border-black py-2 w-[381px]">
                     Description of Goods
@@ -157,79 +221,135 @@ const PreviewInvoiceBill = () => {
                   <th className="border-r-[1px] border-black py-2 w-[90.5px]">
                     Quantity
                   </th>
-                  <th className="border-r-[1px] border-black py-2 w-[60px]">
-                    CGST (9%)
-                  </th>
-                  <th className="border-r-[1px] border-black py-2 w-[60px]">
-                    SGST (9%)
-                  </th>
-                  <th className="border-r-[1px] border-black py-2 w-[60px]">
-                    IGST (18%)
-                  </th>
+
                   <th className="border-black py-2 w-[108.3px]">
                     Total Amounts
                   </th>
                 </tr>
               </thead>
-              <tbody className=" font-normal text-center text-[13px] lg:text-[18px]">
-                {/* {goodsDetails.map((goods, index) => ( */}
-                  <tr className="border-b-[1px] border-black" key={1}>
-                    <td className="border-r-[1px] border-black py-2 w-[91px] lg:w-[104px]">
-                      {/* {index + 1} */}
-                      1
+              <tbody className=" font-normal text-[13px] lg:text-[18px]">
+                {goodsDetails?.map((goods, index) => (
+                  <tr className="border-b-[1px] border-black" key={index}>
+                    <td className="border-r-[1px] border-black py-2 w-[91px] lg:w-[40px] text-center">
+                      {index + 1}
                     </td>
-                    <td className="border-r-[1px] border-black py-2 w-[381px]">
-                      {/* {goods.label} */}
-                      item1
+                    <td className="border-r-[1px] border-black py-2 w-[68.2px] lg:w-[65px] text-center">
+                      {goods.part_number}
                     </td>
-                    <td className="border-r-[1px] border-black py-2 w-[90.5px]">
-                      {/* {parseInt(goods.rate)} */}
-                      236
+                    <td className="border-r-[1px] border-black py-2 w-[381px] pl-4">
+                      <div className="lg:text-xl text-[22] font-bold uppercase">
+                        {goods.goods_name}
+                      </div>
+                      <div className="text-[#6151bb] font-serif lg:text-xl text-[18.2] underline my-2 uppercase">
+                        Specifications:-{" "}
+                      </div>
+                      {goods.specifications.map((spec, index) => (
+                        <div
+                          key={index}
+                          className="text-[#4f323b] font-semibold"
+                        >
+                          {"*"} {spec}
+                        </div>
+                      ))}
                     </td>
-                    <td className="border-r-[1px] border-black py-2 w-[68.2px] lg:w-[65px]">
-                      {/* {goods.quantity} */}
-                      1
+                    <td className="border-r-[1px] border-black py-2 w-[90.5px] text-center">
+                      {parseInt(goods.rate)}
                     </td>
-                    <td className="border-r-[1px] border-black py-2 w-[60px]">
-                      {/* {goods.cgst} */}
-                      30.1
+                    <td className="border-r-[1px] border-black py-2 w-[68.2px] lg:w-[65px] text-center">
+                      {goods.measurement_number}
                     </td>
-                    <td className="border-r-[1px] border-black py-2 w-[60px]">
-                      {/* {goods.sgst} */}
-                     30.1
-                    </td>
-                    <td className="border-r-[1px] border-black py-2 w-[60px]">
-                      {/* {goods.igst} */}
-                     0
-                    </td>
-                    <td className="border-black py-2 w-[109.1px]">
-                      {/* {parseInt(
-                        totalGSTAmount(
-                          parseInt(goods.rate),
-                          parseInt(goods.quantity)
-                        )
-                      )} */}
-                      1236
+
+                    <td className="border-black py-2 w-[109.1px] text-center">
+                      {parseInt(goods.rate) * goods.measurement_number}
                     </td>
                   </tr>
-                {/* ))} */}
+                ))}
               </tbody>
             </table>
 
-            {/* Grand Total */}
+            {/* Amount and GST Calculate */}
+            {/* total amount */}
             <div className=" border-b-[1px] border-black flex">
               <div className="w-[120px] lg:w-[152px] border-black border-r-[1px] text-center font-semibold md:text-xl text-[13px]">
-                Total Amounts
+                {/* Total Amounts */}
+              </div>
+              <div className="w-[599px] lg:w-[866px] border-r-[1px] border-black text-end pr-10 font-semibold md:text-xl text-[13px]">
+                <span className="border-l border-black pl-2 ">
+                  Total Amount
+                </span>
+              </div>
+              <div className="w-[107px] lg:w-[158.4px] border-black text-center font-semibold md:text-xl text-[13px]">
+                {totalAmount}
+              </div>
+            </div>
+
+            {/* CGST Calculate */}
+            <div
+              className={`border-b-[1px] border-black flex ${
+                CgstSgst === 0 ? "hidden" : ""
+              }`}
+            >
+              <div className="w-[120px] lg:w-[152px] border-black border-r-[1px] text-center font-semibold md:text-xl text-[13px]"></div>
+              <div className="w-[599px] lg:w-[866px] border-r-[1px] border-black text-end pr-10 font-semibold md:text-xl text-[13px]">
+                <span className="border-l border-black pl-2 lg:pr-[28.5px] pr-[18px]">
+                  CGST (9%)
+                </span>
+              </div>
+              <div className="w-[107px] lg:w-[158.4px] border-black text-center font-semibold md:text-xl text-[13px]">
+                {(totalAmount * parseInt(CgstSgst)) / 100}
+              </div>
+            </div>
+
+            {/* SGST Calculate */}
+            <div
+              className={`border-b-[1px] border-black flex ${
+                CgstSgst === 0 ? "hidden" : ""
+              }`}
+            >
+              <div className="w-[120px] lg:w-[152px] border-black border-r-[1px] text-center font-semibold md:text-xl text-[13px]">
+                {/* Total Amounts */}
+              </div>
+              <div className="w-[599px] lg:w-[866px] border-r-[1px] border-black text-end pr-10 font-semibold md:text-xl text-[13px]">
+                <span className="border-l border-black pl-2 lg:pr-[28.5px] pr-[18px]">
+                  SGST (9%)
+                </span>
+              </div>
+              <div className="w-[107px] lg:w-[158.4px] border-black text-center font-semibold md:text-xl text-[13px]">
+                {(totalAmount * parseInt(CgstSgst)) / 100}
+              </div>
+            </div>
+
+            {/* IGST Calculate */}
+            <div
+              className={`border-b-[1px] border-black flex ${
+                igst === 0 ? "hidden" : ""
+              }`}
+            >
+              <div className="w-[120px] lg:w-[152px] border-black border-r-[1px] text-center font-semibold md:text-xl text-[13px]">
+                {/* Total Amounts */}
+              </div>
+              <div className="w-[599px] lg:w-[866px] border-r-[1px] border-black text-end pr-10 font-semibold md:text-xl text-[13px]">
+                <span className="border-l border-black pl-2 lg:pr-[26px] pr-[15px]">
+                  IGST (18%)
+                </span>
+              </div>
+              <div className="w-[107px] lg:w-[158.4px] border-black text-center font-semibold md:text-xl text-[13px]">
+                {(totalAmount * parseInt(igst)) / 100}
+              </div>
+            </div>
+
+            {/* Final Amount */}
+            <div className=" border-b-[1px] border-black flex">
+              <div className="w-[120px] lg:w-[152px] border-black border-r-[1px] text-center font-semibold md:text-xl text-[13px]">
+                Final Amount
               </div>
               {/* <div className="w-[380px] lg:w-[553.5px] border-black"></div>
               <div className="w-[68px] lg:w-[94.5px] border-black"></div> */}
               <div className="w-[599px] lg:w-[866px] border-r-[1px] border-black text-center font-semibold md:text-xl text-[13px]">
-                {/* {convertToWords(finalAmount.toFixed(0))} */}
-                Number to Word convert
+                {convertToWords(finalAmount)}
               </div>
               <div className="w-[107px] lg:w-[158.4px] border-black text-center font-semibold md:text-xl text-[13px]">
-                {/* {finalAmount.toFixed(0)} */}
-                1236
+                {finalAmount}
               </div>
             </div>
           </div>
@@ -283,43 +403,29 @@ export default PreviewInvoiceBill;
 const TermsAndConditions = [
   {
     id: 1,
-    condition: "Material need to be delivered as per specification.",
+    condition:
+      "6 month warranty for machine and 1 year warranty for gearmotor .",
   },
   {
     id: 2,
     condition:
-      "If Material is not as per specification then supplier need to take back at his own responsibility and transport.",
+      "Warranty does not includes consumbale, electrical, wearable and plastic items.",
   },
   {
     id: 3,
-    condition: "Payment will be done through cheque only.",
+    condition: " Machine once sold will not be taken back or exchanged.",
   },
   {
     id: 4,
-    condition:
-      "Supplier Invoice must refer Purchase Order, If not Material will not be accepted.",
+    condition: " For any dispute, subject to Coimbatore Judiciation.",
   },
   {
     id: 5,
-    condition: "Part Quantity supply is not accepted.",
+    condition: "Transportation insurance in customer scope.",
   },
   {
     id: 6,
     condition:
-      "Material must be supplied within specification date or max within 30 days. If Material is not supplied within mentioned period then PO is deemed to be cancelled.",
-  },
-  {
-    id: 7,
-    condition: "Any discrepency to be communicated through mail only.",
-  },
-  {
-    id: 8,
-    condition:
-      "Supplier is expected to maintain confidentiality about our specification, Not to disclose with any third party.",
-  },
-  {
-    id: 9,
-    condition:
-      "Ankusam Engineering own responsibility to change terms and conditions.",
+      "Bank Name : ICICI, Branch : Kalapatti, Account no - 728405000107 , IFSC Code - ICIC0007284 ",
   },
 ];
