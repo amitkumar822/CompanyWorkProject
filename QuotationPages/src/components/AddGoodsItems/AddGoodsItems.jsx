@@ -32,7 +32,7 @@ function AddGoodsItems() {
     setIsLoading(true);
 
     const formData = new FormData();
-    formData.append("specifications", fileData.specifications);
+    formData.append("specifications", fileData.specifications.toUpperCase());
     formData.append("goods_name", fileData.goodsname);
     formData.append("parts_number", fileData.partnumber);
     formData.append("measurement", fileData.measurement);
