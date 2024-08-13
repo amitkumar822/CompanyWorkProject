@@ -21,7 +21,7 @@ function Dashboard() {
       localStorage.getItem("LoginQuotationToken") &&
       localStorage.getItem("Log_username") !== "mani"
     ) {
-      alert("Dashboard Page You not exist, Please contact the administrator")
+      alert("Dashboard Page You not exist, Please contact the administrator");
       navigate("/createquotation");
       return;
     }
@@ -100,8 +100,7 @@ function Dashboard() {
 
       if (Array.isArray(response.data.description)) {
         setEditGoodsId(id);
-        console.log("Edit: " + response.data.description[0].goods_name);
-        // setFetchGoodsDetails(response.data.description);
+
         setFileData({
           goods_name: response.data.description[0].goods_name,
           part_number: response.data.description[0].part_number,
@@ -110,10 +109,20 @@ function Dashboard() {
             response.data.description[0].specifications.join("\n"),
         });
         setIsLoading(false);
+      } else {
+        toast.error("Failed to load item details", {
+          position: "top-center",
+          autoClose: 1700,
+        });
+        setIsLoading(false);
       }
     } catch (error) {
       console.log("Error: " + error);
       setIsLoading(false);
+      toast.error(error.message, {
+        position: "top-center",
+        autoClose: 1700,
+      });
     }
   };
 
@@ -157,12 +166,59 @@ function Dashboard() {
     }
   };
 
+  // ================👇 Delete functionality section 👇=================
+  const [deleteId, setDeleteId] = useState("");
+  const [showConfirmation, setShowConfirmation] = useState(false);
+
+  const handleDelete = async (id) => {
+    setDeleteId(id);
+    setShowConfirmation(true);
+  };
+
+  const cancelDelete = () => {
+    setShowConfirmation(false);
+  };
+  //------Delete----
+  const confirmDelete = async () => {
+    setIsLoading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("id", deleteId);
+
+      const response = await axios.post(
+        "/api/delete_item_descriptions.php",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+
+      console.log(
+        "ItemsDelete: \n" + JSON.stringify(response.data.deleted, null, 2)
+      );
+
+      if (response.data.deleted) {
+        toast.success("Goods successfully deleted");
+        setIsLoading(false);
+        setShowConfirmation(false);
+        // window.location.reload();
+      } else {
+        toast.error("Goods delete faield");
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.log("Delete Error: " + error);
+      setIsLoading(false);
+    }
+  };
+
   return (
     <>
       <div className="w-full h-[91.3vh] mx-auto bg-[#f2d7d7] relative">
         {/* Loading image section */}
         <div
-          className={`w-full md:h-[158%] h-[232%] z-50 bg-[rgba(0,0,0,0.5)] absolute ${
+          className={`w-full md:h-[158%] h-[232%] z-[55] bg-[rgba(0,0,0,0.5)] fixed -mt-16 ${
             isLoading ? "" : "hidden"
           }`}
         >
@@ -232,7 +288,7 @@ function Dashboard() {
                     <th className="py-2 px-2 border-b-2 border-black border-r-2 ">
                       Rate
                     </th>
-                    <th className="py-2 px-2 border-b-2 border-black border-r-2 ">
+                    <th className="py-2 px-2 border-b-2 border-black border-r-2 w-[150px]">
                       Action
                     </th>
                   </tr>
@@ -241,7 +297,7 @@ function Dashboard() {
                   {filteredGoods?.map((items, index) => (
                     <tr key={index} className=" odd:bg-gray-200 text-[17px]">
                       <td className="py-2 px-2 border-b-2 border-r-2 border-black">
-                        {index + 1}
+                        {items.id}
                       </td>
                       <td className="py-2 px-2 border-b-2 border-r-2 border-black">
                         {items.goods_name}
@@ -259,7 +315,7 @@ function Dashboard() {
                       <td className="py-2 px-2 border-b-2 border-r-2 border-black">
                         ₹ {items.rate}
                       </td>
-                      <td className="py-2 px-2 border-b-2 border-r-2 border-black">
+                      <td className="py-2 px-2 border-b-2 border-r-2 border-black w-[150px]">
                         <span
                           onClick={() => handleEdit(items.id)}
                           className="bg-green-500 hover:bg-green-600 duration-200 font-semibold italic py-1 px-2 text-white hover:text-[#d3d1d1] rounded-md shadow-md shadow-gray-800 cursor-pointer mr-2"
@@ -267,7 +323,7 @@ function Dashboard() {
                           Edit
                         </span>
                         <span
-                          // onClick={() => handleDelete(items.id)}
+                          onClick={() => handleDelete(items.id)}
                           className="bg-red-500 hover:bg-red-600 duration-200 font-semibold italic py-1 px-2 text-white hover:text-[#d3d1d1] rounded-md shadow-md shadow-gray-800 cursor-pointer"
                         >
                           Delete
@@ -369,7 +425,7 @@ function Dashboard() {
       </div>
 
       {/*======================👇 Confirmation Asking when delete 👇=====================*/}
-      {/* {showConfirmation && (
+      {showConfirmation && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 px-3 z-50">
           <div className="sm:w-[430px] bg-white p-6 rounded shadow-lg">
             <h2 className="sm:text-xl mb-4">
@@ -377,13 +433,13 @@ function Dashboard() {
             </h2>
             <div className="flex justify-end">
               <button
-                // onClick={cancelDelete}
+                onClick={cancelDelete}
                 className="bg-green-500 text-gray-800 px-4 py-2 rounded mr-2 hover:bg-gray-400"
               >
                 No
               </button>
               <button
-                // onClick={confirmDelete}
+                onClick={confirmDelete}
                 className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700"
               >
                 Yes
@@ -391,7 +447,7 @@ function Dashboard() {
             </div>
           </div>
         </div>
-      )} */}
+      )}
 
       <ToastContainer />
     </>
