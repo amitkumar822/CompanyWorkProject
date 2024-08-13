@@ -196,31 +196,52 @@ function Quotation() {
     formData.append("customer_detail", JSON.stringify(shopkeeperAdress));
     formData.append("descriptions", JSON.stringify(selectedGoods));
     formData.append("amout", JSON.stringify(amoutGSTDetails));
-    formData.append("username", "Rajat Mohan");
+    formData.append("username", localStorage.getItem("Log_username"));
     formData.append("count", 1);
 
     try {
-      const response = await axios.post(
-        "/api/insert_qutations_discription.php",
-        formData
-      );
+      const username = localStorage.getItem("Log_username");
 
-      if (response.data.inserted) {
-        toast.success("Successful generate quotation.", {
-          position: "top-center",
-          autoClose: 1700,
-        });
+      const apiEndPoints = {
+        mani: "/api/insert_qutation_by_mani.php",
+        subathara: "/api/insert_qutations_subhatra.php",
+        ilakkiya: "/api/insert_qutations_by_Ilakkiya_discription.php",
+        omkumar: "/api/insert_qutation_by_omkumar.php",
+      };
 
-        setIsLoading(false);
-        setTimeout(() => {
-          navigate("/previewinvoicebill");
-        }, 1500);
+      const endpoint = apiEndPoints[username];
+
+      if (endpoint) {
+        const response = await axios.post(endpoint, formData);
+
+        // console.log("response: " + JSON.stringify(response.data.last_id, null, 2));
+
+        localStorage.setItem("QuotationNumber", response.data.last_id)
+        
+
+        if (response.data.inserted) {
+          toast.success("Successful generate quotation.", {
+            position: "top-center",
+            autoClose: 1700,
+          });
+
+          setIsLoading(false);
+          setTimeout(() => {
+            navigate("/previewinvoicebill");
+          }, 1500);
+        } else {
+          toast.error("Failed to generate quotation.", {
+            position: "top-center",
+            autoClose: 1700,
+          });
+          setIsLoading(false);
+        }
       } else {
-        toast.error("Failed to generate quotation.", {
+        throw new Error("Invalid username or API endpoint not found.");
+        toast.error("Invalid username or API endpoint not found.", {
           position: "top-center",
           autoClose: 1700,
         });
-        setIsLoading(false);
       }
     } catch (error) {
       console.log("Error Generate Quotation: \n" + error);
@@ -465,7 +486,7 @@ function Quotation() {
 
       {/* Delete Confirmation Dilog Box */}
       <div
-        className={`w-full h-[130%] -mt-20 z-[50] fixed bg-[rgba(0,0,0,0.5)]  top-0 left-0 flex justify-center items-center fixed ${
+        className={`w-full h-[130%] -mt-20 z-[50] bg-[rgba(0,0,0,0.5)]  top-0 left-0 flex justify-center items-center fixed ${
           !showRemoveConfirmation ? "hidden" : ""
         }`}
       >

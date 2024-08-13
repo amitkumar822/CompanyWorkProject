@@ -21,7 +21,9 @@ function Dashboard() {
       localStorage.getItem("LoginQuotationToken") &&
       localStorage.getItem("Log_username") !== "mani"
     ) {
-      alert("Dashboard Page You can't access, Please contact the administrator.")
+      alert(
+        "Dashboard Page You can't access, Please contact the administrator."
+      );
       navigate("/createquotation");
       return;
     }

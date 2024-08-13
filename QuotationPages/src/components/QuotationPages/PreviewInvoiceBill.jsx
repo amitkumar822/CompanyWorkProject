@@ -153,9 +153,10 @@ const PreviewInvoiceBill = () => {
               <div className="w-[91px] lg:w-[150px] pl-1 border-r-[1px] border-black flex items-center font-semibold">
                 Quotation NO:
               </div>
-              <div className="w-[148px] lg:w-[226px] pl-1 flex items-center">
+              <div className="w-[148px] lg:w-[226px] pl-1 flex items-center lg:text-[17px] text-[10px]">
                 {/* No: AEPL/PO/24-25/37 */}Q/2024-25/
-                <span className="uppercase">{localStorage.getItem("Log_username")}</span>/01
+                <span className="uppercase">{localStorage.getItem("Log_username")}</span>
+                /{localStorage.getItem("QuotationNumber")}
               </div>
             </div>
 
@@ -371,8 +372,7 @@ const PreviewInvoiceBill = () => {
             <h1 className=" font-semibold">
               For Ankusam Engineering Private Limited,
             </h1>
-            <h3 className="mt-6">Manikanndan P</h3>
-            {/* <h2 className="font-semibold">Managing Director</h2> */}
+            <span className="uppercase">{localStorage.getItem("Log_username")}</span>
           </div>
         </div>
 
@@ -403,7 +403,7 @@ const TermsAndConditions = [
   {
     id: 1,
     condition:
-      "6 month warranty for machine and 1 year warranty for gearmotor .",
+      "6 month warranty for machine and 1 year warranty for gear and motor .",
   },
   {
     id: 2,
