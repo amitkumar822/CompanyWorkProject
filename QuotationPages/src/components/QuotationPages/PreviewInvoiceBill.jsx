@@ -50,32 +50,31 @@ const PreviewInvoiceBill = () => {
   const [totalAmount, setTotalAmount] = useState(0);
   const [finalAmount, setFinalAmount] = useState(0);
 
-  // console.log('====================================');
-  // console.log("CSGST: " + CgstSgst);
-  // console.log("IGST: " + igst);
-  // console.log('====================================');
-
   useEffect(() => {
     if (localStorage.getItem("Quo_CgstSgst")) {
-      setCgstSgst(parseInt(JSON.parse(localStorage.getItem("Quo_CgstSgst"))));
+      setCgstSgst(parseFloat(JSON.parse(localStorage.getItem("Quo_CgstSgst"))));
     }
 
     if (localStorage.getItem("Quo_Igst")) {
-      setIGST(parseInt(JSON.parse(localStorage.getItem("Quo_Igst"))));
+      setIGST(parseFloat(JSON.parse(localStorage.getItem("Quo_Igst"))));
     }
 
     if (localStorage.getItem("Quo_TotalAmount")) {
       setTotalAmount(
-        parseInt(JSON.parse(localStorage.getItem("Quo_TotalAmount")))
+        parseFloat(JSON.parse(localStorage.getItem("Quo_TotalAmount")))
       );
     }
 
     if (localStorage.getItem("Quo_FinalAmount")) {
       setFinalAmount(
-        parseInt(JSON.parse(localStorage.getItem("Quo_FinalAmount")))
+        parseFloat(JSON.parse(localStorage.getItem("Quo_FinalAmount")))
       );
     }
   }, [setCgstSgst, setIGST, setTotalAmount, setFinalAmount]);
+
+  // =======👇 Current Date 👇=======
+  const currentData = new Date();
+  const formattedDate = currentData.toLocaleDateString("en-UK");
 
   return (
     <div className="w-full flex justify-center absolute -top-20 bg-white z-[99] mx-auto mt-4">
@@ -139,7 +138,7 @@ const PreviewInvoiceBill = () => {
                 Date:
               </div>
               <div className="w-[148px] lg:w-[226px] pl-1 flex items-center">
-                {/* {currentDate} */}
+                {formattedDate}
               </div>
             </div>
 
@@ -155,8 +154,8 @@ const PreviewInvoiceBill = () => {
                 Quotation NO:
               </div>
               <div className="w-[148px] lg:w-[226px] pl-1 flex items-center">
-                {/* No: AEPL/PO/24-25/37 */}Q-2024-25/
-                {/* {localStorage.getItem("qutations_id")} */}
+                {/* No: AEPL/PO/24-25/37 */}Q/2024-25/
+                <span className="uppercase">{localStorage.getItem("Log_username")}</span>/01
               </div>
             </div>
 
@@ -253,14 +252,14 @@ const PreviewInvoiceBill = () => {
                       ))}
                     </td>
                     <td className="border-r-[1px] border-black py-2 w-[90.5px] text-center">
-                      {parseInt(goods.rate)}
+                      {parseFloat(goods.rate)}
                     </td>
                     <td className="border-r-[1px] border-black py-2 w-[68.2px] lg:w-[65px] text-center">
                       {goods.measurement_number}
                     </td>
 
                     <td className="border-black py-2 w-[109.1px] text-center">
-                      {parseInt(goods.rate) * goods.measurement_number}
+                      {parseFloat(goods.rate) * goods.measurement_number}
                     </td>
                   </tr>
                 ))}
@@ -278,8 +277,8 @@ const PreviewInvoiceBill = () => {
                   Total Amount
                 </span>
               </div>
-              <div className="w-[107px] lg:w-[158.4px] border-black text-center font-semibold md:text-xl text-[13px]">
-                {totalAmount}
+              <div className="w-[107px] lg:w-[158.4px] border-black text-center font-semibold md:text-xl text-[13px] flex pl-3">
+              ₹ {totalAmount}
               </div>
             </div>
 
@@ -295,8 +294,8 @@ const PreviewInvoiceBill = () => {
                   CGST (9%)
                 </span>
               </div>
-              <div className="w-[107px] lg:w-[158.4px] border-black text-center font-semibold md:text-xl text-[13px]">
-                {(totalAmount * parseInt(CgstSgst)) / 100}
+              <div className="w-[107px] lg:w-[158.4px] border-black text-center font-semibold md:text-xl text-[13px] flex pl-3">
+              ₹ {(totalAmount * parseFloat(CgstSgst)) / 100}
               </div>
             </div>
 
@@ -314,8 +313,8 @@ const PreviewInvoiceBill = () => {
                   SGST (9%)
                 </span>
               </div>
-              <div className="w-[107px] lg:w-[158.4px] border-black text-center font-semibold md:text-xl text-[13px]">
-                {(totalAmount * parseInt(CgstSgst)) / 100}
+              <div className="w-[107px] lg:w-[158.4px] border-black text-center font-semibold md:text-xl text-[13px] flex pl-3">
+              ₹ {(totalAmount * parseFloat(CgstSgst)) / 100}
               </div>
             </div>
 
@@ -333,8 +332,8 @@ const PreviewInvoiceBill = () => {
                   IGST (18%)
                 </span>
               </div>
-              <div className="w-[107px] lg:w-[158.4px] border-black text-center font-semibold md:text-xl text-[13px]">
-                {(totalAmount * parseInt(igst)) / 100}
+              <div className="w-[107px] lg:w-[158.4px] border-black text-center font-semibold md:text-xl text-[13px] flex pl-3">
+              ₹ {(totalAmount * parseFloat(igst)) / 100}
               </div>
             </div>
 
@@ -348,8 +347,8 @@ const PreviewInvoiceBill = () => {
               <div className="w-[599px] lg:w-[866px] border-r-[1px] border-black text-center font-semibold md:text-xl text-[13px]">
                 {convertToWords(finalAmount)}
               </div>
-              <div className="w-[107px] lg:w-[158.4px] border-black text-center font-semibold md:text-xl text-[13px]">
-                {finalAmount}
+              <div className="w-[107px] lg:w-[158.4px] border-black text-center font-semibold md:text-xl text-[13px] flex pl-3">
+              ₹ {finalAmount.toFixed(2)}
               </div>
             </div>
           </div>
@@ -373,7 +372,7 @@ const PreviewInvoiceBill = () => {
               For Ankusam Engineering Private Limited,
             </h1>
             <h3 className="mt-6">Manikanndan P</h3>
-            <h2 className="font-semibold">Managing Director</h2>
+            {/* <h2 className="font-semibold">Managing Director</h2> */}
           </div>
         </div>
 

@@ -3,6 +3,7 @@ import React from "react";
 function LogOut() {
   const handleLogOut = () => {
     localStorage.removeItem("LoginQuotationToken");
+    localStorage.removeItem("Log_username");
     window.location.reload();
   };
   

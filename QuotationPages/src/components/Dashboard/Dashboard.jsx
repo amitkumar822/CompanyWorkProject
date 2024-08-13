@@ -9,6 +9,24 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function Dashboard() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!localStorage.getItem("LoginQuotationToken")) {
+      navigate("/");
+      return;
+    }
+
+    if (
+      localStorage.getItem("LoginQuotationToken") &&
+      localStorage.getItem("Log_username") !== "mani"
+    ) {
+      alert("Dashboard Page You can't access, Please contact the administrator.")
+      navigate("/createquotation");
+      return;
+    }
+  }, []);
+
   const [isLoading, setIsLoading] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
 
@@ -38,8 +56,6 @@ function Dashboard() {
     };
     fetchData();
   }, [setGoodsDetails]);
-
-  // console.log("Data: " + JSON.stringify(goodsDetails, null, 2));
 
   // ==========👇 Search Functions 👇===============
   const [searchInput, setSearchInput] = useState("");

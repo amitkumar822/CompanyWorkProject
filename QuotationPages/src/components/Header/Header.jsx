@@ -5,6 +5,18 @@ import { NavLink } from "react-router-dom";
 import LogOut from "../LogInLogOutPages/LogOut";
 
 function Header() {
+  const [userAuthenticated, setUserAuthenticated] = useState("");
+
+  // useEffect(() => {
+  //   const user = localStorage.getItem("Log_username");
+  //   if (user) {
+  //     setUserAuthenticated(user);
+  //   }
+  // }, []);
+
+  console.log("userAuthenticated: " + userAuthenticated);
+  
+
   return (
     <>
       <div className="w-full bg-[#b69deb] fixed top-0 left-0 right-0 z-50">
@@ -32,7 +44,7 @@ function Header() {
                 <PiUserPlusBold />
               </NavLink>
             </span>
-            <span className=" cursor-pointer hover:text-gray-700 duration-200">
+            <span className={`cursor-pointer hover:text-gray-700 duration-200`}>
               <NavLink
                 to="/dashboard"
                 className={({ isActive }) => (isActive ? "text-[yellow]" : "")}
@@ -45,7 +57,11 @@ function Header() {
                 to=""
                 className={({ isActive }) => (isActive ? "text-[yellow]" : "")}
               >
-                {localStorage.getItem("LoginQuotationToken") ? <LogOut /> : "Login"}
+                {localStorage.getItem("LoginQuotationToken") ? (
+                  <LogOut />
+                ) : (
+                  "Login"
+                )}
                 {/* Login */}
               </NavLink>
             </span>

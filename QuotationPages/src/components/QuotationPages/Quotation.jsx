@@ -4,9 +4,18 @@ import Select from "react-select";
 import loadingGfg from "../../data/GfgLoding/loading.gif";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Quotation() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!localStorage.getItem("LoginQuotationToken")) {
+      navigate("/");
+      return;
+    }
+  }, []);
+
   const [isLoading, setIsLoading] = useState(false);
 
   // ==========👇 Total Amount And GST Calculate here 👇=================
@@ -173,23 +182,53 @@ function Quotation() {
 
   const handleGenerateQuatationsId = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     const amoutGSTDetails = {
       cgst: cgstCalculated,
       sgst: sgstCalculated,
       igst: igstCalculated,
       total_amount: totalAmount,
+      final_Amount: finalAmount,
     };
 
     const formData = new FormData();
-    formData.append("customer_details", shopkeeperAdress);
-    formData.append("selected_goods", selectedGoods);
-    formData.append("amount_gst_details", JSON.stringify(amoutGSTDetails));
+    formData.append("customer_detail", JSON.stringify(shopkeeperAdress));
+    formData.append("descriptions", JSON.stringify(selectedGoods));
+    formData.append("amout", JSON.stringify(amoutGSTDetails));
+    formData.append("username", "Rajat Mohan");
+    formData.append("count", 1);
 
     try {
-      const response = await axios.post("", formData);
+      const response = await axios.post(
+        "/api/insert_qutations_discription.php",
+        formData
+      );
+
+      if (response.data.inserted) {
+        toast.success("Successful generate quotation.", {
+          position: "top-center",
+          autoClose: 1700,
+        });
+
+        setIsLoading(false);
+        setTimeout(() => {
+          navigate("/previewinvoicebill");
+        }, 1500);
+      } else {
+        toast.error("Failed to generate quotation.", {
+          position: "top-center",
+          autoClose: 1700,
+        });
+        setIsLoading(false);
+      }
     } catch (error) {
       console.log("Error Generate Quotation: \n" + error);
+      toast.error(error.message, {
+        position: "top-center",
+        autoClose: 1700,
+      });
+      setIsLoading(false);
     }
   };
 
@@ -197,7 +236,7 @@ function Quotation() {
     <>
       {/* Loading image section */}
       <div
-        className={`w-full h-[110%] -mt-16 z-[52] bg-[rgba(0,0,0,0.5)] absolute ${
+        className={`w-full h-[110%] -mt-16 z-[52] bg-[rgba(0,0,0,0.5)] fixed ${
           isLoading ? "" : "hidden"
         }`}
       >
@@ -231,27 +270,33 @@ function Quotation() {
           />
 
           <br />
-          <label htmlFor="address" className="text-xl italic mr-2">
-            Address
-          </label>
-          <input
-            type="text"
-            value={shopkeeperAdress.address || ""}
-            placeholder="Your address"
-            className="w-[40%] border border-black rounded-md px-4 py-1 mr-4"
-            readOnly
-          />
+          <span className="grid grid-cols-2">
+            <div className="flex items-center">
+              <label htmlFor="address" className="text-xl italic mr-2">
+                Address
+              </label>
+              <textarea
+                type="text"
+                value={shopkeeperAdress.address || ""}
+                placeholder="Your address"
+                className="w-[79.5%] min-h-10 max-h-20 border border-black rounded-md px-4 py-1 mr-4"
+                readOnly
+              />
+            </div>
 
-          <label htmlFor="state" className="text-xl italic mr-2">
-            State
-          </label>
-          <input
-            type="text"
-            value={shopkeeperAdress.state || ""}
-            placeholder="Your state"
-            className="border border-black rounded-md px-4 py-1 w-[40%]"
-            readOnly
-          />
+            <div className="flex items-center">
+              <label htmlFor="state" className="text-xl italic mr-2">
+                State
+              </label>
+              <input
+                type="text"
+                value={shopkeeperAdress.state || ""}
+                placeholder="Your state"
+                className="w-[74%] border border-black rounded-md px-4 py-1"
+                readOnly
+              />
+            </div>
+          </span>
           <br />
           <br />
           <label htmlFor="mobile" className="text-xl italic mr-4">
@@ -332,7 +377,7 @@ function Quotation() {
                   <td className="py-2 px-2 border-b-2 border-r-2 border-black">
                     {items.goods_name}
                   </td>
-                  <td className="py-2 px-2 pl-10 border-b-2 border-r-2 border-black text-justify">
+                  <td className="py-2 px-2 border-b-2 border-r-2 border-black text-justify">
                     {items.specifications.map((items, index) => (
                       <div key={index}>
                         {"👉"} {items}
@@ -407,13 +452,13 @@ function Quotation() {
               selectedGoods.length === 0 ? "hidden" : ""
             }`}
           >
-            <Link
-              // onClick={handleGenerateQuatationsId}
-              to="/previewinvoicebill"
+            <button
+              onClick={handleGenerateQuatationsId}
+              // to="/previewinvoicebill"
               className="bg-green-500 hover:bg-green-600 text-xl text-white hover:text-[#e7e6e6] duration-200 py-2 px-3 rounded-md font-semibold cursor-pointer"
             >
               Generate Quotation
-            </Link>
+            </button>
           </div>
         </form>
       </div>

@@ -1,12 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import loadingGfg from "../../data/GfgLoding/loading.gif";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Select from "react-select";
 import { States } from "../../data/State/State";
+import { useNavigate } from "react-router-dom";
 
 function AddShopkeeper() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!localStorage.getItem("LoginQuotationToken")) {
+      navigate("/");
+      return;
+    }
+  }, []);
+
   // loading animation when form is submitted
   const [isLoading, setIsLoading] = useState(false);
 
