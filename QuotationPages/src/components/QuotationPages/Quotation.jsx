@@ -237,11 +237,11 @@ function Quotation() {
           setIsLoading(false);
         }
       } else {
-        throw new Error("Invalid username or API endpoint not found.");
         toast.error("Invalid username or API endpoint not found.", {
           position: "top-center",
           autoClose: 1700,
         });
+        throw new Error("Invalid username or API endpoint not found.");
       }
     } catch (error) {
       console.log("Error Generate Quotation: \n" + error);
