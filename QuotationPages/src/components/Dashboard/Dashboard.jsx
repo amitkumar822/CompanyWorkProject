@@ -21,9 +21,7 @@ function Dashboard() {
       localStorage.getItem("LoginQuotationToken") &&
       localStorage.getItem("Log_username") !== "mani"
     ) {
-      alert(
-        "Dashboard Page You can't access, Please contact the administrator."
-      );
+      alert("Dashboard Page You not exist, Please contact the administrator")
       navigate("/createquotation");
       return;
     }
@@ -179,9 +177,9 @@ function Dashboard() {
         <h1 className="text-center py-2 text-[26px] font-bold italic font-serif underline">
           Welcome to Dashboard
         </h1>
-        <div className="w-[98%] h-[80%] grid lg:grid-cols-[100%] mx-auto bg-gray-300 rounded-lg shadow-md shadow-red-500 overflow-hidden">
+        <div className="w-[98%] h-[89%] grid lg:grid-cols-[100%] mx-auto bg-gray-300 rounded-lg shadow-md shadow-red-500 overflow-hidden">
           {/*==================👇 Goods Description list 👇===================*/}
-          <div className="bg-[#a8ff3e] rounded-md shadow-md shadow-red-500 overflow-hidden">
+          <div className="bg-[#a8ff3e] min-h-[790px] rounded-md shadow-md shadow-red-500 overflow-hidden">
             {/* Search and Name Section */}
             <div className="w-full bg-[#a8ff3e] pl-3 flex justify-between py-2 px-2">
               <div className="w-full flex justify-end gap-3 relative">
@@ -248,7 +246,7 @@ function Dashboard() {
                       <td className="py-2 px-2 border-b-2 border-r-2 border-black">
                         {items.goods_name}
                       </td>
-                      <td className="py-2 px-2 pl-10 border-b-2 border-r-2 border-black text-justify">
+                      <td className="py-2 px-2 pl-4 border-b-2 border-r-2 border-black text-justify">
                         {items.specifications.map((items, index) => (
                           <div key={index}>
                             {"👉"} {items}
