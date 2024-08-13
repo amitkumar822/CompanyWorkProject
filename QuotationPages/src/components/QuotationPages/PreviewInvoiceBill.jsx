@@ -209,9 +209,9 @@ const PreviewInvoiceBill = () => {
                   <th className="border-r-[1px] border-black py-2 w-[91px] lg:w-[40px]">
                     S.No.
                   </th>
-                  <th className="border-r-[1px] border-black py-2 w-[90.5px]">
+                  {/* <th className="border-r-[1px] border-black py-2 w-[90.5px]">
                     Part Number
-                  </th>
+                  </th> */}
                   <th className="border-r-[1px] border-black py-2 w-[381px]">
                     Description of Goods
                   </th>
@@ -233,9 +233,9 @@ const PreviewInvoiceBill = () => {
                     <td className="border-r-[1px] border-black py-2 w-[91px] lg:w-[40px] text-center">
                       {index + 1}
                     </td>
-                    <td className="border-r-[1px] border-black py-2 w-[68.2px] lg:w-[65px] text-center">
+                    {/* <td className="border-r-[1px] border-black py-2 w-[68.2px] lg:w-[65px] text-center">
                       {goods.part_number}
-                    </td>
+                    </td> */}
                     <td className="border-r-[1px] border-black py-2 w-[381px] pl-4">
                       <div className="lg:text-xl text-[22] font-bold uppercase">
                         {goods.goods_name}
