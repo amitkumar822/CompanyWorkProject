@@ -120,13 +120,38 @@ function Quotation() {
 
   // ==========👇 Featch Goods Details in Dashboard Section 👇===============
 
-  const [goodsDetails, setGoodsDetails] = useState([]);
+  // const [goodsDetails, setGoodsDetails] = useState([]);
 
+  // useEffect(() => {
+  //   if (localStorage.getItem("Dash_Goods_details")) {
+  //     setGoodsDetails(JSON.parse(localStorage.getItem("Dash_Goods_details")));
+  //     return;
+  //   }
+  // }, [setGoodsDetails]);
+
+  const [goodsDetails, setGoodsDetails] = useState(() => {
+    return JSON.parse(localStorage.getItem("Dash_Goods_details")) || [];
+  });
+  
   useEffect(() => {
-    if (localStorage.getItem("Dash_Goods_details")) {
-      setGoodsDetails(JSON.parse(localStorage.getItem("Dash_Goods_details")));
-      return;
-    }
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/api/get_item_descriptions.php");
+
+        if (Array.isArray(response.data.description)) {
+          setGoodsDetails(response.data.description);
+          localStorage.setItem(
+            "Dash_Goods_details",
+            JSON.stringify(response.data.description)
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching data", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
   }, [setGoodsDetails]);
 
   // ============👇 Handling Goods Changes 👇============
