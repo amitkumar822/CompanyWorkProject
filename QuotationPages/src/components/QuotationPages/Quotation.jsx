@@ -403,7 +403,7 @@ function Quotation() {
                   Quantity
                 </th>
 
-                <th className="py-2 px-2 border-b-2 border-black border-r-2 ">
+                <th className="py-2 px-2 border-b-2 border-black border-r-2  w-[170px] text-center">
                   Rate
                 </th>
                 <th className="py-2 px-2 border-b-2 border-black border-r-2 ">
@@ -442,8 +442,8 @@ function Quotation() {
                       className="w-[80%] mx-auto rounded-md pl-1 border border-black"
                     />
                   </td>
-                  <td className="py-2 px-2 border-b-2 border-r-2 border-black">
-                    ₹ {FormatIndianCurrency(items.rate)}
+                  <td className="py-2 px-2 border-b-2 border-r-2 border-black w-[170px] text-center">
+                    {FormatIndianCurrency.format(items.rate)}
                   </td>
                   <td className="py-2 px-2 border-b-2 border-r-2 border-black">
                     <span
@@ -462,32 +462,36 @@ function Quotation() {
           {selectedGoods.length > 0 && (
             <div className="w-[50%] mx-auto mt-4 border border-black rounded-md py-2 px-2">
               <p className="text-xl italic text-center ">
-                Total Amount: ₹{FormatIndianCurrency(totalAmount.toFixed(2))}
+                Total Amount:{" "}
+                {FormatIndianCurrency.format(totalAmount.toFixed(2))}
               </p>
               <p
                 className={`text-xl italic text-center ${
                   cgst === 0 ? "hidden" : ""
                 }`}
               >
-                CGST ({cgst}%): ₹ {FormatIndianCurrency(cgstCalculated.toFixed(2))}
-                {/* CGST {cgst} */}
+                CGST ({cgst}%):{" "}
+                {FormatIndianCurrency.format(cgstCalculated.toFixed(2))}
               </p>
               <p
                 className={`text-xl italic text-center ${
                   sgst === 0 ? "hidden" : ""
                 }`}
               >
-                SGST ({sgst}%): ₹ {FormatIndianCurrency(sgstCalculated.toFixed(2))}
+                SGST ({sgst}%): ₹{" "}
+                {FormatIndianCurrency.format(sgstCalculated.toFixed(2))}
               </p>
               <p
                 className={`text-xl italic text-center ${
                   cgstCalculated || sgstCalculated !== 0 ? "hidden" : ""
                 }`}
               >
-                IGST ({igst}%): ₹ {FormatIndianCurrency(igstCalculated.toFixed(2))}
+                IGST ({igst}%): ₹{" "}
+                {FormatIndianCurrency.format(igstCalculated.toFixed(2))}
               </p>
               <p className="text-xl italic text-center">
-                Final Amount: ₹ {FormatIndianCurrency(finalAmount.toFixed(2))}
+                Final Amount: ₹{" "}
+                {FormatIndianCurrency.format(finalAmount.toFixed(2))}
               </p>
             </div>
           )}

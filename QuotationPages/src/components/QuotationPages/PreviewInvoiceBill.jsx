@@ -258,14 +258,14 @@ const PreviewInvoiceBill = () => {
                       ))}
                     </td>
                     <td className="border-r-[1px] border-black py-2 w-[90.5px] text-center">
-                      {FormatIndianCurrency(parseFloat(goods.rate))}
+                      {FormatIndianCurrency.format(parseFloat(goods.rate))}
                     </td>
                     <td className="border-r-[1px] border-black py-2 w-[68.2px] lg:w-[65px] text-center">
                       {goods.measurement_number}
                     </td>
 
                     <td className="border-black py-2 w-[109.1px] text-center">
-                      {FormatIndianCurrency(
+                      {FormatIndianCurrency.format(
                         parseFloat(goods.rate) * goods.measurement_number
                       )}
                     </td>
@@ -286,7 +286,7 @@ const PreviewInvoiceBill = () => {
                 </span>
               </div>
               <div className="w-[107px] lg:w-[158.4px] border-black text-center font-semibold md:text-xl text-[13px] flex pl-3">
-                ₹ {FormatIndianCurrency(totalAmount)}
+                {FormatIndianCurrency.format(totalAmount)}
               </div>
             </div>
 
@@ -303,7 +303,9 @@ const PreviewInvoiceBill = () => {
                 </span>
               </div>
               <div className="w-[107px] lg:w-[158.4px] border-black text-center font-semibold md:text-xl text-[13px] flex pl-3">
-                ₹ {FormatIndianCurrency((totalAmount * parseFloat(CgstSgst)) / 100)}
+                {FormatIndianCurrency.format(
+                  (totalAmount * parseFloat(CgstSgst)) / 100
+                )}
               </div>
             </div>
 
@@ -322,7 +324,9 @@ const PreviewInvoiceBill = () => {
                 </span>
               </div>
               <div className="w-[107px] lg:w-[158.4px] border-black text-center font-semibold md:text-xl text-[13px] flex pl-3">
-                ₹ {FormatIndianCurrency((totalAmount * parseFloat(CgstSgst)) / 100)}
+                {FormatIndianCurrency.format(
+                  (totalAmount * parseFloat(CgstSgst)) / 100
+                )}
               </div>
             </div>
 
@@ -341,7 +345,9 @@ const PreviewInvoiceBill = () => {
                 </span>
               </div>
               <div className="w-[107px] lg:w-[158.4px] border-black text-center font-semibold md:text-xl text-[13px] flex pl-3">
-                ₹ {FormatIndianCurrency((totalAmount * parseFloat(igst)) / 100)}
+                {FormatIndianCurrency.format(
+                  (totalAmount * parseFloat(igst)) / 100
+                )}
               </div>
             </div>
 
@@ -356,7 +362,7 @@ const PreviewInvoiceBill = () => {
                 {convertToWords(finalAmount)}
               </div>
               <div className="w-[107px] lg:w-[158.4px] border-black text-center font-semibold md:text-xl text-[13px] flex pl-3">
-                ₹ {FormatIndianCurrency(finalAmount.toFixed(2))}
+                {FormatIndianCurrency.format(finalAmount.toFixed(2))}
               </div>
             </div>
           </div>

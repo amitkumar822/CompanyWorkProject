@@ -1,5 +1,5 @@
-export const FormatIndianCurrency = (number) => {
-  return new Intl.NumberFormat("en-IN", {
-    maximumSignificantDigits: 3,
-  }).format(number);
-};
+export const FormatIndianCurrency = new Intl.NumberFormat("en-IN", {
+  style: "currency",
+  currency: "INR",
+  currencyDisplay: "symbol",
+});
