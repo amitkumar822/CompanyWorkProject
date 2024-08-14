@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FormatIndianCurrency } from "../../utils/FormatIndianCurrency";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -21,7 +22,9 @@ function Dashboard() {
       localStorage.getItem("LoginQuotationToken") &&
       localStorage.getItem("Log_username") !== "mani"
     ) {
-      alert("Dashboard Page You can not access it, please get in touch with the administrator.");
+      alert(
+        "Dashboard Page You can not access it, please get in touch with the administrator."
+      );
       navigate("/createquotation");
       return;
     }
@@ -313,7 +316,7 @@ function Dashboard() {
                         {items.part_number}
                       </td>
                       <td className="py-2 px-2 border-b-2 border-r-2 border-black">
-                        ₹ {items.rate}
+                        {FormatIndianCurrency.format(items.rate)}
                       </td>
                       <td className="py-2 px-2 border-b-2 border-r-2 border-black w-[150px]">
                         <span
