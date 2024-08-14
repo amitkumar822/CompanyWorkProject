@@ -239,6 +239,8 @@ function Quotation() {
       if (endpoint) {
         const response = await axios.post(endpoint, formData);
 
+        // console.log("response: " + JSON.stringify(response.data.last_id, null, 2));
+
         localStorage.setItem("QuotationNumber", response.data.last_id);
 
         if (response.data.inserted) {
