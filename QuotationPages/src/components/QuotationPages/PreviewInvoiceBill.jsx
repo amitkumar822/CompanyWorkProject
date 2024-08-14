@@ -52,22 +52,22 @@ const PreviewInvoiceBill = () => {
 
   useEffect(() => {
     if (localStorage.getItem("Quo_CgstSgst")) {
-      setCgstSgst(parseFloat(JSON.parse(localStorage.getItem("Quo_CgstSgst"))));
+      setCgstSgst(parseFloat(JSON.parse(localStorage.getItem("Quo_CgstSgst"))) || 0);
     }
 
     if (localStorage.getItem("Quo_Igst")) {
-      setIGST(parseFloat(JSON.parse(localStorage.getItem("Quo_Igst"))));
+      setIGST(parseFloat(JSON.parse(localStorage.getItem("Quo_Igst"))) || 0);
     }
 
     if (localStorage.getItem("Quo_TotalAmount")) {
       setTotalAmount(
-        parseFloat(JSON.parse(localStorage.getItem("Quo_TotalAmount")))
+        parseFloat(JSON.parse(localStorage?.getItem("Quo_TotalAmount")) || 0)
       );
     }
 
     if (localStorage.getItem("Quo_FinalAmount")) {
       setFinalAmount(
-        parseFloat(JSON.parse(localStorage.getItem("Quo_FinalAmount")))
+        parseFloat(JSON.parse(localStorage.getItem("Quo_FinalAmount")) || 0)
       );
     }
   }, [setCgstSgst, setIGST, setTotalAmount, setFinalAmount]);
