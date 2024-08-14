@@ -4,7 +4,7 @@ import Select from "react-select";
 import loadingGfg from "../../data/GfgLoding/loading.gif";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { FormatIndianCurrency } from "../../utils/FormatIndianCurrency";
 
 function Quotation() {
@@ -504,11 +504,18 @@ function Quotation() {
           >
             <button
               onClick={handleGenerateQuatationsId}
-              // to="/previewinvoicebill"
               className="bg-green-500 hover:bg-green-600 text-xl text-white hover:text-[#e7e6e6] duration-200 py-2 px-3 rounded-md font-semibold cursor-pointer"
             >
               Generate Quotation
             </button>
+          </div>
+
+          <div className={`w-[96%] flex justify-center mt-6`}>
+            <NavLink
+            to="/historyquotation"
+            className="text-xl duration-200 py-2 px-3 rounded-md font-semibold cursor-pointer bg-gradient-to-r from-yellow-300 to-green-200 hover:from-green-300 hover:to-yellow-300">
+              Check Your Quotation
+            </NavLink>
           </div>
         </form>
       </div>
