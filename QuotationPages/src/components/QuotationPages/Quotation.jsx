@@ -132,7 +132,7 @@ function Quotation() {
   const [goodsDetails, setGoodsDetails] = useState(() => {
     return JSON.parse(localStorage.getItem("Dash_Goods_details")) || [];
   });
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -241,8 +241,7 @@ function Quotation() {
 
         // console.log("response: " + JSON.stringify(response.data.last_id, null, 2));
 
-        localStorage.setItem("QuotationNumber", response.data.last_id)
-        
+        localStorage.setItem("QuotationNumber", response.data.last_id);
 
         if (response.data.inserted) {
           toast.success("Successful generate quotation.", {
@@ -299,7 +298,7 @@ function Quotation() {
           className="w-[90%] mx-auto border border-black px-4 py-4 mt-6 rounded-md"
         >
           <label htmlFor="shopkeepername" className="text-xl italic">
-            Shopkeeper Name
+            Customer Name
           </label>
           <Select
             id="shopkeepername"
