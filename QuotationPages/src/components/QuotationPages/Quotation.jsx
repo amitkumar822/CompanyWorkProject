@@ -229,7 +229,7 @@ function Quotation() {
 
       const apiEndPoints = {
         mani: "/api/insert_qutation_by_mani.php",
-        subathara: "/api/insert_qutations_subhatra.php",
+        subathra: "/api/insert_qutations_subhatra.php",
         ilakkiya: "/api/insert_qutations_by_Ilakkiya_discription.php",
         omkumar: "/api/insert_qutation_by_omkumar.php",
       };
@@ -238,8 +238,6 @@ function Quotation() {
 
       if (endpoint) {
         const response = await axios.post(endpoint, formData);
-
-        // console.log("response: " + JSON.stringify(response.data.last_id, null, 2));
 
         localStorage.setItem("QuotationNumber", response.data.last_id);
 
