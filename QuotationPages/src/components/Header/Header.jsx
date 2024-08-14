@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import AnkusamLogo from "../../data/Photos/Logo/AnkusamLogo.png";
+import AnkusamLogo from "../../data/Photos/Logo/AnkusamLogoBlack.png";
 import { PiUserPlusBold } from "react-icons/pi";
 import { NavLink } from "react-router-dom";
 import LogOut from "../LogInLogOutPages/LogOut";
@@ -43,7 +43,7 @@ function Header() {
                 />
               </NavLink>
               {showTooltip && (
-                <div className="absolute right-0 top-12 mr-44 px-2 py-1 bg-gray-200 text-sm text-gray-700 rounded-md shadow-lg z-10 text-[12px] capitalize">
+                <div className="absolute right-0 top-12 mr-40 px-2 py-1 bg-gray-200 text-sm text-gray-700 rounded-md shadow-lg z-10 text-[12px] capitalize">
                   You can add Customer Details.
                 </div>
               )}
@@ -61,14 +61,14 @@ function Header() {
             <span className=" cursor-pointer hover:text-gray-700 duration-200">
               <NavLink
                 to=""
-                className={({ isActive }) =>
-                  isActive ? "text-[blue] underline" : ""
-                }
+                className={({ isActive }) => (isActive ? "text-[blue]" : "")}
               >
                 {localStorage.getItem("LoginQuotationToken") ? (
                   <LogOut />
                 ) : (
-                  "Login"
+                  <span className="text-white hover:text-[#e5e3e3] bg-blue-600 hover:bg-blue-700 cursor-pointer px-2 py-1 rounded-md shadow-md shadow-yellow-400">
+                    Login
+                  </span>
                 )}
                 {/* Login */}
               </NavLink>
