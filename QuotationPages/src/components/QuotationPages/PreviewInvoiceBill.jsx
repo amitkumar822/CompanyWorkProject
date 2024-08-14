@@ -3,6 +3,7 @@ import AnkusamLogo from "../../data/Photos/CreatedQuotation/AnkusamLogo.png";
 import TUVLogo from "../../data/Photos/CreatedQuotation/TUVLogo.png";
 import { Link } from "react-router-dom";
 import { convertToWords } from "../../utils/ConvertToWords";
+import { FormatIndianCurrency } from "../../utils/FormatIndianCurrency";
 
 const PreviewInvoiceBill = () => {
   // ==============👇 Print Functionlaity 👇====================
@@ -52,7 +53,9 @@ const PreviewInvoiceBill = () => {
 
   useEffect(() => {
     if (localStorage.getItem("Quo_CgstSgst")) {
-      setCgstSgst(parseFloat(JSON.parse(localStorage.getItem("Quo_CgstSgst"))) || 0);
+      setCgstSgst(
+        parseFloat(JSON.parse(localStorage.getItem("Quo_CgstSgst"))) || 0
+      );
     }
 
     if (localStorage.getItem("Quo_Igst")) {
@@ -155,7 +158,9 @@ const PreviewInvoiceBill = () => {
               </div>
               <div className="w-[148px] lg:w-[226px] pl-1 flex items-center lg:text-[17px] text-[10px]">
                 {/* No: AEPL/PO/24-25/37 */}Q/2024-25/
-                <span className="uppercase">{localStorage.getItem("Log_username")}</span>
+                <span className="uppercase">
+                  {localStorage.getItem("Log_username")}
+                </span>
                 /{localStorage.getItem("QuotationNumber")}
               </div>
             </div>
@@ -253,14 +258,16 @@ const PreviewInvoiceBill = () => {
                       ))}
                     </td>
                     <td className="border-r-[1px] border-black py-2 w-[90.5px] text-center">
-                      {parseFloat(goods.rate)}
+                      {FormatIndianCurrency(parseFloat(goods.rate))}
                     </td>
                     <td className="border-r-[1px] border-black py-2 w-[68.2px] lg:w-[65px] text-center">
                       {goods.measurement_number}
                     </td>
 
                     <td className="border-black py-2 w-[109.1px] text-center">
-                      {parseFloat(goods.rate) * goods.measurement_number}
+                      {FormatIndianCurrency(
+                        parseFloat(goods.rate) * goods.measurement_number
+                      )}
                     </td>
                   </tr>
                 ))}
@@ -279,7 +286,7 @@ const PreviewInvoiceBill = () => {
                 </span>
               </div>
               <div className="w-[107px] lg:w-[158.4px] border-black text-center font-semibold md:text-xl text-[13px] flex pl-3">
-              ₹ {totalAmount}
+                ₹ {FormatIndianCurrency(totalAmount)}
               </div>
             </div>
 
@@ -296,7 +303,7 @@ const PreviewInvoiceBill = () => {
                 </span>
               </div>
               <div className="w-[107px] lg:w-[158.4px] border-black text-center font-semibold md:text-xl text-[13px] flex pl-3">
-              ₹ {(totalAmount * parseFloat(CgstSgst)) / 100}
+                ₹ {FormatIndianCurrency((totalAmount * parseFloat(CgstSgst)) / 100)}
               </div>
             </div>
 
@@ -315,7 +322,7 @@ const PreviewInvoiceBill = () => {
                 </span>
               </div>
               <div className="w-[107px] lg:w-[158.4px] border-black text-center font-semibold md:text-xl text-[13px] flex pl-3">
-              ₹ {(totalAmount * parseFloat(CgstSgst)) / 100}
+                ₹ {FormatIndianCurrency((totalAmount * parseFloat(CgstSgst)) / 100)}
               </div>
             </div>
 
@@ -334,7 +341,7 @@ const PreviewInvoiceBill = () => {
                 </span>
               </div>
               <div className="w-[107px] lg:w-[158.4px] border-black text-center font-semibold md:text-xl text-[13px] flex pl-3">
-              ₹ {(totalAmount * parseFloat(igst)) / 100}
+                ₹ {FormatIndianCurrency((totalAmount * parseFloat(igst)) / 100)}
               </div>
             </div>
 
@@ -349,7 +356,7 @@ const PreviewInvoiceBill = () => {
                 {convertToWords(finalAmount)}
               </div>
               <div className="w-[107px] lg:w-[158.4px] border-black text-center font-semibold md:text-xl text-[13px] flex pl-3">
-              ₹ {finalAmount.toFixed(2)}
+                ₹ {FormatIndianCurrency(finalAmount.toFixed(2))}
               </div>
             </div>
           </div>
@@ -372,7 +379,9 @@ const PreviewInvoiceBill = () => {
             <h1 className=" font-semibold">
               For Ankusam Engineering Private Limited,
             </h1>
-            <span className="uppercase">{localStorage.getItem("Log_username")}</span>
+            <span className="uppercase">
+              {localStorage.getItem("Log_username")}
+            </span>
           </div>
         </div>
 

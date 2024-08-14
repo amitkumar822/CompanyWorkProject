@@ -5,6 +5,7 @@ import loadingGfg from "../../data/GfgLoding/loading.gif";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
+import { FormatIndianCurrency } from "../../utils/FormatIndianCurrency";
 
 function Quotation() {
   const navigate = useNavigate();
@@ -442,7 +443,7 @@ function Quotation() {
                     />
                   </td>
                   <td className="py-2 px-2 border-b-2 border-r-2 border-black">
-                    ₹ {items.rate}
+                    ₹ {FormatIndianCurrency(items.rate)}
                   </td>
                   <td className="py-2 px-2 border-b-2 border-r-2 border-black">
                     <span
@@ -461,14 +462,14 @@ function Quotation() {
           {selectedGoods.length > 0 && (
             <div className="w-[50%] mx-auto mt-4 border border-black rounded-md py-2 px-2">
               <p className="text-xl italic text-center ">
-                Total Amount: ₹ {totalAmount.toFixed(0)}
+                Total Amount: ₹{FormatIndianCurrency(totalAmount.toFixed(2))}
               </p>
               <p
                 className={`text-xl italic text-center ${
                   cgst === 0 ? "hidden" : ""
                 }`}
               >
-                CGST ({cgst}%): ₹ {cgstCalculated.toFixed(2)}
+                CGST ({cgst}%): ₹ {FormatIndianCurrency(cgstCalculated.toFixed(2))}
                 {/* CGST {cgst} */}
               </p>
               <p
@@ -476,17 +477,17 @@ function Quotation() {
                   sgst === 0 ? "hidden" : ""
                 }`}
               >
-                SGST ({sgst}%): ₹ {sgstCalculated.toFixed(2)}
+                SGST ({sgst}%): ₹ {FormatIndianCurrency(sgstCalculated.toFixed(2))}
               </p>
               <p
                 className={`text-xl italic text-center ${
                   cgstCalculated || sgstCalculated !== 0 ? "hidden" : ""
                 }`}
               >
-                IGST ({igst}%): ₹ {igstCalculated.toFixed(2)}
+                IGST ({igst}%): ₹ {FormatIndianCurrency(igstCalculated.toFixed(2))}
               </p>
               <p className="text-xl italic text-center">
-                Final Amount: ₹ {finalAmount.toFixed(2)}
+                Final Amount: ₹ {FormatIndianCurrency(finalAmount.toFixed(2))}
               </p>
             </div>
           )}
