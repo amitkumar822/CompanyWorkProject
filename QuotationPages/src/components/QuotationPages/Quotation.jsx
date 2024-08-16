@@ -47,6 +47,7 @@ function Quotation() {
     setTotalAmount(newTotalAmount);
   }, [selectedGoods, quantityInput]); // Recalculate whenever selectedGoods or quantityInput changes
 
+
   const handleQuantityChange = (index, quantity) => {
     const updatedGoods = [...selectedGoods];
     updatedGoods[index].measurement_number = quantity;
@@ -120,15 +121,6 @@ function Quotation() {
   };
 
   // ==========👇 Featch Goods Details in Dashboard Section 👇===============
-
-  // const [goodsDetails, setGoodsDetails] = useState([]);
-
-  // useEffect(() => {
-  //   if (localStorage.getItem("Dash_Goods_details")) {
-  //     setGoodsDetails(JSON.parse(localStorage.getItem("Dash_Goods_details")));
-  //     return;
-  //   }
-  // }, [setGoodsDetails]);
 
   const [goodsDetails, setGoodsDetails] = useState(() => {
     return JSON.parse(localStorage.getItem("Dash_Goods_details")) || [];
@@ -222,13 +214,12 @@ function Quotation() {
       igst: formatAmount(igstCalculated),
     };
 
-    console.log("amoutGSTDetails: " + JSON.stringify(amoutGSTDetails, null, 2));
-
     const formData = new FormData();
     formData.append("customer_detail", JSON.stringify(shopkeeperAdress));
     formData.append("descriptions", JSON.stringify(selectedGoods));
     formData.append("amout", JSON.stringify(amoutGSTDetails));
     formData.append("username", localStorage.getItem("Log_username"));
+    // formData.append("quantity", quantityInput)
 
     try {
       const username = localStorage.getItem("Log_username");
@@ -244,8 +235,6 @@ function Quotation() {
 
       if (endpoint) {
         const response = await axios.post(endpoint, formData);
-
-        // console.log("response: " + JSON.stringify(response.data.last_id, null, 2));
 
         localStorage.setItem("QuotationNumber", response.data.last_id);
 
@@ -282,6 +271,8 @@ function Quotation() {
       setIsLoading(false);
     }
   };
+
+  // console.log("quantityInput: " + quantityInput)
 
   return (
     <>
