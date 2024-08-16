@@ -210,20 +210,25 @@ function Quotation() {
     e.preventDefault();
     setIsLoading(true);
 
-    const amoutGSTDetails = {
-      cgst: cgstCalculated,
-      sgst: sgstCalculated,
-      igst: igstCalculated,
-      total_amount: totalAmount,
-      final_Amount: finalAmount,
+    const formatAmount = (amount) => {
+      return amount.toFixed(2);
     };
+
+    const amoutGSTDetails = {
+      total_amount: formatAmount(totalAmount),
+      final_Amount: formatAmount(finalAmount),
+      cgst: formatAmount(cgstCalculated),
+      sgst: formatAmount(sgstCalculated),
+      igst: formatAmount(igstCalculated),
+    };
+
+    console.log("amoutGSTDetails: " + JSON.stringify(amoutGSTDetails, null, 2));
 
     const formData = new FormData();
     formData.append("customer_detail", JSON.stringify(shopkeeperAdress));
     formData.append("descriptions", JSON.stringify(selectedGoods));
     formData.append("amout", JSON.stringify(amoutGSTDetails));
     formData.append("username", localStorage.getItem("Log_username"));
-    formData.append("count", 1);
 
     try {
       const username = localStorage.getItem("Log_username");
@@ -462,36 +467,31 @@ function Quotation() {
           {selectedGoods.length > 0 && (
             <div className="w-[50%] mx-auto mt-4 border border-black rounded-md py-2 px-2">
               <p className="text-xl italic text-center ">
-                Total Amount:{" "}
-                {FormatIndianCurrency.format(totalAmount.toFixed(2))}
+                Total Amount: {FormatIndianCurrency.format(totalAmount)}
               </p>
               <p
                 className={`text-xl italic text-center ${
                   cgst === 0 ? "hidden" : ""
                 }`}
               >
-                CGST ({cgst}%):{" "}
-                {FormatIndianCurrency.format(cgstCalculated.toFixed(2))}
+                CGST ({cgst}%): {FormatIndianCurrency.format(cgstCalculated)}
               </p>
               <p
                 className={`text-xl italic text-center ${
                   sgst === 0 ? "hidden" : ""
                 }`}
               >
-                SGST ({sgst}%): ₹{" "}
-                {FormatIndianCurrency.format(sgstCalculated.toFixed(2))}
+                SGST ({sgst}%): ₹ {FormatIndianCurrency.format(sgstCalculated)}
               </p>
               <p
                 className={`text-xl italic text-center ${
                   cgstCalculated || sgstCalculated !== 0 ? "hidden" : ""
                 }`}
               >
-                IGST ({igst}%): ₹{" "}
-                {FormatIndianCurrency.format(igstCalculated.toFixed(2))}
+                IGST ({igst}%): ₹ {FormatIndianCurrency.format(igstCalculated)}
               </p>
               <p className="text-xl italic text-center">
-                Final Amount: ₹{" "}
-                {FormatIndianCurrency.format(finalAmount.toFixed(2))}
+                Final Amount: ₹ {FormatIndianCurrency.format(finalAmount)}
               </p>
             </div>
           )}
@@ -512,8 +512,9 @@ function Quotation() {
 
           <div className={`w-[96%] flex justify-center mt-6`}>
             <NavLink
-            to="/historyquotation"
-            className="text-xl duration-200 py-2 px-3 rounded-md font-semibold cursor-pointer bg-gradient-to-r from-yellow-300 to-green-200 hover:from-green-300 hover:to-yellow-300">
+              to="/historyquotation"
+              className="text-xl duration-200 py-2 px-3 rounded-md font-semibold cursor-pointer bg-gradient-to-r from-yellow-300 to-green-200 hover:from-green-300 hover:to-yellow-300"
+            >
               Check Your Quotation
             </NavLink>
           </div>
