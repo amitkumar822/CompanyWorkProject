@@ -53,7 +53,11 @@ function LogIn() {
 
         // Redirect to the dashboard page
         setTimeout(() => {
-          navigate("/");
+          if (response.data.userData.username === "mani") {
+            navigate("/dashboard"); // Navigate to dashboard page for mani user
+          } else {
+            navigate("/");
+          }
           window.location.reload(); // Refresh the page to ensure the new token is applied
         }, 1000);
       } else {

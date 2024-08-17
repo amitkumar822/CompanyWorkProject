@@ -255,6 +255,19 @@ function Dashboard() {
     }
   };
 
+  // ========👇 Handle saprat saprat Handle History Section 👇=========
+
+  const handleSapratHistory = (name) => {
+    setIsLoading(true);
+    localStorage.removeItem("HistoryQuotation")
+    localStorage.setItem("HistorySapratName", name);
+    toast.info("Please Wait...");
+    setTimeout(() => {
+      navigate("/historyquotation");
+      setIsLoading(false);
+    }, 700);
+  };
+
   return (
     <>
       <div className="w-full h-[91.3vh] mx-auto bg-[#f2d7d7] relative">
@@ -317,6 +330,30 @@ function Dashboard() {
           <div className="bg-[#a8ff3e] min-h-[790px] rounded-md shadow-md shadow-red-500 overflow-hidden">
             {/* Search and Name Section */}
             <div className="w-full bg-[#a8ff3e] pl-3 flex justify-between py-2 px-2">
+              <span
+                onClick={() => handleSapratHistory("mani")}
+                className="bg-green-500 hover:bg-green-600 cursor-pointer capitalize mr-2 px-2 py-1 rounded-md text-xl text-white shadow-md shadow-black"
+              >
+                mani
+              </span>
+              <span
+                onClick={() => handleSapratHistory("OmKumar")}
+                className="bg-green-500 hover:bg-green-600 cursor-pointer capitalize mr-2 px-2 py-1 rounded-md text-xl text-white shadow-md shadow-black"
+              >
+                OmKumar
+              </span>
+              <span
+                onClick={() => handleSapratHistory("subathra")}
+                className="bg-green-500 hover:bg-green-600 cursor-pointer capitalize mr-2 px-2 py-1 rounded-md text-xl text-white shadow-md shadow-black"
+              >
+                subathra
+              </span>
+              <span
+                onClick={() => handleSapratHistory("ilakkiya")}
+                className="bg-green-500 hover:bg-green-600 cursor-pointer capitalize mr-2 px-2 py-1 rounded-md text-xl text-white shadow-md shadow-black"
+              >
+                ilakkiya
+              </span>
               <div className="w-full flex justify-end gap-3 relative">
                 <input
                   type="text"

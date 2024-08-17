@@ -15,6 +15,7 @@ function LogOut() {
     localStorage.removeItem("Quo_FinalAmount");
     localStorage.removeItem("Quo_SelectedGoodsNameOnly");
     localStorage.removeItem("HistoryQuotation");
+    localStorage.removeItem("HistorySapratName");
     window.location.reload();
   };
 

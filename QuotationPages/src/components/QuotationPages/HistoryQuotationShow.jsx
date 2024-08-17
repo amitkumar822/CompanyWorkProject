@@ -7,6 +7,7 @@ import { convertToWords } from "../../utils/ConvertToWords";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router";
+import loadingGfg from "../../data/GfgLoding/loading.gif";
 
 function HistoryQuotationShow() {
   const navigate = useNavigate();
@@ -17,6 +18,8 @@ function HistoryQuotationShow() {
       return;
     }
   }, []);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   // ==============👇 Print Functionlaity 👇====================
   //⏩ Function to handle the print action
@@ -31,7 +34,12 @@ function HistoryQuotationShow() {
   const [QuotationHistory, setQuotationHistory] = useState(
     () => JSON.parse(localStorage.getItem("HistoryQuotation")) || []
   );
-  const username = localStorage.getItem("Log_username");
+
+  // const [username, setUserName] = useState("");
+
+  const username =
+    localStorage.getItem("HistorySapratName") ||
+    localStorage.getItem("Log_username");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -112,6 +120,7 @@ function HistoryQuotationShow() {
   const [pdfPreviewShowHiden, setPdfPreviewShowHiden] = useState(false);
 
   const handleNewQuotationGenerate = async () => {
+    setIsLoading(true);
     const amoutGSTDetails = {
       total_amount: discontAfterAmount.toFixed(2),
       final_Amount: finalAmountAfterDiscount.toFixed(2),
@@ -143,6 +152,13 @@ function HistoryQuotationShow() {
         });
         setPdfPreviewShowHiden(true);
         setHidenHistoryWhenClickView(false);
+        setIsLoading(false);
+      } else {
+        toast.error("Failed to Update Quotation Amount!", {
+          position: "top-center",
+          autoClose: 1700,
+        });
+        setIsLoading(false);
       }
     } catch (error) {
       console.error("Error: " + error);
@@ -150,11 +166,23 @@ function HistoryQuotationShow() {
         position: "top-center",
         autoClose: 1700,
       });
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="w-full h-screen -mt-16">
+      {/* Loading image section */}
+      <div
+        className={`w-full h-[110%] -mt-16 z-[52] bg-[rgba(0,0,0,0.5)] fixed ${
+          isLoading ? "" : "hidden"
+        }`}
+      >
+        <div className=" absolute w-full h-screen flex justify-center items-center">
+          <img className="w-[100px] h-[100px] fixed" src={loadingGfg} alt="" />
+        </div>
+      </div>
+
       {/* ====👇 View All History Quotation 👇==== */}
       <div
         className={`w-[85%] mx-auto pt-16 ${
@@ -224,6 +252,14 @@ function HistoryQuotationShow() {
             ))}
           </tbody>
         </table>
+
+        <span
+          className={`text-2xl text-red-600 ${
+            QuotationHistory.length === 0 ? "" : "hidden"
+          }`}
+        >
+          Please Wait Data is loading...
+        </span>
       </div>
 
       {/* =======👇 Discont and Seprate History or Quotation 👇======= */}
@@ -501,10 +537,8 @@ function HistoryQuotationShow() {
                 </div>
                 <div className="w-[148px] lg:w-[226px] pl-1 flex items-center lg:text-[17px] text-[10px]">
                   {/* No: AEPL/PO/24-25/37 */}Q/2024-25/
-                  <span className="uppercase">
-                    {localStorage.getItem("Log_username")}
-                  </span>
-                  /{filterAllHistoryDetails?.id}
+                  <span className="uppercase">{username}</span>/
+                  {filterAllHistoryDetails?.id}
                 </div>
               </div>
 
