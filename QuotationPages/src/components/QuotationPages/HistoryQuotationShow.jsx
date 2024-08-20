@@ -474,7 +474,7 @@ function HistoryQuotationShow() {
               <div className="flex justify-around items-center px-4">
                 <img
                   src={AnkusamLogo}
-                  className="lg:w-[90px] w-[50px]"
+                  className="w-[100px]"
                   alt="Ankusam Logo"
                 />
                 <h1 className="font-bold italic font-serif lg:text-4xl text-2xl">
@@ -483,10 +483,10 @@ function HistoryQuotationShow() {
                 <span className="flex flex-col items-center">
                   <img
                     src={TUVLogo}
-                    className="lg:w-[50px] w-[30px]"
+                    className="w-[30px]"
                     alt="TUV Logo"
                   />
-                  <h1 className="font-semibold text-[10px]">ISO 90001:2015</h1>
+                  <h1 className="font-semibold text-[8px]">ISO 90001:2015</h1>
                 </span>
               </div>
               {/* Address */}
